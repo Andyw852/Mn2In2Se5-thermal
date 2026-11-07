@@ -1,0 +1,188 @@
+DIM = 3 3 3
+[align] 已记录数据所依据的原子顺序 -> SPOSCAR.ref
+[stamp] 警告: 未找到 core/*.py (/data/wangchaoyue852/pheasy_mninse4_189/ghsc_ALASSO_c3_4.70), 指纹不含代码版本 -- 改过零空间代码请手动 FORCE_REBUILD
+拟合: ALASSO | 阶次 3 | c2=None c3=4.70 c4=None | DIM=3 3 3 | ndata=45/45 | dtype=float32
+[1/4] cluster space
+[2026-09-28 19:04:39,992] Start Pheasy.
+    ___       ___       ___       ___       ___       ___   
+   /\  \     /\__\     /\  \     /\  \     /\  \     /\__\  
+  /::\  \   /:/__/_   /::\  \   /::\  \   /::\  \   |::L__L 
+ /::\:\__\ /::\/\__\ /::\:\__\ /::\:\__\ /\:\:\__\  |:::\__\\
+ \/\::/  / \/\::/  / \:\:\/  / \/\::/  / \:\:\/__/  /:;;/__/
+    \/__/    /:/  /   \:\/  /    /:/  /   \::/  /   \/__/   
+             \/__/     \/__/     \/__/     \/__/    0.0.2
+[2026-09-28 19:04:40,006] System: In2MnSe4
+[2026-09-28 19:04:40,006] Space group: R-3m (166), 12 symmetry operations found.
+[2026-09-28 19:04:40,006] Creating 3 x 3 x 3 supercell (189 atoms).
+[2026-09-28 19:04:40,491] Starting to generate cluster space up to 3-order.
+[2026-09-28 19:04:40,492] Cutoff distance (A) for 2-order IFCs: inf
+[2026-09-28 19:04:53,134] Cutoff distance (A) for 3-order IFCs: 4.70
+[2026-09-28 19:04:58,046] Summary of cluster space:
+[2026-09-28 19:04:58,046] - HARM    | cluster number: 144 | IFC number: 1296
+[2026-09-28 19:04:58,046] - ANHARM3 | cluster number: 43  | IFC number: 1161
+[2026-09-28 19:05:01,138] Cluster space generation finished, time cost: 0:00:20.646108.
+[2026-09-28 19:05:01,138] Finalize Pheasy, total time cost: 0:00:21.149519.
+[2/4] null space
+[2026-09-28 19:05:04,253] Start Pheasy.
+      ___         ___           ___           ___           ___                 
+     /  /\       /__/\         /  /\         /  /\         /  /\          ___   
+    /  /::\      \  \:\       /  /:/_       /  /::\       /  /:/_        /__/|  
+   /  /:/\:\      \__\:\     /  /:/ /\     /  /:/\:\     /  /:/ /\      |  |:|  
+  /  /:/~/:/  ___ /  /::\   /  /:/ /:/_   /  /:/~/::\   /  /:/ /::\     |  |:|  
+ /__/:/ /:/  /__/\  /:/\:\ /__/:/ /:/ /\ /__/:/ /:/\:\ /__/:/ /:/\:\  __|__|:|  
+ \  \:\/:/   \  \:\/:/__\/ \  \:\/:/ /:/ \  \:\/:/__\/ \  \:\/:/~/:/ /__/::::\  
+  \  \::/     \  \::/       \  \::/ /:/   \  \::/       \  \::/ /:/  ~~~~\~~\:\ 
+   \  \:\      \  \:\        \  \:\/:/     \  \:\        \__\/ /:/        \  \:\\
+    \  \:\      \  \:\        \  \::/       \  \:\         /__/:/          \__\/
+     \__\/       \__\/         \__\/         \__\/         \__\/                  
+                                                                                0.0.2
+[2026-09-28 19:05:04,283] System: In2MnSe4
+[2026-09-28 19:05:04,283] Space group: R-3m (166), 12 symmetry operations found.
+[2026-09-28 19:05:04,283] Creating 3 x 3 x 3 supercell (189 atoms).
+[2026-09-28 19:05:04,299] Reading and generating cluster space from file, up to 3-order.
+[2026-09-28 19:05:05,898] Cutoff distance (A) for 2-order IFCs: inf
+[2026-09-28 19:05:05,900] Cutoff distance (A) for 3-order IFCs: 4.70
+[2026-09-28 19:05:05,901] Summary of cluster space:
+[2026-09-28 19:05:05,901] - HARM    | cluster number: 144 | IFC number: 1296
+[2026-09-28 19:05:05,901] - ANHARM3 | cluster number: 43  | IFC number: 1161
+[2026-09-28 19:05:05,901] Starting to construct symmetry constraints and null space.
+[2026-09-28 19:05:05,901] Symmmetry constraints are imposed in Cartesian coordinate.
+[2026-09-28 19:05:05,901] Symmetry constraints on 2-order IFCs:
+[2026-09-28 19:05:05,901] - Imposing space group and permuation symmetry.
+[2026-09-28 19:05:06,758] - Imposing translational invariance.
+[2026-09-28 19:05:08,505] - Calculating null space.
+[ASR] sparse mode ON, ns_mat: csc_matrix shape=(1296, 608), nnz=984, mem~0.0MB (thr=1e-10, col_blk=5000)
+[ASR] elimination mode (n_free=608, 36 constraint rows)
+[ASR]   cons 1/4: n_free=606, nnz=1083, t=0.0s
+[ASR]   cons 4/4: n_free=600, nnz=2011, t=0.0s
+[ASR] done: n_free=600, eliminated=8, skipped=28, max|C@ns|=4.67e-10
+[2026-09-28 19:05:08,908] - [ns-rank] order 2: full column rank (600), sigma_min/sigma_max = 1.257e-01
+[2026-09-28 19:05:08,909] - Time cost: 0:00:03.007635.
+[2026-09-28 19:05:08,909] Symmetry constraints on 3-order IFCs:
+[2026-09-28 19:05:08,909] - Imposing space group and permuation symmetry.
+[2026-09-28 19:05:09,261] - Imposing translational invariance.
+[2026-09-28 19:05:10,367] - Calculating null space.
+[ASR] sparse mode ON, ns_mat: csc_matrix shape=(1161, 440), nnz=1484, mem~0.0MB (thr=1e-10, col_blk=5000)
+[ASR] elimination mode (n_free=440, 3888 constraint rows)
+[ASR]   cons 1/144: n_free=440, nnz=1484, t=0.0s
+[ASR]   cons 11/144: n_free=421, nnz=1781, t=0.1s
+[ASR]   cons 21/144: n_free=421, nnz=1781, t=0.2s
+[ASR]   cons 31/144: n_free=407, nnz=2230, t=0.3s
+[ASR]   cons 41/144: n_free=388, nnz=3202, t=0.4s
+[ASR]   cons 51/144: n_free=388, nnz=3202, t=0.4s
+[ASR]   cons 61/144: n_free=383, nnz=3203, t=0.5s
+[ASR]   cons 71/144: n_free=369, nnz=3817, t=0.6s
+[ASR]   cons 81/144: n_free=365, nnz=3938, t=0.7s
+[ASR]   cons 91/144: n_free=365, nnz=3938, t=0.8s
+[ASR]   cons 101/144: n_free=346, nnz=5478, t=0.9s
+[ASR]   cons 111/144: n_free=342, nnz=5487, t=1.0s
+[ASR]   cons 121/144: n_free=342, nnz=5487, t=1.1s
+[ASR]   cons 131/144: n_free=325, nnz=6078, t=1.2s
+[ASR]   cons 141/144: n_free=307, nnz=8115, t=1.3s
+[ASR]   cons 144/144: n_free=307, nnz=8115, t=1.3s
+[ASR] done: n_free=307, eliminated=133, skipped=3755, max|C@ns|=8.24e-10
+[2026-09-28 19:05:11,811] - [ns-rank] order 3: full column rank (307), sigma_min/sigma_max = 1.005e-01
+[2026-09-28 19:05:11,812] - Time cost: 0:00:02.902818.
+[2026-09-28 19:05:11,812] Summary of IFCs:
+[2026-09-28 19:05:11,812] - HARM    | IFC number: 1296  | Free IFC number: 600
+[2026-09-28 19:05:11,816] - ANHARM3 | IFC number: 1161  | Free IFC number: 307
+[2026-09-28 19:05:11,821] Total number of free IFCs: 907
+[2026-09-28 19:05:11,823] Construction of symmetry constraints finished, time cost: 0:00:05.922235.
+[2026-09-28 19:05:11,824] Finalize Pheasy, total time cost: 0:00:07.575302.
+[1.5/4] 数据顺序对齐 (SPOSCAR.ref -> pheasy SPOSCAR)
+[align] SPOSCAR.ref 与 pheasy SPOSCAR 顺序完全一致, 无需重排
+[3/4] sensing matrix (按全部 45 个构型建表, 供任意 NDATA<=45 复用)
+[2026-09-28 19:05:14,435] Start Pheasy.
+      ___         ___           ___           ___           ___                 
+     /\  \       /\  \         /\__\         /\  \         /\__\                
+    /::\  \      \:\  \       /:/ _/_       /::\  \       /:/ _/_         ___   
+   /:/\:\__\      \:\  \     /:/ /\__\     /:/\:\  \     /:/ /\  \       /|  |  
+  /:/ /:/  /  ___ /::\  \   /:/ /:/ _/_   /:/ /::\  \   /:/ /::\  \     |:|  |  
+ /:/_/:/  /  /\  /:/\:\__\ /:/_/:/ /\__\ /:/_/:/\:\__\ /:/_/:/\:\__\    |:|  |  
+ \:\/:/  /   \:\/:/  \/__/ \:\/:/ /:/  / \:\/:/  \/__/ \:\/:/ /:/  /  __|:|__|  
+  \::/__/     \::/__/       \::/_/:/  /   \::/__/       \::/ /:/  /  /::::\  \  
+   \:\  \      \:\  \        \:\/:/  /     \:\  \        \/_/:/  /   ~~~~\:\  \ 
+    \:\__\      \:\__\        \::/  /       \:\__\         /:/  /         \:\__\\
+     \/__/       \/__/         \/__/         \/__/         \/__/           \/__/ 
+                                                                                0.0.2
+[2026-09-28 19:05:14,445] System: In2MnSe4
+[2026-09-28 19:05:14,446] Space group: R-3m (166), 12 symmetry operations found.
+[2026-09-28 19:05:14,446] Creating 3 x 3 x 3 supercell (189 atoms).
+[2026-09-28 19:05:14,463] Reading and generating cluster space from file, up to 3-order.
+[2026-09-28 19:05:15,716] Cutoff distance (A) for 2-order IFCs: inf
+[2026-09-28 19:05:15,718] Cutoff distance (A) for 3-order IFCs: 4.70
+[2026-09-28 19:05:15,718] Summary of cluster space:
+[2026-09-28 19:05:15,718] - HARM    | cluster number: 144 | IFC number: 1296
+[2026-09-28 19:05:15,718] - ANHARM3 | cluster number: 43  | IFC number: 1161
+[2026-09-28 19:05:15,718] Starting to construct sensing (displacement) matrix.
+[2026-09-28 19:05:15,718] Reading displaced configurations from file.
+[2026-09-28 19:05:17,359] - Parallel sensing matrix construction: 4 workers.
+[SM] streaming dense->sparse float32 conversion of 45 blocks...
+[SM] blocks converted in 0.0s, vstacking...
+[SM] vstack done in 0.2s: shape=(25515, 2457), nnz=15674445, mem=0.13 GB (float32 sparse CSR)
+[2026-09-28 19:06:36,586] Construction of sensing (displacement) matrix finished, time cost: 0:01:20.868070.
+[2026-09-28 19:06:36,587] Finalize Pheasy, total time cost: 0:01:22.155079.
+[4/4] fit (ALASSO, ndata=45)
+[2026-09-28 19:06:39,249] Start Pheasy.
+/^^^^^^^  /^^     /^^/^^^^^^^^      /^         /^^ ^^  /^^      /^^
+/^^    /^^/^^     /^^/^^           /^ ^^     /^^    /^^ /^^    /^^ 
+/^^    /^^/^^     /^^/^^          /^  /^^     /^^        /^^ /^^   
+/^^^^^^^  /^^^^^^ /^^/^^^^^^     /^^   /^^      /^^        /^^     
+/^^       /^^     /^^/^^        /^^^^^^ /^^        /^^     /^^     
+/^^       /^^     /^^/^^       /^^       /^^ /^^    /^^    /^^     
+/^^       /^^     /^^/^^^^^^^^/^^         /^^  /^^ ^^      /^^  0.0.2
+[2026-09-28 19:06:39,262] System: In2MnSe4
+[2026-09-28 19:06:39,262] Space group: R-3m (166), 12 symmetry operations found.
+[2026-09-28 19:06:39,262] Creating 3 x 3 x 3 supercell (189 atoms).
+[2026-09-28 19:06:39,281] Reading and generating cluster space from file, up to 3-order.
+[2026-09-28 19:06:40,938] Cutoff distance (A) for 2-order IFCs: inf
+[2026-09-28 19:06:40,940] Cutoff distance (A) for 3-order IFCs: 4.70
+[2026-09-28 19:06:40,940] Summary of cluster space:
+[2026-09-28 19:06:40,940] - HARM    | cluster number: 144 | IFC number: 1296
+[2026-09-28 19:06:40,940] - ANHARM3 | cluster number: 43  | IFC number: 1161
+[2026-09-28 19:06:40,940] Reconstructing null space of symmetry constraints from file.
+[2026-09-28 19:06:40,947] Summary of IFCs:
+[2026-09-28 19:06:40,947] - HARM    | IFC number: 1296  | Free IFC number: 600
+[2026-09-28 19:06:40,947] - ANHARM3 | IFC number: 1161  | Free IFC number: 307
+[2026-09-28 19:06:40,947] Total number of free IFCs: 907
+[2026-09-28 19:06:40,947] Reconstructing sensing (displacement) matrix from file.
+[SM] sm_prime.npz load (narrow): shape=(25515, 2457) nnz=15674445 data=0.06 GB indices=int32 (0.06 GB) indptr=int64 total=0.13 GB
+[2026-09-28 19:06:41,791] Starting to fit interatomic force constants.
+[2026-09-28 19:06:41,793] SM_prime kept sparse float32 CSR: shape=(25515, 2457), nnz=15674445, mem=0.13 GB
+[2026-09-28 19:06:41,793] Reading interatomic forces, 45 configurations.
+[PATCH] parallel sparse.dot: (25515, 2457) x (2457, 907), threads=4
+[PATCH] parallel sparse.dot done, SM=(25515, 907)
+[SM-cache] saving sm_dense.npy (0.1 GB)...
+[SM-cache] saved in 0.2s
+[2026-09-28 19:06:44,597] PHEASY_HARM_DENSE=1: 600 harmonic columns are never penalized or pruned; 307 anharmonic columns are sparsified.
+[2026-09-28 19:06:44,598] Fitting force constants via Adaptive LASSO (ALASSO).
+[HARM_DENSE] ALASSO: 600 unpenalized (never pruned) columns, 307 penalized
+[ALASSO] weighted-space alpha grid: [1.413e-11 .. 1.413e-05] (30 alphas, 6.00 decades, step 1.61x)
+[HARM_DENSE] sklearn LassoCV has no per-column penalty; using the CPU FISTA backend (Gram path when it fits PHEASY_GRAM_MAX_GB)
+[optimizer] Gram path: G=907x907 built (PHEASY_GRAM_MAX_GB=4); per-iter cost is a dense matvec, no full-SM multiply.
+[HARM_DENSE] Gram FISTA on the penalized block only: 600 free columns eliminated exactly (Schur complement), 307 penalized columns Jacobi-scaled
+[HARM_DENSE] nonzero: unpenalized 600/600, penalized 247/307 (19.5% of the penalized block pruned)
+[2026-09-28 19:07:03,126] Summary of force constants fitting:
+[2026-09-28 19:07:03,126] - Reaching the specified tolerance for the optimal alpha after 20 iterations.
+[2026-09-28 19:07:03,126] - alpha_min: 1.413e-11
+[2026-09-28 19:07:03,126] - alpha_max: 1.413e-05
+[2026-09-28 19:07:03,126] - alpha_opt: 3.664117223249936e-11
+[2026-09-28 19:07:03,127] - RMSE_CV: 0.0010658407451463055 eV/A
+[2026-09-28 19:07:03,127] - RMSE: 0.0010167373254945985 eV/A
+[2026-09-28 19:07:03,127] - Relative error: 0.006704159973549829
+[2026-09-28 19:07:03,127] - Number of coefficient columns: 907 (numerical rank not estimated)
+[2026-09-28 19:07:03,127] - Free IFC terms: 907
+[2026-09-28 19:07:03,127] - Non-zero IFC terms: 847
+[2026-09-28 19:07:03,127] - Non-zero HARM (unpenalized): 600 / 600
+[2026-09-28 19:07:03,127] - Non-zero ANHARM (penalized): 247 / 307
+[2026-09-28 19:07:03,495] [fit] alignment check OK (worst corr=1.0000)
+[2026-09-28 19:07:07,236] Wrote FORCE_CONSTANTS_2ND (ShengBTE, 189 x 189)
+[2026-09-28 19:07:07,237] Writing second-order force constants into file.
+[2026-09-28 19:07:22,909] Writing third-order force constants into file.
+[2026-09-28 19:07:22,910] Force constant fitting finished, time cost: 0:00:41.118331.
+[2026-09-28 19:07:22,911] Finalize Pheasy, total time cost: 0:00:43.665430.
+完成
+fc2       max = 11.4947
+fc3       max = 36.6241
+[4.5/4] 输出力常数顺序回填 (pheasy 序 -> SPOSCAR.ref 序)
+[perm] 数据与 pheasy 顺序一致 (n_moved=0), 无需回填

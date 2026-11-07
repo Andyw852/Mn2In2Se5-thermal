@@ -1,0 +1,16 @@
+inner CV grouped by config (group_size=567)
+loaded SM (25515, 2081) F (25515,) (4.4s)
+settings: nalpha=20 cv=5 tol=1e-06 max_iter=20000 alpha_auto=True decades=4.0 standardize=L1/RIDGE sm_dtype=float64 group_size=567
+fold 1/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0174e-03  relL2=6.7075e-03  nnz=2081                        (6.7s)
+fold 2/5: train 36 conf, val 9 conf
+    OLS      rmse=9.5675e-04  relL2=6.4778e-03  nnz=2081                        (5.6s)
+fold 3/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0161e-03  relL2=6.7914e-03  nnz=2081                        (5.4s)
+fold 4/5: train 36 conf, val 9 conf
+    OLS      rmse=9.5681e-04  relL2=6.2990e-03  nnz=2081                        (5.3s)
+fold 5/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0618e-03  relL2=6.7532e-03  nnz=2081                        (5.4s)
+
+method      rmse_mean     rmse_std   relL2_mean    relL2_std    relL2_med    A@MIN
+OLS        1.0018e-03   4.0249e-05   6.6058e-03   1.8819e-04   6.7075e-03     0/5

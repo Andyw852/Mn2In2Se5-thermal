@@ -1,0 +1,37 @@
+inner CV grouped by config (group_size=567)
+loaded SM (25515, 1303) F (25515,) (7.5s)
+settings: nalpha=20 cv=5 tol=1e-06 max_iter=20000 alpha_auto=True decades=4.0 standardize=L1/RIDGE sm_dtype=float64 group_size=567
+fold 1/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0474e-03  relL2=6.9054e-03  nnz=1303                        (8.6s)
+[alpha_auto] alpha grid widened from 4.0 to 6.0 decades below the KKT threshold (overdetermined 20412 x 1303; PHEASY_LASSO_GRID_FLOOR=0 restores the old span). A 4-decade grid pins alpha* to its own bottom on high-SNR data: Mg8C120 re 7.52% at 4 decades vs 1.34% at 6 with the identical command.
+    LASSO    rmse=1.0469e-03  relL2=6.9021e-03  nnz=1134  D6.0                  (97.3s)
+    ALASSO   rmse=1.0573e-03  relL2=6.9708e-03  nnz=581  A@MIN+D7.0+W2.20+F0.00  (30.1s)
+fold 2/5: train 36 conf, val 9 conf
+    OLS      rmse=9.8812e-04  relL2=6.6902e-03  nnz=1303                        (5.1s)
+[alpha_auto] alpha grid widened from 4.0 to 6.0 decades below the KKT threshold (overdetermined 20412 x 1303; PHEASY_LASSO_GRID_FLOOR=0 restores the old span). A 4-decade grid pins alpha* to its own bottom on high-SNR data: Mg8C120 re 7.52% at 4 decades vs 1.34% at 6 with the identical command.
+    LASSO    rmse=9.8834e-04  relL2=6.6917e-03  nnz=1133  D6.0                  (87.6s)
+    ALASSO   rmse=1.0052e-03  relL2=6.8056e-03  nnz=585  A@MIN+D7.0+W2.19+F0.00  (32.9s)
+fold 3/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0309e-03  relL2=6.8900e-03  nnz=1303                        (5.2s)
+[alpha_auto] alpha grid widened from 4.0 to 6.0 decades below the KKT threshold (overdetermined 20412 x 1303; PHEASY_LASSO_GRID_FLOOR=0 restores the old span). A 4-decade grid pins alpha* to its own bottom on high-SNR data: Mg8C120 re 7.52% at 4 decades vs 1.34% at 6 with the identical command.
+    LASSO    rmse=1.0309e-03  relL2=6.8902e-03  nnz=1146  D6.0                  (84.9s)
+    ALASSO   rmse=1.0371e-03  relL2=6.9317e-03  nnz=604  A@MIN+D7.0+W2.17+F0.00  (32.1s)
+fold 4/5: train 36 conf, val 9 conf
+    OLS      rmse=9.7038e-04  relL2=6.3883e-03  nnz=1303                        (5.2s)
+[alpha_auto] alpha grid widened from 4.0 to 6.0 decades below the KKT threshold (overdetermined 20412 x 1303; PHEASY_LASSO_GRID_FLOOR=0 restores the old span). A 4-decade grid pins alpha* to its own bottom on high-SNR data: Mg8C120 re 7.52% at 4 decades vs 1.34% at 6 with the identical command.
+    LASSO    rmse=9.6904e-04  relL2=6.3794e-03  nnz=1153  D6.0                  (64.4s)
+    ALASSO   rmse=9.8208e-04  relL2=6.4653e-03  nnz=598  A@MIN+D7.0+W2.13+F0.00  (34.6s)
+fold 5/5: train 36 conf, val 9 conf
+    OLS      rmse=1.0761e-03  relL2=6.8440e-03  nnz=1303                        (4.9s)
+[alpha_auto] alpha grid widened from 4.0 to 6.0 decades below the KKT threshold (overdetermined 20412 x 1303; PHEASY_LASSO_GRID_FLOOR=0 restores the old span). A 4-decade grid pins alpha* to its own bottom on high-SNR data: Mg8C120 re 7.52% at 4 decades vs 1.34% at 6 with the identical command.
+    LASSO    rmse=1.0757e-03  relL2=6.8419e-03  nnz=1135  D6.0                  (74.6s)
+    ALASSO   rmse=1.0903e-03  relL2=6.9344e-03  nnz=590  A@MIN+D7.0+W2.20+F0.00  (25.7s)
+
+method      rmse_mean     rmse_std   relL2_mean    relL2_std    relL2_med    A@MIN
+OLS        1.0226e-03   3.8622e-05   6.7436e-03   1.9330e-04   6.8440e-03     0/5
+LASSO      1.0222e-03   3.8793e-05   6.7411e-03   1.9574e-04   6.8419e-03     0/5
+ALASSO     1.0344e-03   3.8073e-05   6.8216e-03   1.8671e-04   6.9317e-03     5/5
+
+paired relL2 diff (OLS - method, negative = OLS better):
+  OLS - LASSO   : mean 2.5201e-06  std 3.5652e-06  (2/5 folds favor OLS; all: 3.251e-06 -1.484e-06 -1.291e-07 8.830e-06 2.131e-06)
+  OLS - ALASSO  : mean -7.7979e-05  std 2.4642e-05  (5/5 folds favor OLS; all: -6.537e-05 -1.154e-04 -4.164e-05 -7.704e-05 -9.044e-05)
