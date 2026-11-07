@@ -138,8 +138,9 @@ def cmd_bases(a):
     gv = np.asarray(tc.group_velocities)             # (ngp, nb, 3)
     freq = np.asarray(tc.frequencies)
     w = np.asarray(tc.grid_weights)
-    sum_err = float(np.abs(mk0.sum(axis=(1, 2)) - kappa0).max())
-    print("[OK] 本征 RTA 完成（%.0f s）；Σ mode_kappa 与 kappa 最大差 %.2e" % (time.time() - t0, sum_err),
+    # phono3py：kappa = Σ_{q,ν} mode_kappa / N（N = 网格点总数 = Σ weights）
+    sum_err = float(np.abs(mk0.sum(axis=(1, 2)) / w.sum() - kappa0).max())
+    print("[OK] 本征 RTA 完成（%.0f s）；Σ mode_kappa/N 与 kappa 最大差 %.2e" % (time.time() - t0, sum_err),
           flush=True)
 
     # 2) 每种元素位点 g = 1 的质量无序散射率（读回 ph-ph gamma，不重算）
@@ -175,7 +176,11 @@ class Model:
         z = np.load(path)
         self.T = z["T"]
         self.symbols = [str(s) for s in z["symbols"]]
-        self.mk0 = z["mk0"]                      # (nT, ngp, nb, 3) : xx, yy, zz
+        # phono3py 的 mode_kappa 求和后还要除以网格点总数 N 才是 κ
+        self.mk0 = z["mk0"] / float(z["weights"].sum())   # (nT, ngp, nb, 3) : xx, yy, zz
+        err = np.abs(self.mk0.sum(axis=(1, 2)) - z["kappa0"][:, :3]).max()
+        if err > 1e-6 * max(1.0, np.abs(z["kappa0"]).max()):
+            sys.exit("[ERROR] Σ mode_kappa/N 与 kappa 不一致（差 %.3g），bases.npz 不对" % err)
         self.g0 = z["g0"]
         self.gb1 = z["gb_1um"]
         self.B = {k[2:]: z[k] for k in z.files if k.startswith("B_")}
