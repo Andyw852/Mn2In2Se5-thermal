@@ -1,0 +1,101 @@
+{
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "0,1",
+    "PHEASY_ASR_COL_BLOCK": "5000",
+    "PHEASY_ASR_COMBINED": "1",
+    "PHEASY_ASR_LWORK_LIMIT": "1500000000",
+    "PHEASY_ASR_SPARSE": "1",
+    "PHEASY_ASR_SPARSE_THR": "1e-10",
+    "PHEASY_BLAS_THREADS": "8",
+    "PHEASY_CV_GROUP_SIZE": "567",
+    "PHEASY_DOT_THREADS": "8",
+    "PHEASY_GPU_SM": "1",
+    "PHEASY_GPU_SM_DEVICES": "0,1",
+    "PHEASY_GPU_SM_NGPU": "2",
+    "PHEASY_N_JOBS": "1",
+    "PHEASY_SM_DTYPE": "float32",
+    "PHEASY_SM_THR": "1e-12",
+    "PHEASY_SVD_THRESHOLD": "500",
+    "PHEASY_TWOLEVEL_CACHE_T": "0",
+    "PHEASY_USE_CELER": "1",
+    "PHEASY_USE_GPU": "1"
+  },
+  "metrics": {
+    "mae": 0.0006797250666520218,
+    "mape": 0.03333383212431705,
+    "mse": 8.938285250475532e-07,
+    "mse_path": {
+      "dtype": "float64",
+      "shape": [
+        5
+      ],
+      "type": "ndarray"
+    },
+    "mse_path_mean": 1.0452351497858154e-06,
+    "mspe": 0.2126379536838537,
+    "n_featrues": 1303,
+    "n_features": 1303,
+    "r2_score": 0.9999611379761977,
+    "re": 0.006233941273566167,
+    "rmse": 0.0009454250499365633,
+    "rmse_path": {
+      "dtype": "float64",
+      "shape": [
+        5
+      ],
+      "type": "ndarray"
+    },
+    "rmse_path_mean": 0.0010215490968451292,
+    "rmspe": 0.4611268303664987
+  },
+  "model": "ALASSO",
+  "platform": "Linux-6.5.0-35-generic-x86_64-with-glibc2.35",
+  "python": "3.11.15",
+  "results": {
+    "alpha": 0.0,
+    "alpha_at_grid_edge": false,
+    "coef": {
+      "dtype": "float64",
+      "shape": [
+        1303
+      ],
+      "type": "ndarray"
+    },
+    "cv_selected_ols_limit": true,
+    "cv_selection": {
+      "bracketed": false,
+      "extended_decades": 0.0,
+      "fallback": false,
+      "n_resolved": 62,
+      "ols_mean": 1.0452351497858154e-06
+    },
+    "debias_backend": "not_needed_ols_limit",
+    "execution_backend": "gpu_dense_fista",
+    "fit_accepted": true,
+    "n_iter": 0,
+    "postfit_backend": "cpu_metrics",
+    "regularized_solver_info": {
+      "backend": "gpu_dense_fista",
+      "converged": true,
+      "n_iter": 0,
+      "solver": "OLS (alpha->0 limit selected by CV)",
+      "stage": "regularized_refit_before_debias",
+      "stop_reason": "exact_normal_equations",
+      "tol": 1e-05
+    },
+    "sparsity_supported": false,
+    "status": "fit_returned"
+  },
+  "versions": {
+    "ase": "3.29.0",
+    "f90nml": "1.5.0",
+    "h5py": "3.16.0",
+    "joblib": "1.5.3",
+    "numpy": "2.4.6",
+    "phonopy": "2.47.1",
+    "scikit-learn": "1.9.0",
+    "scipy": "1.17.1",
+    "spglib": "2.6.0",
+    "torch": "2.5.1+cu121"
+  }
+}

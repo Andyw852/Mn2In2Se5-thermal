@@ -1,0 +1,371 @@
+{
+  "mode": "scan",
+  "candidates": [
+    4.3,
+    4.7,
+    5.0
+  ],
+  "shells": [
+    2.520738614130469,
+    2.6815847947297367,
+    3.568317043510099,
+    3.799573877282418,
+    4.069323505296994,
+    4.227148166442773,
+    4.435157597379161,
+    4.5218568961515775,
+    4.786806550460444,
+    4.873470059773076,
+    5.104617920746282,
+    5.41223431807671,
+    5.567419100417137,
+    5.712005145647174,
+    5.867552761741738,
+    5.951525588385517
+  ],
+  "bootstrap": 10,
+  "stability_thr": 0.3,
+  "recommended_cut": 5.0,
+  "records": [
+    {
+      "cut": 4.3,
+      "natom_super": 189,
+      "ndata": 45,
+      "shell_stats": [
+        {
+          "shell": 2.5207,
+          "mean_abs": 33.8357219217839,
+          "std_abs": 0.14715301906738268,
+          "rel_std": 0.004349043280576306
+        },
+        {
+          "shell": 2.6816,
+          "mean_abs": 23.145859221636258,
+          "std_abs": 0.049013178880555126,
+          "rel_std": 0.0021175787172652743
+        },
+        {
+          "shell": 3.5683,
+          "mean_abs": 7.798895545997818,
+          "std_abs": 0.02135230786067984,
+          "rel_std": 0.0027378630390347087
+        },
+        {
+          "shell": 3.7996,
+          "mean_abs": 0.6097850444838824,
+          "std_abs": 0.020504172901789294,
+          "rel_std": 0.03362524726913215
+        },
+        {
+          "shell": 4.0693,
+          "mean_abs": 0.5186487164780708,
+          "std_abs": 0.006793417433558343,
+          "rel_std": 0.013098301832673251
+        },
+        {
+          "shell": 4.2271,
+          "mean_abs": 0.41681045526523663,
+          "std_abs": 0.004987615968903404,
+          "rel_std": 0.011966148895496258
+        },
+        {
+          "shell": 4.4352,
+          "mean_abs": 0.10448684508102739,
+          "std_abs": 0.005001028386638974,
+          "rel_std": 0.04786275614658266
+        },
+        {
+          "shell": 4.5219,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 4.7868,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 4.8735,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.1046,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.4122,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.5674,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.712,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.8676,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.9515,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        }
+      ],
+      "stable_upper_cut": 4.4785072467653695,
+      "dir": "cutoff_scan/cut3_4p30",
+      "train_rel_err": 0.007621551495302923,
+      "free_ifcs": 807,
+      "err_kind": "in-sample",
+      "ratio": 31.617100371747213,
+      "stability_measured": true,
+      "train_rel_se": 0.00011045959818275021,
+      "force_rmse_eV_per_A": 0.0011992246439526144,
+      "force_rmse_relative": 0.007862628083173697
+    },
+    {
+      "cut": 4.7,
+      "natom_super": 189,
+      "ndata": 45,
+      "shell_stats": [
+        {
+          "shell": 2.5207,
+          "mean_abs": 33.62637640554056,
+          "std_abs": 0.13951560110578354,
+          "rel_std": 0.004148993023309993
+        },
+        {
+          "shell": 2.6816,
+          "mean_abs": 23.090287017017708,
+          "std_abs": 0.04052951231248143,
+          "rel_std": 0.0017552623872804565
+        },
+        {
+          "shell": 3.5683,
+          "mean_abs": 7.7855224188519,
+          "std_abs": 0.022676215248865532,
+          "rel_std": 0.002912613184949187
+        },
+        {
+          "shell": 3.7996,
+          "mean_abs": 0.515108371384642,
+          "std_abs": 0.02028026585731874,
+          "rel_std": 0.03937087219686252
+        },
+        {
+          "shell": 4.0693,
+          "mean_abs": 0.49719286692285236,
+          "std_abs": 0.005851597601974352,
+          "rel_std": 0.01176927102391902
+        },
+        {
+          "shell": 4.2271,
+          "mean_abs": 0.3813455858211322,
+          "std_abs": 0.006694472175235079,
+          "rel_std": 0.017554869976586222
+        },
+        {
+          "shell": 4.4352,
+          "mean_abs": 0.5626218474430282,
+          "std_abs": 0.01081331184691983,
+          "rel_std": 0.0192195022217206
+        },
+        {
+          "shell": 4.5219,
+          "mean_abs": 0.5557921390624057,
+          "std_abs": 0.01209518571444001,
+          "rel_std": 0.021762066903004425
+        },
+        {
+          "shell": 4.7868,
+          "mean_abs": 0.16787949402782648,
+          "std_abs": 0.007339742950218881,
+          "rel_std": 0.04372030659683963
+        },
+        {
+          "shell": 4.8735,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.1046,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.4122,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.5674,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.712,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.8676,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.9515,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        }
+      ],
+      "stable_upper_cut": 4.83013830511676,
+      "dir": "cutoff_scan/cut3_4p70",
+      "train_rel_err": 0.0067017547789255194,
+      "free_ifcs": 907,
+      "err_kind": "in-sample",
+      "ratio": 28.13120176405733,
+      "stability_measured": true,
+      "train_rel_se": 9.708264489542012e-05,
+      "force_rmse_eV_per_A": 0.001062762761938968,
+      "force_rmse_relative": 0.006967925800983415
+    },
+    {
+      "cut": 5.0,
+      "natom_super": 189,
+      "ndata": 45,
+      "shell_stats": [
+        {
+          "shell": 2.5207,
+          "mean_abs": 33.451812536383464,
+          "std_abs": 0.15903183672234805,
+          "rel_std": 0.004754057393732521
+        },
+        {
+          "shell": 2.6816,
+          "mean_abs": 23.114968785239064,
+          "std_abs": 0.03435590465487132,
+          "rel_std": 0.0014863054747800734
+        },
+        {
+          "shell": 3.5683,
+          "mean_abs": 7.809797129530035,
+          "std_abs": 0.022084187136331063,
+          "rel_std": 0.002827754264298029
+        },
+        {
+          "shell": 3.7996,
+          "mean_abs": 0.5088346379470313,
+          "std_abs": 0.02961208927032174,
+          "rel_std": 0.058195899142786535
+        },
+        {
+          "shell": 4.0693,
+          "mean_abs": 0.48850736418913787,
+          "std_abs": 0.007200954216644337,
+          "rel_std": 0.01474072807192382
+        },
+        {
+          "shell": 4.2271,
+          "mean_abs": 0.3596345059868997,
+          "std_abs": 0.009065998549307735,
+          "rel_std": 0.025208922943667646
+        },
+        {
+          "shell": 4.4352,
+          "mean_abs": 0.5502012764220429,
+          "std_abs": 0.012688405463565222,
+          "rel_std": 0.023061388635951342
+        },
+        {
+          "shell": 4.5219,
+          "mean_abs": 0.5363650592758195,
+          "std_abs": 0.011346422698449132,
+          "rel_std": 0.02115429128394131
+        },
+        {
+          "shell": 4.7868,
+          "mean_abs": 0.3092397649006803,
+          "std_abs": 0.01472515758369125,
+          "rel_std": 0.047617283593591485
+        },
+        {
+          "shell": 4.8735,
+          "mean_abs": 0.1781392661450468,
+          "std_abs": 0.009066469596513756,
+          "rel_std": 0.050895402191291954
+        },
+        {
+          "shell": 5.1046,
+          "mean_abs": 0.14213252891722644,
+          "std_abs": 0.01006729649474515,
+          "rel_std": 0.07083034806626166
+        },
+        {
+          "shell": 5.4122,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.5674,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.712,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.8676,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        },
+        {
+          "shell": 5.9515,
+          "mean_abs": 0.0,
+          "std_abs": 0.0,
+          "rel_std": null
+        }
+      ],
+      "stable_upper_cut": 5.258426119411496,
+      "dir": "cutoff_scan/cut3_5p00",
+      "train_rel_err": 0.00625014897880303,
+      "free_ifcs": 1272,
+      "err_kind": "in-sample",
+      "ratio": 20.058962264150942,
+      "stability_measured": true,
+      "train_rel_se": 0.00011973708564967924,
+      "force_rmse_eV_per_A": 0.0009892102112947052,
+      "force_rmse_relative": 0.006485683918112729
+    }
+  ],
+  "note": "pheasy per-candidate refit + frame bootstrap: a candidate is usable when cut <= its own stable_upper_cut (outermost shell with sigma/|mean| < stability_thr).  The final cutoff choice belongs to a downstream kappa step."
+}

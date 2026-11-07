@@ -1,0 +1,60 @@
+{
+  "material": "Mn2In2Se5_441",
+  "purpose": "low-temperature supplement (0-150 K request; 0 K not computable, lowest 30 K)",
+  "solver": "shengbte",
+  "bte_method": "conv",
+  "mesh": "16 16 4",
+  "mesh_source": "main run converged mesh (MESH_CONV_TOL_PCT=5%)",
+  "fc3_cutoff_A": 6.51,
+  "fc_source": "cutoff_scan/cut3_6p51 (same truncated force constants as main run)",
+  "fc_check_bytes": 4770026,
+  "isotope": true,
+  "nac": false,
+  "temperatures_K": [
+    30.0,
+    60.0,
+    90.0,
+    120.0,
+    150.0
+  ],
+  "kappa_xx_yy_zz": [
+    [
+      26.862,
+      26.862,
+      2.1153
+    ],
+    [
+      11.61,
+      11.61,
+      1.0243
+    ],
+    [
+      7.2043,
+      7.2043,
+      0.67697
+    ],
+    [
+      5.2563,
+      5.2563,
+      0.5101
+    ],
+    [
+      4.1569,
+      4.1569,
+      0.41066
+    ]
+  ],
+  "consistency_check": {
+    "main_run_100K_xx_zz": [
+      6.4058,
+      0.60986
+    ],
+    "main_run_200K_xx_zz": [
+      3.0958,
+      0.31059
+    ],
+    "note": "90 K 7.204/0.677 与 100 K 6.406/0.610 衔接；150 K 4.157/0.411 与 100-200 K 插值(~4.3/0.43)一致"
+  },
+  "run_dir_remote": "hanhai25:~/work/Mn2In2Se5_441/kl-dft-cpu/step6_kappa/shengbte_runs/cut3_6p51_m16x16x4",
+  "jobid": "357276"
+}

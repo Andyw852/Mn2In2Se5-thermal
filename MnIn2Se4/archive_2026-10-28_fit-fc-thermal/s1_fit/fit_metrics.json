@@ -1,0 +1,19 @@
+{
+  "pheasy_rmse_train": 0.0009454250499365633,
+  "pheasy_relative_error": 0.006233941273566167,
+  "pheasy_rmse_cv": 0.0010215490968451292,
+  "pheasy_worst_force_correlation": 1.0,
+  "pheasy_free_ifcs": 1303,
+  "pheasy_alpha_opt": 0.0,
+  "pheasy_alpha_min": 4.232e-10,
+  "pheasy_alpha_max": 0.003536,
+  "pheasy_best_alpha": 0.0,
+  "pheasy_cv_hit_cap": false,
+  "pheasy_cv_warning": false,
+  "pheasy_gpu_evidence": [],
+  "pheasy_gpu_used": false,
+  "pheasy_method": "ALASSO",
+  "pheasy_gpu_requested": true,
+  "pheasy_gpu_resident": false,
+  "pheasy_lasso_twolevel": false
+}

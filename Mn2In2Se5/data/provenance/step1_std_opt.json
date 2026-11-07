@@ -1,0 +1,180 @@
+{
+  "schema": 1,
+  "kind": "gen",
+  "ts": "2026-11-02T17:13:37",
+  "tf_version": "1.2.0",
+  "skill": {
+    "key": "kl-dft-cpu",
+    "version": null,
+    "manifest": null,
+    "desc": "晶格热导率(DFT/CPU)"
+  },
+  "step": "step1_std_opt",
+  "material": {
+    "name": "Mn2In2Se5_441",
+    "path": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+    "local": "/mnt/d/tf_data/Mn2In2Se5_441"
+  },
+  "hpc": "jzzn",
+  "host": "jzzn",
+  "step_dir": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+  "generator": {
+    "script": "gen_step1_std_opt.py",
+    "sha256": "97fbc4924cc709b0163f00fc0f7a04f7a76247f3b95f3b0dec0dab82908c9cb0",
+    "args": null
+  },
+  "inputs": {
+    ".autozt_hints/own_step1.txt": {
+      "sha256": "4727d81527bb5ef125be93608106bdaa2354c14301f2c75b41cd68bc0259233d",
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/result/step1_std_opt/workflow_method.txt",
+      "origin": "push_paths"
+    },
+    "POSCAR": {
+      "sha256": "a6845b2967664a4978b4fefc4672c8baed0cd938d8564b977bfb48e89644b608",
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/POSCAR",
+      "origin": "project",
+      "sync": "push-if-diff+verify"
+    },
+    "check_common.py": {
+      "sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "src_sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/check_common.py",
+      "origin": "skill"
+    },
+    "dim_common.py": {
+      "sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "src_sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/dim_common.py",
+      "origin": "skill"
+    },
+    "gen_step1_std_opt.py": {
+      "sha256": "97fbc4924cc709b0163f00fc0f7a04f7a76247f3b95f3b0dec0dab82908c9cb0",
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/gen_step1_std_opt.py",
+      "origin": "skill",
+      "args": null
+    },
+    "incar_0d.tpl": {
+      "sha256": "37053c77ef10d0f318598515892c5b0ac8d8f2dce9070a455b847af0065830f6",
+      "src_sha256": "37053c77ef10d0f318598515892c5b0ac8d8f2dce9070a455b847af0065830f6",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/templates/incar_0d.tpl",
+      "origin": "skill"
+    },
+    "incar_2d.tpl": {
+      "sha256": "eca07cc2ea24aea7af8a3c44d41a7831292ce087124618b5cc9018d68e5b6775",
+      "src_sha256": "eca07cc2ea24aea7af8a3c44d41a7831292ce087124618b5cc9018d68e5b6775",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step1_std_opt/incar_2d.tpl",
+      "origin": "project"
+    },
+    "incar_3d.tpl": {
+      "sha256": "f799d878c3876728acf3e57d2fa117ff77fc32d162058a9958611f734ad2c07c",
+      "src_sha256": "f799d878c3876728acf3e57d2fa117ff77fc32d162058a9958611f734ad2c07c",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step1_std_opt/incar_3d.tpl",
+      "origin": "project"
+    },
+    "method_select.py": {
+      "sha256": "a3607990970e4e08691dcaf49026d02b5fbabd5fc4f34ad51547192902e0b13b",
+      "src_sha256": "a3607990970e4e08691dcaf49026d02b5fbabd5fc4f34ad51547192902e0b13b",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/method_select.py",
+      "origin": "skill"
+    },
+    "mol_common.py": {
+      "sha256": "340d41a147fff76e70095597aec2ea2b07c3387fe0771ea5d9f9d6ba255c687b",
+      "src_sha256": "340d41a147fff76e70095597aec2ea2b07c3387fe0771ea5d9f9d6ba255c687b",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/mol_common.py",
+      "origin": "skill"
+    },
+    "relax_common.py": {
+      "sha256": "2ea2572b10f10b4b1168dd5d8b97c616eb6a24609a6e1b509fb83e5e944b3f93",
+      "src_sha256": "2ea2572b10f10b4b1168dd5d8b97c616eb6a24609a6e1b509fb83e5e944b3f93",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/relax_common.py",
+      "origin": "skill"
+    },
+    "step.conf": {
+      "sha256": "a79e010e3ef0a4f018cfd082a80b9e88582fcce512fd64fe8fe89f1c245aafc3",
+      "source": null,
+      "origin": "merged(step.conf)"
+    },
+    "step1_check_and_resubmit.py": {
+      "sha256": "7c95ca0ca154c642cc96e9ec1ad6d789d00a2865ffb353fd613598f473998904",
+      "src_sha256": "7c95ca0ca154c642cc96e9ec1ad6d789d00a2865ffb353fd613598f473998904",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/step1_check_and_resubmit.py",
+      "origin": "skill"
+    },
+    "stepconf.py": {
+      "sha256": "d283070db83df8282e93d4ad4abc99be0e020f330441a3364a2cabf65568ddd7",
+      "src_sha256": "d283070db83df8282e93d4ad4abc99be0e020f330441a3364a2cabf65568ddd7",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/stepconf.py",
+      "origin": "skill"
+    },
+    "structure_health.py": {
+      "sha256": "4b594f05a38592cf049616a5ca676a1b268dd8a076052acfe0f35dfd61c69f78",
+      "src_sha256": "4b594f05a38592cf049616a5ca676a1b268dd8a076052acfe0f35dfd61c69f78",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/structure_health.py",
+      "origin": "skill"
+    },
+    "submit_std_0d.tpl": {
+      "sha256": "0494473a089182320f3250ea26a3e28a8fc6c14c288a0c5d41e031be9ba9c8b9",
+      "src_sha256": "b9788648e8ab0524be7b3ed9e1f7e7edf1678e5fb1ebed05e74f358e65e36319",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_0d.tpl",
+      "origin": "skill"
+    },
+    "submit_std_2d.tpl": {
+      "sha256": "576c8e8bbee0d035160804361e1248d6ae56199753377fd97d9717dff8f8f7d6",
+      "src_sha256": "99365fec64891142be0fcc023fcaec6ac31d0e73976746860772c64853926f54",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_2d.tpl",
+      "origin": "skill"
+    },
+    "submit_std_3d.tpl": {
+      "sha256": "357229a2d595fa2bda1d27de6c653dcadfaa9a826f655eef2238085294fc2e90",
+      "src_sha256": "30ceb7277dc5370cb8c734afc5077a9640c5ce81618a78708508882f89d7228e",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_3d.tpl",
+      "origin": "skill"
+    },
+    "symmetry_audit.py": {
+      "sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "src_sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/symmetry_audit.py",
+      "origin": "skill"
+    },
+    "thickness_2d.py": {
+      "sha256": "7e4e720f3e51fc8c4baaffb3f5f1782efa90149b28b15f1541a50743d3bf70b0",
+      "src_sha256": "7e4e720f3e51fc8c4baaffb3f5f1782efa90149b28b15f1541a50743d3bf70b0",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/thickness_2d.py",
+      "origin": "skill"
+    },
+    "vdw_radii.py": {
+      "sha256": "689d4e1eeda726b29ccb17e918fafefa80d44b3df90ac90e9d017bb61f314fe3",
+      "src_sha256": "689d4e1eeda726b29ccb17e918fafefa80d44b3df90ac90e9d017bb61f314fe3",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/vdw_radii.py",
+      "origin": "skill"
+    }
+  },
+  "step_conf": {
+    "name": "step.conf",
+    "sha256": "a79e010e3ef0a4f018cfd082a80b9e88582fcce512fd64fe8fe89f1c245aafc3",
+    "chars": 8020,
+    "text": "# ===== 本文件由 tf 自动合成，勿手改 —— 要改请改下面列出的上游 =====\n# 步骤 step1_std_opt   材料 Mn2In2Se5_441\n# 来源（越靠下优先级越高）：\n#   [1] /home/wangchao/software/AutoZT/skill/kl-dft-cpu/templates/step.conf   (skill 默认)\n#   [cluster:jzzn] <setting/jzzn.yaml>   (集群默认)\n#   [2] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step.conf   (project_setting 共用)\n#   [3] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step1_std_opt/step.conf   (project_setting 本步)\n\n[params]\nFUNC                = auto                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [2]\nCONDA_SH            = /public/home/wangchao/miniconda3/etc/profile.d/conda.sh                                                                                                                                                                                                                                                                                                                                                                # <- [cluster:jzzn]\nCONDA_ENV           = /public/home/wangchao/venvs/mace_cpu                                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nMACE_MODEL_DIR      = /public/home/wangchao/software/mace/mace_models                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nAMSET_ENV           = amset051                                                                                                                                                                                                                                                                                                                                                                                                               # <- [cluster:jzzn]\nPOTCAR_DIR          = /public/home/wangchao/software/vasp_pseudopotentials                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nREFERENCES_DIR      = /public/home/wangchao/convex_hull_refs                                                                                                                                                                                                                                                                                                                                                                                 # <- [cluster:jzzn]\nQE_BIN              = /public/home/wangchao/software/q-e-qe-7.3/bin                                                                                                                                                                                                                                                                                                                                                                          # <- [cluster:jzzn]\nQE_PSEUDO_DIR       = /public/home/wangchao/software/AutoZT/pseudo-nc                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nQE_SETUP            = export LD_LIBRARY_PATH=/public/software/intel/2019/mkl/lib/intel64_lin:/public/software/intel/2019/intelpython3/lib:/public/software/intel/2019/impi/2019.3.199/intel64/lib/release:/public/software/intel/2019/impi/2019.3.199/intel64/lib:${LD_LIBRARY_PATH:-}; export PATH=/public/software/intel/2019/impi/2019.3.199/intel64/bin:/public/home/wangchao/software/q-e-qe-7.3/bin:${PATH}; export OMP_NUM_THREADS=1  # <- [cluster:jzzn]\nKSPACING            = 0.038                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [3]\nCELL_POLICY         = none                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [3]\nAUTO_MAG            = true                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [3]\nMAGMOM_OVERRIDE     = Mn:5 In:0 Se:0                                                                                                                                                                                                                                                                                                                                                                                                         # <- [3]\nU_OVERRIDE          = Mn:4 In:0 Se:0                                                                                                                                                                                                                                                                                                                                                                                                         # <- [3]\nCELL_FORCE_TOL_EV_A = 0.002                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [3]\nCELL_STAGE_EDIFFG   = 1E-6                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [3]\n"
+  },
+  "run": {
+    "actor": "wangchao",
+    "cwd": "/home/wangchao/software/AutoZT",
+    "argv": "/home/wangchao/software/AutoZT/autozt/__main__.py"
+  }
+}

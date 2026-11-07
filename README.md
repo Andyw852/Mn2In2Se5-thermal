@@ -1,64 +1,43 @@
-# MnIn2Se 体系晶格热导率数据（MnIn2Se4 / Mn2In2Se5）
+# MnIn₂Se₄ / Mn₂In₂Se₅ 晶格热导率：第一性原理计算与实验对比
 
-本仓库集中存放 **MnIn₂Se₄** 与 **Mn₂In₂Se₅** 两个三方层状材料的力常数拟合与晶格热导率（κ）计算数据，
-按「报告 / 结构 / 数据集 / 力常数拟合 / κ 汇总 / κ 原始输出 / 脚本 / 留出集检验」分门别类。
+两个 R-3m 层状硒化物（层间范德华）的晶格热导率。计算给的是单晶本征值，实验是热压多晶，
+两者之间差织构、反位无序、晶界和电子热导，`analysis/extrinsic/` 把这几项放进同一个模型里对实验做拟合。
 
----
+## 现状（2026-11-07）
+
+| | MnIn₂Se₄ | Mn₂In₂Se₅ |
+|---|---|---|
+| 计算协议 | pheasy 官方测试数据集（DFT 设置不明），3×3×3 菱方 189 原子，截断 ≤ 5.2 Å | AutoZT kl-dft-cpu：PBE-D3 + U(Mn)=4 eV + FM，4×4×1 换基矢 144 原子，截断 6.51 Å |
+| κ_L(300 K) xx / zz（W/mK） | 3.9 / 2.1（phono3py RTA，11³，ALASSO 5.2 Å） | **2.059 / 0.209**（ShengBTE 迭代，16×16×4） |
+| 实验 κ_tot(303 K) Perp / Para | 0.933 / 0.485 | 0.741 / 0.320 |
+| 状态 | **待按 Mn₂In₂Se₅ 同一协议重算** → `MnIn2Se4/redo_441/` | 完成；κ_zz 网格加密、phono3py 交叉核对待做；力常数待上传到 `Mn2In2Se5/fc/` |
 
 ## 目录
 
-| 目录 | 体系 | 内容 |
-|---|---|---|
-| `MnIn2Se4/` | **MnIn₂Se₄**（R-3m #166，7 原子原胞，3×3×3 超胞 189 原子） | 完整数据包，见其 `README.md` |
-| `primitive/` | Mn₂In₂Se₅ | 原胞 POSCAR（9 原子） |
-| `fcfit_3x3x1/` | Mn₂In₂Se₅ | 3×3×1 超胞（81 原子）拟合：pheasy ALASSO |
-| `fcfit_3x3x3/` | Mn₂In₂Se₅ | 3×3×3 超胞（243 原子）拟合：symfc → pheasy RFE-OLS |
-| `kappa_3x3x1/` | Mn₂In₂Se₅ | 3×3×1 的 κ 结果 |
+| 路径 | 内容 |
+|---|---|
+| [`Mn2In2Se5/`](Mn2In2Se5/) | 生产计算结果：κ(T)、声子、截断扫描、图、溯源；`fc/` 放力常数 |
+| [`MnIn2Se4/`](MnIn2Se4/) | 现有数据包（39 组拟合、κ 原始输出、脚本、报告）；`redo_441/` 是重算用的结构、k 点和指令；`archive_2026-10-28_fit-fc-thermal/` 是更早一次拟合（含 ShengBTE/phono3py 差异的诊断） |
+| [`experiment/`](experiment/) | 实验图、读图得到的 CSV、还缺哪些实验数据 |
+| [`analysis/extrinsic/`](analysis/extrinsic/) | 本征 κ + 反位质量无序 + 晶界 + 织构的模型、脚本和拟合结果 |
+| [`protocol/`](protocol/) | AutoZT kl-dft-cpu 4×4×1 换基矢协议（Mn₂In₂Se₅ 用过的执行指令，MnIn₂Se₄ 重算照抄） |
 
----
+## 计算与实验怎么对上
 
-## MnIn₂Se₄ 摘要
+热压多晶里晶粒取向不完全，用织构参数 s = ⟨sin²θ⟩（θ 为晶粒 c 轴与热压方向夹角，0 = 完全织构，2/3 = 随机）：
 
-菱方 R-3m #166，原胞 7 原子（Mn₁In₂Se₄）；等价六方 a = 4.069 Å，**c = 39.586 Å**（层状，层间范德华）。
-45 个随机位移构型 + 1 个平衡参考帧。
+```
+κ_Para = s·κ_xx + (1−s)·κ_zz
+κ_Perp = (1−s/2)·κ_xx + (s/2)·κ_zz
+(2·κ_Perp + κ_Para)/3 = (2κ_xx + κ_zz)/3      ← 与织构无关，可以直接和计算比
+```
 
-- **拟合**：pheasy LASSO / ALASSO + HARM_DENSE（FC2 全稠密无罚，只对 FC3 稀疏），OLS 与 symfc 对照；
-  三阶截断扫描 2.85 / 3.70 / 3.95 / 4.30 / 4.70 / 5.00 / 5.20 / 5.50 / 5.80 / 6.10 / 6.50 / 7.00 Å。
-- **κ**：phono3py 4.4.0，11³ q-mesh，300 K，RTA + 同位素。
+Mn₂In₂Se₅ 在 300 K：计算 (2κ_xx+κ_zz)/3 = 1.44，实验 0.60，差 2.4 倍；623 K 时差 1.5 倍左右。
+差距随温度升高而缩小，这是外在散射（与温度无关的散射率）叠加在 Umklapp 上的典型表现，
+单靠织构解释不了。拟合方法和结果见 [`analysis/extrinsic/README.md`](analysis/extrinsic/README.md)。
 
-κ 随截断强烈变化，例如 ALASSO：κ_xx 从 5.22（2.85 Å）降到 3.18（7.00 Å）；
-κ_zz 从 4.02 降到 0.63。
+## 仓库约定
 
-网格收敛（300 K）：κ_xx=κ_yy 在 11³→18³ 只变 0.8–1.0%（3.883 / 3.922 / 3.891）；
-但 **κ_zz 未收敛**（1.947 → 1.751 → 1.532，每级降 10–12.5%）。
-
----
-
-## Mn₂In₂Se₅ 两个版本的两个问题（关键）
-
-### ① 3×3×1 超胞丢对称 → κ 乱跳
-
-`fcfit_3x3x1` 的拟合 stable（无虚频，min_freq ≈ 0），但超胞 3×3×1 丢失原胞点群操作，
-力常数破坏晶体对称，phono3py 按全对称约化 q 点 → κ 随 q 网格来回跳、不可信：
-`kappa_3x3x1/mesh_convergence.json` 里 κ 0.93→0.78→0.96→0.74 乱跳 20–32%。
-
-### ② 3×3×3 超胞保对称，但力常数有虚频
-
-`fcfit_3x3x3` 超胞保对称（supercell_symmetry=strict），但 symfc 与 RFE-OLS 两种方法
-拟合结果都虚频 −0.435 / −0.436 THz（min_freq，off_gamma，约 1683 个负频 q 点）。
-根因是 **reference frame 未弛豫**：`fc_dataset.json` 里 `equilibrium_max_force = 0.1031 eV/Å`
-（平衡位置残余力偏大）。换拟合方法（symfc→RFE-OLS）虚频几乎不变，证明是数据集问题、非方法问题。
-
-**结论**：要得到可信 κ，需先重新弛豫 Mn₂In₂Se₅ 结构（压低平衡位置残余力）→ 重新生成位移-力数据集 → 再拟合 + κ。
-
----
-
-## 数据溯源（MnIn₂Se₄）
-
-用户提供的四个输入文件与 `pheasy-gpu-gh/test/MnIn2Se4/` 官方测试材料一致（md5 逐字节比对）；
-用官方 `prepare_dataset.py` 生成的 `disp_matrix.pkl` / `force_matrix.pkl` 与官方一致
-（数值最大差 4e-17 / md5 完全相同）。详见 `MnIn2Se4/README.md`。
-
----
-
-整理上传：2026-11-07。
+- 私有仓库：`data/provenance` 等文件里有集群内部路径。
+- 原始 DFT 输出（OUTCAR、vasprun.xml、WAVECAR…）不入库；力常数 hdf5 入库（单文件 < 100 MB）。
+- 本仓库取代了 `Mn2In2Se5_441-thermal`（内容已并入 `Mn2In2Se5/`）和 `MnIn2Se4-thermal`（并入 `MnIn2Se4/archive_2026-10-28_fit-fc-thermal/`）。

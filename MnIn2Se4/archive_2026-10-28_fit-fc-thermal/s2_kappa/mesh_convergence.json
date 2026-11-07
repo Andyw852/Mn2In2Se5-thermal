@@ -1,0 +1,59 @@
+{
+  "converged": false,
+  "tol_pct": 3.0,
+  "check_T": 300.0,
+  "factor": 1.25,
+  "stop_reason": "MESH_CONV_MAX_LENGTH=50 reached",
+  "norm": "per_component",
+  "floor": 0.1,
+  "components_over_tol": [],
+  "frozen_axes": [],
+  "reference": "each mesh is compared with the latest earlier mesh that is coarser along every axis (axes that cannot change within MESH_CONV_MAX_LENGTH excepted), not just the previous one",
+  "criterion": "per-component max_i |d kappa_ii| / max(|kappa_ii|, floor*max_j |kappa_jj|) against the reference mesh (xx, yy, zz each normalised by itself; components below the floor by floor*max)",
+  "records": [
+    {
+      "length": 40.0,
+      "mesh": "11 11 11",
+      "axis_counts": [
+        11,
+        11,
+        11
+      ],
+      "compared_with": null,
+      "kappa_at_T": [
+        4.007135742561241,
+        4.007135751504198,
+        1.83880688114258,
+        1.6942380423243772e-09,
+        -9.945748631314745e-12,
+        -8.254663356628961e-10
+      ],
+      "rel_change": null,
+      "rel_change_per_component": null
+    },
+    {
+      "length": 50.0,
+      "mesh": "14 14 14",
+      "axis_counts": [
+        14,
+        14,
+        14
+      ],
+      "compared_with": "11 11 11",
+      "kappa_at_T": [
+        4.031007085631322,
+        4.0310070946275545,
+        1.684877206308754,
+        1.6547348517622517e-09,
+        -7.453634800844838e-12,
+        -8.303838159373141e-10
+      ],
+      "rel_change": 0.08371171350967459,
+      "rel_change_per_component": [
+        0.005957208490976546,
+        0.00595720849097646,
+        0.08371171350967459
+      ]
+    }
+  ]
+}

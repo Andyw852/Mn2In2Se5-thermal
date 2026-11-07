@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "kind": "gen",
+  "ts": "2026-11-02T19:23:11",
+  "tf_version": "1.2.0",
+  "skill": {
+    "key": "kl-dft-cpu",
+    "version": null,
+    "manifest": null,
+    "desc": "晶格热导率(DFT/CPU)"
+  },
+  "step": "step3_nac",
+  "material": {
+    "name": "Mn2In2Se5_441",
+    "path": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+    "local": "/mnt/d/tf_data/Mn2In2Se5_441"
+  },
+  "hpc": "jzzn",
+  "host": "jzzn",
+  "step_dir": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+  "generator": {
+    "script": "gen_step3_nac.py",
+    "sha256": "27d6fc27f76681106becd4476503324cfe5875802d88cd4bf26e95780ae813a8",
+    "args": null
+  },
+  "inputs": {
+    "POSCAR": {
+      "sha256": "a6845b2967664a4978b4fefc4672c8baed0cd938d8564b977bfb48e89644b608",
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/POSCAR",
+      "origin": "project",
+      "sync": "push-if-diff+verify"
+    },
+    "check_common.py": {
+      "sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "src_sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/check_common.py",
+      "origin": "skill"
+    },
+    "dim_common.py": {
+      "sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "src_sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/dim_common.py",
+      "origin": "skill"
+    },
+    "gen_step3_nac.py": {
+      "sha256": "27d6fc27f76681106becd4476503324cfe5875802d88cd4bf26e95780ae813a8",
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/gen_step3_nac.py",
+      "origin": "skill",
+      "args": null
+    },
+    "incar_2d.tpl": {
+      "sha256": "7bc41f8414f50bf26fcb603e71248d539dfa63826ce10b00d6c599302329114d",
+      "src_sha256": "7bc41f8414f50bf26fcb603e71248d539dfa63826ce10b00d6c599302329114d",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step3_nac/incar_2d.tpl",
+      "origin": "project"
+    },
+    "incar_3d.tpl": {
+      "sha256": "5d9f49ab37b8a1b7811aafa9c0a4458bb4f2fd255f814a9e09c5a2ae3abbfd8a",
+      "src_sha256": "5d9f49ab37b8a1b7811aafa9c0a4458bb4f2fd255f814a9e09c5a2ae3abbfd8a",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step3_nac/incar_3d.tpl",
+      "origin": "project"
+    },
+    "kl_common.py": {
+      "sha256": "7bacf07a8832af087c9c2977ff12150753623377ee18f0ea99fa4a0e1b5d67ba",
+      "src_sha256": "7bacf07a8832af087c9c2977ff12150753623377ee18f0ea99fa4a0e1b5d67ba",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/kl_common.py",
+      "origin": "skill"
+    },
+    "step.conf": {
+      "sha256": "ec5a4c3bfc80a16877c4f5c338bea117fecccd3da6d9bc5ded6204d982d066c3",
+      "source": null,
+      "origin": "merged(step.conf)"
+    },
+    "step2_check_and_resubmit.py": {
+      "sha256": "9a185ad8c8a5bec4c2b88f6f4f260aab1b61c836468fffab8a8642ca3f4b41c8",
+      "src_sha256": "9a185ad8c8a5bec4c2b88f6f4f260aab1b61c836468fffab8a8642ca3f4b41c8",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/step2_check_and_resubmit.py",
+      "origin": "skill"
+    },
+    "stepconf.py": {
+      "sha256": "2535acad23e0800f0684ddc743052d175d35be67b756a42afa2245603b6c622b",
+      "src_sha256": "2535acad23e0800f0684ddc743052d175d35be67b756a42afa2245603b6c622b",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/stepconf.py",
+      "origin": "skill"
+    },
+    "submit_std_2d.tpl": {
+      "sha256": "16b89d35cec6cb5781d3263ffc8f58f06ea5ed938eec0d2d620c2451b615bdbc",
+      "src_sha256": "99365fec64891142be0fcc023fcaec6ac31d0e73976746860772c64853926f54",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_2d.tpl",
+      "origin": "skill"
+    },
+    "submit_std_3d.tpl": {
+      "sha256": "357229a2d595fa2bda1d27de6c653dcadfaa9a826f655eef2238085294fc2e90",
+      "src_sha256": "30ceb7277dc5370cb8c734afc5077a9640c5ce81618a78708508882f89d7228e",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_3d.tpl",
+      "origin": "skill"
+    },
+    "symmetry_audit.py": {
+      "sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "src_sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/symmetry_audit.py",
+      "origin": "skill"
+    }
+  },
+  "step_conf": {
+    "name": "step.conf",
+    "sha256": "ec5a4c3bfc80a16877c4f5c338bea117fecccd3da6d9bc5ded6204d982d066c3",
+    "chars": 5865,
+    "text": "# ===== 本文件由 tf 自动合成，勿手改 —— 要改请改下面列出的上游 =====\n# 步骤 step3_nac   材料 Mn2In2Se5_441\n# 来源（越靠下优先级越高）：\n#   [1] /home/wangchao/software/AutoZT/skill/kl-dft-cpu/templates/step.conf   (skill 默认)\n#   [2] /home/wangchao/software/AutoZT/skill/kl-dft-cpu/templates/step3_nac/step.conf   (skill 默认(本步))\n#   [cluster:jzzn] <setting/jzzn.yaml>   (集群默认)\n#   [3] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step.conf   (project_setting 共用)\n#   [4] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step3_nac/step.conf   (project_setting 本步)\n\n[params]\nFUNC           = auto                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nKSPACING       = 0.024                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [4]\nSKIP_IF_METAL  = true                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nCONDA_SH       = /public/home/wangchao/miniconda3/etc/profile.d/conda.sh                                                                                                                                                                                                                                                                                                                                                                # <- [cluster:jzzn]\nCONDA_ENV      = /public/home/wangchao/venvs/mace_cpu                                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nMACE_MODEL_DIR = /public/home/wangchao/software/mace/mace_models                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nAMSET_ENV      = amset051                                                                                                                                                                                                                                                                                                                                                                                                               # <- [cluster:jzzn]\nPOTCAR_DIR     = /public/home/wangchao/software/vasp_pseudopotentials                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nREFERENCES_DIR = /public/home/wangchao/convex_hull_refs                                                                                                                                                                                                                                                                                                                                                                                 # <- [cluster:jzzn]\nQE_BIN         = /public/home/wangchao/software/q-e-qe-7.3/bin                                                                                                                                                                                                                                                                                                                                                                          # <- [cluster:jzzn]\nQE_PSEUDO_DIR  = /public/home/wangchao/software/AutoZT/pseudo-nc                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nQE_SETUP       = export LD_LIBRARY_PATH=/public/software/intel/2019/mkl/lib/intel64_lin:/public/software/intel/2019/intelpython3/lib:/public/software/intel/2019/impi/2019.3.199/intel64/lib/release:/public/software/intel/2019/impi/2019.3.199/intel64/lib:${LD_LIBRARY_PATH:-}; export PATH=/public/software/intel/2019/impi/2019.3.199/intel64/bin:/public/home/wangchao/software/q-e-qe-7.3/bin:${PATH}; export OMP_NUM_THREADS=1  # <- [cluster:jzzn]\n"
+  },
+  "run": {
+    "actor": "wangchao",
+    "cwd": "/home/wangchao/software/AutoZT",
+    "argv": "/home/wangchao/software/AutoZT/autozt/__main__.py"
+  }
+}

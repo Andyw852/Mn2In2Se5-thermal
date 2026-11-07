@@ -1,0 +1,332 @@
+{
+  "KAPPA_DONE": true,
+  "solver": "phono3py",
+  "bte_method": "rta",
+  "mesh": "14 14 14",
+  "nac": false,
+  "isotope": false,
+  "temperatures": [
+    100.0,
+    200.0,
+    300.0,
+    400.0,
+    500.0,
+    600.0,
+    700.0,
+    800.0
+  ],
+  "kappa_xx_yy_zz": [
+    [
+      13.111483339527808,
+      13.11148336878948,
+      5.29534821574358
+    ],
+    [
+      6.135720741406251,
+      6.135720755099693,
+      2.54721903897004
+    ],
+    [
+      4.031007085631322,
+      4.0310070946275545,
+      1.684877206308754
+    ],
+    [
+      3.007220674685375,
+      3.0072206813967646,
+      1.2601346618645084
+    ],
+    [
+      2.399780233481751,
+      2.3997802388374794,
+      1.006797995854479
+    ],
+    [
+      1.9970895194515985,
+      1.9970895239086186,
+      0.8384043665866857
+    ],
+    [
+      1.7103776728597622,
+      1.7103776766769134,
+      0.7183250296696183
+    ],
+    [
+      1.4957764869697479,
+      1.495776490307959,
+      0.6283597852424162
+    ]
+  ],
+  "kappa_inplane_xx_yy": [
+    [
+      13.111483339527808,
+      13.11148336878948
+    ],
+    [
+      6.135720741406251,
+      6.135720755099693
+    ],
+    [
+      4.031007085631322,
+      4.0310070946275545
+    ],
+    [
+      3.007220674685375,
+      3.0072206813967646
+    ],
+    [
+      2.399780233481751,
+      2.3997802388374794
+    ],
+    [
+      1.9970895194515985,
+      1.9970895239086186
+    ],
+    [
+      1.7103776728597622,
+      1.7103776766769134
+    ],
+    [
+      1.4957764869697479,
+      1.495776490307959
+    ]
+  ],
+  "kappa_300K_xx_yy_zz": [
+    4.031007085631322,
+    4.0310070946275545,
+    1.684877206308754
+  ],
+  "kappa_inplane_300K": 4.031007090129439,
+  "source_fc": "cutoff_scan/cut3_5p00",
+  "kappa_voigt_xx_yy_zz_yz_xz_xy": [
+    [
+      13.111483339527808,
+      13.11148336878948,
+      5.29534821574358,
+      5.326644114866833e-09,
+      -2.138180443598891e-11,
+      -2.7009537128101497e-09
+    ],
+    [
+      6.135720741406251,
+      6.135720755099693,
+      2.54721903897004,
+      2.513493939065762e-09,
+      -1.107640234918829e-11,
+      -1.2639529262115804e-09
+    ],
+    [
+      4.031007085631322,
+      4.0310070946275545,
+      1.684877206308754,
+      1.6547348517622517e-09,
+      -7.453634800844838e-12,
+      -8.303838159373141e-10
+    ],
+    [
+      3.007220674685375,
+      3.0072206813967646,
+      1.2601346618645084,
+      1.2354250897631294e-09,
+      -5.609766195317658e-12,
+      -6.194847407620668e-10
+    ],
+    [
+      2.399780233481751,
+      2.3997802388374794,
+      1.006797995854479,
+      9.86238508340327e-10,
+      -4.495241112610406e-12,
+      -4.943525589615408e-10
+    ],
+    [
+      1.9970895194515985,
+      1.9970895239086186,
+      0.8384043665866857,
+      8.209100818408857e-10,
+      -3.749439970371876e-12,
+      -4.113986358695796e-10
+    ],
+    [
+      1.7103776728597622,
+      1.7103776766769134,
+      0.7183250296696183,
+      7.031422974172853e-10,
+      -3.2155785395041814e-12,
+      -3.523362546313602e-10
+    ],
+    [
+      1.4957764869697479,
+      1.495776490307959,
+      0.6283597852424162,
+      6.149680336766712e-10,
+      -2.814642523552009e-12,
+      -3.081286043150265e-10
+    ]
+  ],
+  "kappa_principal_300K": [
+    1.684877206308754,
+    4.031007085555317,
+    4.031007094703561
+  ],
+  "kappa_avg_300K": 3.2489637955225437,
+  "stability_verdict": "pass",
+  "imag_class": "noise",
+  "min_freq_THz": -0.01933507254446536,
+  "mesh_grid_matrix": null,
+  "n_qpoints": 2744,
+  "mesh_axis_counts": [
+    14,
+    14,
+    14
+  ],
+  "crystal_system": "trigonal",
+  "spacegroup": "R-3m (166)",
+  "kappa_symmetry_audit_300K": {
+    "eigenvalue_ratio": 1.0000000022694686,
+    "diagonal_relative_mismatch": 2.2317579707704447e-09,
+    "offdiag_relative_magnitude": 2.059990958514166e-10,
+    "determinant_ratio": 0.9999999999999998,
+    "threshold": 0.02,
+    "gate": true,
+    "crystal_system": "trigonal"
+  },
+  "mesh_converged": false,
+  "mesh_convergence": {
+    "converged": false,
+    "tol_pct": 3.0,
+    "check_T": 300.0,
+    "factor": 1.25,
+    "stop_reason": "MESH_CONV_MAX_LENGTH=50 reached",
+    "norm": "per_component",
+    "floor": 0.1,
+    "components_over_tol": [],
+    "frozen_axes": [],
+    "reference": "each mesh is compared with the latest earlier mesh that is coarser along every axis (axes that cannot change within MESH_CONV_MAX_LENGTH excepted), not just the previous one",
+    "criterion": "per-component max_i |d kappa_ii| / max(|kappa_ii|, floor*max_j |kappa_jj|) against the reference mesh (xx, yy, zz each normalised by itself; components below the floor by floor*max)",
+    "records": [
+      {
+        "length": 40.0,
+        "mesh": "11 11 11",
+        "axis_counts": [
+          11,
+          11,
+          11
+        ],
+        "compared_with": null,
+        "kappa_at_T": [
+          4.007135742561241,
+          4.007135751504198,
+          1.83880688114258,
+          1.6942380423243772e-09,
+          -9.945748631314745e-12,
+          -8.254663356628961e-10
+        ],
+        "rel_change": null,
+        "rel_change_per_component": null
+      },
+      {
+        "length": 50.0,
+        "mesh": "14 14 14",
+        "axis_counts": [
+          14,
+          14,
+          14
+        ],
+        "compared_with": "11 11 11",
+        "kappa_at_T": [
+          4.031007085631322,
+          4.0310070946275545,
+          1.684877206308754,
+          1.6547348517622517e-09,
+          -7.453634800844838e-12,
+          -8.303838159373141e-10
+        ],
+        "rel_change": 0.08371171350967459,
+        "rel_change_per_component": [
+          0.005957208490976546,
+          0.00595720849097646,
+          0.08371171350967459
+        ]
+      }
+    ]
+  },
+  "mesh_converged_on_cut3_A": 5.0,
+  "convergence_order": [
+    "q_mesh@reference_cut",
+    "cutoff@converged_mesh",
+    "temperatures"
+  ],
+  "mesh_reference_cut3_A": 5.0,
+  "cutoff_selection": {
+    "status": "not_converged",
+    "err_gate_applied": false,
+    "stability_gate_applied": true,
+    "criteria": {
+      "rel_err_1se": "train_rel_err <= min(train_rel_err) + 1*SE（err_kind=held-out 时才启用）",
+      "stability": "sigma/|mean| < 0.3",
+      "plateau": "连续稳定区间：相邻 Δκ 且起点到区间内各档的累计 Δκ <= max(5%, sqrt(err_i^2+err_j^2))"
+    },
+    "plateau_runs": [],
+    "plateau_interval": null,
+    "after_plateau": [],
+    "records": [
+      {
+        "cut": 4.3,
+        "ratio": 31.617100371747213,
+        "train_rel_err": 0.007621551495302923,
+        "train_rel_se": 0.00011045959818275021,
+        "err_kind": "in-sample",
+        "stable_upper_cut": 4.4785072467653695,
+        "kappa": 2.664223014210093,
+        "kappa_err": 0.08958515763292696,
+        "stability_measured": true,
+        "data_ok": true,
+        "stable_ok": true,
+        "err_ok": true,
+        "plateau_ok": false
+      },
+      {
+        "cut": 4.7,
+        "ratio": 28.13120176405733,
+        "train_rel_err": 0.0067017547789255194,
+        "train_rel_se": 9.708264489542012e-05,
+        "err_kind": "in-sample",
+        "stable_upper_cut": 4.83013830511676,
+        "kappa": 3.875935790077403,
+        "kappa_err": 0.1525989726343828,
+        "stability_measured": true,
+        "data_ok": true,
+        "stable_ok": true,
+        "err_ok": true,
+        "plateau_ok": false
+      },
+      {
+        "cut": 5.0,
+        "ratio": 20.058962264150942,
+        "train_rel_err": 0.00625014897880303,
+        "train_rel_se": 0.00011973708564967924,
+        "err_kind": "in-sample",
+        "stable_upper_cut": 5.258426119411496,
+        "kappa": 4.031007090129439,
+        "kappa_err": 0.23458808206103024,
+        "stability_measured": true,
+        "data_ok": true,
+        "stable_ok": true,
+        "err_ok": true,
+        "plateau_ok": false
+      }
+    ],
+    "chosen_cut": 5.0,
+    "pick": "largest",
+    "kappa_tol_pct": 5.0,
+    "reason": "κ 在数据能确定的范围内（≤ 5.00 Å）仍未到平台，报能确定范围内最大截断的 κ；更长程三阶项当前数据无法确定",
+    "kappa_err_source": "fc3 per-shell sigma/|mean| propagated (coarse; one kappa run per cutoff)"
+  },
+  "chosen_cutoff_A": 5.0,
+  "kappa_files_top_level": [
+    "kappa-m111111.hdf5",
+    "kappa-m141414.hdf5",
+    "kappa-m181818.hdf5"
+  ]
+}

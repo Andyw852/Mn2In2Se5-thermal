@@ -1,0 +1,19 @@
+# 原始 DFT 输出不入库（太大，且可从集群重取）
+WAVECAR
+CHG
+CHGCAR
+OUTCAR
+vasprun.xml
+PROCAR
+DOSCAR
+EIGENVAL
+*.WAVECAR
+*.CHGCAR
+slurm-*.out
+queue.out
+queue.err
+# 分析中间文件
+analysis/**/work_*/
+__pycache__/
+*.pyc
+.DS_Store

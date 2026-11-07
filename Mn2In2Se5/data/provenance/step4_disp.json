@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "kind": "gen",
+  "ts": "2026-11-05T10:38:52",
+  "tf_version": "1.2.0",
+  "skill": {
+    "key": "kl-dft-cpu",
+    "version": null,
+    "manifest": null,
+    "desc": "晶格热导率(DFT/CPU)"
+  },
+  "step": "step4_disp",
+  "material": {
+    "name": "Mn2In2Se5_441",
+    "path": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+    "local": "/mnt/d/tf_data/Mn2In2Se5_441"
+  },
+  "hpc": "jzzn",
+  "host": "jzzn",
+  "step_dir": "/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu",
+  "generator": {
+    "script": "gen_step4_disp.py",
+    "sha256": "99e46bdc488540466512def5d4a234b12fc832899883adef081cf5d9cac80a0c",
+    "args": null
+  },
+  "inputs": {
+    "POSCAR": {
+      "sha256": "a6845b2967664a4978b4fefc4672c8baed0cd938d8564b977bfb48e89644b608",
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/POSCAR",
+      "origin": "project",
+      "sync": "push-if-diff+verify"
+    },
+    "check_common.py": {
+      "sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "src_sha256": "696a1683e81fced794d1289c1c688d9f840a71d27ad8e3589a5e4bce8a04a4c8",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/check_common.py",
+      "origin": "skill"
+    },
+    "dim_common.py": {
+      "sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "src_sha256": "36754166f2fc1067f45bef9beb1e4da5ed34053deff8c11a22be6cc02a8086a9",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/dim_common.py",
+      "origin": "skill"
+    },
+    "gen_step4_disp.py": {
+      "sha256": "99e46bdc488540466512def5d4a234b12fc832899883adef081cf5d9cac80a0c",
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/gen_step4_disp.py",
+      "origin": "skill",
+      "args": null
+    },
+    "incar_bench.py": {
+      "sha256": "d2992eb4926d22d94797f316da6b155fe22bd5ed7735e5564abda64792303d01",
+      "src_sha256": "d2992eb4926d22d94797f316da6b155fe22bd5ed7735e5564abda64792303d01",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/incar_bench.py",
+      "origin": "skill"
+    },
+    "incar_force_2d.tpl": {
+      "sha256": "0b96135ccad40a3a26365d4c441ee01d411cd36b952371e77376f7a59a24627f",
+      "src_sha256": "0b96135ccad40a3a26365d4c441ee01d411cd36b952371e77376f7a59a24627f",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step4_disp/incar_force_2d.tpl",
+      "origin": "project"
+    },
+    "incar_force_3d.tpl": {
+      "sha256": "64d30e95c02eecce96f240fe0536329958998ca060b1b4d17a73584655168524",
+      "src_sha256": "64d30e95c02eecce96f240fe0536329958998ca060b1b4d17a73584655168524",
+      "rendered": false,
+      "source": "/mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step4_disp/incar_force_3d.tpl",
+      "origin": "project"
+    },
+    "kl_common.py": {
+      "sha256": "75d81d1ab05809bc260e103dfdce7a17a8f9b41f5ca25317ec960d9e6258371f",
+      "src_sha256": "75d81d1ab05809bc260e103dfdce7a17a8f9b41f5ca25317ec960d9e6258371f",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/kl_common.py",
+      "origin": "skill"
+    },
+    "lattice_kappa.py": {
+      "sha256": "6efe4e7108b6694b348c7adff88a2b4730230f0b8dbcf3d8ddc8ace956640820",
+      "src_sha256": "6efe4e7108b6694b348c7adff88a2b4730230f0b8dbcf3d8ddc8ace956640820",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/lattice_kappa.py",
+      "origin": "skill"
+    },
+    "step.conf": {
+      "sha256": "29137c9e4a95bdf1b691a1c745ab0992967aad3f0d0f82fd39c65f0b2a0b2675",
+      "source": null,
+      "origin": "merged(step.conf)"
+    },
+    "step2_check_and_resubmit.py": {
+      "sha256": "9a185ad8c8a5bec4c2b88f6f4f260aab1b61c836468fffab8a8642ca3f4b41c8",
+      "src_sha256": "9a185ad8c8a5bec4c2b88f6f4f260aab1b61c836468fffab8a8642ca3f4b41c8",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/kl-dft-cpu/step2_check_and_resubmit.py",
+      "origin": "skill"
+    },
+    "stepconf.py": {
+      "sha256": "e4f0c5b8a7a28207eff3c0e259ff0c72b9ccbe98a436185f35454df2fcb7030b",
+      "src_sha256": "e4f0c5b8a7a28207eff3c0e259ff0c72b9ccbe98a436185f35454df2fcb7030b",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/stepconf.py",
+      "origin": "skill"
+    },
+    "submit_std_2d.tpl": {
+      "sha256": "16b89d35cec6cb5781d3263ffc8f58f06ea5ed938eec0d2d620c2451b615bdbc",
+      "src_sha256": "99365fec64891142be0fcc023fcaec6ac31d0e73976746860772c64853926f54",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_2d.tpl",
+      "origin": "skill"
+    },
+    "submit_std_3d.tpl": {
+      "sha256": "8a1a6b67acbdcf34c21e01d8bd67f241f62bb75fa585bdf6cfb82fbcbb58dd06",
+      "src_sha256": "6ea029a10d9d54b357063b01949a2290055f2feb473da4ba16cea8ea32633b71",
+      "rendered": true,
+      "source": "/home/wangchao/software/AutoZT/setting/jzzn/templates/submit_std_3d.tpl",
+      "origin": "skill"
+    },
+    "symmetry_audit.py": {
+      "sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "src_sha256": "b350db8aec87c33ec90c1659fd126c771ce3f9e7b13e59410ac183c69afda2a7",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/opt/symmetry_audit.py",
+      "origin": "skill"
+    },
+    "thickness_2d.py": {
+      "sha256": "7e4e720f3e51fc8c4baaffb3f5f1782efa90149b28b15f1541a50743d3bf70b0",
+      "src_sha256": "7e4e720f3e51fc8c4baaffb3f5f1782efa90149b28b15f1541a50743d3bf70b0",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/thickness_2d.py",
+      "origin": "skill"
+    },
+    "vdw_radii.py": {
+      "sha256": "689d4e1eeda726b29ccb17e918fafefa80d44b3df90ac90e9d017bb61f314fe3",
+      "src_sha256": "689d4e1eeda726b29ccb17e918fafefa80d44b3df90ac90e9d017bb61f314fe3",
+      "rendered": false,
+      "source": "/home/wangchao/software/AutoZT/skill/_common/vdw_radii.py",
+      "origin": "skill"
+    }
+  },
+  "step_conf": {
+    "name": "step.conf",
+    "sha256": "29137c9e4a95bdf1b691a1c745ab0992967aad3f0d0f82fd39c65f0b2a0b2675",
+    "chars": 19186,
+    "text": "# ===== 本文件由 tf 自动合成，勿手改 —— 要改请改下面列出的上游 =====\n# 步骤 step4_disp   材料 Mn2In2Se5_441\n# 来源（越靠下优先级越高）：\n#   [1] /home/wangchao/software/AutoZT/skill/kl-dft-cpu/templates/step.conf   (skill 默认)\n#   [2] /home/wangchao/software/AutoZT/skill/kl-dft-cpu/templates/step4_disp/step.conf   (skill 默认(本步))\n#   [cluster:jzzn] <setting/jzzn.yaml>   (集群默认)\n#   [3] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step.conf   (project_setting 共用)\n#   [4] /mnt/d/tf_data/Mn2In2Se5_441/kl-dft-cpu/project_setting/templates/step4_disp/step.conf   (project_setting 本步)\n\n[params]\nFUNC                = auto                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nMETHOD              = alm                                                                                                                                                                                                                                                                                                                                                                                                                    # <- [4]\nMAX_DISP            = 500                                                                                                                                                                                                                                                                                                                                                                                                                    # <- [4]\nMIN_SC_LEN          = 12.0                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nMIN_SC_LEN_2D       = 18.0                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nMAX_MULTIPLE        = 10                                                                                                                                                                                                                                                                                                                                                                                                                     # <- [4]\nSUPERCELL_SYMMETRY  = strict                                                                                                                                                                                                                                                                                                                                                                                                                 # <- [4]\nSUPERCELL           = 4 4 1                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [4]\nKAPPA_MESH          = auto                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nQ_LEN_2D            = 275.0                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [4]\nQ_LEN_3D            = 100.0                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [4]\nMESH_MIN            = 20                                                                                                                                                                                                                                                                                                                                                                                                                     # <- [4]\nKSPACING            = 0.038                                                                                                                                                                                                                                                                                                                                                                                                                  # <- [4]\nFORCE_PREC          = Accurate                                                                                                                                                                                                                                                                                                                                                                                                               # <- [4]\nFORCE_EDIFF         = 1E-7                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nFORCE_LREAL         = .FALSE.                                                                                                                                                                                                                                                                                                                                                                                                                # <- [4]\nFC3_CUTOFF_PAIR     =                                                                                                                                                                                                                                                                                                                                                                                                                        # <- [4]\nFD_DISTANCE         = 0.03                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nOVERSAMPLE          = 3                                                                                                                                                                                                                                                                                                                                                                                                                      # <- [4]\nALM_CUT2            =                                                                                                                                                                                                                                                                                                                                                                                                                        # <- [4]\nALM_CUT3            = 6.0                                                                                                                                                                                                                                                                                                                                                                                                                    # <- [4]\nCUT3_CANDIDATES     = auto                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nCUT3_MAX            = 7.0                                                                                                                                                                                                                                                                                                                                                                                                                    # <- [4]\nCUT3_MIN_SHELLS     = 2                                                                                                                                                                                                                                                                                                                                                                                                                      # <- [4]\nCUT3_GAP_TOL        = 0.05                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nCUT3_MIN_GAP        = 0.05                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nCUT3_MAX_CANDIDATES = 12                                                                                                                                                                                                                                                                                                                                                                                                                     # <- [2]\nDISP_RMS            = 0.03                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nMC_DMIN_SCALE       = 0.75                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nMC_NITER            = 10                                                                                                                                                                                                                                                                                                                                                                                                                     # <- [4]\nMC_SEED             = 2025                                                                                                                                                                                                                                                                                                                                                                                                                   # <- [4]\nINCAR_BENCH         = off                                                                                                                                                                                                                                                                                                                                                                                                                    # <- [4]\nINCAR_BENCH_FRAMES  = 2                                                                                                                                                                                                                                                                                                                                                                                                                      # <- [4]\nCONDA_SH            = /public/home/wangchao/miniconda3/etc/profile.d/conda.sh                                                                                                                                                                                                                                                                                                                                                                # <- [cluster:jzzn]\nCONDA_ENV           = /public/home/wangchao/venvs/mace_cpu                                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nMACE_MODEL_DIR      = /public/home/wangchao/software/mace/mace_models                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nAMSET_ENV           = amset051                                                                                                                                                                                                                                                                                                                                                                                                               # <- [cluster:jzzn]\nPOTCAR_DIR          = /public/home/wangchao/software/vasp_pseudopotentials                                                                                                                                                                                                                                                                                                                                                                   # <- [cluster:jzzn]\nREFERENCES_DIR      = /public/home/wangchao/convex_hull_refs                                                                                                                                                                                                                                                                                                                                                                                 # <- [cluster:jzzn]\nQE_BIN              = /public/home/wangchao/software/q-e-qe-7.3/bin                                                                                                                                                                                                                                                                                                                                                                          # <- [cluster:jzzn]\nQE_PSEUDO_DIR       = /public/home/wangchao/software/AutoZT/pseudo-nc                                                                                                                                                                                                                                                                                                                                                                        # <- [cluster:jzzn]\nQE_SETUP            = export LD_LIBRARY_PATH=/public/software/intel/2019/mkl/lib/intel64_lin:/public/software/intel/2019/intelpython3/lib:/public/software/intel/2019/impi/2019.3.199/intel64/lib/release:/public/software/intel/2019/impi/2019.3.199/intel64/lib:${LD_LIBRARY_PATH:-}; export PATH=/public/software/intel/2019/impi/2019.3.199/intel64/bin:/public/home/wangchao/software/q-e-qe-7.3/bin:${PATH}; export OMP_NUM_THREADS=1  # <- [cluster:jzzn]\n\n[submit]\nmem             = 160G     # <- [4]\nqos             = premium  # <- [4]\nntasks_per_node = 48       # <- [4]\n"
+  },
+  "run": {
+    "actor": "wangchao",
+    "cwd": "/home/wangchao/software/AutoZT",
+    "argv": "./bin/autozt"
+  }
+}
