@@ -11,10 +11,11 @@
 | `phono3py_disp.yaml` | 616 KB | 3090 `step5_fc/` | 单胞、超胞矩阵、位移 |
 | `SPOSCAR` | 8.8 KB | 3090 `step4_disp/` | 核对原子顺序（32 Mn + 32 In + 80 Se = 144 原子） |
 | `FORCE_CONSTANTS_2ND` | 4.4 MB | jzzn `step6_kappa/shengbte_runs/cut3_6p51_m16x16x4/` | 与 phono3py 对照 |
-| `FORCE_CONSTANTS_3RD` | 4.6 MB | 同上 | 同上 |
+| `FORCE_CONSTANTS_3RD_hiphive_incomplete` | 4.6 MB | 同上（原名 `FORCE_CONSTANTS_3RD`） | **残缺，勿用**：hiphive 导出丢了 3126/9164 个跨 a3′ 边界的三元组，生产 κ 就是用它算的 |
+| `FORCE_CONSTANTS_3RD_complete` | 6.8 MB | 2026-11-08 由 `fc3.hdf5` 按最短像全量写出（9164 块） | 与 `CONTROL`（`../../analysis/shengbte_crosscheck/run_complete_fc3/`）配套；与 phono3py 差 < 1% |
 | `BTE.KappaTensorVsT_RTA` | 1.1 KB | 同上 | ShengBTE 的 RTA κ(T)，与 phono3py RTA 直接比 |
 | `BTE.KappaTensorVsT_CONV` | 1.1 KB | 同上 | ShengBTE 的收敛解，供参考 |
-| `md5.txt` | — | 本地生成 | fc2/fc3 与两个 FORCE_CONSTANTS 的 md5 |
+| `md5.txt` | — | 本地生成 | fc2/fc3 与三个 FORCE_CONSTANTS 文件的 md5 |
 
 ## md5
 
@@ -22,10 +23,11 @@
 b611f13939c205627a1ba7ed45559150  fc2.hdf5
 ac7bf6b2477626a0c95ac3c79aa38d74  fc3.hdf5
 9e374e9e3e63425e327ef59de2016f2b  FORCE_CONSTANTS_2ND
-6477a498d5f2526e443bfc2f00adce89  FORCE_CONSTANTS_3RD
+6477a498d5f2526e443bfc2f00adce89  FORCE_CONSTANTS_3RD_hiphive_incomplete
+001e7ceee7c5d79f3f2f07d7f20e3bce  FORCE_CONSTANTS_3RD_complete
 ```
 
-## ShengBTE RTA 结果（`BTE.KappaTensorVsT_RTA`，单位 W m⁻¹ K⁻¹）
+## ShengBTE RTA 结果（`BTE.KappaTensorVsT_RTA`，单位 W m⁻¹ K⁻¹）——**用残缺 3RD 算的，作废**
 
 ShengBTE 按 κ_αβ = 1/(N V) Σ f v v τ 逐 T 输出；非对角元约 1e-10（数值零），面内 xx = yy。
 
