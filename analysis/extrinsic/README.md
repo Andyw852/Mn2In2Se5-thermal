@@ -40,6 +40,23 @@ x 和 L 往往有一条简并带（都在压低 κ），这时以可接受区为
 验证：同一套力常数下，直接用 phono3py 开 `mass_variances` + `boundary_mfp` 算出的 κ 与本脚本的线性组合结果对比，
 见下面「验证」一节。
 
+## Mn₂In₂Se₅：力常数上传后要跑的（在仓库这边做）
+
+```bash
+cd analysis/extrinsic
+F=../../Mn2In2Se5/fc
+# 1) 本征 + 散射基底，网格与 ShengBTE 生产计算相同
+python3 kappa_extrinsic.py bases --disp-yaml $F/phono3py_disp.yaml --fc2 $F/fc2.hdf5 --fc3 $F/fc3.hdf5 \
+        --mesh 16 16 4 --out work_Mn2In2Se5_m16164
+# 2) phono3py RTA 对 ShengBTE RTA（同一套力常数，κ(300 K) 应在几个百分点内）
+python3 kappa_extrinsic.py eval --bases work_Mn2In2Se5_m16164/bases.npz
+# 3) κ_zz 网格：第三个数加倍、再加倍（16 16 8、16 16 16，都保对称）
+python3 kappa_extrinsic.py bases ... --mesh 16 16 8 --out work_Mn2In2Se5_m16168
+# 4) 在收敛网格上拟合
+python3 kappa_extrinsic.py fit --bases work_Mn2In2Se5_m16168/bases.npz \
+        --exp ../../experiment/kappa_tot_digitized.csv --material Mn2In2Se5
+```
+
 ## 结果
 
-见下方各节；拟合用的实验值是读图值（`experiment/kappa_tot_digitized.csv`），拿到原始数据后重跑 `fit` 即可。
+拟合用的实验值是读图值（`experiment/kappa_tot_digitized.csv`），拿到原始数据后重跑 `fit` 即可。
