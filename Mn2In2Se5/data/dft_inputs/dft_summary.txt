@@ -1,0 +1,60 @@
+# Mn₂In₂Se₅ DFT 输入与结果摘要
+
+材料 `Mn2In2Se5_441`（技能 `kl-dft-cpu`），DFT 在 jzzn（VASP）。采集日期：2026-11-08。
+数值取自集群上的 OUTCAR / INCAR 原文。
+
+## 1. 步骤状态（autozt status，2026-11-08）
+
+| 步骤 | 状态 | 说明 |
+|---|---|---|
+| S1_opt | OK | converged（3 个阶段 INCAR、共 5 次段运行） |
+| S2_static | OK | finished |
+| S3_nac | OK | finished |
+| S4_disp | OK | 55/55 帧 |
+| S5_fc | OK | stable（min_freq = 0.000 THz） |
+| S5.1_plot | OK | phonon_plot_summary.json |
+| S6_kappa | R | 运行中（作业 357276 @gnode04） |
+| S6.1_plot | OK | plot_manifest.json |
+
+## 2. S1 结构优化末态
+
+- **末态最大力 max|F| = 0.000484 eV/Å**（S1 最后一段 INCAR 的 OUTCAR，末次 TOTAL-FORCE）
+- 收敛判据：`reached required accuracy - stopping structural energy minimisation`
+- INCAR 分三段：`INCAR.s1_a` / `INCAR.s2_b` / `INCAR.s3_c`（当前 `INCAR` 为最后一段）
+
+## 3. S2 静态计算
+
+- 电子数：81.9999993
+- **总磁矩 magnetization = 9.9844 μB**（三处一致：9.9844249 / 9.9843903 / 9.9843903）
+- E-fermi = 4.4577 eV（XC(G=0) = −9.3285，alpha+bet = −9.4660）
+
+## 4. S4 位移-力数据集
+
+- **帧数 55**（`disp-00000` … `disp-00054`）
+- **平衡帧（disp-00000）残余力 max|F| = 0.000933 eV/Å**（144 原子超胞）
+  - 对比：Mn₂In₂Se₅ 旧 3×3×3 数据集（`equilibrium_max_force`）为 0.1031 eV/Å，即本协议把平衡帧残余力压低了约 **110 倍**。
+- 超胞：**32 Mn + 32 In + 80 Se = 144 原子**（`SPOSCAR`）
+- 自旋 / DFT+U（继承自 S1，与弛豫同一势能面）：
+  - `ISPIN = 2`，`MAGMOM = 32*5 112*0`（32 个 Mn 取 5 μB，其余 112 个原子取 0）
+  - `LDAU = .TRUE.`，`LDAUTYPE = 2`，`LDAUL = 2 -1 -1`，`LDAUU = 4 0.0 0.0`，`LDAUJ = 0.0 0.0 0.0`
+  - `LMAXMIX = 4`
+- 取力精度设置（S4 INCAR 原文）：`ISYM = 0`（勿对称化力）、`PREC = Accurate`、`ENCUT = 410`、
+  `EDIFF = 1E-7`、`LREAL = .FALSE.`、`ADDGRID = .TRUE.`、`LASPH = .TRUE.`、`ALGO = Normal`、
+  `NELM = 200`、`NELMIN = 6`、`ISMEAR = 0`、`SIGMA = 0.05`、`IBRION = -1`、`NSW = 0`、`NCORE = 4`、`KPAR = 8`
+
+## 5. 文件清单（本目录）
+
+```
+dft_inputs/
+├── step1_std_opt/{INCAR,KPOINTS}
+├── step2_static/{INCAR,KPOINTS}
+└── step4_disp/disp-00000/{INCAR,KPOINTS}
+```
+
+POTCAR 未上传（版权原因）。原始 DFT 输出（OUTCAR / WAVECAR / CHGCAR 等）按 `.gitignore` 排除，可从集群重取。
+
+## 6. 力常数（见 `../fc/`）
+
+生产计算用 S5 截断扫描的 **6.51 Å** 档（`cutoff_scan/cut3_6p51`），即 `kappa_main_T100-800K.json` 的 `source_fc`。
+同目录另附 S6 ShengBTE（`cut3_6p51_m16x16x4`）的 `FORCE_CONSTANTS_2ND/3RD` 与 `BTE.KappaTensorVsT_RTA`，
+用于与 phono3py 交叉核对（确认两边吃的是同一套力常数）。

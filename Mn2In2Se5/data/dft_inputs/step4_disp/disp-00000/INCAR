@@ -1,0 +1,47 @@
+# phono3py 位移超胞单点取力（3D）。声子硬约束：ISYM=0（位移破缺对称，勿对称化力）。
+# 精度（phonopy 官方超胞取力示例的口径）：PREC=Accurate、EDIFF=1E-8、LREAL=.FALSE.。
+#   位移帧的力直接变成 fc2/fc3：LREAL=Auto 的实空间投影带格点噪声，是 fc 里假软模的
+#   常见来源，也会污染 ShengBTE/fourphonon 的散射矩阵。三个值走 step.conf 的
+#   FORCE_PREC / FORCE_EDIFF / FORCE_LREAL（旧版注释写的是这套、正文却是
+#   Normal/Auto/1E-7，已对齐）。
+#   超胞很大（几百原子）时可用 FORCE_LREAL=Auto 换速度，但必须先在 3 帧上与 .FALSE.
+#   比力的最大偏差（< 1 meV/Å 才采用），并显式设 ROPT（如 ROPT = 1E-3）逐步收紧。
+#   ADDGRID 降低力的格点噪声，代价是略微变慢。
+SYSTEM  = kl-dft-cpu force 00000
+ISTART  = 0
+ICHARG  = 2
+GGA     = PE
+IVDW = 12
+
+PREC    = Accurate
+ENCUT   = 410
+EDIFF   = 1E-7
+LREAL   = .FALSE.
+ADDGRID = .TRUE.          # 降低力的格点噪声（可选，phonopy 取力推荐）
+LASPH   = .TRUE.
+ALGO    = Normal
+NELM    = 200
+NELMIN  = 6
+ISMEAR  = 0
+SIGMA   = 0.05
+
+IBRION  = -1
+NSW     = 0
+ISYM    = 0
+
+LWAVE   = .FALSE.
+LCHARG  = .FALSE.
+LORBIT  = 0
+NCORE   = 4
+KPAR    = 8
+
+# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0105]，与弛豫同一势能面）----
+ISPIN    = 2
+MAGMOM   = 32*5 112*0
+LMAXMIX  = 4
+LDAU     = .TRUE.
+LDAUTYPE = 2
+LDAUL    = 2 -1 -1
+LDAUU    = 4 0.0 0.0
+LDAUJ    = 0.0 0.0 0.0
+LDAUPRINT = 1
