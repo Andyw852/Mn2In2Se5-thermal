@@ -29,8 +29,10 @@
 | S1 力闸 | `CELL_FORCE_TOL_EV_A=0.002`、`CELL_STAGE_EDIFFG=1E-6` | **相同** |
 | S5 | `EQ_FORCE_MAX=0.01`、`FC_IMPORT_DIR=off` | **相同** |
 
-**S6 额外要求（两个材料都做）**：收敛网格出来后，把第三个数加倍、再加倍复算 κ_zz
-（例如 `MESH="16 16 8"`、`MESH="16 16 16"`；n n 2m 仍满足保对称条件），汇报 κ_zz 的变化。
+**S6 网格（2026-11-08 定，两个材料相同）**：`MESH = auto` + `MESH_CONV_MAX_LENGTH = 50`
+（网格自动加密，封顶在 16×16×4）。**不要设显式 `MESH`**：ShengBTE 迭代解在 20×20×5 上已用掉 750 GB 内存，
+16×16×16 只会更大。κ_xx 在 16×16×4 已收敛（20×20×5 只差 0.9%）；κ_zz 的层间网格加密由仓库这边用 phono3py 做，
+结果见 `analysis/shengbte_crosscheck/README.md`。
 
 ## 汇报与上传
 
