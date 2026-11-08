@@ -1,0 +1,86 @@
+{
+  "status": "not_converged",
+  "err_gate_applied": false,
+  "stability_gate_applied": true,
+  "min_ratio": 3.0,
+  "criteria": {
+    "data": "方程数/参数数 >= 3",
+    "rel_err_1se": "train_rel_err <= min(train_rel_err) + 1*SE（err_kind=held-out 时才启用）",
+    "stability": "sigma/|mean| < 0.3",
+    "plateau": "连续稳定区间：相邻 Δκ 且起点到区间内各档的累计 Δκ <= max(5%, sqrt(err_i^2+err_j^2))",
+    "terminal": "terminal：平台须延伸到最外可用档（最多忽略最外 1 档离群）"
+  },
+  "plateau_runs": [],
+  "plateau_interval": null,
+  "after_plateau": [],
+  "rejected_plateaus": [],
+  "plateau_mode": "terminal",
+  "plateau_min_span_A": 0.5,
+  "short_plateaus": [],
+  "terminal_run": null,
+  "records": [
+    {
+      "cut": 5.68,
+      "ratio": 12.310290237467019,
+      "train_rel_err": 0.004332565465061082,
+      "train_rel_se": 7.394416757734704e-05,
+      "err_kind": "in-sample",
+      "stable_upper_cut": 5.944785191674622,
+      "kappa": 3.2837,
+      "kappa_err": 0.20155587767510294,
+      "stability_measured": true,
+      "data_ok": true,
+      "stable_ok": true,
+      "kappa_confirmed": false,
+      "err_ok": true,
+      "plateau_ok": false
+    },
+    {
+      "cut": 6.12,
+      "ratio": 9.080576099649669,
+      "train_rel_err": 0.004132725168565668,
+      "train_rel_se": 0.00013173655989078266,
+      "err_kind": "in-sample",
+      "stable_upper_cut": 6.312782739771273,
+      "kappa": 3.1966,
+      "kappa_err": 0.1720971454409854,
+      "stability_measured": true,
+      "data_ok": true,
+      "stable_ok": true,
+      "kappa_confirmed": false,
+      "err_ok": true,
+      "plateau_ok": false
+    },
+    {
+      "cut": 6.51,
+      "ratio": 6.108405341712491,
+      "train_rel_err": 0.0038887505033772716,
+      "train_rel_se": 0.00014122599796924205,
+      "err_kind": "in-sample",
+      "stable_upper_cut": 6.728564502242005,
+      "kappa": 3.1412,
+      "kappa_err": 0.18273653718671082,
+      "stability_measured": true,
+      "data_ok": true,
+      "stable_ok": true,
+      "kappa_confirmed": false,
+      "err_ok": true,
+      "plateau_ok": false
+    }
+  ],
+  "chosen_cut": 6.51,
+  "pick": "largest",
+  "kappa_tol_pct": 5.0,
+  "reason": "κ 在数据能确定的范围内（≤ 6.51 Å）仍未到平台，报能确定范围内最大截断的 κ；更长程三阶项当前数据无法确定；外侧优先（CUT3_KAPPA_SET=outer）：内侧 3.88、4.47、5.19 Å 未算 κ（终端平台 + 取最大时不影响选择）",
+  "kappa_confirmed": [],
+  "kappa_set": "outer",
+  "kappa_not_computed": {
+    "inner": [
+      3.88,
+      4.47,
+      5.19
+    ],
+    "low_data": []
+  },
+  "kappa_err_source": "fc3 per-shell sigma/|mean| propagated (coarse; one kappa run per cutoff)"
+}
