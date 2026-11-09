@@ -39,3 +39,18 @@
 完成后按 `Mn2In2Se5/` 的结构上传到本仓库 `MnIn2Se4/redo_441/`：`data/kappa`、`data/phonon`、`figures`、
 `fc/`（选定截断那一档的 fc2.hdf5、fc3.hdf5、phono3py_disp.yaml）。
 另外写一个 `dft_summary.txt`：S1 末态最大力、S2 带隙与总磁矩、S4 平衡帧残余力、帧数、每帧磁矩分布。
+
+---
+
+## DFT 阶段归档（2026-11-09，AutoZT kl-dft-cpu）
+
+S1–S3 已完成、S4 输入已生成（**计算未提交**），归档在 [`dft/`](dft/)：
+
+- `dft_summary.txt` —— S1 末态最大力 / S2 带隙与总磁矩 / S3 介电张量与 Born 电荷 / S4 输入核对表
+- `s1_std_opt/`、`s2_static/`、`s3_nac/` —— 输入（INCAR/POSCAR/KPOINTS/submit.sh）、结构（CONTCAR）、能量（OSZICAR）
+- `s4_disp_inputs/` —— SPOSCAR（112 原子 4×4×1）、位移帧 INCAR/KPOINTS/submit.sh 样例
+
+按仓库 `.gitignore` 约定，原始 `OUTCAR` / `EIGENVAL` 不入库（可从集群重取）。
+
+**关键结果**：S1 max|F| = 0.00064 eV/Å；S2 磁矩 **4.9844 μB/胞**、带隙 **0.4055 eV**（间接）；
+S3 介电张量退化为单位阵（LEPSILON 响应为 0，**不影响 NAC=off 的 S6**），Born 有效电荷正常。

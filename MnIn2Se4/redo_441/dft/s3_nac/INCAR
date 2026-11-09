@@ -1,0 +1,41 @@
+SYSTEM = kl-dft-cpu nac(LEPSILON)
+ISTART = 0
+ICHARG = 2
+GGA    = PE
+IVDW = 12
+
+PREC   = Accurate
+ENCUT  = 410
+EDIFF  = 1E-7
+LREAL  = .FALSE.
+LASPH  = .TRUE.
+ALGO   = Normal
+NELM   = 200
+ISMEAR = 0
+SIGMA  = 0.05
+
+ISIF   = 2
+
+LWAVE  = .TRUE.
+LCHARG = .TRUE.
+LORBIT = 11
+KPAR   = 2
+
+# ---- NAC：LEPSILON DFPT 介电 + Born 有效电荷（gen_step3 注入）----
+LEPSILON = .TRUE.
+LPEAD    = .TRUE.
+IBRION   = -1
+NSW      = 0
+LWAVE    = .FALSE.
+LCHARG = .FALSE.
+
+# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0105]，与弛豫同一势能面）----
+ISPIN    = 2
+MAGMOM   = 1*5 6*0
+LMAXMIX  = 4
+LDAU     = .TRUE.
+LDAUTYPE = 2
+LDAUL    = 2 -1 -1
+LDAUU    = 4 0.0 0.0
+LDAUJ    = 0.0 0.0 0.0
+LDAUPRINT = 1
