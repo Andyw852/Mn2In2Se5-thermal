@@ -1,88 +1,129 @@
 # MnIn₂Se₄ 4×4×1（441）AutoZT kl-dft-cpu — DFT 阶段汇总（S1–S4 输入）
-生成时间：2026-11-09 · 集群 jzzn（wangchao 账号）· 项目 /public/home/wangchao/AutoZT/work/MnIn2Se4_441/kl-dft-cpu
+生成：2026-11-09 · 集群 jzzn（wangchao）· /public/home/wangchao/AutoZT/work/MnIn2Se4_441/kl-dft-cpu
+修订：2026-11-09 晚 — **S3 整段作废；S2 的"0.41 eV 带隙"改判为半金属**（见下）
 
-> 协议：../README.md（按 Mn₂In₂Se₅ 同一协议重算，4×4×1 换基矢超胞）。
-> 本文件只覆盖 **S1–S3 已完成结果 + S4 已生成的输入**；S4 计算与 S5/S6 尚未开始。
+> 协议：../README.md。本文件只覆盖 S1–S3 已完成结果 + S4 已生成的输入；S4 计算与 S5/S6 尚未开始。
 
-## 一、S1_opt（结构弛豫）— 完成 ✅
+## 一、S1_opt（结构弛豫）— 完成 ✅ 有效
 
 | 项 | 值 | 判据 | 结论 |
 |---|---|---|---|
-| 末态最大力 | **0.00064 eV/Å** | ≤ 0.003（CELL_FORCE_TOL_EV_A=0.002） | ✅ |
-| 原子数 | 7（Mn₁In₂Se₄） | 7 | ✅ |
-| 空间群 | R-3m (#166)，12 个点群操作 | 不变 | ✅ |
-| 晶格 | a = b = **4.0738 Å**，c = **16.2213 Å**（α=β=90°, γ=120°） | 参照 4.07 / 16.2 | ✅ |
-| 磁矩 | 4.9844 μB/胞（S1 末） | — | — |
+| 末态最大力 | **0.00064 eV/Å** | ≤ 0.003 | ✅ |
+| 原子数 / 空间群 | 7（Mn₁In₂Se₄）/ R-3m (#166)，12 个点群操作 | 不变 | ✅ |
+| 晶格 | a = b = **4.0738 Å**，c = **16.2213 Å** | 参照 4.07 / 16.2 | ✅ |
+| SCF | reached required accuracy | 收敛 | ✅ |
 
 - INCAR：`ISPIN=2, MAGMOM=1*5 6*0, LDAU(T=2,L=2,U=4), IVDW=12, GGA=PE, ENCUT=410, PREC=Accurate, ISIF=2, NSW=200, EDIFFG=-0.05`
-- KPOINTS：KSPACING=0.038 → Γ 8 8 2
-- 作业：4819283（jzzn cpu192），已收敛（aborting loop because EDIFF is reached）
+- KPOINTS：KSPACING 0.038 → Γ 8 8 2
 
-## 二、S2_static（静态自洽）— 完成 ✅
+## 二、S2_static（静态自洽）— 完成，但**不是绝缘体**
 
-| 项 | 值 | 判据 | 结论 |
-|---|---|---|---|
-| **总磁矩** | **4.9843756 μB/胞** | ≈ 5.0（M₀） | ✅ |
-| **带隙（间接）** | **0.4055 eV** | > 0 | ✅ |
-| 带隙（spin up） | 0.4055 eV（VBM 3.9945 / CBM 4.4000） | — | — |
-| 带隙（spin down） | 0.6005 eV（VBM 3.8039 / CBM 4.4044） | — | — |
-| NELECT / NKPTS / NBANDS | 63 / 20 / 40 | — | — |
-| E-fermi | 4.0417 eV | — | — |
-| SCF | 1 次收敛（NELM=200 内） | 收敛 | ✅ |
+### 2.1 直接读数（可用）
 
-> 对照 Mn₂In₂Se₅：磁矩 9.9844（2 个 Mn）、带隙 0.254 eV。
-> MnIn₂Se₄ 原胞只有 1 个 Mn → 磁矩 4.98（正好一半）；带隙 0.41 eV 更大，物理上自洽。
+| 项 | 值 |
+|---|---|
+| 总磁矩 | **4.9843756 μB/胞** = 5 − 1/64 |
+| NELECT / NKPTS / NBANDS | 63 / 20 / 40 |
+| E-fermi | 4.0417 eV |
+| SCF | 收敛（aborting loop because EDIFF is reached） |
 
-- 作业：5167148（jzzn cpu192 regular）
+### 2.2 ⚠️ 带隙：**之前报的 0.4055 eV 不成立，实为半金属**
 
-## 三、S3_nac（LEPSILON 介电张量 + Born 有效电荷）— 完成 ⚠️
+按「占据/未占据」分类算出的 0.4055 eV 是把能带交叠藏起来的假象。**EIGENVAL 逐 k 点核实**（`s2_static/EIGENVAL`）：
 
-| 项 | 值 | 说明 |
+| 自旋 | 各 k 点占据带数 | 异常 k 点 |
 |---|---|---|
-| Born 有效电荷 | **有真值**：ion1(Mn) = −0.94311，ion2/3(In) = −0.62184（各向同性，|e|） | 正常 |
-| 介电张量 ε∞ | **全为单位阵 1.000000**（3 块都是，含 INDEPENDENT PARTICLE 那块） | ⚠️ 可疑 |
-| 压电张量 | 全零 | ⚠️ 可疑 |
-| 线性响应 | 三段 `dielectric tensor component: 1.000 / 1.000 / 1.000`，`change of polarisation: -0.000` | ⚠️ 响应为 0 |
-| SCF | 收敛 7 次，无 ERROR/WARNING | ✅ |
-| Total CPU | 91.29 s | — |
+| up | 34（19 个 k 点）/ **35（1 个 k 点）** | **Γ (0,0,0)，w = 1/128 = 0.007812** |
+| down | 29（19 个 k 点）/ **30（1 个 k 点）** | 同一个 Γ 点 |
 
-**诊断**：`LPEAD=.TRUE. + LEPSILON=.TRUE.` 下，线性响应段每步 `RMM: 1 → E=0.000, ncg=0`（空迭代），
-电场响应没有真正算出来，ε 退化为真空值 1.0。对带隙 0.41 eV 的绝缘体，ε∞=1.0 不合理。
+Γ 点上自旋向上**两条带简并**：带 34 = 带 35 = **+3.9371 eV**（自旋向下：带 29 = +3.3889、带 30 = +3.8039）。
+占据在简并处重新分配 → 1 个电子从自旋向上挪到向下 → 磁矩少 2/128 = 1/64，正是 5 − 1/64 = 4.9844。
 
-**影响评估（不阻塞主线）**：
-- S6_kappa 已定 **NAC=off**（与 Mn₂In₂Se₅ 保持一致），κ 不用 BORN / 介电张量；
-- S5_fc 拟合力常数也不用介电张量。
-- 因此该问题**不影响 S4→S6 推进**，但若后续要开 NAC，需先修这一步（例如 S3 去掉 LDAU，或改 LCALCEPS 有限差分）。
+**按固定带序号法（不按占据分类）算真实带隙**：
 
-- 作业：5368846（jzzn cpu24 regular）
+| 自旋 | VBM | CBM | gap |
+|---|---|---|---|
+| spin up | +3.9945 | +3.9371 | **−0.0575 eV（交叠）** |
+| spin down | +3.3889 | +3.8039 | +0.4150 eV |
+| **总能隙** | — | — | **−0.0575 eV → 无隙（半金属）** |
+
+**结论**：PBE-D3 + U(Mn)=4 + FM 下，MnIn₂Se₄ 是**两个自旋互相补偿的半金属**（自旋向上通道交叠 ≈ 0.06 eV）。
+
+**交叉验证（Mn₂In₂Se₅ 完全同构）**：Γ 点 up 带 46 = 带 47 = **+4.3420 eV** 简并；固定序号法 up 隙 **−0.0697 eV**、
+down 隙 +0.6307 eV，总能隙 **−0.0697 eV**；磁矩 9.9844 = 10 − 1/64。→ 两材料同一机制。
+
+**影响与处置**：
+- **对 κ 影响不大**：力是自洽的；Mn₂In₂Se₅ 的拟合误差仅 0.4%，重跑 κ 与 phono3py 一致。
+- **真正的保险是 S4 每帧磁矩**：应全部 ≈ **16 × 4.9844 = 79.75 μB**；哪一帧偏离即说明位移触发占据跳变，该帧力不可信。
+- **论文**：在 EIGENVAL 核实前**不要写"带隙 0.41 / 0.25 eV 的绝缘体"**。若按半金属写，则 **NAC=off 更有物理依据**（自由载流子屏蔽 LO-TO 劈裂）。
+
+## 三、S3_nac（LEPSILON）— ❌ **整段作废，任何数都不能用**
+
+| 项 | 实测 | 判定 |
+|---|---|---|
+| 介电张量 ε∞ | 全为单位阵 **1.000000**（3 个块都是） | ❌ 无效（真空值） |
+| 压电张量 | 全零 | ❌ 无效 |
+| 线性响应 | 三段 `dielectric tensor component: 1.000 / 1.000 / 1.000`、`change of polarisation: -0.000`；每步 `RMM: E=0.000, ncg=0`（空迭代） | ❌ 响应未计算 |
+| Born 有效电荷 | **Mn −0.94311、In −0.62184（负值）** | ❌ 符号错误 |
+| SCF | 收敛 7 次，无 ERROR/WARNING，CPU 91.3 s | （SCF 本身正常） |
+
+**Born 电荷判据**：Mn²⁺、In³⁺ 是阳离子，正确值应在 **+2 ~ +3**；这里全为负，说明线性响应同样没算出来。
+（Mn₂In₂Se₅ 当时一模一样：ε = 1、Mn −0.90。）
+
+**根因**：VASP 的 DFPT/LEPSILON 要求**每个 k 点占据的能带数相同**；由第二节，Γ 点发生占据重排（up 多一条、down 少一条），
+条件不满足 → 响应整体失效。这与"S2 是半金属"是同一件事的两种表现。
+
+**影响**：**不阻塞主线**——S6_kappa 已定 `NAC=off`（与 Mn₂In₂Se₅ 一致），S5_fc 拟合力常数也不用介电张量。
+若将来要开 NAC，必须先解决这一步（例如 S3 去掉 LDAU，或改用 LCALCEPS 有限差分）。
 
 ## 四、S4_disp（位移超胞取力）— 输入已生成，**未提交计算** ⏸
 
 | 核对项 | 实测 | 期望 | 结论 |
 |---|---|---|---|
-| 子目录数 | **46**（disp-00000 平衡帧 + disp-00001…00045 位移帧） | 45 位移 + 1 平衡 | ✅ |
+| 子目录数 | **46**（disp-00000 平衡帧 + disp-00001…00045） | 45 位移 + 1 平衡 | ✅ |
 | SPOSCAR 原子数 | Mn 16 / In 32 / Se 64 = **112** | 4×4×1 = 112 | ✅ |
-| 超胞基矢 | 8.1479 / 14.1126 / 9.4084 Å（c=13.2141） | 4×4×1 | ✅ |
 | KPOINTS | KSPACING 0.038 → Γ **2 2 2** | 2 2 2 | ✅ |
-| MAGMOM | **16*5 96*0**（ISPIN=2，LDAU 同 S1：Mn U=4） | 16*5 96*0 | ✅ |
-| 精度 | PREC=Accurate、EDIFF=1E-7、LREAL=.FALSE.、ADDGRID=.TRUE.、ISYM=0 | phonopy 取力口径 | ✅ |
-| 提交参数 | `--partition=cpu192`、`--ntasks-per-node=32`、`--qos=regular`、`--time=1-00:00:00` | — | ✅ |
-| `--mem` | **未显式设置**（用节点默认内存） | 待定 | ⚠️ 待用户决定是否加 `--mem=160G` |
-| 安全截断 | 6.50 Å（`CUT3_MAX=7.0`，超出的档位 S4 自动剔除） | 6.50 | ✅ |
+| MAGMOM | **16*5 96*0**（ISPIN=2、LDAU 同 S1） | 16*5 96*0 | ✅ |
+| 精度 | PREC=Accurate / EDIFF=1E-7 / LREAL=.FALSE. / ADDGRID=.TRUE. / ISYM=0 / NELMIN=6 | 取力口径 | ✅ |
+| 安全截断 | 6.50 Å（CUT3_MAX=7.0，超出档 S4 剔除） | 6.50 | ✅ |
+| 提交参数 | 当前模板：`--partition=cpu192`、`--ntasks-per-node=32`、`--qos=regular`、`--time=1-00:00:00`、**无 --mem** | 待修 | ⚠️ 见 4.1 |
 
-> S4 每帧期望磁矩 ≈ 16 × M₀ ≈ 80 μB（超胞 112 原子、16 个 Mn）。
+### 4.1 ⚠️ 内存配置（重要，与最初设想相反）
 
-## 五、文件清单
+集群实测：
+
+- jzzn 的 SLURM **没有登记节点内存**：所有节点 `RealMemory=1`（1 MB）、`DefMemPerNode=UNLIMITED`、`MaxMemPerNode=UNLIMITED`。
+  → **写 `--mem` 会被拒绝或不起作用**。Mn₂In₂Se₅ S4 的 submit.sh 注释原文：
+  `# 不写 --mem（RealMemory=1 时写了必被拒）`。因此"照抄 Mn₂In₂Se₅ 的 --mem"不可行——**它当初就没写**。
+- cpu192 节点物理内存约 **768 GB 级**（满载节点仍报 FreeMem ≈ 588–649 GB）。
+- Mn₂In₂Se₅ S4（144 原子）**实测峰值内存**：作业 4474960 **MaxRSS ≈ 173 GB**（96 核，1h03m）、
+  4475050 **≈ 86 GB**（96 核，2h06m）。ReqMem = 0（未设 --mem）。
+
+**真正的 OOM 风险来自"核数 → 同节点作业数"，不是 --mem**：
+
+| 设置 | 每节点并发帧数 | 峰值内存（112 原子 ≈ 135 GB 估） | 768 GB 节点 |
+|---|---|---|---|
+| `--ntasks-per-node=32`（当前） | 6 | ~810 GB | ❌ 有 OOM 风险 |
+| `--ntasks-per-node=96`（Mn₂In₂Se₅ S4 的设法） | 2 | ~270 GB | ✅ 安全 |
+
+**结论 / 待办**：S4 提交前把 `--ntasks-per-node` 从 32 提到 **96**（对齐 Mn₂In₂Se₅ S4），
+并考虑 `--qos=premium`（Mn₂In₂Se₅ S4 用 premium；本项目当前为 regular）。**不要**写 `--mem`（会被拒）。
+
+## 五、文件清单（本目录实际文件）
 
 ```
-s1_std_opt/   INCAR POSCAR KPOINTS CONTCAR OSZICAR OUTCAR submit.sh
-s2_static/    INCAR POSCAR KPOINTS OSZICAR OUTCAR EIGENVAL submit.sh
-s3_nac/       INCAR POSCAR KPOINTS OSZICAR OUTCAR submit.sh
-s4_disp_inputs/  SPOSCAR  INCAR_disp-00000  KPOINTS_disp-00000  submit_sh_disp-00000
+dft_summary.txt                                   ← 本文件
+s1_std_opt/    INCAR POSCAR KPOINTS CONTCAR OSZICAR submit.sh
+s2_static/     INCAR POSCAR KPOINTS OSZICAR submit.sh EIGENVAL★
+s3_nac/        INCAR POSCAR KPOINTS OSZICAR submit.sh
+s4_disp_inputs/ SPOSCAR  INCAR_disp-00000  KPOINTS_disp-00000  submit_sh_disp-00000
 ```
+
+★ `EIGENVAL` 为**半金属诊断证据**，经批准用 `git add -f` 强制入库（仓库 .gitignore 默认排除 EIGENVAL）。
+**OUTCAR 不入库**（按仓库约定；可从集群重取：`jzzn:/public/home/wangchao/AutoZT/work/MnIn2Se4_441/kl-dft-cpu/step*/OUTCAR`）。
 
 ## 六、后续（未开始）
 
-1. S4_disp：46 帧单点取力（待用户确认 `--mem` 后提交）
+1. S4_disp：46 帧单点取力（**先把 `--ntasks-per-node` 提到 96**，不写 --mem）；算完核对每帧磁矩 ≈ 79.75
 2. S5_fc：力常数拟合（`EQ_FORCE_MAX=0.01`、`FC_IMPORT_DIR=off`）
 3. S6_kappa：ShengBTE，`MESH=auto + MESH_CONV_MAX_LENGTH=50`、`NAC=off`、T=50–800 K 步长 50
