@@ -1,0 +1,30 @@
+{
+ "format": "ShengBTE",
+ "layout": {
+  "FORCE_CONSTANTS_2ND": "full supercell (natoms*prod(scell) atoms; ShengBTE read2fc requires this)",
+  "FORCE_CONSTANTS_3RD": "unit-cell atom indices + R vectors",
+  "POSCAR/CONTROL": "unit cell"
+ },
+ "checks": {
+  "fc2_header": 144,
+  "fc2_order": "kept",
+  "fc3_blocks": 5331,
+  "fc3_max_index": 9
+ },
+ "usable": true,
+ "natoms": 9,
+ "scell": [
+  4,
+  4,
+  1
+ ],
+ "supercell_atoms": 144,
+ "ngrid": [
+  16,
+  16,
+  4
+ ],
+ "nonanalytic": false,
+ "control": "CONTROL",
+ "convergence": true
+}

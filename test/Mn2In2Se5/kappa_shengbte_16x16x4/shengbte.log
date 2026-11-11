@@ -1,0 +1,289 @@
+ ShengBTE 2.1.0
+ Info: symmetry group R-3m detected
+ Info:           12  symmetry operations
+ Info:          12 duplicated rotations will be discarded
+ Info: This calculation is running on 256 MPI process(es)
+ Info: Ntot =        1024
+ Info: Nlist =         111
+ Info: about to obtain the spectrum
+ Info: expecting Phonopy 2nd-order format
+ Info: about to set the acoustic frequencies at Gamma to zero
+ Info: original values:
+ Info: omega(1,1) =  -1.0223429691374621E-006 rad/ps
+ Info: omega(1,2) =   2.0310208202102065E-007 rad/ps
+ Info: omega(1,3) =   9.5883802209676536E-007 rad/ps
+ Info: spectrum calculation finished in 1.511 seconds
+ Info: start calculating specific heat and kappa in the small-grain limit 
+ Info: Temperature =   50.000000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.859E-12
+ Info: Temperature =   100.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.866E-12
+ Info: Temperature =   150.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.866E-12
+ Info: Temperature =   200.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.866E-12
+ Info: Temperature =   250.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   300.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   350.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   400.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   450.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   500.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   550.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   600.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   650.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   700.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   750.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Temperature =   800.00000000000000     
+ Info: relative asymmetry removed from the small-grain kappa tensor by symmetrization: 3.865E-12
+ Info: Ntotal_plus =             36309160
+ Info: Ntotal_minus =             43106854
+ Info: max(N_plus), max(N_minus)       31116       42100
+ Info: calculating Vp_plus and Vp_minus at 18.637 seconds
+ Info: processes per MPI process: minimum 0, mean 310218, maximum 358416
+ Info: matrix elements:  12% done after .3 s, about 1.9 s left
+ Info: matrix elements:  24% done after .5 s, about 1.7 s left
+ Info: matrix elements:  35% done after .8 s, about 1.5 s left
+ Info: matrix elements:  46% done after 1.1 s, about 1.2 s left
+ Info: matrix elements:  55% done after 1.4 s, about 1.1 s left
+ Info: matrix elements:  65% done after 1.7 s, about .9 s left
+ Info: matrix elements:  75% done after 2.0 s, about .6 s left
+ Info: matrix elements:  87% done after 2.3 s, about .3 s left
+ Info: matrix elements: 100% done after 2.7 s, about .0 s left
+ Info: matrix elements computed in 2.7 s
+ Info: start calculating kappa at 21.433 seconds
+ Info: Temperature=   50.000000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.779E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 24.535 seconds
+ Info: Relative change =  0.12073738596479117     
+ Info: Iteration : 2          Timer : 24.576 seconds
+ Info: Relative change =   1.4077396238292938E-002
+ Info: Iteration : 3          Timer : 24.617 seconds
+ Info: Relative change =   2.0178532277279027E-004
+ Info: Iteration : 4          Timer : 24.658 seconds
+ Info: Relative change =   5.4663015184329937E-005
+ Info: Iteration : 5          Timer : 24.699 seconds
+ Info: Relative change =   6.6890459916810783E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.822E-05
+ Info: Temperature=   100.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.760E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 24.857 seconds
+ Info: Relative change =   7.5653141571455571E-002
+ Info: Iteration : 2          Timer : 24.896 seconds
+ Info: Relative change =   1.0058868892339631E-002
+ Info: Iteration : 3          Timer : 24.938 seconds
+ Info: Relative change =   7.1055030955420075E-005
+ Info: Iteration : 4          Timer : 24.979 seconds
+ Info: Relative change =   4.2157953986687061E-005
+ Info: Iteration : 5          Timer : 25.019 seconds
+ Info: Relative change =   2.6773369377369236E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.663E-05
+ Info: Temperature=   150.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.706E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 25.169 seconds
+ Info: Relative change =   6.5486255661557011E-002
+ Info: Iteration : 2          Timer : 25.209 seconds
+ Info: Relative change =   9.5437028104937999E-003
+ Info: Iteration : 3          Timer : 25.249 seconds
+ Info: Relative change =   7.3376123803727371E-005
+ Info: Iteration : 4          Timer : 25.290 seconds
+ Info: Relative change =   4.1091788478978232E-005
+ Info: Iteration : 5          Timer : 25.331 seconds
+ Info: Relative change =   1.9808299733980538E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.680E-05
+ Info: Temperature=   200.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.716E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 25.481 seconds
+ Info: Relative change =   6.1670099817631649E-002
+ Info: Iteration : 2          Timer : 25.521 seconds
+ Info: Relative change =   9.4297412682002504E-003
+ Info: Iteration : 3          Timer : 25.562 seconds
+ Info: Relative change =   8.1452796991984580E-005
+ Info: Iteration : 4          Timer : 25.602 seconds
+ Info: Relative change =   4.0488071713369099E-005
+ Info: Iteration : 5          Timer : 25.643 seconds
+ Info: Relative change =   1.7363106054495219E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.688E-05
+ Info: Temperature=   250.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.737E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 25.792 seconds
+ Info: Relative change =   5.9829725173836099E-002
+ Info: Iteration : 2          Timer : 25.832 seconds
+ Info: Relative change =   9.4105910003659046E-003
+ Info: Iteration : 3          Timer : 25.873 seconds
+ Info: Relative change =   8.5415061799712762E-005
+ Info: Iteration : 4          Timer : 25.914 seconds
+ Info: Relative change =   4.0006012903604566E-005
+ Info: Iteration : 5          Timer : 25.955 seconds
+ Info: Relative change =   1.6187843687077016E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.691E-05
+ Info: Temperature=   300.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.819E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 26.104 seconds
+ Info: Relative change =   5.8798167592979768E-002
+ Info: Iteration : 2          Timer : 26.144 seconds
+ Info: Relative change =   9.4199825936728196E-003
+ Info: Iteration : 3          Timer : 26.185 seconds
+ Info: Relative change =   8.7708461833654335E-005
+ Info: Iteration : 4          Timer : 26.226 seconds
+ Info: Relative change =   3.9603944408404812E-005
+ Info: Iteration : 5          Timer : 26.267 seconds
+ Info: Relative change =   1.5514474008547031E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.692E-05
+ Info: Temperature=   350.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.694E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 26.417 seconds
+ Info: Relative change =   5.8158961558787664E-002
+ Info: Iteration : 2          Timer : 26.457 seconds
+ Info: Relative change =   9.4383612107200119E-003
+ Info: Iteration : 3          Timer : 26.498 seconds
+ Info: Relative change =   8.9183349677504512E-005
+ Info: Iteration : 4          Timer : 26.539 seconds
+ Info: Relative change =   3.9263547578135138E-005
+ Info: Iteration : 5          Timer : 26.580 seconds
+ Info: Relative change =   1.5082893035874212E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.692E-05
+ Info: Temperature=   400.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.581E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 26.731 seconds
+ Info: Relative change =   5.7733458038521590E-002
+ Info: Iteration : 2          Timer : 26.771 seconds
+ Info: Relative change =   9.4589656997735999E-003
+ Info: Iteration : 3          Timer : 26.812 seconds
+ Info: Relative change =   9.0203668982581276E-005
+ Info: Iteration : 4          Timer : 26.853 seconds
+ Info: Relative change =   3.8972066559956371E-005
+ Info: Iteration : 5          Timer : 26.895 seconds
+ Info: Relative change =   1.4784016758609501E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.692E-05
+ Info: Temperature=   450.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.872E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 27.045 seconds
+ Info: Relative change =   5.7434583940329159E-002
+ Info: Iteration : 2          Timer : 27.085 seconds
+ Info: Relative change =   9.4792847737680437E-003
+ Info: Iteration : 3          Timer : 27.127 seconds
+ Info: Relative change =   9.0948258446823252E-005
+ Info: Iteration : 4          Timer : 27.167 seconds
+ Info: Relative change =   3.8719919450113817E-005
+ Info: Iteration : 5          Timer : 27.209 seconds
+ Info: Relative change =   1.4565052679090291E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.692E-05
+ Info: Temperature=   500.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.663E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 27.449 seconds
+ Info: Relative change =   5.7215710845722981E-002
+ Info: Iteration : 2          Timer : 27.489 seconds
+ Info: Relative change =   9.4983972326029131E-003
+ Info: Iteration : 3          Timer : 27.530 seconds
+ Info: Relative change =   9.1514194116253906E-005
+ Info: Iteration : 4          Timer : 27.571 seconds
+ Info: Relative change =   3.8499785167575229E-005
+ Info: Iteration : 5          Timer : 27.612 seconds
+ Info: Relative change =   1.4397669062615959E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.692E-05
+ Info: Temperature=   550.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.734E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 27.762 seconds
+ Info: Relative change =   5.7049993875266658E-002
+ Info: Iteration : 2          Timer : 27.803 seconds
+ Info: Relative change =   9.5160201548615958E-003
+ Info: Iteration : 3          Timer : 27.844 seconds
+ Info: Relative change =   9.1958295106408131E-005
+ Info: Iteration : 4          Timer : 27.884 seconds
+ Info: Relative change =   3.8306005912381284E-005
+ Info: Iteration : 5          Timer : 27.926 seconds
+ Info: Relative change =   1.4265420791186664E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.691E-05
+ Info: Temperature=   600.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.791E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 28.090 seconds
+ Info: Relative change =   5.6921063514056361E-002
+ Info: Iteration : 2          Timer : 28.130 seconds
+ Info: Relative change =   9.5321341271084534E-003
+ Info: Iteration : 3          Timer : 28.171 seconds
+ Info: Relative change =   9.2315844121938363E-005
+ Info: Iteration : 4          Timer : 28.213 seconds
+ Info: Relative change =   3.8134158302465338E-005
+ Info: Iteration : 5          Timer : 28.254 seconds
+ Info: Relative change =   1.4158155032693758E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.691E-05
+ Info: Temperature=   650.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.570E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 28.405 seconds
+ Info: Relative change =   5.6818459956248582E-002
+ Info: Iteration : 2          Timer : 28.445 seconds
+ Info: Relative change =   9.5468258398700850E-003
+ Info: Iteration : 3          Timer : 28.486 seconds
+ Info: Relative change =   9.2609820567081982E-005
+ Info: Iteration : 4          Timer : 28.527 seconds
+ Info: Relative change =   3.7980743291532902E-005
+ Info: Iteration : 5          Timer : 28.627 seconds
+ Info: Relative change =   1.4069283599014471E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.691E-05
+ Info: Temperature=   700.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.526E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 28.778 seconds
+ Info: Relative change =   5.6735235029833256E-002
+ Info: Iteration : 2          Timer : 28.818 seconds
+ Info: Relative change =   9.5602193850799592E-003
+ Info: Iteration : 3          Timer : 28.864 seconds
+ Info: Relative change =   9.2855790367397267E-005
+ Info: Iteration : 4          Timer : 28.905 seconds
+ Info: Relative change =   3.7842961362745881E-005
+ Info: Iteration : 5          Timer : 28.946 seconds
+ Info: Relative change =   1.3994352282305533E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.690E-05
+ Info: Temperature=   750.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.780E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 29.096 seconds
+ Info: Relative change =   5.6666619618447357E-002
+ Info: Iteration : 2          Timer : 29.137 seconds
+ Info: Relative change =   9.5724459313986498E-003
+ Info: Iteration : 3          Timer : 29.178 seconds
+ Info: Relative change =   9.3064650575104627E-005
+ Info: Iteration : 4          Timer : 29.219 seconds
+ Info: Relative change =   3.7718548470569533E-005
+ Info: Iteration : 5          Timer : 29.260 seconds
+ Info: Relative change =   1.3930244312410281E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.690E-05
+ Info: Temperature=   800.00000000000000     
+ Info: relative asymmetry removed from the RTA kappa tensor by symmetrization: 3.646E-15
+ Info: improved iteration: GMRES(30) on the Omini-Sparavigna update
+ Info: Iteration : 1          Timer : 29.412 seconds
+ Info: Relative change =   5.6609247342157325E-002
+ Info: Iteration : 2          Timer : 29.452 seconds
+ Info: Relative change =   9.5836306918312616E-003
+ Info: Iteration : 3          Timer : 29.494 seconds
+ Info: Relative change =   9.3244246300132325E-005
+ Info: Iteration : 4          Timer : 29.535 seconds
+ Info: Relative change =   3.7605655168447872E-005
+ Info: Iteration : 5          Timer : 29.577 seconds
+ Info: Relative change =   1.3874714156662156E-006
+ Info: relative asymmetry removed from the converged kappa tensor by symmetrization: 2.690E-05
+ Info: normal exit after 29.607 seconds

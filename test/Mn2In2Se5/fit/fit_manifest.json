@@ -1,0 +1,176 @@
+{
+  "code": {
+    "optimizer": {
+      "md5": "a88c47f04422f99eaa21e8787999c0f8",
+      "path": "/home/wangchaoyue852/software/pheasy-gpu-gh/core/optimizer.py"
+    },
+    "run_pheasy": {
+      "md5": "bc1219e0a6ae00f08e571f23c5623e38",
+      "path": "/home/wangchaoyue852/software/pheasy-gpu-gh/run_pheasy.py"
+    }
+  },
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "1",
+    "PHEASY_ASR_COL_BLOCK": "5000",
+    "PHEASY_ASR_COMBINED": "1",
+    "PHEASY_ASR_LWORK_LIMIT": "1500000000",
+    "PHEASY_ASR_SPARSE": "1",
+    "PHEASY_ASR_SPARSE_THR": "1e-10",
+    "PHEASY_BLAS_THREADS": "8",
+    "PHEASY_CV_GROUP_SIZE": "432",
+    "PHEASY_DOT_THREADS": "8",
+    "PHEASY_GPU_SM": "1",
+    "PHEASY_GPU_SM_DEVICES": "0",
+    "PHEASY_GPU_SM_NGPU": "1",
+    "PHEASY_HARM_DENSE": "1",
+    "PHEASY_N_JOBS": "1",
+    "PHEASY_SM_DTYPE": "float32",
+    "PHEASY_SM_THR": "1e-12",
+    "PHEASY_SVD_THRESHOLD": "500",
+    "PHEASY_TWOLEVEL_CACHE_T": "0",
+    "PHEASY_USE_CELER": "1",
+    "PHEASY_USE_GPU": "1"
+  },
+  "geometry": {
+    "ws_extended_pairs": 0
+  },
+  "harm_dense": {
+    "applied": true,
+    "enabled": true,
+    "harmonic_columns": 562,
+    "source": "env"
+  },
+  "metrics": {
+    "mae": 0.00045640962616500853,
+    "mape": 0.03068697675060122,
+    "mse": 3.9083720574495494e-07,
+    "mse_path": {
+      "dtype": "float64",
+      "shape": [
+        5
+      ],
+      "type": "ndarray",
+      "values": [
+        4.779307698791014e-07,
+        5.028759965519405e-07,
+        5.284166784870081e-07,
+        5.575116320068561e-07,
+        4.793182729145361e-07
+      ]
+    },
+    "mse_path_mean": 5.092106699678884e-07,
+    "mspe": 0.5681523535592131,
+    "n_featrues": 2434,
+    "n_features": 2434,
+    "r2_score": 0.9999809870559012,
+    "re": 0.00436038348070706,
+    "rmse": 0.0006251697415462099,
+    "rmse_path": {
+      "dtype": "float64",
+      "shape": [
+        5
+      ],
+      "type": "ndarray",
+      "values": [
+        0.0006913253719335791,
+        0.0007091375018654284,
+        0.0007269227458863893,
+        0.0007466670154807002,
+        0.0006923281540675174
+      ]
+    },
+    "rmse_path_mean": 0.0007132761578467229,
+    "rmspe": 0.7537588165714635
+  },
+  "model": "ALASSO",
+  "platform": "Linux-6.5.0-35-generic-x86_64-with-glibc2.35",
+  "python": "3.11.15",
+  "results": {
+    "alpha": 8.638953372144798e-12,
+    "alpha_at_grid_edge": false,
+    "coef": {
+      "dtype": "float64",
+      "shape": [
+        2434
+      ],
+      "type": "ndarray"
+    },
+    "cv_gap_ratio": 0.9957728670668492,
+    "cv_gap_unresolved": false,
+    "cv_selection": {
+      "bracketed": false,
+      "extended_decades": 0.0,
+      "fallback": false,
+      "gap_ratio": 0.9957728670668492,
+      "gap_unresolved": false,
+      "n_resolved": 65,
+      "ols_mean": 5.113723086950747e-07
+    },
+    "debias_accepted": true,
+    "debias_backend": "gpu_dense_lstsq",
+    "debias_residual_refit": 0.09548534094623273,
+    "debias_residual_shrunk": 0.09618337586596838,
+    "debias_stage": "dense",
+    "execution_backend": "gpu_dense_fista",
+    "fit_accepted": true,
+    "n_iter": 400,
+    "n_penalized": 1872,
+    "nnz_penalized": 1531,
+    "nnz_unpenalized": 562,
+    "postfit_backend": "gpu_dense_lstsq_and_cpu_metrics",
+    "pre_debias_coef": {
+      "dtype": "float64",
+      "shape": [
+        2434
+      ],
+      "type": "ndarray"
+    },
+    "regularized_solver_info": {
+      "backend": "gpu_dense_fista",
+      "converged": true,
+      "harm_dense_reduction": "schur_complement+jacobi",
+      "kkt_relative": 7.5397440853621825e-06,
+      "lipschitz": 87.1440692182507,
+      "lipschitz_inflations": 0,
+      "n_iter": 400,
+      "penalty_relative": 0.00027093259664050993,
+      "resolved": true,
+      "solver": "GPU FISTA",
+      "stage": "regularized_refit_before_debias",
+      "tol": 1e-05,
+      "tol_effective": 1e-05
+    },
+    "status": "fit_returned",
+    "unpenalized_columns": 562
+  },
+  "symmetry": {
+    "fit": {
+      "n_operations": 12,
+      "number": 166,
+      "spacegroup": "R-3m (166)",
+      "symbol": "R-3m",
+      "symprec": 1e-05
+    },
+    "probe": {
+      "n_operations": 12,
+      "number": 166,
+      "spacegroup": "R-3m (166)",
+      "symbol": "R-3m",
+      "symprec": 0.001
+    },
+    "probe_more_symmetric": false,
+    "symprec": 1e-05
+  },
+  "versions": {
+    "ase": "3.29.0",
+    "f90nml": "1.5.0",
+    "h5py": "3.16.0",
+    "joblib": "1.5.3",
+    "numpy": "2.4.6",
+    "phonopy": "2.47.1",
+    "scikit-learn": "1.9.0",
+    "scipy": "1.17.1",
+    "spglib": "2.6.0",
+    "torch": "2.5.1+cu121"
+  }
+}
