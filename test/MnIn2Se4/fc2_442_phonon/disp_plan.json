@@ -1,0 +1,6 @@
+{
+  "method": "phonopy",
+  "fd_distance": 0.02,
+  "supercell": "4 4 2",
+  "n_disp": 7
+}

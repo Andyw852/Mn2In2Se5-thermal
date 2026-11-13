@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "band_yaml": "/mnt/e/backup/joint_research_project/xia/MnIn2Se4_441/_fc2_442_20261113/step3_phonon/band-dft-cpu.yaml",
+  "out_dir": "/mnt/e/backup/joint_research_project/xia/MnIn2Se4_441/_fc2_442_20261113/phonon_band_plot",
+  "n_qpoint": 499,
+  "n_branch": 21,
+  "min_freq_THz": 0.000719,
+  "max_freq_THz": 7.784366,
+  "imaginary": false,
+  "plots": [
+    "phonon_band_full.png",
+    "phonon_band_lowfreq.png"
+  ]
+}
