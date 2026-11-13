@@ -1,0 +1,69 @@
+{
+  "fc2": "4x4x2 (fc2_442_phonon/fc2.hdf5)",
+  "mesh": "11 11 11",
+  "T_K": 300.0,
+  "isotope": true,
+  "fc3_source": "AutoZT fit-fc-thermal step1_fit/cutoff_scan (pheasy RFE-OLS)",
+  "supercell_fc3": "4x4x1 (safe cutoff ceiling 6.507 A)",
+  "RTA": {
+    "5p60": {
+      "case": "scan_5p60",
+      "cutoff_A": 5.6,
+      "method": "RTA",
+      "inplane": 4.941507483976094,
+      "kappa_zz": 2.7671509475493643,
+      "seconds": 96.2
+    },
+    "6p23": {
+      "case": "scan_6p23",
+      "cutoff_A": 6.23,
+      "method": "RTA",
+      "inplane": 3.892166474404603,
+      "kappa_zz": 1.2331610204703194,
+      "seconds": 99.8
+    },
+    "6p45": {
+      "case": "scan_6p45",
+      "cutoff_A": 6.45,
+      "method": "RTA",
+      "inplane": 3.537503993728575,
+      "kappa_zz": 1.2495478441707724,
+      "seconds": 101.9
+    }
+  },
+  "LBTE": {
+    "5p60": {
+      "cutoff_A": 5.6,
+      "method": "LBTE",
+      "mesh": "11 11 11",
+      "T_K": [
+        300.0
+      ],
+      "inplane": 5.647310176082463,
+      "kappa_zz": 2.738848182715274,
+      "seconds": 936.5
+    },
+    "6p23": {
+      "cutoff_A": 6.23,
+      "method": "LBTE",
+      "mesh": "11 11 11",
+      "T_K": [
+        300.0
+      ],
+      "inplane": 4.7841722610785276,
+      "kappa_zz": 1.2240704791820267,
+      "seconds": 944.7
+    },
+    "6p45": {
+      "cutoff_A": 6.45,
+      "method": "LBTE",
+      "mesh": "11 11 11",
+      "T_K": [
+        300.0
+      ],
+      "inplane": 4.407509502440643,
+      "kappa_zz": 1.2518921369471838,
+      "seconds": 935.7
+    }
+  }
+}
