@@ -1,0 +1,47 @@
+[
+  {
+    "case": "4x4x1_old",
+    "method": "RTA",
+    "mesh": "11 11 11",
+    "T_K": [
+      300.0
+    ],
+    "kappa_xx": 2.249804814245385,
+    "kappa_yy": 2.2498048192778066,
+    "kappa_zz": 0.35079322028645876,
+    "inplane": 2.249804816761596,
+    "kzz_over_inplane": 0.15592162381063615,
+    "seconds": 110.6,
+    "fc2": "/home/wangchao/repo_thermal/test/MnIn2Se4/fit_cut3_6p45/fc2.hdf5"
+  },
+  {
+    "case": "4x4x2_new",
+    "method": "RTA",
+    "mesh": "11 11 11",
+    "T_K": [
+      300.0
+    ],
+    "kappa_xx": 3.5375039897721843,
+    "kappa_yy": 3.5375039976849663,
+    "kappa_zz": 1.2495478441707724,
+    "inplane": 3.537503993728575,
+    "kzz_over_inplane": 0.35322867377281253,
+    "seconds": 106.6,
+    "fc2": "/home/wangchao/repo_thermal/test/MnIn2Se4/fc2_442_phonon/fc2.hdf5"
+  },
+  {
+    "method": "LBTE",
+    "mesh": "11 11 11",
+    "T_K": [
+      300.0
+    ],
+    "kappa_xx": 4.407509497511227,
+    "kappa_yy": 4.40750950737006,
+    "kappa_zz": 1.2518921369471838,
+    "inplane": 4.407509502440643,
+    "seconds": 938.7,
+    "fc2_case": "4x4x2_new",
+    "fc2_path": "/home/wangchao/repo_thermal/test/MnIn2Se4/fc2_442_phonon/fc2.hdf5",
+    "kzz_over_inplane": 0.28403617422808797
+  }
+]
