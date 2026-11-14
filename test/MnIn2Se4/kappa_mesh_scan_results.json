@@ -1,0 +1,26 @@
+{
+  "fc2": "4x4x2",
+  "fc3_cutoff_A": 6.45,
+  "T_K": 300.0,
+  "isotope": true,
+  "mesh11": {
+    "RTA": {
+      "inplane": 3.5375,
+      "kappa_zz": 1.2495
+    },
+    "LBTE": {
+      "inplane": 4.4075,
+      "kappa_zz": 1.2519
+    }
+  },
+  "mesh14": {
+    "RTA": {
+      "inplane": 3.6474,
+      "kappa_zz": 1.0934
+    },
+    "LBTE": {
+      "inplane": 4.5219,
+      "kappa_zz": 1.0934
+    }
+  }
+}
