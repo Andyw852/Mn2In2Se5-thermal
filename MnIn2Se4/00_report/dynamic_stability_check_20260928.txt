@@ -1,0 +1,7 @@
+Dynamic stability check (all phonon frequencies on the 11^3 q-mesh, taken from the
+frequency dataset of kappa-m111111.hdf5)
+- all 39 fits (36 pheasy + 3 symfc) have 0 imaginary frequencies;
+- most negative frequency = -3.83e-05 THz (the numerical zero of the acoustic modes at Gamma);
+- highest frequency ~ 7.73 THz (practically identical across cutoffs/methods, showing that FC2
+  is dense and already converged).
+Conclusion: the second-order force constants of every cutoff/method are dynamically stable.

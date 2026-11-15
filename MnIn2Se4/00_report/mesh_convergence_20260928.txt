@@ -1,4 +1,4 @@
 mesh    kxx        kyy        kzz
 11^3    2.693771   2.693771   0.501761
 15^3    2.621443   2.621443   0.444867
-21^3    (run OOM/被杀, 未完成)
+21^3    (run OOM/killed, not finished)

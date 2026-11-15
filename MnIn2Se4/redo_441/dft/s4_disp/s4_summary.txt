@@ -1,52 +1,63 @@
-# MnIn2Se4 4x4x1 S4_disp 完成归档（2026-11-10）
+# MnIn2Se4 4x4x1 S4_disp completion archive (2026-11-10)
 
-体系：MnIn2Se4，R-3m (#166)，7 原子原胞（Mn1 In2 Se4），换基矢后 4x4x1 超胞 = 112 原子
-DFT：VASP，PBE-D3（IVDW=11）+ U(Mn)=4 eV，ISPIN=2，FM（MAGMOM = 16*5 96*0），
-     PREC=Accurate，EDIFF=1E-7，ISYM=0，NCORE=4，KPAR=2，48 核（jzzn cpu192，qos regular）
-KPOINTS：超胞 Gamma 2x2x2（等效原胞 8x8x2，来自 S1-S3 的 8x8x2 设置）
-位移：AutoZT kl-dft-cpu S4_disp，alm/rattle 随机位移，disp_plan.json 记录 n_disp=45、
-     rattle_std=0.005477、displacement RMS 0.01745 A（最大 0.0688 A）、
-     cut3 候选 4.30/4.71/5.00/5.60/6.23/6.45 A，4x4x1 超胞安全截断 6.50 A
+System: MnIn2Se4, R-3m (#166), 7-atom primitive cell (Mn1 In2 Se4); after the basis change
+the 4x4x1 supercell has 112 atoms
+DFT: VASP, PBE-D3 (IVDW=11) + U(Mn)=4 eV, ISPIN=2, FM (MAGMOM = 16*5 96*0),
+     PREC=Accurate, EDIFF=1E-7, ISYM=0, NCORE=4, KPAR=2, 48 cores (jzzn cpu192, qos regular)
+KPOINTS: supercell Gamma 2x2x2 (equivalent primitive 8x8x2, from the 8x8x2 setting of S1-S3)
+Displacements: AutoZT kl-dft-cpu S4_disp, alm/rattle random displacements; disp_plan.json records
+     n_disp=45, rattle_std=0.005477, displacement RMS 0.01745 A (max 0.0688 A), cut3 candidates
+     4.30/4.71/5.00/5.60/6.23/6.45 A, safe cutoff of the 4x4x1 supercell 6.50 A
 
-## 帧清单与质量
+## Frame list and quality
 
-disp-00000 = 平衡参考帧，disp-00001..00045 = 45 个位移帧，共 46 帧，全部收敛
-（OUTCAR 有 "aborting loop because EDIFF is reached"）。
+disp-00000 = equilibrium reference frame, disp-00001..00045 = 45 displaced frames, 46 frames in
+total, all converged (OUTCAR contains "aborting loop because EDIFF is reached").
 
-- 平衡帧残余力：max|F| = 0.000508 eV/A（阈值 0.005）→ 结构干净
-- 位移帧：max|F| 0.620-0.827 eV/A、RMS 0.259-0.289 eV/A（正常量级）
-- 总磁矩（46 帧全部）：79.74994-79.74999 muB/胞，目标 16 x 4.9844 = 79.750，
-  偏差 < 1e-4 → 位移没有触发占据/磁矩跳变，力可信
-- 逐帧能量/最大力/RMS 力/磁矩见 frame_summary.csv；
-  原始力与结构在 disp-*/vasprun.xml（本仓库按 .gitignore 约定不收 OUTCAR，vasprun 用 git add -f 保留）
+- equilibrium-frame residual force: max|F| = 0.000508 eV/A (threshold 0.005) -> clean structure
+- displaced frames: max|F| 0.620-0.827 eV/A, RMS 0.259-0.289 eV/A (normal magnitude)
+- total magnetisation (all 46 frames): 79.74994-79.74999 muB/cell, target 16 x 4.9844 = 79.750,
+  deviation < 1e-4 -> the displacements did not trigger an occupation/magnetisation jump, so the
+  forces are trustworthy
+- per-frame energy / maximum force / RMS force / magnetisation: see frame_summary.csv;
+  raw forces and structures in disp-*/vasprun.xml (this repo does not track OUTCAR by the
+  .gitignore convention; the vasprun files are kept via git add -f)
 
-## 这批数据后来怎么用的（重要）
+## How this dataset was used later (important)
 
-用这批 4x4x1 数据做了 pheasy-gpu 双方法力常数拟合（RFE-OLS 主 + ALASSO 副，见
-fit_4x4x1/），两次拟合力残差都很好（RMSE 0.88 / 0.84 meV/A，相对 0.58% / 0.55%，
-fc2 对称性 spread 5e-9），但**虚频闸都不过**：
+This 4x4x1 dataset was used for a pheasy-gpu two-method force-constant fit (RFE-OLS primary +
+ALASSO secondary, see fit_4x4x1/). Both fits have good force residuals (RMSE 0.88 / 0.84 meV/A,
+relative 0.58% / 0.55%, fc2 symmetry spread 5e-9), yet **both fail the imaginary-frequency gate**:
 
-  近 Gamma 声学支（branch 0），q = (-0.0357, 0, 0.0357)，|q| ~ 0.05
-  min freq = -0.1388 THz = -4.63 cm-1（no-NAC -0.151 THz），145 个负频 q 点
+  near-Gamma acoustic branch (branch 0), q = (-0.0357, 0, 0.0357), |q| ~ 0.05
+  min freq = -0.1388 THz = -4.63 cm-1 (no-NAC -0.151 THz), 145 negative-frequency q points
 
-两种方法的谐波部分相同、结果几乎一样，说明问题在 fc2 而不在拟合方法。测色散显示：
-Gamma 点三支声学 ~0（ASR 正常），但最低 TA 支在 |q| ~ 0.03-0.12 整段为负、到 0.15 才回正
-→ 等效弹性常数偏负的大范围软模。
+The harmonic parts of the two methods are identical and the results almost the same, so the
+problem lies in fc2, not in the fitting method. The dispersion shows: the three acoustic branches
+at Gamma are ~0 (ASR fine), but the lowest TA branch is negative over |q| ~ 0.03-0.12 and only
+turns positive at 0.15 -> a broad soft mode with an effectively negative elastic constant.
 
-**原因（2026-11-10 更正）**：不是超胞大小。4x4x1 三个方向的垂直宽度都 >= 13.2 A（安全截断 6.50 A），
-比旧 3x3x3 菱方超胞的约 10.5 A（安全截断 5.17 A）更宽；Mn2In2Se5 用同一套 4x4x1 是稳定的。
-真正的两个原因是：
+**Cause (corrected 2026-11-10)**: it is not the supercell size. The 4x4x1 cell is >= 13.2 A thick
+in all three directions (safe cutoff 6.50 A), wider than the old 3x3x3 rhombohedral supercell at
+about 10.5 A (safe cutoff 5.17 A); Mn2In2Se5 is stable with the same 4x4x1 setup.
+The two real causes are:
 
-1. **拟合没加转动不变性 / Huang 平衡条件**（PHEASY_RASR=auto 在 bulk 解析成 none）。
-   Gamma 点三支声学为 0 只说明平移求和规则满足；|q| ~ 0.03-0.12 的 TA 支为负，
-   正是这类约束缺失的典型表现。
-2. **平衡帧（disp-00000）有约 -1.23 kBar 的各向同性残余应力**（对角 -1.246 / -1.246 / -1.207 kBar，
-   偏量 < 0.03 kBar），来自 S1 用 ENCUT=540 弛豫、S4 用 410 取力的 Pulay 应力差；
-   与 Huang 条件管的是同一件事，同样会让长波声学支变软（单靠它解释不了 -0.14 THz，但会推一把）。
+1. **The fit has no rotational invariance / Huang equilibrium condition** (PHEASY_RASR=auto
+   resolves to none for a bulk system).
+   Three acoustic branches at zero at Gamma only proves that the translational sum rule is
+   satisfied; the TA branch going negative at |q| ~ 0.03-0.12 is exactly the typical signature of
+   this missing constraint.
+2. **The equilibrium frame (disp-00000) carries about -1.23 kBar of isotropic residual stress**
+   (diagonal -1.246 / -1.246 / -1.207 kBar, deviatoric part < 0.03 kBar), from the Pulay stress
+   difference between the S1 relaxation with ENCUT=540 and the S4 force evaluation with 410;
+   this is the same physics as the Huang condition and likewise softens the long-wavelength
+   acoustic branches (it cannot explain -0.14 THz on its own, but it contributes).
 
-**处置**：这批数据保留——它是本材料唯一一套与 Mn2In2Se5 同 DFT 设置（PBE-D3 + U4 + FM）的
-力数据集。拟合改用 **PHEASY_RASR = H**（Huang 约束）在同一套 4x4x1 数据上重做。
-若 RASR=H 后仍有 < -0.05 THz 的近 Gamma 负频，下一步先用 ENCUT=540 重算平衡帧（单帧）
-判断残余应力是否为主因，再决定 S4 是否改设置重算。
-（注：datasets/MnIn2Se4_raw 的 3x3x3 / 189 原子数据是 pheasy 自带测试数据集，DFT 设置不明，
-不能用于本材料结果。）
+**Disposition**: keep this dataset - it is the only force dataset for this material computed with
+the same DFT settings as Mn2In2Se5 (PBE-D3 + U4 + FM). The fit is redone on the same 4x4x1 data
+with **PHEASY_RASR = H** (Huang constraint).
+If negative frequencies below -0.05 THz near Gamma persist with RASR=H, the next step is to
+recompute the equilibrium frame (single frame) with ENCUT=540 to decide whether the residual
+stress is the main cause, and only then whether S4 needs a new setting and a rerun.
+(Note: the 3x3x3 / 189-atom data in datasets/MnIn2Se4_raw is the test dataset shipped with
+pheasy, its DFT settings are unknown, and it must not be used for results of this material.)

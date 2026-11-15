@@ -1,4 +1,4 @@
-# 原始 DFT 输出不入库（太大，且可从集群重取）
+# raw DFT output is not tracked (too large, and it can be re-fetched from the cluster)
 WAVECAR
 CHG
 CHGCAR
@@ -12,7 +12,7 @@ EIGENVAL
 slurm-*.out
 queue.out
 queue.err
-# 分析中间文件
+# analysis intermediates
 analysis/**/work_*/
 __pycache__/
 *.pyc

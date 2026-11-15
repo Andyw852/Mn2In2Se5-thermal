@@ -1,48 +1,48 @@
-# Mn₂In₂Se₅ DFT 输入与结果摘要
+# Mn₂In₂Se₅ DFT input and result summary
 
-材料 `Mn2In2Se5_441`（技能 `kl-dft-cpu`），DFT 在 jzzn（VASP）。采集日期：2026-11-08。
-数值取自集群上的 OUTCAR / INCAR 原文。
+Material `Mn2In2Se5_441` (skill `kl-dft-cpu`), DFT on jzzn (VASP). Collected 2026-11-08.
+Values are taken verbatim from the OUTCAR / INCAR files on the cluster.
 
-## 1. 步骤状态（autozt status，2026-11-08）
+## 1. Step status (autozt status, 2026-11-08)
 
-| 步骤 | 状态 | 说明 |
+| Step | Status | Note |
 |---|---|---|
-| S1_opt | OK | converged（3 个阶段 INCAR、共 5 次段运行） |
+| S1_opt | OK | converged (3-stage INCAR, 5 segment runs in total) |
 | S2_static | OK | finished |
 | S3_nac | OK | finished |
-| S4_disp | OK | 55/55 帧 |
-| S5_fc | OK | stable（min_freq = 0.000 THz） |
+| S4_disp | OK | 55/55 frames |
+| S5_fc | OK | stable (min_freq = 0.000 THz) |
 | S5.1_plot | OK | phonon_plot_summary.json |
-| S6_kappa | R | 运行中（作业 357276 @gnode04） |
+| S6_kappa | R | running (job 357276 @gnode04) |
 | S6.1_plot | OK | plot_manifest.json |
 
-## 2. S1 结构优化末态
+## 2. Final state of the S1 structure optimisation
 
-- **末态最大力 max|F| = 0.000484 eV/Å**（S1 最后一段 INCAR 的 OUTCAR，末次 TOTAL-FORCE）
-- 收敛判据：`reached required accuracy - stopping structural energy minimisation`
-- INCAR 分三段：`INCAR.s1_a` / `INCAR.s2_b` / `INCAR.s3_c`（当前 `INCAR` 为最后一段）
+- **final maximum force max|F| = 0.000484 eV/Å** (OUTCAR of the last S1 INCAR stage, last TOTAL-FORCE)
+- convergence criterion: `reached required accuracy - stopping structural energy minimisation`
+- the INCAR is split into three stages: `INCAR.s1_a` / `INCAR.s2_b` / `INCAR.s3_c` (the current `INCAR` is the last stage)
 
-## 3. S2 静态计算
+## 3. S2 static calculation
 
-- 电子数：81.9999993
-- **总磁矩 magnetization = 9.9844 μB**（三处一致：9.9844249 / 9.9843903 / 9.9843903）
-- E-fermi = 4.4577 eV（XC(G=0) = −9.3285，alpha+bet = −9.4660）
+- electron count: 81.9999993
+- **total magnetisation = 9.9844 μB** (consistent in three places: 9.9844249 / 9.9843903 / 9.9843903)
+- E-fermi = 4.4577 eV (XC(G=0) = −9.3285, alpha+bet = −9.4660)
 
-## 4. S4 位移-力数据集
+## 4. S4 displacement-force dataset
 
-- **帧数 55**（`disp-00000` … `disp-00054`）
-- **平衡帧（disp-00000）残余力 max|F| = 0.000933 eV/Å**（144 原子超胞）
-  - 对比：Mn₂In₂Se₅ 旧 3×3×3 数据集（`equilibrium_max_force`）为 0.1031 eV/Å，即本协议把平衡帧残余力压低了约 **110 倍**。
-- 超胞：**32 Mn + 32 In + 80 Se = 144 原子**（`SPOSCAR`）
-- 自旋 / DFT+U（继承自 S1，与弛豫同一势能面）：
-  - `ISPIN = 2`，`MAGMOM = 32*5 112*0`（32 个 Mn 取 5 μB，其余 112 个原子取 0）
-  - `LDAU = .TRUE.`，`LDAUTYPE = 2`，`LDAUL = 2 -1 -1`，`LDAUU = 4 0.0 0.0`，`LDAUJ = 0.0 0.0 0.0`
+- **55 frames** (`disp-00000` … `disp-00054`)
+- **residual force of the equilibrium frame (disp-00000), max|F| = 0.000933 eV/Å** (144-atom supercell)
+  - for comparison: the old Mn₂In₂Se₅ 3×3×3 dataset (`equilibrium_max_force`) was 0.1031 eV/Å, i.e. this protocol lowers the equilibrium-frame residual force by about **110×**.
+- supercell: **32 Mn + 32 In + 80 Se = 144 atoms** (`SPOSCAR`)
+- spin / DFT+U (inherited from S1, same potential-energy surface as the relaxation):
+  - `ISPIN = 2`, `MAGMOM = 32*5 112*0` (5 μB on the 32 Mn, 0 on the other 112 atoms)
+  - `LDAU = .TRUE.`, `LDAUTYPE = 2`, `LDAUL = 2 -1 -1`, `LDAUU = 4 0.0 0.0`, `LDAUJ = 0.0 0.0 0.0`
   - `LMAXMIX = 4`
-- 取力精度设置（S4 INCAR 原文）：`ISYM = 0`（勿对称化力）、`PREC = Accurate`、`ENCUT = 410`、
-  `EDIFF = 1E-7`、`LREAL = .FALSE.`、`ADDGRID = .TRUE.`、`LASPH = .TRUE.`、`ALGO = Normal`、
-  `NELM = 200`、`NELMIN = 6`、`ISMEAR = 0`、`SIGMA = 0.05`、`IBRION = -1`、`NSW = 0`、`NCORE = 4`、`KPAR = 8`
+- force-accuracy settings (verbatim from the S4 INCAR): `ISYM = 0` (do not symmetrise the forces), `PREC = Accurate`, `ENCUT = 410`,
+  `EDIFF = 1E-7`, `LREAL = .FALSE.`, `ADDGRID = .TRUE.`, `LASPH = .TRUE.`, `ALGO = Normal`,
+  `NELM = 200`, `NELMIN = 6`, `ISMEAR = 0`, `SIGMA = 0.05`, `IBRION = -1`, `NSW = 0`, `NCORE = 4`, `KPAR = 8`
 
-## 5. 文件清单（本目录）
+## 5. File list (this directory)
 
 ```
 dft_inputs/
@@ -51,10 +51,11 @@ dft_inputs/
 └── step4_disp/disp-00000/{INCAR,KPOINTS}
 ```
 
-POTCAR 未上传（版权原因）。原始 DFT 输出（OUTCAR / WAVECAR / CHGCAR 等）按 `.gitignore` 排除，可从集群重取。
+POTCAR is not uploaded (copyright reasons). Raw DFT output (OUTCAR / WAVECAR / CHGCAR etc.) is excluded by `.gitignore` and can be re-fetched from the cluster.
 
-## 6. 力常数（见 `../fc/`）
+## 6. Force constants (see `../fc/`)
 
-生产计算用 S5 截断扫描的 **6.51 Å** 档（`cutoff_scan/cut3_6p51`），即 `kappa_main_T100-800K.json` 的 `source_fc`。
-同目录另附 S6 ShengBTE（`cut3_6p51_m16x16x4`）的 `FORCE_CONSTANTS_2ND/3RD` 与 `BTE.KappaTensorVsT_RTA`，
-用于与 phono3py 交叉核对（确认两边吃的是同一套力常数）。
+The production calculation uses the **6.51 Å** entry of the S5 cutoff scan (`cutoff_scan/cut3_6p51`), i.e. the `source_fc` of
+`kappa_main_T100-800K.json`.
+The same directory also holds the `FORCE_CONSTANTS_2ND/3RD` and `BTE.KappaTensorVsT_RTA` of the S6 ShengBTE run
+(`cut3_6p51_m16x16x4`), used for the cross-check against phono3py (confirming both consume the same set of force constants).

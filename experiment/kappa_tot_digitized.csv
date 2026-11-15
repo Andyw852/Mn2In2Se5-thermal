@@ -1,6 +1,6 @@
-# 从 experiment/kappa_tot_figure.png 读图（按符号颜色取连通块质心），不是原始数据。
-# 高温面板（实心符号，300–623 K）误差约 ±0.005 W/mK、±1 K；低温面板只取了不重叠的单个空心符号，误差约 ±0.01。
-# kappa_e_WmK 留空 = 未扣电子热导（拿到电导率后按 Wiedemann–Franz 填）。Para = 平行热压方向（≈ 面外）。
+# Digitized from experiment/kappa_tot_figure.png (connected-component centroids per symbol colour); not raw data.
+# High-T panel (filled symbols, 300–623 K): error about ±0.005 W/mK and ±1 K; for the low-T panel only non-overlapping individual open symbols were taken, error about ±0.01.
+# An empty kappa_e_WmK means the electronic term was not subtracted (fill it in via Wiedemann–Franz once the conductivity is known). Para = parallel to the hot-pressing direction (≈ out of plane).
 material,direction,T_K,kappa_tot_WmK,kappa_e_WmK,panel
 Mn2In2Se5,Para,303,0.320,,highT
 Mn2In2Se5,Para,323,0.313,,highT
