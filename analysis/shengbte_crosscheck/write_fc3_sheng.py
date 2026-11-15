@@ -1,7 +1,10 @@
-"""从 phono3py 的 fc3.hdf5（全超胞）写 ShengBTE 的 FORCE_CONSTANTS_3RD：
-每个三元组的 2、3 号原子都取相对 1 号原子的最短周期像（截断 < 超胞安全截断时唯一）；
-R 向量 = 像的位置 − CONTROL 里该原子的位置（单胞分数坐标 wrap 到 [0,1)）。
-同时写 CONTROL（与 AutoZT 同口径）。用法：python write_fc3_sheng.py <fcdir> <outdir> n1 n2 n3 T"""
+"""Write ShengBTE FORCE_CONSTANTS_3RD from the phono3py fc3.hdf5 (full supercell):
+for each triplet, atoms 2 and 3 take the shortest periodic image relative to atom 1
+(unique when the cutoff is below the safe supercell cutoff);
+R vector = image position - the position of that atom in CONTROL (unit-cell
+fractional coordinates wrapped to [0,1)).
+Also writes CONTROL (same convention as AutoZT). Usage:
+python write_fc3_sheng.py <fcdir> <outdir> n1 n2 n3 T"""
 import sys, itertools, numpy as np, h5py, phono3py
 fd, od = sys.argv[1], sys.argv[2]
 ngrid = [int(x) for x in sys.argv[3:6]]; T = float(sys.argv[6])
@@ -10,9 +13,9 @@ uc, sc, prim = p.unitcell, p.supercell, p.primitive
 assert len(prim) == len(uc)
 Lp, Ls = np.asarray(uc.cell), np.asarray(sc.cell)
 fu = uc.scaled_positions % 1.0
-xu = fu @ Lp                                    # CONTROL 的笛卡尔位置
+xu = fu @ Lp                                    # Cartesian positions used in CONTROL
 rs = sc.scaled_positions @ Ls
-s2p = np.array([list(prim.p2s_map).index(x) for x in prim.s2p_map])   # 超胞原子 -> 单胞原子序号
+s2p = np.array([list(prim.p2s_map).index(x) for x in prim.s2p_map])   # supercell atom -> unit-cell atom index
 fc3 = h5py.File(fd + "/fc3.hdf5")["fc3"]
 shifts = np.array(list(itertools.product(range(-2, 3), repeat=3))) @ Ls
 blocks = []

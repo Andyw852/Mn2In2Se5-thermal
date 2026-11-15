@@ -29,11 +29,11 @@ for d in dists[1:]:
 shells.append(cur)
 
 lines=[]
-lines.append("# MnIn2Se4 超胞 (3x3x3, 189 原子) 原子间距壳层与截断选择\n")
-lines.append("超胞晶格: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (菱方原胞; 六方描述 a=4.069 A, c=39.586 A)。")
-lines.append("最小镜像上限 (supercell/2) = 20.10 A。\n")
-lines.append("## 壳层表 (按距离聚类, tol=1e-3 A)\n")
-lines.append("| shell | d (A) | 多重度 | 原子对组成 | 到下一壳层间隙 (A) |")
+lines.append("# MnIn2Se4 supercell (3x3x3, 189 atoms): interatomic distance shells and cutoff choice\n")
+lines.append("Supercell lattice: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (rhombohedral primitive cell; hexagonal description a=4.069 A, c=39.586 A).")
+lines.append("Minimum-image upper bound (supercell/2) = 20.10 A.\n")
+lines.append("## Shell table (clustered by distance, tol=1e-3 A)\n")
+lines.append("| shell | d (A) | multiplicity | atom-pair composition | gap to next shell (A) |")
 lines.append("|---|---|---|---|---|")
 prev=None
 for k,sh in enumerate(shells):
@@ -46,8 +46,8 @@ for k,sh in enumerate(shells):
             mark=" **<-c3=%.2f**"%c
     lines.append("| %d | %.4f | %d | %s | %s%s |"%(k,d,len(sh),comps,gap,mark))
     prev=d
-lines.append("\n## 选定截断 (全部落在壳层间隙中)\n")
-lines.append("| c3 (A) | 落在间隙 (A) | 间隙宽度 (A) | 说明 |")
+lines.append("\n## Selected cutoffs (all fall inside shell gaps)\n")
+lines.append("| c3 (A) | gap it falls in (A) | gap width (A) | note |")
 lines.append("|---|---|---|---|")
 prev=None
 shell_d=[s[0][0] for s in shells]
@@ -56,7 +56,7 @@ for c in CUTS:
     hi=min([d for d in shell_d if d>c], default=20.10)
     lines.append("| %.2f | %.4f - %.4f | %.3f | |"%(c,lo,hi,hi-lo))
 
-open('/home/wangchao/software/taskflow-v2.0/tmp/mn2inse4/壳层与截断.md','w').write("\n".join(lines)+"\n")
+open('/home/wangchao/software/taskflow-v2.0/tmp/mn2inse4/shells_and_cutoffs.md','w').write("\n".join(lines)+"\n")
 print("\n".join(lines[:40]))
 print("...")
 print("\n".join(lines[-20:]))

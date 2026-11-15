@@ -25,7 +25,7 @@ for tag, f3 in CASES:
     dt=time.time()-t0
     k=np.asarray(ph3.thermal_conductivity.kappa)[0,0]
     inpl=0.5*(k[0]+k[1])
-    print(f"{tag:12s} fc3shape={fc3.shape} RTA {dt:5.0f}s  面内={inpl:8.4f} kzz={k[2]:8.4f}", flush=True)
+    print(f"{tag:12s} fc3shape={fc3.shape} RTA {dt:5.0f}s  in-plane={inpl:8.4f} kzz={k[2]:8.4f}", flush=True)
     json.dump({"case":tag,"cutoff_A":float(tag.split('_')[-1].replace('p','.')) if tag!="prod_6p45" else 6.45,
                "method":"RTA","inplane":float(inpl),"kappa_zz":float(k[2]),"seconds":round(dt,1)},
               open(f"/tmp/kx_{tag}.json","w"), indent=2)

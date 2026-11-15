@@ -55,7 +55,7 @@ for c3 in CUTS:
         rows.append(dict(c3=float(c3),method=m,fit=fit_row(m,c3),kappa=km(m,c3),ho=ho))
 json.dump(rows,open(os.path.join(RES,"mni4_table.json"),"w"),indent=1,default=str)
 
-print("### A. 拟合质量 + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)")
+print("### A. Fit quality + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)")
 print()
 print("| c3 (A) | method | p (free IFC) | nnz | alpha_opt | RMSE_CV (eV/A) | RMSE in-sample | rel err | held-out OLS | held-out LASSO | held-out ALASSO | kxx (W/mK) | kzz (W/mK) |")
 print("|"+"---|"*13)
@@ -72,7 +72,7 @@ for r in rows:
         ("%.4f"%k[0]) if k else "-",("%.4f"%k[2]) if k else "-"))
 
 print()
-print("### B. 独立方法 symfc (对称适应最小二乘, fc2 不截断 + fc3 截断)")
+print("### B. Independent method symfc (symmetry-adapted least squares, fc2 no cutoff + fc3 cutoff)")
 print()
 print("| c3 (A) | kxx (W/mK) | kyy | kzz |")
 print("|---|---|---|---|")
@@ -82,6 +82,6 @@ for c3 in CUTS:
     else: print("| %s | - | - | - |"%c3)
 
 print()
-print("### C. mesh 收敛 (c3=4.30, LASSO+HARM_DENSE)")
+print("### C. mesh convergence (c3=4.30, LASSO+HARM_DENSE)")
 for ln in rd(os.path.join(RES,"mesh_kappa.txt")).splitlines():
     print(ln)

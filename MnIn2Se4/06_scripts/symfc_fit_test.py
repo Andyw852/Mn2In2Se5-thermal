@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-独立的 phono3py + symfc 拟合脚本 (fc2 + fc3)
-仅做拟合，不提交任何作业，输出 fc2.hdf5, fc3.hdf5, phono3py_params.yaml
+Standalone phono3py + symfc fitting script (fc2 + fc3)
+Fitting only, submits nothing; writes fc2.hdf5, fc3.hdf5, phono3py_params.yaml
 """
 
 import os
@@ -12,50 +12,50 @@ from phonopy.structure.cells import get_supercell
 from phono3py import Phono3py
 from phono3py.file_IO import write_fc2_to_hdf5, write_fc3_to_hdf5
 
-# ---------- 参数配置 ----------
-PRIM_FILE = "POSCAR"            # 原胞
-SPOSCAR_FILE = "SPOSCAR"        # 超胞 (VASP 用的胞)
+# ---------- configuration ----------
+PRIM_FILE = "POSCAR"            # primitive cell
+SPOSCAR_FILE = "SPOSCAR"        # supercell (the cell used by VASP)
 DISPS_FILE = "dataset_disps.npy"
 FORCES_FILE = "dataset_forces.npy"
-FC3_CUTOFF = 5.5                # 截断半径 (Å)，设为 None 表示不截断
-BORN_FILE = "BORN"              # 可选，如存在则读入 NAC
+FC3_CUTOFF = 5.5                # cutoff radius (Å); set to None for no cutoff
+BORN_FILE = "BORN"              # optional; NAC is read in if the file exists
 
-# ----- 抽帧控制（可减少用于拟合的结构数）-----
-NDATA = "all"                   # 可设为整数，比如 20，只取前 N 帧或均匀抽样
-MODE = "even"                   # "even" 或 "head"
+# ----- frame subsampling (can reduce the number of structures used) -----
+NDATA = "all"                   # may be an integer, e.g. 20: first N frames or evenly sampled
+MODE = "even"                   # "even" or "head"
 
 # ---------------------------------------------
 
 def main():
-    # 1. 读入
+    # 1. load
     uc = read_vasp(PRIM_FILE)
     sc_vasp = read_vasp(SPOSCAR_FILE)
-    disps_in = np.load(DISPS_FILE)      # (nframe+1, natom, 3) 分数坐标
+    disps_in = np.load(DISPS_FILE)      # (nframe+1, natom, 3) fractional coordinates
     forces_in = np.load(FORCES_FILE)    # (nframe+1, natom, 3) eV/Å
     natom = len(sc_vasp.numbers)
     assert disps_in.shape[1] == natom == forces_in.shape[1], \
-        "原子数不匹配"
+        "atom count mismatch"
 
-    # 2. 自动反推超胞矩阵 (pymatgen → phonopy 约定)
+    # 2. infer the supercell matrix (pymatgen → phonopy convention)
     R = sc_vasp.cell @ np.linalg.inv(uc.cell)
     M_pmg = np.round(R).astype(int)
     if not np.allclose(R, M_pmg, atol=1e-4):
-        sys.exit(f"SPOSCAR 晶格不是 POSCAR 的整数倍组合\nR=\n{R}")
-    M = M_pmg.T   # 转置为 phonopy 列约定
+        sys.exit(f"the SPOSCAR lattice is not an integer combination of POSCAR\nR=\n{R}")
+    M = M_pmg.T   # transpose to the phonopy column convention
     if np.linalg.det(M) < 0:
-        M = M[:, [1, 0, 2]]   # 修手性
-    print(f"超胞矩阵 M (phonopy约定):\n{M}\ndet = {int(round(np.linalg.det(M)))}")
+        M = M[:, [1, 0, 2]]   # fix handedness
+    print(f"supercell matrix M (phonopy convention):\n{M}\ndet = {int(round(np.linalg.det(M)))}")
 
-    # 3. 位移和力：扣除平衡帧
+    # 3. displacements and forces: subtract the equilibrium frame
     eq_frac = disps_in[-1]
     d_frac = disps_in[:-1] - eq_frac[None]
-    d_frac -= np.round(d_frac)          # 最小镜像
-    u_vasp = d_frac @ sc_vasp.cell      # 笛卡尔位移
+    d_frac -= np.round(d_frac)          # minimum image
+    u_vasp = d_frac @ sc_vasp.cell      # Cartesian displacements
     f_vasp = forces_in[:-1] - forces_in[-1][None]
     ntot = len(u_vasp)
-    print(f"总训练帧数: {ntot}, 平衡残余力 max = {np.linalg.norm(forces_in[-1], axis=1).max():.5f} eV/Å")
+    print(f"total training frames: {ntot}, max equilibrium residual force = {np.linalg.norm(forces_in[-1], axis=1).max():.5f} eV/Å")
 
-    # 4. 抽帧（可选）
+    # 4. frame subsampling (optional)
     if NDATA == "all":
         idx = np.arange(ntot)
     else:
@@ -70,18 +70,18 @@ def main():
                 idx = np.sort(np.concatenate([idx, rest[:n-len(idx)]]))
     u, f = u_vasp[idx], f_vasp[idx]
     nuse = len(u)
-    print(f"参与拟合: {nuse} 帧 → {nuse*natom*3} 个力方程")
+    print(f"used in the fit: {nuse} frames → {nuse*natom*3} force equations")
     with open("ndata_used.txt", "w") as fo:
         fo.write(str(nuse))
 
-    # 5. 原子映射：保证 VASP 超胞和 phonopy 超胞原子顺序一致
+    # 5. atom mapping: make the VASP and phonopy supercells use the same atom order
     sc_ph = get_supercell(uc, M)
     assert len(sc_ph.numbers) == natom
-    # 验证两胞晶格是否同一超晶格
+    # check that both cells describe the same superlattice
     T = sc_vasp.cell @ np.linalg.inv(sc_ph.cell)
     if not (np.allclose(T, np.round(T), atol=1e-5) and abs(abs(np.linalg.det(T))-1.0)<1e-6):
-        sys.exit("两个超胞不描述同一超晶格，检查矩阵")
-    # 根据坐标寻找置换
+        sys.exit("the two supercells do not describe the same superlattice, check the matrix")
+    # find the permutation from the coordinates
     cart_va = sc_vasp.scaled_positions @ sc_vasp.cell
     fp_va = cart_va @ np.linalg.inv(sc_ph.cell)
     fp_ph = sc_ph.scaled_positions
@@ -94,37 +94,37 @@ def main():
         dist[used] = np.inf
         j = int(dist.argmin())
         if dist[j] > 1e-3 or sc_vasp.numbers[j] != sc_ph.numbers[i]:
-            sys.exit(f"原子映射失败 i={i}, min dist={dist[j]:.4f}")
+            sys.exit(f"atom mapping failed i={i}, min dist={dist[j]:.4f}")
         perm[i] = j; used[j] = True
     u = u[:, perm]
     f = f[:, perm]
-    print("原子映射完成")
+    print("atom mapping done")
 
-    # 6. 拟合
+    # 6. fit
     ph3 = Phono3py(uc, supercell_matrix=M, primitive_matrix=np.eye(3))
     ph3.dataset = {"displacements": u, "forces": f}
     # fc2
-    print("\n拟合 fc2 ...")
+    print("\nfitting fc2 ...")
     ph3.produce_fc2(fc_calculator="symfc")
     # fc3
     opts = None if FC3_CUTOFF is None else f"cutoff = {FC3_CUTOFF}"
-    print(f"拟合 fc3 (options: {opts}) ...")
+    print(f"fitting fc3 (options: {opts}) ...")
     ph3.produce_fc3(fc_calculator="symfc", fc_calculator_options=opts)
 
-    # 7. 写出
+    # 7. write out
     p2s = ph3.primitive.p2s_map
     write_fc2_to_hdf5(ph3.fc2, filename="fc2.hdf5", p2s_map=p2s)
     write_fc3_to_hdf5(ph3.fc3, filename="fc3.hdf5", p2s_map=p2s)
 
-    # 8. NAC（如果有 BORN）
+    # 8. NAC (if BORN is present)
     if os.path.isfile(BORN_FILE):
         from phonopy.file_IO import parse_BORN
         ph3.nac_params = parse_BORN(ph3.primitive, filename=BORN_FILE)
-        print(f"已读入 {BORN_FILE}")
+        print(f"read in {BORN_FILE}")
     ph3.save("phono3py_params.yaml")
-    print("✅ 已输出 fc2.hdf5, fc3.hdf5, phono3py_params.yaml")
+    print("✅ wrote fc2.hdf5, fc3.hdf5, phono3py_params.yaml")
 
-    # 9. 验证力误差
+    # 9. check the force error
     fc2 = ph3.fc2 if ph3.fc2.shape[0] == natom else None
     fc3 = ph3.fc3 if ph3.fc3.shape[0] == natom else None
     if fc2 is not None and fc3 is not None:
@@ -136,7 +136,7 @@ def main():
         with open("rel_err.txt", "w") as fo:
             fo.write(f"{err:.6f}")
     else:
-        print("ℹ️  compact fc, 跳过力验证")
+        print("ℹ️  compact fc, skipping the force check")
 
 if __name__ == "__main__":
     main()

@@ -1,32 +1,39 @@
 #!/usr/bin/env python3
-"""从 4x4x2 的 fc2 提取层法向声速，和 DFT 弹性常数对照。
+"""Extract the layer-normal sound velocity from the 4x4x2 fc2 and compare it with
+the DFT elastic constants.
 
-⚠️ 踩过的坑（2026-11-13 用户核查 + 本脚本复核确认）：
+⚠️ Pitfalls hit before (user review 2026-11-13 + re-checked by this script):
 
-1. **phonopy 的 q 用「所选定原胞」的倒空间坐标，不是 POSCAR 原胞。**
-   本次 `primitive_matrix="auto"` 把原胞换成了菱方原胞（7 原子），
-   新原胞的 b1/b2/b3 与层法向夹角都是 84.91°（几乎沿层面）。
-   POSCAR 的 a1、a2 在层面内 → 层法向 = (0,0,1)_POSCAR。
-   同一个层间方向在两套坐标里：
+1. **phonopy q points use the reciprocal-space coordinates of the *chosen
+   primitive* cell, not of the POSCAR cell.**
+   Here `primitive_matrix="auto"` switched the primitive cell to the rhombohedral
+   one (7 atoms), whose b1/b2/b3 all make an angle of 84.91° with the layer normal
+   (i.e. they lie almost in the layer plane).
+   a1 and a2 of the POSCAR lie in the plane → layer normal = (0,0,1)_POSCAR.
+   The same interlayer direction in the two sets of coordinates:
         (0,0,t)_POSCAR  ≡  (t,t,t)_phonopy_primitive
-   直接用 (0,0,t) 算频率、再用 POSCAR b3 换算 |q|，会得到 4179/6256 m/s
-   的假值；两套 |b3| 之比 3.760 正好是误差倍数。
+   Computing frequencies directly from (0,0,t) and then converting |q| with the
+   POSCAR b3 gives bogus values of 4179/6256 m/s; the ratio of the two |b3|,
+   3.760, is exactly the error factor.
 
-2. **Γ 点有数值残差**（f0 = 0.000719 THz），低 q 时 ω/q 被它污染、
-   q→0 反而发散。必须拟合 f² = f0² + (v q / 2π/100)²，取斜率开方。
+2. **The Γ point carries a numerical offset** (f0 = 0.000719 THz) that pollutes
+   ω/q at low q and makes q→0 diverge. One must fit
+   f² = f0² + (v q / 2π/100)² and take the square root of the slope.
 
-修正后：TA = 1348.3 m/s（DFT 1338.3，+0.75%），LA = 3118.6（DFT 3253.4，-4.14%），
-C44 = 9.543 GPa（DFT 9.402，+1.50%）。窗口 t≤0.005~0.040 结果稳定。
+After the fix: TA = 1348.3 m/s (DFT 1338.3, +0.75%), LA = 3118.6 (DFT 3253.4,
+-4.14%), C44 = 9.543 GPa (DFT 9.402, +1.50%). The result is stable for
+t≤0.005~0.040.
 
-用法：
-    python sound_velocity.py <含 fc2.hdf5 与 phonopy_disp.yaml 的目录>
+Usage:
+    python sound_velocity.py <directory containing fc2.hdf5 and phonopy_disp.yaml>
 """
 import sys
 import numpy as np
 import phonopy
 from phono3py.file_IO import read_fc2_from_hdf5
 
-# DFT 弹性常数导出的参考声速（同一声子结构密度 5249.3 kg/m^3）
+# reference sound velocities derived from the DFT elastic constants (same phonon
+# structure, density 5249.3 kg/m^3)
 REF_TA = 1338.319
 REF_LA = 3253.408
 REF_C44_GPa = 9.402
@@ -39,21 +46,21 @@ def main(d):
 
     uc = ph.unitcell
     pc = ph.primitive
-    # ★ 关键：用 primitive 的倒格矢，不是 unitcell 的
+    # ★ key point: use the primitive reciprocal vectors, not the unitcell ones
     Bp = 2 * np.pi * np.linalg.inv(np.asarray(pc.cell)).T
     rho = pc.masses.sum() / pc.volume * 1.66053906660e-27 / 1e-30
 
     a1, a2 = np.asarray(uc.cell)[0], np.asarray(uc.cell)[1]
     n = np.cross(a1, a2)
     n /= np.linalg.norm(n)
-    print(f"phonopy primitive 原子数 = {len(pc)}")
-    print(f"层法向 (Cartesian) = {np.round(n, 6)}")
+    print(f"phonopy primitive atom count = {len(pc)}")
+    print(f"layer normal (Cartesian) = {np.round(n, 6)}")
     for i in range(3):
         ang = np.degrees(np.arccos(min(1.0, abs(Bp[i] @ n) / np.linalg.norm(Bp[i]))))
-        print(f"  primitive b{i+1} 与层法向夹角 = {ang:.2f} deg")
+        print(f"  angle between primitive b{i+1} and the layer normal = {ang:.2f} deg")
     print(f"rho = {rho:.1f} kg/m^3\n")
-    print("层法向 = phonopy primitive 的 (t,t,t) 方向")
-    print("拟合 f^2 = f0^2 + (v·q/2π/100)^2（扣 Γ 点残差）\n")
+    print("layer normal = the (t,t,t) direction of the phonopy primitive")
+    print("fitting f^2 = f0^2 + (v·q/2π/100)^2 (removing the Γ-point offset)\n")
 
     ref = np.array([REF_TA, REF_TA, REF_LA])
     for win in (0.005, 0.010, 0.020, 0.040):
@@ -75,14 +82,14 @@ def main(d):
             f0.append(np.sqrt(max(intercept, 0.0)))
         v = np.array(v)
         dev = (v / ref - 1) * 100
-        print(f"窗口 t<={win:.3f}: f0={f0[0]:.6f} THz  "
+        print(f"window t<={win:.3f}: f0={f0[0]:.6f} THz  "
               f"TA1={v[0]:.1f} TA2={v[1]:.1f} LA={v[2]:.1f} m/s  "
-              f"(偏差 {dev[0]:+.2f}% {dev[1]:+.2f}% {dev[2]:+.2f}%)")
+              f"(deviation {dev[0]:+.2f}% {dev[1]:+.2f}% {dev[2]:+.2f}%)")
         print(f"                    C44={rho*v[0]**2/1e9:.3f} GPa "
               f"(DFT {REF_C44_GPa}, {(rho*v[0]**2/1e9/REF_C44_GPa-1)*100:+.2f}%)")
     print()
-    print(f"DFT 弹性常数参考: TA={REF_TA:.1f} LA={REF_LA:.1f} m/s, C44={REF_C44_GPa} GPa")
-    print("※ 为什么是 (t,t,t)：见本文件顶部注释第 1 条。")
+    print(f"DFT elastic-constant reference: TA={REF_TA:.1f} LA={REF_LA:.1f} m/s, C44={REF_C44_GPa} GPa")
+    print("※ why (t,t,t): see note 1 in the header of this file.")
 
 
 if __name__ == "__main__":

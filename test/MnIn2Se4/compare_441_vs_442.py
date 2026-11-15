@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
-"""同一坐标约定下对比 4x4x1 与 4x4x2 的层间声速。
+"""Compare the interlayer sound velocities of 4x4x1 and 4x4x2 under the same
+coordinate convention.
 
-背景：4x4x1 + BHH 报出层间 TA 只有 ~317 m/s，怀疑超胞沿 c 太短漏掉层间长程力常数，
-故用 4x4x2 重算。本脚本用**同一套** phonopy 原胞倒空间约定复核两者，
-确认差异不是取法造成的。
+Background: 4x4x1 + BHH reported an interlayer TA velocity of only ~317 m/s, so we
+suspected the supercell was too short along c and missed long-range interlayer
+force constants, hence the 4x4x2 recomputation. This script re-checks both with
+**one and the same** phonopy primitive reciprocal-space convention, to confirm the
+difference is not an artifact of the convention.
 
-⚠️ 约定要点（详见 sound_velocity.py 顶部注释）：
-  - phonopy 的 q 用「所选定原胞」的倒空间坐标。4x4x1 与 4x4x2 的 fit 都用了
-    primitive_matrix = [[1,1,2],[-1,-2,-1],[1,1,1]]（菱方），其 b1/b2/b3 与
-    层法向夹角都是 84.91 度。层法向 = (0,0,1)_POSCAR = (t,t,t)_primitive。
-  - Gamma 残差用 f^2 = f0^2 + (v q / 2pi/100)^2 扣掉。
+⚠️ Convention details (see the header of sound_velocity.py):
+  - phonopy q points use the reciprocal-space coordinates of the chosen primitive
+    cell. The fits for both 4x4x1 and 4x4x2 used
+    primitive_matrix = [[1,1,2],[-1,-2,-1],[1,1,1]] (rhombohedral), whose b1/b2/b3
+    all make an angle of 84.91 deg with the layer normal.
+    Layer normal = (0,0,1)_POSCAR = (t,t,t)_primitive.
+  - The Gamma-offset is removed with f^2 = f0^2 + (v q / 2pi/100)^2.
 
-用法：python compare_441_vs_442.py
+Usage: python compare_441_vs_442.py
 """
 import json
 import numpy as np
@@ -62,13 +67,13 @@ def main():
          f"{d}/fc2_442_phonon/fc2.hdf5"),
     ]
     report = {"reference": REF, "primitive_matrix": P_MATRIX, "cases": {}}
-    print("层间（层法向）声速：同一套 phonopy 原胞倒空间约定\n")
-    print(f"{'超胞':<8} {'TA1':>8} {'TA2':>8} {'LA':>9} {'C44(GPa)':>10} "
-          f"{'TA偏差':>9} {'LA偏差':>9}")
+    print("Interlayer (layer-normal) sound velocities: one and the same phonopy primitive reciprocal-space convention\n")
+    print(f"{'supercell':<8} {'TA1':>8} {'TA2':>8} {'LA':>9} {'C44(GPa)':>10} "
+          f"{'TA dev':>9} {'LA dev':>9}")
     print("-" * 70)
     for name, sm, fc2 in cases:
         res, rho = speeds(uc, sm, fc2)
-        r = res[1]  # t<=0.01 窗口作代表
+        r = res[1]  # use the t<=0.01 window as representative
         v = r["v_m_s"]
         dev_ta = (v[0] / REF["TA"] - 1) * 100
         dev_la = (v[2] / REF["LA"] - 1) * 100
@@ -79,11 +84,12 @@ def main():
     print(f"{'DFT':<8} {REF['TA']:>8.1f} {REF['TA']:>8.1f} {REF['LA']:>9.1f} "
           f"{REF['C44_GPa']:>10.3f}")
     print()
-    print("结论：4x4x1 的层间 TA 确实只有 ~323 m/s（旧报的 317 基本正确，不是基底混用），")
-    print("      4x4x2 升到 1348 m/s，与 DFT 的 1338 差 0.75% —— C44 过软问题已修复。")
+    print("Conclusion: the 4x4x1 interlayer TA really is only ~323 m/s (the old report of 317")
+    print("      is essentially correct, not a basis mix-up); 4x4x2 rises to 1348 m/s, 0.75%")
+    print("      away from the DFT value of 1338 -- the too-soft C44 problem is fixed.")
     with open("compare_441_vs_442_results.json", "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=2)
-    print("\n结果已写入 compare_441_vs_442_results.json")
+    print("\nresults written to compare_441_vs_442_results.json")
 
 
 if __name__ == "__main__":

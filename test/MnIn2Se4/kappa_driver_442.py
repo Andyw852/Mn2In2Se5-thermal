@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
-"""绕开 AutoZT 直接用 phono3py 算 κ：fc2(4x4x2) + fc3(4x4x1)。
+"""Compute κ with phono3py directly, bypassing AutoZT: fc2(4x4x2) + fc3(4x4x1).
 
-为什么能混用超胞
-----------------
-phono3py 支持 fc2 用比 fc3 更大的超胞（`phonon_supercell_matrix`）。
-这里 fc3 是 4x4x1（112 原子），fc2 是 4x4x2（224 原子）。
+Why the supercells can be mixed
+-------------------------------
+phono3py allows fc2 to use a larger supercell than fc3 (`phonon_supercell_matrix`).
+Here fc3 is 4x4x1 (112 atoms) and fc2 is 4x4x2 (224 atoms).
 
-⚠️ 为什么必须换 fc2
-------------------
-旧的 4x4x1 fc2 沿层法向的横波声速只有 322.9 m/s（DFT 弹性常数给 1338.3），
-声子色散被人为压软 → κzz 被严重低估。4x4x2 fc2 的同支声速 1348.3 m/s
-（+0.75%），色散正确。
+⚠️ Why fc2 must be replaced
+---------------------------
+The old 4x4x1 fc2 gives a transverse sound velocity of only 322.9 m/s along the
+layer normal (DFT elastic constants give 1338.3), so the phonon dispersion was
+artificially softened → κzz was strongly underestimated. The same branch from the
+4x4x2 fc2 gives 1348.3 m/s (+0.75%), i.e. a correct dispersion.
 
-用法
-----
-    python kappa_driver_442.py            # RTA + LBTE 都跑
-    python kappa_driver_442.py --rta      # 只跑 RTA（约 2 分钟/例）
-    python kappa_driver_442.py --lbte     # 只跑 LBTE（约 15 分钟/例）
+Usage
+-----
+    python kappa_driver_442.py            # run both RTA and LBTE
+    python kappa_driver_442.py --rta      # run RTA only (about 2 min per case)
+    python kappa_driver_442.py --lbte     # run LBTE only (about 15 min per case)
 
-输出：kappa_results_442.json
+Output: kappa_results_442.json
 """
 import argparse
 import json
@@ -29,15 +30,15 @@ import phono3py
 from phonopy.interface.vasp import read_vasp
 from phono3py.file_IO import read_fc2_from_hdf5, read_fc3_from_hdf5
 
-# --- 路径（按仓库 test/MnIn2Se4 布局；需先 pip install phonopy phono3py）---
+# --- paths (following the repo test/MnIn2Se4 layout; pip install phonopy phono3py first) ---
 ROOT = "."
 POSCAR = f"{ROOT}/fit/POSCAR"
 FC3 = f"{ROOT}/fit_cut3_6p45/fc3.hdf5"          # 4x4x1, cutoff 6.45 A
-FC2_441 = f"{ROOT}/fit_cut3_6p45/fc2.hdf5"      # 4x4x1（旧，对照用）
-FC2_442 = f"{ROOT}/fc2_442_phonon/fc2.hdf5"     # 4x4x2（新）
+FC2_441 = f"{ROOT}/fit_cut3_6p45/fc2.hdf5"      # 4x4x1 (old, for comparison)
+FC2_442 = f"{ROOT}/fc2_442_phonon/fc2.hdf5"     # 4x4x2 (new)
 
 SUPERCELL_FC3 = [[4, 0, 0], [0, 4, 0], [0, 0, 1]]
-PHONON_SUPERCELL = {                            # fc2 超胞
+PHONON_SUPERCELL = {                            # fc2 supercell
     "4x4x1": [[4, 0, 0], [0, 4, 0], [0, 0, 1]],
     "4x4x2": [[4, 0, 0], [0, 4, 0], [0, 0, 2]],
 }
@@ -96,12 +97,12 @@ def main():
             r["fc2_path"] = fc2
             out.append(r)
             print(f"[{name}] {r['method']:<4} mesh={r['mesh']} 300K  "
-                  f"面内={r['inplane']:.4f}  kzz={r['kappa_zz']:.4f}  "
-                  f"比值={r['kzz_over_inplane']:.3f}  ({r['seconds']}s)", flush=True)
+                  f"in-plane={r['inplane']:.4f}  kzz={r['kappa_zz']:.4f}  "
+                  f"ratio={r['kzz_over_inplane']:.3f}  ({r['seconds']}s)", flush=True)
 
     json.dump(out, open("kappa_results_442.json", "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
-    print("\n已写 kappa_results_442.json")
+    print("\nwrote kappa_results_442.json")
 
 
 if __name__ == "__main__":

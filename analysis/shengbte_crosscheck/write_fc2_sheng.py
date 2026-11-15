@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""从 phono3py fc2.hdf5 写 ShengBTE FORCE_CONSTANTS_2ND（与修正后的 CONTROL 位置一致）。
-用法: python write_fc2_sheng.py <fcdir> <outdir>
-fcdir 需含 phono3py_disp.yaml + fc2.hdf5
+"""Write ShengBTE FORCE_CONSTANTS_2ND from phono3py fc2.hdf5 (consistent with the
+corrected CONTROL positions).
+Usage: python write_fc2_sheng.py <fcdir> <outdir>
+fcdir must contain phono3py_disp.yaml + fc2.hdf5
 """
 import sys, itertools, numpy as np, h5py, phono3py
 
@@ -10,7 +11,7 @@ p = phono3py.load(fd + "/phono3py_disp.yaml", produce_fc=False, log_level=0)
 uc, sc, prim = p.unitcell, p.supercell, p.primitive
 Lp, Ls = np.asarray(uc.cell), np.asarray(sc.cell)
 fu = uc.scaled_positions % 1.0
-# ★ 修正：把接近 1 的坐标写成 1（而不是 0），与修正后的 CONTROL 一致
+# ★ fix: write coordinates close to 1 as 1 (not 0), consistent with the corrected CONTROL
 fu = np.where(np.abs(fu - 1.0) < 1e-8, 1.0, fu)
 xu = fu @ Lp
 rs = sc.scaled_positions @ Ls
@@ -43,4 +44,4 @@ for ia, a in enumerate(prim.p2s_map):
         for r in range(3):
             lines.append(" %18.10f %18.10f %18.10f" % tuple(m[r]))
 open(od + "/FORCE_CONSTANTS_2ND", "w").write("\n".join(lines) + "\n")
-print("blocks 元组数 %d, max pair distance %.3f A" % (len(lines), maxd))
+print("lines %d, max pair distance %.3f A" % (len(lines), maxd))

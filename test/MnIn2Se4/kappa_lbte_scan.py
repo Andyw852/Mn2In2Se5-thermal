@@ -17,7 +17,7 @@ for tag in ("5p60","6p23","6p45"):
     dt=time.time()-t0
     k=np.asarray(ph3.thermal_conductivity.kappa)[0,0]
     inpl=0.5*(k[0]+k[1])
-    print(f"LBTE {tag:6s} {dt:6.0f}s  面内={inpl:8.4f} kzz={k[2]:8.4f}",flush=True)
+    print(f"LBTE {tag:6s} {dt:6.0f}s  in-plane={inpl:8.4f} kzz={k[2]:8.4f}",flush=True)
     json.dump({"cutoff_A":float(tag.replace('p','.')),"method":"LBTE","mesh":"11 11 11",
                "T_K":[300.0],"inplane":float(inpl),"kappa_zz":float(k[2]),
                "seconds":round(dt,1)},open(f"/tmp/klbte_{tag}.json","w"),indent=2)
