@@ -1,52 +1,54 @@
-# MnIn2Se4 力常数拟合与晶格热导率计算报告
+# MnIn2Se4 force-constant fitting and lattice thermal conductivity report
 
-日期：2026-09-28  |  体系：MnIn2Se4（R-3m #166，原胞 7 原子，3×3×3 超胞 189 原子，45 构型）
-流程：确定壳层与截断 → pheasy 力常数拟合（LASSO/ALASSO + HARM_DENSE，OLS 对照）→ phono3py RTA 计算 κ。
+Date: 2026-09-28  |  System: MnIn2Se4 (R-3m #166, 7-atom primitive cell, 3×3×3 supercell with 189 atoms, 45 configurations)
+Workflow: determine shells and cutoff → pheasy force-constant fitting (LASSO/ALASSO + HARM_DENSE, OLS as control) → κ from phono3py RTA.
+
+> Note: the κ values below come from the 2026-09-28 3×3×3 fit and are superseded — see `../../REPORT_MnIn2Se4_20261115.md`.
 
 ---
 
-## 0. 数据核对与溯源
+## 0. Data verification and provenance
 
-用户提供的 4 个文件：
+The 4 files provided by the user:
 
-- `POSCAR`：原胞，Mn 1 / In 2 / Se 4 = 7 原子。晶格 |a|=|b|=|c|=13.4029 Å、α=17.463°（菱方）；
-  等价六方描述 **a = 4.069 Å，c = 39.586 Å**，说明这是层状化合物（层内共价、层间范德华）。
-- `SPOSCAR`：3×3×3 超胞，189 原子，|a|=|b|=|c|=40.209 Å。
-- `dataset_disps.npy`、`dataset_forces.npy`：形状均为 (46, 189, 3)。
+- `POSCAR`: primitive cell, Mn 1 / In 2 / Se 4 = 7 atoms. Lattice |a|=|b|=|c|=13.4029 Å, α=17.463° (rhombohedral);
+  the equivalent hexagonal description is **a = 4.069 Å, c = 39.586 Å**, which shows that this is a layered compound (intralayer covalent, interlayer van der Waals).
+- `SPOSCAR`: 3×3×3 supercell, 189 atoms, |a|=|b|=|c|=40.209 Å.
+- `dataset_disps.npy`, `dataset_forces.npy`: both have shape (46, 189, 3).
 
-**关键点：`dataset_disps.npy` 里存的是分数坐标（每帧的原子位置），不是位移。**
-判据：第 45 帧（最后一帧）与该数组与 SPOSCAR 的分数坐标逐位相同（最大差 4.4e-16），
-且其力 max=0.0035 eV/Å（平衡帧）；用官方 `tools/prepare_dataset.py --frac --ref -1`
-以该帧为参考做最小镜像求差，得到 45 帧真实位移：
-**位移 rms = 0.0172 Å、max = 0.0794 Å**（正常随机位移量级），力 max = 0.96 eV/Å。
+**Key point: `dataset_disps.npy` stores fractional coordinates (the atomic positions of each frame), not displacements.**
+Evidence: frame 45 (the last frame) of this array agrees with the fractional coordinates of SPOSCAR element by element (maximum difference 4.4e-16),
+and its force max=0.0035 eV/Å (an equilibrium frame); using the official `tools/prepare_dataset.py --frac --ref -1`
+to difference under the minimum-image convention with that frame as the reference yields the 45 real displacement frames:
+**displacement rms = 0.0172 Å, max = 0.0794 Å** (a normal random-displacement magnitude), force max = 0.96 eV/Å.
 
-**溯源（逐字节）**：这 4 个文件就是 pheasy-gpu-gh 自带测试材料 `test/MnIn2Se4/`：
+**Provenance (byte by byte)**: these 4 files are exactly the test material `test/MnIn2Se4/` shipped with pheasy-gpu-gh:
 
-| 文件 | 用户提供 md5 | 官方 test/MnIn2Se4 | 结论 |
+| file | user-provided md5 | official test/MnIn2Se4 | conclusion |
 |---|---|---|---|
-| POSCAR | `cef6af221344890c582da4cfb638f438` | `cef6af22…` | 完全一致 |
-| dataset_disps.npy | `f784694ae79ce1b170cb35987ce76c95` | `f784694a…` | 完全一致 |
-| dataset_forces.npy | `22906b11c42f2f32c0964b6b267c7424` | `22906b11…` | 完全一致 |
-| SPOSCAR | `c702c54dabe657730899e838656be9ba` | `87321de6…` | 同构、原子顺序不同 |
+| POSCAR | `cef6af221344890c582da4cfb638f438` | `cef6af22…` | fully identical |
+| dataset_disps.npy | `f784694ae79ce1b170cb35987ce76c95` | `f784694a…` | fully identical |
+| dataset_forces.npy | `22906b11c42f2f32c0964b6b267c7424` | `22906b11…` | fully identical |
+| SPOSCAR | `c702c54dabe657730899e838656be9ba` | `87321de6…` | same structure, different atom order |
 
-我们用官方 `prepare_dataset.py` 生成的 `disp_matrix.pkl` 与官方同名文件数值最大差 **4e-17**，
-`force_matrix.pkl` md5 **完全相同** → 数据预处理与官方一致，后续结果可复现。
+The `disp_matrix.pkl` generated with the official `prepare_dataset.py` differs from the official file of the same name by a maximum numerical difference of **4e-17**,
+and the md5 of `force_matrix.pkl` is **completely identical** → data preprocessing matches the official pipeline, so the downstream results are reproducible.
 
-> 备注：官方 test 目录另有一份 `dataset_forces_corrected.npy`，与本数据最大差 0.0035 eV/Å
-> （仅为力 rms 的 0.2%），本报告按用户给的原始 `dataset_forces.npy` 计算。
+> Note: the official test directory also contains a `dataset_forces_corrected.npy`, which differs from this data by at most 0.0035 eV/Å
+> (only 0.2% of the force rms); this report uses the original `dataset_forces.npy` supplied by the user.
 
 ---
 
-## 1. 壳层与截断
+## 1. Shells and cutoff
 
-# MnIn2Se4 超胞 (3x3x3, 189 原子) 原子间距壳层与截断选择
+# MnIn2Se4 supercell (3x3x3, 189 atoms): atomic-distance shells and cutoff selection
 
-超胞晶格: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (菱方原胞; 六方描述 a=4.069 A, c=39.586 A)。
-最小镜像上限 (supercell/2) = 20.10 A。
+Supercell lattice: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (rhombohedral primitive cell; hexagonal description a=4.069 A, c=39.586 A).
+Minimum-image limit (supercell/2) = 20.10 A.
 
-## 壳层表 (按距离聚类, tol=1e-3 A)
+## Shell table (clustered by distance, tol=1e-3 A)
 
-| shell | d (A) | 多重度 | 原子对组成 | 到下一壳层间隙 (A) |
+| shell | d (A) | multiplicity | atom-pair composition | gap to next shell (A) |
 |---|---|---|---|---|
 | 0 | 2.5207 | 54 | In-Se x54 |  |
 | 1 | 2.6571 | 162 | In-Se x162 | 0.136 |
@@ -164,31 +166,31 @@
 
 
 
-12 个截断全部落在壳层间隙中，因此改变截断时是"整体加入/移除一个完整壳层"，
-不会出现半个壳层的歧义。
+All 12 cutoffs fall inside shell gaps, so changing the cutoff adds or removes one complete shell as a whole
+and no ambiguity about a half-included shell arises.
 
 ---
 
-## 2. 拟合设置
+## 2. Fitting setup
 
-- 代码：`pheasy-gpu-gh` HEAD `b91da0f`（3090 服务器，conda env `wc`，RTX 3090；`CUDA_VISIBLE_DEVICES=5`）
-- 命令：`FIT_ORDER=3  HARM_DENSE=true  C2_CUTOFF=None  C3_CUTOFF=<c>  NCPU=4`
-  - `HARM_DENSE=true`：二阶力常数 **全稠密**（不截断）且**不加 L1 罚**，只对三阶力常数做稀疏/正则；
-  - 方法：**LASSO + HARM_DENSE**、**ALASSO + HARM_DENSE**（主结果），另做 **OLS** 对照。
-- 训练数据：45 帧 × 189 原子 × 3 = 25515 个力方程；3×3×3 超胞，R-3m 12 个对称操作。
-- 自由 IFC 数 p 从 615（2.85 Å）增长到 3678（7.00 Å）。
-  作为核对：官方 README 记录 c3=5.2 时 p=1303、c3=7.0 时 p=3678，
-  **我们算出的 c3=5.20 → p=1303，c3=7.00 → p=3678，完全一致**，说明簇空间/对称化流程正确。
+- Code: `pheasy-gpu-gh` HEAD `b91da0f` (3090 server, conda env `wc`, RTX 3090; `CUDA_VISIBLE_DEVICES=5`)
+- Command: `FIT_ORDER=3  HARM_DENSE=true  C2_CUTOFF=None  C3_CUTOFF=<c>  NCPU=4`
+  - `HARM_DENSE=true`: the second-order force constants are **fully dense** (no cutoff) and **carry no L1 penalty**; only the third-order force constants are sparsified/regularized;
+  - Methods: **LASSO + HARM_DENSE** and **ALASSO + HARM_DENSE** (main results), plus **OLS** as a control.
+- Training data: 45 frames × 189 atoms × 3 = 25515 force equations; 3×3×3 supercell, 12 symmetry operations of R-3m.
+- The number of free IFCs p grows from 615 (2.85 Å) to 3678 (7.00 Å).
+  As a check: the official README records p=1303 at c3=5.2 and p=3678 at c3=7.0;
+  **we obtain c3=5.20 → p=1303 and c3=7.00 → p=3678, in full agreement**, which shows that the cluster space / symmetrization pipeline is correct.
 
 ---
 
-## 3. 拟合质量与 held-out 力预测误差
+## 3. Fit quality and held-out force-prediction error
 
-- `RMSE in-sample`：在同 45 帧上的力残差（有偏、随参数变多单调下降）；
-- `held-out`：**整构型分组 5 折**交叉验证（把整帧留出，不泄漏），用 `holdout_eval.py` 得到；
-- `RMSE_CV`：拟合内部 L1 路径的 grouped-CV 估计（去偏之前）。
+- `RMSE in-sample`: force residual on the same 45 frames (biased; decreases monotonically as the number of parameters grows);
+- `held-out`: **whole-configuration grouped 5-fold** cross-validation (entire frames are held out, no leakage), obtained with `holdout_eval.py`;
+- `RMSE_CV`: grouped-CV estimate from the internal L1 path of the fit (before debiasing).
 
-### A. 拟合质量 + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)
+### A. Fit quality + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)
 
 | c3 (A) | method | p (free IFC) | nnz | alpha_opt | RMSE_CV (eV/A) | RMSE in-sample | rel err | held-out OLS | held-out LASSO | held-out ALASSO | kxx (W/mK) | kzz (W/mK) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -231,27 +233,27 @@
 
 
 
-**趋势与结论**
+**Trends and conclusions**
 
-1. 力残差（in-sample rel err）随截断单调下降：**0.93%（2.85 Å）→ 0.54%（7.00 Å）**。
-2. **held-out 有明确极小值：6.50 Å（9.94e-4 eV/Å），7.00 Å 回升到 1.01e-3** —— 
-   即 7.0 Å 开始出现轻微过拟合。这是"该用多大截断"的直接依据。
-3. **LASSO ≈ OLS**：多数截断 alpha_opt 被钉在搜索网格的最小端（`A@MIN`），等价于不稀疏；
-   ALASSO 有明显稀疏效果（如 7.00 Å：3678 → 1783 个非零 IFC），
-   但 5.0 Å 以后 held-out 反而比 OLS 高约 1–2%（如 5.50 Å：1.027e-3 vs 1.013e-3），
-   说明**稀疏化对"向前预测力"没有净收益**（它压缩的是三阶项，代价是少许精度）。
-4. 三种方法的 held-out 差异都 **< 2%**，远小于截断带来的差异（约 45%，1.45e-3 → 9.94e-4）。
+1. The force residual (in-sample rel err) decreases monotonically with the cutoff: **0.93% (2.85 Å) → 0.54% (7.00 Å)**.
+2. **held-out has a clear minimum: 6.50 Å (9.94e-4 eV/Å); at 7.00 Å it rises back to 1.01e-3** —
+   i.e. slight overfitting starts to appear at 7.0 Å. This is the direct basis for "how large a cutoff should be used".
+3. **LASSO ≈ OLS**: at most cutoffs alpha_opt is pinned to the smallest end of the search grid (`A@MIN`), which is equivalent to no sparsification;
+   ALASSO has a clear sparsifying effect (e.g. at 7.00 Å: 3678 → 1783 non-zero IFCs),
+   but beyond 5.0 Å its held-out error is instead about 1–2% higher than OLS (e.g. at 5.50 Å: 1.027e-3 vs 1.013e-3),
+   which shows that **sparsification gives no net gain in "predictive power for forces"** (it compresses the third-order terms at the cost of a little accuracy).
+4. The held-out differences among the three methods are all **< 2%**, far smaller than the differences caused by the cutoff (about 45%, 1.45e-3 → 9.94e-4).
 
 ---
 
-## 4. 晶格热导率 κ
+## 4. Lattice thermal conductivity κ
 
-设置：`phono3py 4.4.0`，11×11×11 q-mesh，300 K，RTA，含同位素散射；
-supercell=[[3,0,0],[0,3,0],[0,0,3]]，primitive=`POSCAR`。
-κ 张量对角：κ_xx = κ_yy（面内），κ_zz（跨层）；此晶胞 Cartesian z 轴即六方 c 轴，
-所以 κ_xx/κ_yy = 层内热导率，κ_zz = 跨层热导率。
+Setup: `phono3py 4.4.0`, 11×11×11 q-mesh, 300 K, RTA, including isotope scattering;
+supercell=[[3,0,0],[0,3,0],[0,0,3]], primitive=`POSCAR`.
+κ tensor diagonal: κ_xx = κ_yy (in-plane), κ_zz (cross-layer); the Cartesian z axis of this cell is the hexagonal c axis,
+so κ_xx/κ_yy is the intralayer thermal conductivity and κ_zz the cross-layer thermal conductivity.
 
-### 4.1 κ 随三阶截断的变化（W/mK）
+### 4.1 Variation of κ with the third-order cutoff (W/mK)
 
 | c3 (Å) | OLS κxx | LASSO κxx | ALASSO κxx | OLS κzz | LASSO κzz | ALASSO κzz |
 |---|---|---|---|---|---|---|
@@ -268,21 +270,21 @@ supercell=[[3,0,0],[0,3,0],[0,0,3]]，primitive=`POSCAR`。
 | 6.50 | 3.1958 | 3.2805 | 3.3703 | 0.7817 | 0.8385 | 0.8922 |
 | 7.00 | 2.9873 | 3.0545 | 3.1752 | 0.5927 | 0.5821 | 0.6293 |
 
-**结论：κ 随截断强烈非单调，没有出现平台。**
+**Conclusion: κ is strongly non-monotonic with the cutoff, and no plateau appears.**
 
-- 2.85–3.70 Å（只有最近邻 In–Se / Mn–Se）：κ_xx ≈ 5.1–5.2，κ_zz ≈ 3.5–4.0（三阶项严重不足，
-  散射被低估，κ 偏高）；
-- 3.95 Å：3.84 / 1.03；
-- **4.30 Å：全局最小 2.69 / 0.50**；
-- 4.70–5.80 Å：κ_xx 在 **3.73–3.97** 之间形成一段"假平台"，κ_zz 在 5.20 Å 达到最大 1.95–2.13；
-- 6.10 Å 以后又下降：3.26–3.37（6.50）→ 2.99–3.18（7.00），κ_zz 掉到 0.58–0.63。
+- 2.85–3.70 Å (only nearest-neighbour In–Se / Mn–Se): κ_xx ≈ 5.1–5.2, κ_zz ≈ 3.5–4.0 (the third-order terms are severely incomplete,
+  scattering is underestimated and κ is too high);
+- 3.95 Å: 3.84 / 1.03;
+- **4.30 Å: global minimum, 2.69 / 0.50**;
+- 4.70–5.80 Å: κ_xx forms a "false plateau" between **3.73 and 3.97**, and κ_zz reaches its maximum 1.95–2.13 at 5.20 Å;
+- after 6.10 Å it decreases again: 3.26–3.37 (6.50) → 2.99–3.18 (7.00), and κ_zz drops to 0.58–0.63.
 
-也就是说，**6.5–7.0 Å 附近 κ 仍在明显变化，不能认为收敛**。这与 held-out RMSE 的
-6.50 Å 极小值一致（拟合精度最优点在 6.5 Å，但 κ 并未因此"稳定"）。
+In other words, **κ is still changing appreciably around 6.5–7.0 Å and cannot be considered converged**. This is consistent with the
+6.50 Å minimum of the held-out RMSE (the optimum of fit accuracy lies at 6.5 Å, but κ does not become "stable" as a result).
 
-### 4.2 独立方法 symfc 交叉验证
+### 4.2 Cross-validation with the independent method symfc
 
-用 `symfc 1.7.3`（对称适应最小二乘、完全不同的求解路径）在同数据上拟合 fc2+fc3：
+Using `symfc 1.7.3` (symmetry-adapted least squares, a completely different solution path) to fit fc2+fc3 on the same data:
 
 | c3 (Å) | symfc κxx | symfc κzz | pheasy κxx (OLS) | pheasy κzz (OLS) |
 |---|---|---|---|---|
@@ -290,55 +292,55 @@ supercell=[[3,0,0],[0,3,0],[0,0,3]]，primitive=`POSCAR`。
 | 4.30 | 2.6819 | 0.4774 | 2.6939 | 0.5022 |
 | 7.00 | 2.8134 | 0.4995 | 2.9873 | 0.5927 |
 
-2.85 / 4.30 Å 处两者差 < 1%；7.00 Å 处差 6–16%（三阶项多、病态性增强所致，
-但量级和趋势一致）。**说明 pheasy 拟合结果可信。**
+At 2.85 / 4.30 Å the two differ by < 1%; at 7.00 Å they differ by 6–16% (caused by the larger number of third-order terms and the
+stronger ill-conditioning, but the magnitude and the trend agree). **This shows that the pheasy fits are credible.**
 
-### 4.3 q-mesh 收敛性（c3=4.30, LASSO+HARM_DENSE）
+### 4.3 q-mesh convergence (c3=4.30, LASSO+HARM_DENSE)
 
 | mesh | κxx | κzz |
 |---|---|---|
 | 11³ | 2.6938 | 0.5018 |
 | 15³ | 2.6214 | 0.4449 |
 
-11³ → 15³：κ_xx 降 2.7%，κ_zz 降 11.4%。11³ 对 κ_zz 尚未完全收敛（21³ 因内存/被杀未完成）。
-因此上表的绝对值有 ~10% 量级的网格误差，**但"随截断非单调、无平台"的结论不受网格影响**
-（不同截断用同一网格对比）。
+11³ → 15³: κ_xx drops by 2.7% and κ_zz by 11.4%. The 11³ mesh is not yet fully converged for κ_zz (the 21³ run did not complete, owing to memory / being killed).
+Therefore the absolute values in the table above carry a mesh error of order ~10%, **but the conclusion "non-monotonic with the cutoff, no plateau" is unaffected by the mesh**
+(the different cutoffs are compared on the same mesh).
 
-### 4.4 动态稳定性
+### 4.4 Dynamic stability
 
-39 个拟合（36 pheasy + 3 symfc）在 11³ mesh 上**全部 0 个虚频**，最负频率 −3.8e-5 THz
-（Γ 点声学模数值零），最高频率 ≈ 7.73 THz 且各截断几乎一致 → 二阶力常数已收敛且动力学稳定。
-
----
-
-## 5. 总体结论与建议
-
-1. **流程已被证明正确**：数据预处理与官方逐位一致；p(c3=5.2)=1303、p(c3=7.0)=3678
-   与官方一致；symfc 独立复现 κ（<1% @4.3 Å）。
-2. **κ 没有平台**：κ_xx 在 4.7–5.8 Å 有一段"看起来平"的区域（3.7–4.0），
-   但 6.1 Å 后重新下降，直到 7.0 Å 仍在变；κ_zz 从 2.13（5.20 Å）单调降到 0.59（7.00 Å）。
-   当前 189 原子（3×3×3，最大可用原子间距 20.1 Å）本身允许更大截断，
-   但**三阶力常数的有效程超过 6 Å**，需要更大的超胞才能收敛。
-3. **方法选择**：这个体系上 LASSO 基本退化为 OLS（alpha 钉在网格最小端）；
-   ALASSO 能明显稀疏三阶项（7.0 Å：3678→1783），但 held-out 力预测略差于 OLS。
-   若目标是"最可靠 κ"，推荐 **OLS / ALASSO + HARM_DENSE、截断取 6.5 Å 附近**；
-   若目标是"最省 IFC"，ALASSO 可用，但需接受 ~1–2% 的力预测损失。
-4. **后续建议**：
-   - κ 收敛：把超胞扩到 4×4×4（若 DFT 数据允许）或至少扫描更密的 q-mesh（≥15³）；
-   - 如需报告绝对值，建议 15³ 起步并对每个截断统一网格；
-   - 层状体系可考虑用 2D 模型/有限厚度修正，此处 3×3×3 已含 3 层，κ_zz 已包含层间散射。
+All 39 fits (36 pheasy + 3 symfc) show **0 imaginary frequencies** on the 11³ mesh; the most negative frequency is −3.8e-5 THz
+(numerically zero, the Γ-point acoustic modes), and the highest frequency is ≈ 7.73 THz, essentially the same for every cutoff → the second-order force constants are converged and the dynamics is stable.
 
 ---
 
-## 6. 归档清单
+## 5. Overall conclusions and recommendations
 
-- `01_结构/`：POSCAR、SPOSCAR
-- `02_数据集/`：原始 npy + disp/force_matrix.pkl + alignment + ndata
-- `03_拟合结果/`：36 个 pheasy 目录（POSCAR/fc2.hdf5/fc3.hdf5/run.log）+ 3 个 symfc 目录
-- `04_热导率/`：κ 汇总、NU 重生成日志、mesh 收敛
-- `05_脚本/`：拟合驱动、κ 求解器、symfc 脚本、汇总脚本、官方 pheasy_fit.sh(v6c)、prepare_dataset.py
-- `06_heldout_RMSE/`：整构型 5 折 held-out 日志
-- `07_kappa原始输出_kappa_hdf5/`：39 个 `kappa-m111111.hdf5`（包含 frequency / gamma / gamma_N /
+1. **The workflow has been shown to be correct**: data preprocessing agrees with the official version element by element; p(c3=5.2)=1303 and p(c3=7.0)=3678
+   agree with the official values; symfc independently reproduces κ (<1% @4.3 Å).
+2. **κ has no plateau**: κ_xx has a region between 4.7 and 5.8 Å that "looks flat" (3.7–4.0),
+   but it falls again after 6.1 Å and is still changing up to 7.0 Å; κ_zz decreases monotonically from 2.13 (5.20 Å) to 0.59 (7.00 Å).
+   The present 189-atom cell (3×3×3, maximum usable interatomic distance 20.1 Å) would itself allow a larger cutoff,
+   but **the effective range of the third-order force constants exceeds 6 Å**, so a larger supercell is needed for convergence.
+3. **Method choice**: on this system LASSO essentially degenerates to OLS (alpha pinned to the smallest grid value);
+   ALASSO sparsifies the third-order terms appreciably (7.0 Å: 3678→1783), but its held-out force prediction is slightly worse than OLS.
+   If the goal is the "most reliable κ", we recommend **OLS / ALASSO + HARM_DENSE with a cutoff near 6.5 Å**;
+   if the goal is the "fewest IFCs", ALASSO is usable, but one must accept a ~1–2% loss in force prediction.
+4. **Follow-up recommendations**:
+   - κ convergence: extend the supercell to 4×4×4 (if the DFT data allow) or at least scan a denser q-mesh (≥15³);
+   - if absolute values are to be reported, it is advisable to start from 15³ and use a uniform mesh for every cutoff;
+   - for a layered system one may consider a 2D model / finite-thickness correction; here the 3×3×3 cell already contains 3 layers, so κ_zz already includes interlayer scattering.
+
+---
+
+## 6. Archive inventory
+
+- `01_structures/`: POSCAR, SPOSCAR
+- `02_dataset/`: raw npy + disp/force_matrix.pkl + alignment + ndata
+- `03_fit_results/`: 36 pheasy directories (POSCAR/fc2.hdf5/fc3.hdf5/run.log) + 3 symfc directories
+- `04_kappa/`: κ summary, NU regeneration log, mesh convergence
+- `05_scripts/`: fit driver, κ solver, symfc script, summary script, official pheasy_fit.sh(v6c), prepare_dataset.py
+- `06_heldout_RMSE/`: whole-configuration 5-fold held-out logs
+- `07_kappa_raw_output_kappa_hdf5/`: 39 `kappa-m111111.hdf5` files (containing frequency / gamma / gamma_N /
   gamma_U / gamma_isotope / group_velocity / gv_by_gv / heat_capacity / mode_kappa / kappa /
-  qpoint / weight / grid_point / mesh / temperature），可直接用于绘制声子-声子散射率、
-  模式热导率、累积 κ 等。
+  qpoint / weight / grid_point / mesh / temperature), directly usable for plotting phonon-phonon scattering rates,
+  mode thermal conductivities, cumulative κ, and so on.

@@ -1,33 +1,35 @@
-# MnIn2Se4 晶格热导率计算（fit-fc-thermal）
+# MnIn2Se4 lattice thermal conductivity calculation (fit-fc-thermal)
 
-三方层状范德华材料 MnIn₂Se₄（空间群 R-3m，166；原胞 7 原子，3×3×3 超胞 189 原子，层间距 13.2 Å）的晶格热导率 κ 计算。力常数由 pheasy（ALASSO）从位移-力数据集拟合，phono3py（RTA）算 κ，symfc 做二阶对照。
+Lattice thermal conductivity κ calculation for the trigonal layered van der Waals material MnIn₂Se₄ (space group R-3m, 166; 7-atom primitive cell, 3×3×3 supercell with 189 atoms, interlayer spacing 13.2 Å). The force constants are fitted by pheasy (ALASSO) from the displacement-force dataset, κ is computed by phono3py (RTA), and symfc provides the second-order control.
 
-## 关键结果
+## Key results
 
-| 量 | 值 |
+> Note: the κ values below are superseded — see `../../REPORT_MnIn2Se4_20261115.md`.
+
+| quantity | value |
 |---|---|
-| 面内 κ(300 K) | **4.03 W/m·K**（xx=yy，11→14 网格变化 0.60%，收敛）|
-| 面外 κ(300 K) | **1.68 W/m·K**（zz，11→14 网格变化 8.37%，**未收敛**）|
-| 拟合相对误差 | 0.646%（ALASSO，OLS 极限 α→0，1303 free IFC）|
-| 声子稳定性 | stable，无显著虚频（min_freq −0.019 THz，噪声级）|
-| 三阶截断 | 5.0 Å（largest，安全截断 5.17 Å 下可确定的最大）|
-| 网格 | 14×14×14（mesh_converged=false，cap 触发）|
+| in-plane κ(300 K) | **4.03 W/m·K** (xx=yy, 0.60% change from 11→14 mesh, converged) |
+| out-of-plane κ(300 K) | **1.68 W/m·K** (zz, 8.37% change from 11→14 mesh, **not converged**) |
+| fit relative error | 0.646% (ALASSO, OLS limit α→0, 1303 free IFC) |
+| phonon stability | stable, no significant imaginary frequency (min_freq −0.019 THz, noise level) |
+| third-order cutoff | 5.0 Å (largest, the largest that can be determined under the safe cutoff 5.17 Å) |
+| mesh | 14×14×14 (mesh_converged=false, cap triggered) |
 
-κ(T) 全温度（100–800 K）见 `s2_kappa/kappa_summary.json` 与 `kappa_vs_mesh.png` / `kappa_vs_cutoff.png`。
+The full-temperature κ(T) (100–800 K) is given in `s2_kappa/kappa_summary.json` and in `kappa_vs_mesh.png` / `kappa_vs_cutoff.png`.
 
-## 主要诊断结论
+## Main diagnostic conclusions
 
-1. **zz（面外）方向不收敛**：κ_zz 随网格 1.84 → 1.69（8.4%）仍在下行，是层状材料面外慢收敛的固有表现。
-2. **根因是截断被安全上限卡死**：`supercell_safe_cutoff = 0.5 × 最短垂直高度 − 0.1 ≈ 5.17 Å`，而层间距 13.2 Å，故**跨层三阶力常数被整段切掉**；换 CUT3_PICK=largest（候选 4.3/4.7/5.0，thirdorder −n 第 2/3/4 近邻）也只是更干净，加不进跨层项。截断扫描到 5.0 Å 仍未到 κ 平台（`cutoff_selection.status=not_converged`）。
-3. **ShengBTE 与 phono3py 对本品系差 24×**（ShengBTE 0.159 vs phono3py 3.85，同一套 FORCE_CONSTANTS）：已排除力常数文件格式（FC2 频率一致、FC3 roundtrip 一致）、R 向量缩放、scalebroad、体积、比热、群速度；判定为 ShengBTE 求解器对 7 原子/21 支大体系的三声子散射率虚高（其 RTA 甚至低于自身 small-grain 极限，物理反常）。shengbte-gpu（单卡/多卡）与官方 CPU 版结果一致，排除 GPU fork 的 bug。故 κ 采用 phono3py。
+1. **The zz (out-of-plane) direction is not converged**: κ_zz keeps decreasing with the mesh (1.84 → 1.69, 8.4%), which is the intrinsic slow convergence of out-of-plane transport in layered materials.
+2. **The root cause is that the cutoff is pinned by the safety limit**: `supercell_safe_cutoff = 0.5 × shortest perpendicular height − 0.1 ≈ 5.17 Å`, while the interlayer spacing is 13.2 Å, so **the interlayer third-order force constants are cut off entirely**; switching to CUT3_PICK=largest (candidates 4.3/4.7/5.0, thirdorder −n 2nd/3rd/4th neighbours) only makes it cleaner — it cannot add interlayer terms. The cutoff scan up to 5.0 Å still has not reached a κ plateau (`cutoff_selection.status=not_converged`).
+3. **ShengBTE and phono3py differ by 24× for this compound** (ShengBTE 0.159 vs phono3py 3.85, same FORCE_CONSTANTS): the force-constant file format (FC2 frequencies agree, FC3 roundtrip agrees), R-vector scaling, scalebroad, volume, heat capacity and group velocity have all been ruled out; the conclusion is that the ShengBTE solver overestimates the three-phonon scattering rate for this large 7-atom/21-branch system (its RTA is even below its own small-grain limit, which is physically anomalous). shengbte-gpu (single- and multi-GPU) agrees with the official CPU version, ruling out a bug in the GPU fork. κ is therefore taken from phono3py.
 
-## 目录
+## Directories
 
-- `s1_fit/` — S1 力常数拟合结果（phonon_summary、cutoff_scan、fc_fit_summary、fit_config、fit_manifest、fit_metrics、POSCAR、SPOSCAR）
-- `s2_kappa/` — S2 晶格热导率（kappa_summary、mesh_convergence、kappa_vs_mesh、kappa_vs_cutoff）
+- `s1_fit/` — S1 force-constant fitting results (phonon_summary, cutoff_scan, fc_fit_summary, fit_config, fit_manifest, fit_metrics, POSCAR, SPOSCAR)
+- `s2_kappa/` — S2 lattice thermal conductivity (kappa_summary, mesh_convergence, kappa_vs_mesh, kappa_vs_cutoff)
 
-## 复现要点
+## Key points for reproduction
 
-- fit-fc-thermal 技能，pheasy ALASSO + phono3py-symfc 对照。
-- S2 参数：isotope=false，mesh_conv_max_length=50（cap 14×14×14），cut_scans=[4p30,4p70,5p00]，nominal_cut3_A=5.0。
-- 数据：displacement-force 数据集（未含在此仓库，需另行提供）。
+- fit-fc-thermal skill, pheasy ALASSO + phono3py-symfc control.
+- S2 parameters: isotope=false, mesh_conv_max_length=50 (cap 14×14×14), cut_scans=[4p30,4p70,5p00], nominal_cut3_A=5.0.
+- Data: displacement-force dataset (not included in this repository; must be provided separately).

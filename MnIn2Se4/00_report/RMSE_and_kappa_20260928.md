@@ -1,4 +1,4 @@
-### A. 拟合质量 + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)
+### A. Fit quality + held-out RMSE + kappa (pheasy: OLS / LASSO / ALASSO, HARM_DENSE)
 
 | c3 (A) | method | p (free IFC) | nnz | alpha_opt | RMSE_CV (eV/A) | RMSE in-sample | rel err | held-out OLS | held-out LASSO | held-out ALASSO | kxx (W/mK) | kzz (W/mK) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -39,7 +39,7 @@
 | 7.00 | LASSO | 3678 | 2475 | 1.111e-08 | 9.7392e-04 | 8.2799e-04 | 5.4596e-03 | 1.0075e-03 | - | - | 3.0545 | 0.5821 |
 | 7.00 | ALASSO | 3678 | 1783 | 5.804e-11 | 9.4317e-04 | 8.3941e-04 | 5.5349e-03 | 1.0075e-03 | - | - | 3.1752 | 0.6293 |
 
-### B. 独立方法 symfc (对称适应最小二乘, fc2 不截断 + fc3 截断)
+### B. Independent method symfc (symmetry-adapted least squares, fc2 without cutoff + fc3 with cutoff)
 
 | c3 (A) | kxx (W/mK) | kyy | kzz |
 |---|---|---|---|
@@ -56,8 +56,8 @@
 | 6.50 | - | - | - |
 | 7.00 | 2.8134 | 2.8134 | 0.4995 |
 
-### C. mesh 收敛 (c3=4.30, LASSO+HARM_DENSE)
+### C. mesh convergence (c3=4.30, LASSO+HARM_DENSE)
 mesh    kxx        kyy        kzz
 11^3    2.693771   2.693771   0.501761
 15^3    2.621443   2.621443   0.444867
-21^3    (run OOM/被杀, 未完成)
+21^3    (run OOM/killed, not completed)

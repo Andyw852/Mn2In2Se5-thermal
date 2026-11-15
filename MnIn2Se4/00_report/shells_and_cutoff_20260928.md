@@ -1,11 +1,11 @@
-# MnIn2Se4 超胞 (3x3x3, 189 原子) 原子间距壳层与截断选择
+# MnIn2Se4 supercell (3x3x3, 189 atoms): atomic-distance shells and cutoff selection
 
-超胞晶格: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (菱方原胞; 六方描述 a=4.069 A, c=39.586 A)。
-最小镜像上限 (supercell/2) = 20.10 A。
+Supercell lattice: |a|=|b|=|c|=40.209 A, alpha=17.463 deg (rhombohedral primitive cell; hexagonal description a=4.069 A, c=39.586 A).
+Minimum-image limit (supercell/2) = 20.10 A.
 
-## 壳层表 (按距离聚类, tol=1e-3 A)
+## Shell table (clustered by distance, tol=1e-3 A)
 
-| shell | d (A) | 多重度 | 原子对组成 | 到下一壳层间隙 (A) |
+| shell | d (A) | multiplicity | atom-pair composition | gap to next shell (A) |
 |---|---|---|---|---|
 | 0 | 2.5207 | 54 | In-Se x54 |  |
 | 1 | 2.6571 | 162 | In-Se x162 | 0.136 |
@@ -121,9 +121,9 @@
 | 111 | 20.0812 | 162 | Se-Se x162 | 0.131 |
 | 112 | 20.4893 | 162 | Se-Se x162 | 0.408 |
 
-## 选定截断 (全部落在壳层间隙中)
+## Selected cutoffs (all falling inside shell gaps)
 
-| c3 (A) | 落在间隙 (A) | 间隙宽度 (A) | 说明 |
+| c3 (A) | gap it falls in (A) | gap width (A) | note |
 |---|---|---|---|
 | 2.85 | 2.7061 - 3.5683 | 0.862 | |
 | 3.70 | 3.5683 - 3.7996 | 0.231 | |
