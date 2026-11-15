@@ -1,0 +1,39 @@
+{
+  "material": "MnIn2Se4_441",
+  "note": "从本轮会话记录补回（/tmp 被清理前的结果）",
+  "fc2": "4x4x2 (fc2_442_phonon/fc2.hdf5)",
+  "fc3": "4x4x1, cutoff 6.45 A (fit_cut3_6p45/fc3.hdf5)",
+  "T_K": 300.0,
+  "isotope": true,
+  "kappa": [
+    {"mesh": "11 11 11", "method": "RTA",  "cutoff_A": 6.45, "inplane": 3.5375, "kappa_zz": 1.2495},
+    {"mesh": "11 11 11", "method": "LBTE", "cutoff_A": 6.45, "inplane": 4.4075, "kappa_zz": 1.2519},
+    {"mesh": "14 14 14", "method": "RTA",  "cutoff_A": 6.45, "inplane": 3.6474, "kappa_zz": 1.0934},
+    {"mesh": "14 14 14", "method": "LBTE", "cutoff_A": 6.45, "inplane": 4.5219, "kappa_zz": 1.0934},
+    {"mesh": "14 14 14", "method": "LBTE", "cutoff_A": 6.23, "inplane": 4.9008, "kappa_zz": 1.1210},
+    {"mesh": "18 18 18", "method": "RTA",  "cutoff_A": 6.45, "inplane": 3.6945, "kappa_zz": 0.9435}
+  ],
+  "wigner_rta": {
+    "mesh": "14 14 14", "cutoff_A": 6.45,
+    "TOT": {"inplane": 3.7492, "kappa_zz": 1.1595},
+    "population": {"inplane": 3.6584, "kappa_zz": 1.0934},
+    "coherence": {"inplane": 0.0908, "kappa_zz": 0.0661}
+  },
+  "cutoff_scan_rta_mesh14": {
+    "5.60": {"inplane": 4.9415, "kappa_zz": 2.7672},
+    "6.23": {"inplane": 3.8922, "kappa_zz": 1.2332},
+    "6.45": {"inplane": 3.5375, "kappa_zz": 1.2495}
+  },
+  "cutoff_scan_lbte_mesh14": {
+    "5.60": {"inplane": 5.6473, "kappa_zz": 2.7388},
+    "6.23": {"inplane": 4.7842, "kappa_zz": 1.2241},
+    "6.45": {"inplane": 4.4075, "kappa_zz": 1.2519}
+  },
+  "fc3_triplets": {
+    "fc3_hdf5_nonzero": 5586,
+    "complete_writer": 5586,
+    "shengbte_export_hiphive": 3276,
+    "kappa_shengbte_20x20x5": 5586,
+    "note": "旧 shengbte_export 缺 41.4% 三元组；20x20x5 的三元组完整但 CONTROL 里 Mn 位置写成 (0,0,0)（应为 (1,0,1)）——正是 [0151]/[0154] bug，其 kappa 仍不可用"
+  }
+}
