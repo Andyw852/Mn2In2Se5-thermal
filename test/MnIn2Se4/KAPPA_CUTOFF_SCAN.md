@@ -1,19 +1,19 @@
-# MnIn2Se4 fc3 截断收敛扫描（κ）
+# MnIn2Se4 fc3 cutoff convergence scan (κ)
 
-**2026-11-14**｜用现有 46 帧随机位移数据集，重取 pheasy 拟合的 **5.6 / 6.23 / 6.45 Å** 三档 fc3，
-各算 κ。fc2 固定为新的 **4×4×2**（`../fc2_442_phonon/fc2.hdf5`）。
+**2026-11-14** | using the existing 46-frame random-displacement dataset, three fc3 cases (**5.6 / 6.23 / 6.45 Å**) were re-fit with pheasy
+and κ was computed for each. fc2 is fixed to the new **4×4×2** (`../fc2_442_phonon/fc2.hdf5`).
 
-## 为什么只到 6.45 Å
+## Why stop at 6.45 Å
 
-4×4×1 超胞沿层法向厚度 = **13.214 Å**，安全截断上限 = h/2 − 0.1 = **6.507 Å**。
-能包含的最大壳层 = **6.3557 Å**；下一壳层 6.5311 Å 已超上限。
+The thickness of the 4×4×1 supercell along the layer normal is **13.214 Å**, so the safe-cutoff limit is h/2 − 0.1 = **6.507 Å**.
+The largest shell that can be included is **6.3557 Å**; the next shell at 6.5311 Å already exceeds the limit.
 
-**所以 6.45 Å 已是 4×4×1 的物理极限，无法再往上做。**
-要测更大截断必须用 4×4×2 的 fc3 超胞（安全上限 8.048 Å），需新的 DFT 数据集。
+**So 6.45 Å is already the physical limit of 4×4×1 and cannot be pushed any higher.**
+Testing a larger cutoff requires a 4×4×2 fc3 supercell (safe limit 8.048 Å) and hence a new DFT dataset.
 
-## 数据来源
+## Data source
 
-三档 fc3 直接取自 AutoZT 原拟合目录里的 `cutoff_scan/`（pheasy RFE-OLS 拟合，2026-11-10）：
+The three fc3 cases are taken directly from `cutoff_scan/` in the original AutoZT fit directory (pheasy RFE-OLS fit, 2026-11-10):
 
 ```
 $HOME/taskflow/work/MnIn2Se4_441/fit-fc-thermal/step1_fit/cutoff_scan/cut3_5p60/fc3.hdf5
@@ -21,58 +21,58 @@ $HOME/taskflow/work/MnIn2Se4_441/fit-fc-thermal/step1_fit/cutoff_scan/cut3_5p60/
                                                           .../cut3_6p45/fc3.hdf5
 ```
 
-**一致性校验**：`cut3_6p45` 的扫描件与生产件 sha256 不同（扫描 11-10、生产 11-11 有修复），
-但用新 4×4×2 fc2 算出的 κ **完全相同**（面内 3.5375 / κzz 1.2495）→ 扫描件可信。
+**Consistency check**: the `cut3_6p45` scan copy and the production copy have different sha256 values (the scan is from 11-10, the production run from 11-11 includes fixes),
+but the κ computed with the new 4×4×2 fc2 is **completely identical** (in-plane 3.5375 / κzz 1.2495) → the scan copy is trustworthy.
 
-> ⚠️ 尝试过用本地 **symfc** 重拟合替代 pheasy：结果不可用
-> （同 6.45 Å 截断下 symfc 给面内 0.644 vs pheasy 3.5375，差 5.5 倍；
-> 三档之间差 7 倍且非单调）。AutoZT 驱动注释也写明 symfc 误差 1.95% vs pheasy 0.578%。
-> **本数据集必须用 pheasy 的 RFE-OLS 稀疏拟合。**
+> ⚠️ Refitting locally with **symfc** instead of pheasy was attempted: the result is unusable
+> (at the same 6.45 Å cutoff symfc gives an in-plane value of 0.644 versus pheasy 3.5375, a factor of 5.5;
+> the three cases differ by a factor of 7 and are non-monotonic). The AutoZT driver comments also note a symfc error of 1.95% versus pheasy 0.578%.
+> **This dataset must use pheasy's RFE-OLS sparse fit.**
 
-## 结果（300 K，mesh 11×11×11，同位素开，fc2 = 4×4×2）
+## Results (300 K, mesh 11×11×11, isotopes on, fc2 = 4×4×2)
 
 ### RTA
 
-| fc3 截断 (Å) | 面内 (W/m·K) | κzz (W/m·K) | κzz/面内 |
+| fc3 cutoff (Å) | in-plane (W/m·K) | κzz (W/m·K) | κzz/in-plane |
 |---|---:|---:|---:|
 | 5.60 | 4.9415 | 2.7672 | 0.560 |
 | 6.23 | 3.8922 | 1.2332 | 0.317 |
 | **6.45** | **3.5375** | **1.2495** | **0.353** |
 
-### LBTE（生产口径）
+### LBTE (production setting)
 
-| fc3 截断 (Å) | 面内 (W/m·K) | κzz (W/m·K) | κzz/面内 |
+| fc3 cutoff (Å) | in-plane (W/m·K) | κzz (W/m·K) | κzz/in-plane |
 |---|---:|---:|---:|
 | 5.60 | 5.6473 | 2.7388 | 0.485 |
 | 6.23 | 4.7842 | 1.2241 | 0.256 |
 | **6.45** | **4.4075** | **1.2519** | **0.284** |
 
-### 相邻档位变化（LBTE）
+### Change between adjacent cases (LBTE)
 
-| 区间 | 面内变化 | κzz 变化 |
+| interval | in-plane change | κzz change |
 |---|---:|---:|
 | 5.60 → 6.23 | **−15.3%** | **−55.3%** |
 | 6.23 → 6.45 | **−7.9%** | **+2.3%** |
 | 5.60 → 6.45 | −22.0% | −54.3% |
 
-## 结论
+## Conclusions
 
-1. **κzz 在 6.23→6.45 已基本走平（+2.3%）**，但 5.60→6.23 掉了 55% —— 说明
-   6.45 Å 附近是 κzz 的**关键区间**，而它正好卡在 4×4×1 的天花板上。
-2. **面内在最后一档仍变 −7.9%**（前一段 −15.3%）—— 收敛在改善但**尚未收敛**。
-3. **判定：fc3 截断未收敛。** 在 4×4×1 里已无法继续加截断，要给出可引用的 κ 必须：
-   - 做 **4×4×2 的 fc3 数据集**（224 原子，安全截断 8.048 Å），scan 7.0 / 7.6 / 8.05 Å；
-   - 同时把网格从 11×11×11 往上做一遍收敛。
+1. **κzz is essentially flat from 6.23→6.45 (+2.3%)**, but it drops by 55% from 5.60→6.23 — which means
+   that the region around 6.45 Å is the **critical range** for κzz, and it sits right at the 4×4×1 ceiling.
+2. **The in-plane value still changes by −7.9% in the last step** (−15.3% in the previous one) — convergence is improving but **has not been reached**.
+3. **Verdict: the fc3 cutoff is not converged.** The cutoff can no longer be increased within 4×4×1, so a citable κ requires:
+   - a **4×4×2 fc3 dataset** (224 atoms, safe cutoff 8.048 Å), scanning 7.0 / 7.6 / 8.05 Å;
+   - a mesh convergence study starting from 11×11×11 as well.
 
-**当前可用的最可信数字（4×4×2 fc2 + 6.45 Å fc3，LBTE，300 K）**：
-面内 **4.4075** W/m·K，κzz **1.2519** W/m·K —— 但需注明 fc3 截断与网格均未收敛。
+**The most reliable numbers currently available (4×4×2 fc2 + 6.45 Å fc3, LBTE, 300 K)**:
+in-plane **4.4075** W/m·K, κzz **1.2519** W/m·K — but it must be noted that neither the fc3 cutoff nor the mesh is converged.
 
-## 复现
+## Reproduction
 
 ```bash
-# fc3 三档文件从 3090 取回后
-python kappa_cutscan.py     # RTA 三档（约 5 分钟）
-python kappa_lbte_scan.py   # LBTE 三档（约 47 分钟）
+# after fetching the three fc3 files from 3090
+python kappa_cutscan.py     # three cases with RTA (about 5 minutes)
+python kappa_lbte_scan.py   # three cases with LBTE (about 47 minutes)
 ```
 
-原始数据：`kappa_cutoff_scan_results.json`
+Raw data: `kappa_cutoff_scan_results.json`

@@ -1,49 +1,49 @@
-# MnIn2Se4 κ 网格收敛（14×14×14）
+# MnIn2Se4 κ mesh convergence (14×14×14)
 
-**2026-11-14**｜fc3 = 6.45 Å（4×4×1 上限），fc2 = **4×4×2**，300 K，同位素开。
-在原有 11×11×11 之上补一轮 **14×14×14**。
+**2026-11-14** | fc3 = 6.45 Å (the 4×4×1 limit), fc2 = **4×4×2**, 300 K, isotopes on.
+This adds one round of **14×14×14** on top of the existing 11×11×11.
 
-## 结果
+## Results
 
-| 网格 | 方法 | 面内 (W/m·K) | κzz (W/m·K) | κzz/面内 | 耗时 |
+| mesh | method | in-plane (W/m·K) | κzz (W/m·K) | κzz/in-plane | wall time |
 |---|---|---:|---:|---:|---:|
 | 11×11×11 | RTA | 3.5375 | 1.2495 | 0.353 | 107 s |
 | 11×11×11 | LBTE | 4.4075 | 1.2519 | 0.284 | 939 s |
 | **14×14×14** | RTA | 3.6474 | 1.0934 | 0.300 | 566 s |
 | **14×14×14** | **LBTE** | **4.5219** | **1.0934** | **0.242** | 6829 s |
 
-## 网格收敛性（11 → 14）
+## Mesh convergence (11 → 14)
 
-| 方法 | 面内 | κzz |
+| method | in-plane | κzz |
 |---|---:|---:|
 | RTA | **+3.11%** | **−12.50%** |
 | LBTE | **+2.60%** | **−12.66%** |
 
-**判定**：
-- **面内已收敛**：两档只差 2.6–3.1%，再加密网格变化预计 <2%。
-- **κzz 仍未收敛**：11→14 掉了 12.7%，需要 18×18×18 或更密才能确认。
+**Verdict**:
+- **The in-plane value is converged**: the two meshes differ by only 2.6–3.1%, and further refinement is expected to change it by <2%.
+- **κzz is still not converged**: it drops by 12.7% from 11→14, and 18×18×18 or denser is needed to confirm it.
 
-## 一个值得注意的现象
+## A noteworthy observation
 
-14×14×14 下 **RTA 与 LBTE 的 κzz 完全相同**（1.09334 vs 1.09344，差 8×10⁻⁵），
-而面内差 24%（3.6474 → 4.5219）。
+At 14×14×14 the **κzz from RTA and LBTE are exactly the same** (1.09334 vs 1.09344, a difference of 8×10⁻⁵),
+whereas the in-plane value differs by 24% (3.6474 → 4.5219).
 
-物理解释：层间耦合很弱，κzz 的 LBTE 迭代修正项（依赖 off-diagonal 声子跃迁）
-在 z 方向几乎为零，所以 κzz_LBTE ≈ κzz_RTA；面内的迭代修正是显著的。
-这与「κzz 由层间弱耦合主导」的物理图像一致。
+Physical explanation: the interlayer coupling is very weak, so the LBTE iterative correction to κzz (which relies on off-diagonal phonon transitions)
+is almost zero along z, hence κzz_LBTE ≈ κzz_RTA; the in-plane iterative correction is significant.
+This is consistent with the physical picture in which κzz is dominated by weak interlayer coupling.
 
-## 当前最可信的 κ（mesh 14, LBTE, 300 K）
+## Currently most reliable κ (mesh 14, LBTE, 300 K)
 
-- 面内 **4.5219** W/m·K
+- in-plane **4.5219** W/m·K
 - κzz **1.0934** W/m·K
-- 各向异性 κzz/面内 **0.242**
+- anisotropy κzz/in-plane **0.242**
 
-⚠️ 仍需注明：**fc3 截断未收敛**（见 `KAPPA_CUTOFF_SCAN.md`，6.45 Å 已是 4×4×1 上限）
-且 **κzz 网格未收敛**（11→14 仍变 −12.7%）。
+⚠️ It must still be noted that the **fc3 cutoff is not converged** (see `KAPPA_CUTOFF_SCAN.md`; 6.45 Å is already the 4×4×1 limit)
+and that **the κzz mesh is not converged** (it still changes by −12.7% from 11→14).
 
-## 复现
+## Reproduction
 
 ```bash
-python kappa_driver_442.py --mesh 14 14 14 --lbte    # 约 114 分钟
-python kappa_driver_442.py --mesh 14 14 14 --rta     # 约 9.5 分钟
+python kappa_driver_442.py --mesh 14 14 14 --lbte    # about 114 minutes
+python kappa_driver_442.py --mesh 14 14 14 --rta     # about 9.5 minutes
 ```

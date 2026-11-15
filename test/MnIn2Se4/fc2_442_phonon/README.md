@@ -1,28 +1,28 @@
-# MnIn2Se4 fc2 (4×4×2 对称有限位移) — 2026-11-13
+# MnIn2Se4 fc2 (4×4×2 symmetry-reduced finite displacements) — 2026-11-13
 
-把二阶力常数从 4×4×1 换到 **4×4×2** 的超胞重算，目的是修 C44 层间剪切模量的问题
-（4×4×1 + BHH 下沿 z 的 TA 声速按旧口径只有 317 m/s，DFT 弹性常数给 1338 m/s）。
+The second-order force constants were recomputed in a **4×4×2** supercell instead of 4×4×1, in order to fix the C44 interlayer shear modulus problem
+(with 4×4×1 + BHH the TA sound velocity along z is only 317 m/s under the old convention, whereas the DFT elastic constants give 1338 m/s).
 
-## 计算设置
+## Calculation settings
 
-| 项 | 值 |
+| item | value |
 |---|---|
-| 方法 | phonopy 对称有限位移（**不是**随机位移 / alm） |
-| 超胞 | **4×4×2**（224 原子：32 Mn + 64 In + 128 Se） |
-| 对称性 | `strict`（384 个对称操作，保留完整 R-3m 点群） |
-| 位移幅度 | **FD_DISTANCE = 0.02 Å** |
-| 帧数 | **7**（对称不等价最小完备集） |
-| 泛函 | PBE-D3，U(Mn)=4 eV，FM（MAGMOM = 32\*5 192\*0） |
+| method | phonopy symmetry-reduced finite displacements (**not** random displacements / alm) |
+| supercell | **4×4×2** (224 atoms: 32 Mn + 64 In + 128 Se) |
+| symmetry | `strict` (384 symmetry operations, keeping the full R-3m point group) |
+| displacement amplitude | **FD_DISTANCE = 0.02 Å** |
+| number of frames | **7** (minimal complete set of symmetry-inequivalent displacements) |
+| functional | PBE-D3, U(Mn)=4 eV, FM (MAGMOM = 32\*5 192\*0) |
 | EDIFF | **1E-7** |
-| KPOINTS | 2×2×1（KSPACING 0.038 规则） |
-| NAC | 关闭（半金属，DFPT 介电会发散；与 kl 链 NAC=off 口径一致） |
-| 集群 | jzzn（cpu192, premium, 64 核/帧） |
+| KPOINTS | 2×2×1 (KSPACING 0.038 rule) |
+| NAC | off (semimetal; the DFPT dielectric response diverges; consistent with the NAC=off convention of the kl chain) |
+| cluster | jzzn (cpu192, premium, 64 cores/frame) |
 
-## 7 帧的位移（phonopy 约化后）
+## The 7 displacement frames (after phonopy reduction)
 
-位移方向全部为 `(0, 0.011600, 0.016292)`（模长 = 0.02 Å），只有正负与位点不同：
+All displacements have the direction `(0, 0.011600, 0.016292)` (norm = 0.02 Å); only the sign and the site differ:
 
-| 帧 | 原子 | 元素 | 符号 |
+| frame | atom | element | sign |
 |---|---|---|---|
 | disp-00001 | 1 | Mn | + |
 | disp-00002 | 33 | In | + |
@@ -32,119 +32,119 @@
 | disp-00006 | 161 | Se | + |
 | disp-00007 | 161 | Se | − |
 
-## 结果：声子谱稳定
+## Results: the phonon spectrum is stable
 
 ```
 PHONON_DONE = true
 stable      = true
 verdict     = pass
-min_freq    = +0.000719 THz   (无虚频，n_neg_qpoints = 0)
+min_freq    = +0.000719 THz   (no imaginary frequency, n_neg_qpoints = 0)
 n_qpoint    = 499, n_branch = 21
 max_freq    = 7.784 THz
 ```
 
-对比 kl 链 **4×4×1** 的 min_freq = −0.006 THz（有软模/微虚频），4×4×2 的谱更干净。
+For comparison, the **4×4×1** of the kl chain has min_freq = −0.006 THz (a soft mode / tiny imaginary frequency); the 4×4×2 spectrum is cleaner.
 
-每帧墙钟约 4 小时（jzzn 64 核）；hanhai25 128 核对照帧实测 7h46m。
+Wall time is about 4 hours per frame (jzzn, 64 cores); a control frame on hanhai25 with 128 cores took 7h46m.
 
-## ✅ 层法向声速与 DFT 弹性常数吻合
+## ✅ The layer-normal sound velocity agrees with the DFT elastic constants
 
-**运行 `sound_velocity.py`（本目录）复现下表**：
+**Run `sound_velocity.py` (in this directory) to reproduce the table below**:
 
-| 物理量 | 4×4×2 fc2 | DFT 弹性张量 | 偏差 |
+| quantity | 4×4×2 fc2 | DFT elastic tensor | deviation |
 |---|---:|---:|---:|
-| 横波 TA₁ | **1348.3 m/s** | 1338.3 m/s | **+0.75%** |
-| 横波 TA₂ | **1348.3 m/s** | 1338.3 m/s | **+0.75%** |
-| 纵波 LA | **3118.6 m/s** | 3253.4 m/s | −4.14% |
+| transverse TA₁ | **1348.3 m/s** | 1338.3 m/s | **+0.75%** |
+| transverse TA₂ | **1348.3 m/s** | 1338.3 m/s | **+0.75%** |
+| longitudinal LA | **3118.6 m/s** | 3253.4 m/s | −4.14% |
 | C₄₄ = ρv_T² | **9.543 GPa** | 9.402 GPa | +1.50% |
 
-拟合窗口 t ≤ 0.005 / 0.010 / 0.020 / 0.040 结果稳定（TA 变化 < 0.3 m/s）。
-密度统一用声子结构的 5249.3 kg/m³。
+The result is stable for fit windows t ≤ 0.005 / 0.010 / 0.020 / 0.040 (TA varies by < 0.3 m/s).
+The density is uniformly taken as 5249.3 kg/m³ from the phonon structure.
 
-### ⚠️ 取声速时的两个陷阱（本脚本已处理）
+### ⚠️ Two pitfalls when extracting the sound velocity (both handled in this script)
 
-**陷阱 1：phonopy 的 q 用「所选定原胞」的倒空间坐标，不是 POSCAR 原胞。**
+**Pitfall 1: phonopy's q uses the reciprocal-space coordinates of the "chosen primitive cell", not those of the POSCAR primitive cell.**
 
-本次 `primitive_matrix="auto"` 把原胞换成了**菱方原胞**，新原胞的
-b₁/b₂/b₃ 与层法向夹角**都是 84.91°**（几乎沿层面）。
+Here `primitive_matrix="auto"` replaced the primitive cell with the **rhombohedral primitive cell**; in the new cell
+b₁/b₂/b₃ all make an angle of **84.91°** with the layer normal (i.e. they lie almost in the layer plane).
 
-POSCAR 的 a₁、a₂ 在层面内 → 层法向 = `(0,0,1)`_POSCAR。
-同一个层间方向在两套坐标里：
+a₁ and a₂ of the POSCAR lie in the layer plane → layer normal = `(0,0,1)`_POSCAR.
+The same interlayer direction in the two coordinate systems:
 
 ```
 (0,0,t)_POSCAR  ≡  (t,t,t)_phonopy_primitive
 ```
 
-**错误做法**：用 `(0,0,t)` 算频率、再用 POSCAR 的 b₃ 长度换算 |q| →
-得到 **4179 / 6256 m/s** 的假值。两套 |b₃| 之比 **3.760** 正好是误差倍数。
+**Wrong approach**: compute frequencies with `(0,0,t)` and then convert |q| using the length of b₃ from the POSCAR →
+this gives spurious values of **4179 / 6256 m/s**. The ratio of the two |b₃| values, **3.760**, is exactly the error factor.
 
-**陷阱 2：Γ 点有数值残差（f₀ = 0.000719 THz）。**
+**Pitfall 2: there is a numerical residue at the Γ point (f₀ = 0.000719 THz).**
 
-直接算 ω/q 时，低 q 会被这个残差污染，q→0 反而**发散**（t=0.002 给 1429，
-t=0.010 给 1351）。正确做法是拟合
+When ω/q is computed directly, low q is contaminated by this residue and actually **diverges** as q→0 (t=0.002 gives 1429,
+t=0.010 gives 1351). The correct approach is to fit
 
 ```
 f² = f₀² + (v·q / 2π / 100)²
 ```
 
-取斜率开方。本脚本即按此实现。
+taking the square root of the slope. This script does exactly that.
 
-> 上述两点由用户 2026-11-13 独立核查发现（`_fc2_442_direction_audit_20261113/`），
-> 本脚本已独立复现其全部数值。
+> Both points above were found by the user in an independent audit on 2026-11-13 (`_fc2_442_direction_audit_20261113/`),
+> and this script independently reproduces all of their numbers.
 
-## ✅ 4×4×1 vs 4×4×2：C44 过软问题已修复
+## ✅ 4×4×1 vs 4×4×2: the overly soft C44 problem is fixed
 
-用**同一套** phonopy 原胞倒空间约定复核两者（脚本 `../compare_441_vs_442.py`，
-结果 `../compare_441_vs_442_results.json`）：
+Both were re-checked with the **same** phonopy primitive-cell reciprocal-space convention (script `../compare_441_vs_442.py`,
+results `../compare_441_vs_442_results.json`):
 
-| 超胞 | TA₁ | TA₂ | LA | C₄₄ (GPa) | TA 偏差 | LA 偏差 |
+| supercell | TA₁ | TA₂ | LA | C₄₄ (GPa) | TA deviation | LA deviation |
 |---|---:|---:|---:|---:|---:|---:|
 | **4×4×1** | **322.9** | 322.9 | 2491.5 | 0.547 | **−75.87%** | −23.42% |
 | **4×4×2** | **1348.3** | 1348.3 | 3118.5 | 9.543 | **+0.75%** | −4.15% |
-| DFT 弹性 | 1338.3 | 1338.3 | 3253.4 | 9.402 | — | — |
+| DFT elastic | 1338.3 | 1338.3 | 3253.4 | 9.402 | — | — |
 
-**结论**：
-1. **4×4×1 的层间 TA 确实只有 ~323 m/s** —— 旧报的 317 基本正确，**不是**基底混用
-   造成的假值（虽然 4×4×2 那次的 4179 是）。
-2. **4×4×2 升到 1348 m/s，与 DFT 的 1338 只差 0.75%** → 沿 c 的层间长程力常数
-   此前确实被 1 个单胞的厚度截断了，扩到 2 个单胞后 **C44 过软问题解决**。
+**Conclusions**:
+1. **The interlayer TA of 4×4×1 really is only ~323 m/s** — the previously reported 317 is essentially correct and is **not** the spurious value
+   caused by mixing basis sets (although the 4179 from the 4×4×2 run was).
+2. **4×4×2 rises to 1348 m/s, only 0.75% away from the DFT value of 1338** → the interlayer long-range force constants along c had indeed been
+   truncated by a 1-unit-cell thickness; enlarging to 2 unit cells **fixes the overly soft C44**.
 
-## 遗留问题
+## Open issues
 
-**纵波 LA 差约 4.1%**（3118.6 vs 3253.4）。两套计算用的结构略有不同：
-层法向晶格分量分别为 **13.21409 Å**（本次声子结构）与 **13.20318 Å**（弹性计算）。
-应先统一结构与弹性计算口径（同一 CONTCAR、同一 ENCUT/泛函/k 网格），
-再判断这 4.1% 是结构差异、超胞收敛性，还是弹性常数拟合本身的误差。
+**The longitudinal LA differs by about 4.1%** (3118.6 vs 3253.4). The structures used in the two calculations differ slightly:
+the layer-normal lattice component is **13.21409 Å** (this phonon structure) and **13.20318 Å** (elastic calculation).
+The structure and the elastic-calculation setup should first be unified (same CONTCAR, same ENCUT/functional/k-mesh),
+and only then can one decide whether the 4.1% comes from the structural difference, supercell convergence, or the elastic-constant fit itself.
 
-> 注：4×4×1 的 LA 偏差 −23.4% 远大于 4×4×2 的 −4.1%，说明沿 c 的收敛方向是对的，
-> 但 2 个单胞是否已经足够仍需与统一口径的 DFT 弹性常数对照才能定论。
+> Note: the LA deviation of 4×4×1 (−23.4%) is much larger than that of 4×4×2 (−4.1%), which shows that the convergence direction along c is correct,
+> but whether 2 unit cells are already sufficient can only be settled by comparison with DFT elastic constants computed under a unified setup.
 
-## 文件
-## 文件
+## Files
+## Files
 
-| 文件 | 说明 |
+| file | description |
 |---|---|
-| `fc2.hdf5` | 二阶力常数（phonopy 格式） |
-| `FORCE_CONSTANTS` | 同上，phonopy 文本格式（供 phono3py / ShengBTE 用） |
-| `band-dft-cpu.yaml` | 声子谱（499 q 点 × 21 支），**绘图数据源** |
-| `phonon_summary.json` | 稳定性判据结果（虚频门禁 / ZA 二次性） |
-| `phonon_fit.log` | 拟合日志 |
-| `phonopy_disp.yaml` | 位移定义（含 3×3 超胞矩阵与 primitive_matrix） |
-| `disp_plan.json` | 位移计划（method / fd_distance / n_disp） |
-| `POSCAR` | 原胞结构 |
-| `kl_params.txt` | 计算参数快照 |
-| **`sound_velocity.py`** | **层法向声速提取（含两个陷阱的处理 + 注释）** |
-| `phonon_band_plot/phonon_band_full.png` | 全场声子谱 |
-| `phonon_band_plot/phonon_band_lowfreq.png` | 低频放大（看声学支） |
-| `phonon_band_plot/phonon_band_summary.json` | 绘图侧汇总 |
-| `frames/disp-*/ ` | 7 帧输入（POSCAR / INCAR / KPOINTS / CONTCAR） |
+| `fc2.hdf5` | second-order force constants (phonopy format) |
+| `FORCE_CONSTANTS` | as above, phonopy text format (for phono3py / ShengBTE) |
+| `band-dft-cpu.yaml` | phonon spectrum (499 q-points × 21 branches), **the plotting data source** |
+| `phonon_summary.json` | stability-criterion results (imaginary-frequency gate / ZA quadratic behaviour) |
+| `phonon_fit.log` | fit log |
+| `phonopy_disp.yaml` | displacement definition (including the 3×3 supercell matrix and primitive_matrix) |
+| `disp_plan.json` | displacement plan (method / fd_distance / n_disp) |
+| `POSCAR` | primitive-cell structure |
+| `kl_params.txt` | snapshot of the calculation parameters |
+| **`sound_velocity.py`** | **layer-normal sound-velocity extraction (handles both pitfalls, with comments)** |
+| `phonon_band_plot/phonon_band_full.png` | full phonon spectrum |
+| `phonon_band_plot/phonon_band_lowfreq.png` | low-frequency zoom (to see the acoustic branches) |
+| `phonon_band_plot/phonon_band_summary.json` | plotting-side summary |
+| `frames/disp-*/ ` | inputs for the 7 frames (POSCAR / INCAR / KPOINTS / CONTCAR) |
 
-> OUTCAR / vasprun.xml / queue.out 按仓库 .gitignore 未入库（原始 DFT 输出太大，可从集群重取）。
-> 需要力数据时重跑 S2_disp 或从 jzzn 取 `step2_disp/disp-*/OUTCAR`。
+> OUTCAR / vasprun.xml / queue.out are not committed, per the repository .gitignore (the raw DFT output is too large; it can be re-fetched from the cluster).
+> If force data are needed, rerun S2_disp or fetch `step2_disp/disp-*/OUTCAR` from jzzn.
 
-## 复现
+## Reproduction
 
 ```bash
-python sound_velocity.py .                    # 4×4×2 层法向声速 vs DFT
-cd .. && python compare_441_vs_442.py         # 4×4×1 vs 4×4×2 对比
+python sound_velocity.py .                    # 4×4×2 layer-normal sound velocity vs DFT
+cd .. && python compare_441_vs_442.py         # 4×4×1 vs 4×4×2 comparison
 ```

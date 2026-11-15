@@ -1,70 +1,70 @@
-# MnIn2Se4 κ（phono3py）—— fc2 换 4×4×2 后重算
+# MnIn2Se4 κ (phono3py) — recomputed after switching fc2 to 4×4×2
 
-**2026-11-14**｜绕开 AutoZT 直接用 phono3py 算（AutoZT 的 kl-dft-cpu / fit-fc-thermal
-不支持 fc2 与 fc3 用不同超胞）。
+**2026-11-14** | computed directly with phono3py, bypassing AutoZT (AutoZT's kl-dft-cpu / fit-fc-thermal
+do not support using different supercells for fc2 and fc3).
 
-## 为什么要重算
+## Why recompute
 
-旧的 4×4×1 fc2 沿层法向的横波声速只有 **322.9 m/s**，而 DFT 弹性常数给 **1338.3 m/s**
-（见 `../fc2_442_phonon/README.md` 与 `../compare_441_vs_442_results.json`）。
-声子色散被严重压软 → **κzz 被低估约 3.5 倍**。
+The old 4×4×1 fc2 gives a transverse sound velocity along the layer normal of only **322.9 m/s**, whereas the DFT elastic constants give **1338.3 m/s**
+(see `../fc2_442_phonon/README.md` and `../compare_441_vs_442_results.json`).
+The phonon dispersion is severely softened → **κzz is underestimated by about 3.5×**.
 
-4×4×2 fc2 的同支声速是 **1348.3 m/s**（+0.75%），色散正确。
+The same branch from the 4×4×2 fc2 gives **1348.3 m/s** (+0.75%), and the dispersion is correct.
 
-## 计算方法
+## Calculation method
 
-| 项 | 值 |
+| item | value |
 |---|---|
-| 求解器 | phono3py 3.24.0 |
-| fc3 | `fit_cut3_6p45/fc3.hdf5`，**4×4×1（112 原子），cutoff 6.45 Å** |
-| fc2（新） | `fc2_442_phonon/fc2.hdf5`，**4×4×2（224 原子）** |
-| fc2（旧，对照） | `fit_cut3_6p45/fc2.hdf5`，4×4×1 |
-| 混用超胞 | 用 phono3py 的 `phonon_supercell_matrix=4×4×2`（fc3 走 `supercell_matrix=4×4×1`） |
-| 原胞矩阵 | `[[1,1,2],[-1,-2,-1],[1,1,1]]`（与两个 fit 一致） |
-| 网格 | **11×11×11**（各向同性；菱方原胞不能用 4×4×2） |
-| 温度 | 300 K |
-| 同位素 | 开 |
-| NAC | 关 |
+| solver | phono3py 3.24.0 |
+| fc3 | `fit_cut3_6p45/fc3.hdf5`, **4×4×1 (112 atoms), cutoff 6.45 Å** |
+| fc2 (new) | `fc2_442_phonon/fc2.hdf5`, **4×4×2 (224 atoms)** |
+| fc2 (old, control) | `fit_cut3_6p45/fc2.hdf5`, 4×4×1 |
+| mixed supercells | use phono3py's `phonon_supercell_matrix=4×4×2` (fc3 goes through `supercell_matrix=4×4×1`) |
+| primitive-cell matrix | `[[1,1,2],[-1,-2,-1],[1,1,1]]` (consistent with both fits) |
+| mesh | **11×11×11** (isotropic; a 4×4×2 mesh cannot be used with a rhombohedral primitive cell) |
+| temperature | 300 K |
+| isotope | on |
+| NAC | off |
 
-## ✅ 结果（mesh 11×11×11，300 K）
+## ✅ Results (mesh 11×11×11, 300 K)
 
-| fc2 | 方法 | 面内 (W/m·K) | κzz (W/m·K) | κzz/面内 | 耗时 |
+| fc2 | method | in-plane (W/m·K) | κzz (W/m·K) | κzz/in-plane | wall time |
 |---|---|---:|---:|---:|---:|
-| 4×4×1（旧） | RTA | 2.2498 | 0.3508 | 0.156 | 111 s |
-| 4×4×1（旧） | LBTE | 3.9054\* | 0.3629\* | 0.093 | — |
-| **4×4×2（新）** | **RTA** | **3.5375** | **1.2495** | **0.353** | 107 s |
-| **4×4×2（新）** | **LBTE** | **4.4075** | **1.2519** | **0.284** | 939 s |
+| 4×4×1 (old) | RTA | 2.2498 | 0.3508 | 0.156 | 111 s |
+| 4×4×1 (old) | LBTE | 3.9054\* | 0.3629\* | 0.093 | — |
+| **4×4×2 (new)** | **RTA** | **3.5375** | **1.2495** | **0.353** | 107 s |
+| **4×4×2 (new)** | **LBTE** | **4.4075** | **1.2519** | **0.284** | 939 s |
 
-\* 历史值（同一网格、fc2=4×4×1），来自 `../kappa_phono3py_lbte_11x11x11/kappa_summary.json`。
+\* Historical values (same mesh, fc2=4×4×1) from `../kappa_phono3py_lbte_11x11x11/kappa_summary.json`.
 
-### 换 fc2 的影响（LBTE，同网格同 fc3）
+### Effect of switching fc2 (LBTE, same mesh, same fc3)
 
-| 量 | 4×4×1 | 4×4×2 | 变化 |
+| quantity | 4×4×1 | 4×4×2 | change |
 |---|---:|---:|---:|
-| 面内 | 3.9054 | **4.4075** | **+12.9%** |
-| κzz | 0.3629 | **1.2519** | **+245%（3.45×）** |
-| κzz/面内 | 0.093 | **0.284** | 3.05× |
+| in-plane | 3.9054 | **4.4075** | **+12.9%** |
+| κzz | 0.3629 | **1.2519** | **+245% (3.45×)** |
+| κzz/in-plane | 0.093 | **0.284** | 3.05× |
 
-**κzz 涨了 3.45 倍**，正是层间横波声速从 323 → 1348 m/s 的直接结果。
-面内只涨 12.9%，因为面内声速本来就基本正常。
+**κzz increases by a factor of 3.45**, exactly the direct consequence of the interlayer transverse sound velocity going from 323 → 1348 m/s.
+The in-plane value rises by only 12.9%, because the in-plane sound velocity was already essentially correct.
 
-### 自检
+### Self-check
 
-我的驱动用旧 fc2 跑 RTA 得 **2.2498**，与历史记录 **2.24981** 完全一致 —— 驱动本身可信。
+Running RTA with the old fc2 in my driver gives **2.2498**, identical to the historical **2.24981** — the driver itself is trustworthy.
 
-## ⚠️ 这些数还不能作为最终结论
+## ⚠️ These numbers cannot yet be treated as final conclusions
 
-1. **fc3 未变**：仍是 4×4×1 / cutoff 6.45 Å，之前已标 `not_converged`。
-   κ 的绝对值受 fc3 截断支配；本次只是**隔离出 fc2 的影响**。
-2. **网格未收敛**：11×11×11。历史经验：Mn₂In₂Se₅ 从 12×12×3 → 16×16×4 涨了 +7.65%。
-3. 要出最终 κ 需：① fc3 截断收敛性检查（加大 cutoff / 更厚超胞）；② 网格收敛性检查。
+1. **fc3 is unchanged**: still 4×4×1 / cutoff 6.45 Å, previously marked `not_converged`.
+   The absolute κ is governed by the fc3 cutoff; this work only **isolates the effect of fc2**.
+2. **The mesh is not converged**: 11×11×11. Historical experience: Mn₂In₂Se₅ rose by +7.65% from 12×12×3 → 16×16×4.
+3. Producing a final κ requires: (1) a convergence check on the fc3 cutoff (larger cutoff / thicker supercell); (2) a mesh convergence check.
 
-## 复现
+## Reproduction
 
 ```bash
 cd test/MnIn2Se4
-python kappa_driver_442.py            # RTA + LBTE 都跑（约 20 分钟）
-python kappa_driver_442.py --rta      # 只跑 RTA（约 4 分钟）
+python kappa_driver_442.py            # run both RTA and LBTE (about 20 minutes)
+python kappa_driver_442.py --rta      # RTA only (about 4 minutes)
 ```
 
-结果写入 `kappa_results_442.json`。
+Results are written to `kappa_results_442.json`.
