@@ -1,0 +1,31 @@
+&allocations
+        nelements=3,
+        natoms=7,
+        ngrid(:)=20 20 5
+&end
+&crystal
+        lfactor=0.1,
+        lattvec(:,1)=2.0369746054 -3.5281435067 0.0000000011,
+        lattvec(:,2)=2.0369746061 3.5281435072 -0.0000000010,
+        lattvec(:,3)=0.0000000008 9.4083826814 13.2140870867,
+        elements="Mn" "In" "Se"
+        types=1 2 2 3 3 3 3,
+        positions(:,1)=1.0000000000 0.0000000000 1.0000000000,
+        positions(:,2)=0.0567525525 0.9432474475 0.2925644143,
+        positions(:,3)=0.9432474475 0.0567525525 0.7074355856,
+        positions(:,4)=0.4849163712 0.5150836288 0.6136872784,
+        positions(:,5)=0.5150836288 0.4849163712 0.3863127216,
+        positions(:,6)=0.8021555883 0.1978444118 0.1016166912,
+        positions(:,7)=0.1978444118 0.8021555882 0.8983833088,
+        scell(:)=4 4 1
+&end
+&parameters
+        T=300
+        scalebroad=1.0
+&end
+&flags
+        convergence=.FALSE.,
+        isotopes=.TRUE.,
+        nonanalytic=.FALSE.,
+        nanowires=.FALSE.
+&end

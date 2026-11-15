@@ -1,0 +1,19 @@
+{
+  "material": "MnIn2Se4",
+  "method": "Wigner-RTA",
+  "mesh": "14 14 14",
+  "cutoff_A": 6.45,
+  "T_K": 300.0,
+  "TOT": {
+    "inplane": 3.7492,
+    "kappa_zz": 1.1595
+  },
+  "population": {
+    "inplane": 3.6584,
+    "kappa_zz": 1.0934
+  },
+  "coherence": {
+    "inplane": 0.0908,
+    "kappa_zz": 0.0661
+  }
+}

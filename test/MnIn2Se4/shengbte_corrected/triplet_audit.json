@@ -1,0 +1,19 @@
+{
+  "fc3_nonzero_triplets": 5586,
+  "complete_writer_triplets": 5586,
+  "hiphive_export_triplets": 3276,
+  "hiphive_missing_pct": 41.4,
+  "production_20x20x5_triplets": 5586,
+  "production_control_Mn_position": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "correct_Mn_position": [
+    1.0,
+    0.0,
+    1.0
+  ],
+  "note": "The hiphive write_to_shengBTE filter drops triplets that are not the shortest image inside the supercell. For MnIn2Se4 shengbte_export/ it kept 3276 of 5586 (-41.4%). The production 20x20x5 run has all 5586 triplets but its CONTROL misplaces Mn at (0,0,0) instead of (1,0,1) - the AutoZT [0151]/[0154] bug. Both defects invalidate the ShengBTE kappa.",
+  "reproduction": "python analysis/shengbte_crosscheck/write_fc3_sheng.py <fcdir> <outdir> 20 20 5 300"
+}

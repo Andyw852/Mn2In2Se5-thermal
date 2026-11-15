@@ -339,14 +339,65 @@ and by the physically ill-defined nature of the intrinsic interlayer value.
 
 ---
 
-## 11. Data and reproducibility
+## 11. Data and reproducibility — repository file map
 
-- Raw data: `test/MnIn2Se4/fc2_442_phonon/` (7 frames, FC2, band structure, plots)
-- Sound-velocity extraction: `test/MnIn2Se4/fc2_442_phonon/sound_velocity.py`
-  (documents both pitfalls above in its header)
-- 4×4×1 vs 4×4×2 comparison: `test/MnIn2Se4/compare_441_vs_442.py`
-- κ driver: `test/MnIn2Se4/kappa_driver_442.py`
-- Cutoff scan: `test/MnIn2Se4/kappa_cutscan.py`, `kappa_lbte_scan.py`
-- Aggregated numbers: `test/MnIn2Se4/kappa_results_mn441.json`
-- ShengBTE writers: `analysis/shengbte_crosscheck/write_fc3_sheng.py`,
-  `write_fc2_sheng.py`
+Every calculation in this report has its inputs and outputs committed to the
+repository. The full index is **[test/MnIn2Se4/README.md](test/MnIn2Se4/README.md)**;
+the table below is the direct lookup.
+
+All paths are relative to the repository root.
+
+### 11.1 Calculation → inputs / outputs
+
+| § | Calculation | Inputs (committed) | Outputs (committed) | Driver |
+|---|---|---|---|---|
+| 3 | **FC2 in a 4×4×2 supercell** (7 frames, 0.02 Å) | `test/MnIn2Se4/fc2_442_phonon/frames/disp-0000{1..7}/` (INCAR, KPOINTS, POSCAR, CONTCAR), `fc2_442_phonon/disp_plan.json`, `fc2_442_phonon/POSCAR` | `fc2_442_phonon/fc2.hdf5`, `fc2_442_phonon/FORCE_CONSTANTS`, `fc2_442_phonon/band-dft-cpu.yaml`, `fc2_442_phonon/phonon_summary.json`, `fc2_442_phonon/phonon_fit.log`, `fc2_442_phonon/phonon_band_plot/*.png` | phonopy finite displacement (AutoZT phonon-dft-cpu S1→S3) |
+| 4 | **Interlayer sound velocity / C₄₄** | `test/MnIn2Se4/fc2_442_phonon/fc2.hdf5`, `fc2_442_phonon/POSCAR` | printed table (values in §4 of this report) | `test/MnIn2Se4/fc2_442_phonon/sound_velocity.py` |
+| 5 | **4×4×1 vs 4×4×2** | `test/MnIn2Se4/fit/POSCAR`, `test/MnIn2Se4/fit_cut3_6p45/fc2.hdf5`, `test/MnIn2Se4/fc2_442_phonon/fc2.hdf5` | `test/MnIn2Se4/compare_441_vs_442_results.json` | `test/MnIn2Se4/compare_441_vs_442.py` |
+| 6.1 | **κ vs FC2 supercell** | the two FC2 files above + `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5` | `test/MnIn2Se4/kappa_results_442.json`, `test/MnIn2Se4/kappa_results_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` |
+| 6.2 | **FC3 cutoff scan** (5.60 / 6.23 / 6.45 Å) | `test/MnIn2Se4/fc3_cutoff_variants/fc3_cut5p60.hdf5`, `fc3_cut6p23.hdf5`, `fc3_cut6p45.hdf5` + `fc2_442_phonon/fc2.hdf5` | `test/MnIn2Se4/kappa_cutoff_scan_results.json`, `kappa_cutoff_convergence.png`, `KAPPA_CUTOFF_SCAN.md` | `test/MnIn2Se4/kappa_cutscan.py` (RTA), `test/MnIn2Se4/kappa_lbte_scan.py` (LBTE) |
+| 6.3 | **κ vs q-mesh** (11³ / 14³ / 18³) | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5` | `test/MnIn2Se4/kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` | `test/MnIn2Se4/kappa_driver_442.py`, `test/MnIn2Se4/kappa_run_18_lbte.py` |
+| 6.4 | **Finite-grain κ** (Casimir 10 μm / 1 μm) | same force constants | `test/MnIn2Se4/kappa_finite_grain.json` | `test/MnIn2Se4/kappa_driver_442.py` (`boundary_mfp`, unit = μm) |
+| 7 | **Wigner coherence** | same force constants | `test/MnIn2Se4/kappa_wigner_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` (`conductivity_type="wigner"`), `test/MnIn2Se4/kappa_run_14_wigner_lbte.py` |
+| 8 | **FC3 → ShengBTE export audit** | `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5`, `test/MnIn2Se4/phono3py_disp.yaml` | `test/MnIn2Se4/shengbte_corrected/CONTROL_fixed`, `shengbte_corrected/FORCE_CONSTANTS_3RD_complete` (5586 triplets), `shengbte_corrected/triplet_audit.json` | `analysis/shengbte_crosscheck/write_fc3_sheng.py`, `analysis/shengbte_crosscheck/write_fc2_sheng.py` |
+
+### 11.2 Legacy (superseded) data
+
+| Path | Contents | Status |
+|---|---|---|
+| `test/MnIn2Se4/fit/` | pheasy FC2+FC3 fit in the 4×4×1 cell, dataset displacements/forces, fit config and manifest | input provenance |
+| `test/MnIn2Se4/fit_cut3_6p45/` | 4×4×1 FC2 + FC3 at cutoff 6.45 Å | still used as the FC3 of record |
+| `test/MnIn2Se4/kappa_shengbte_11x11x11/`, `kappa_shengbte_20x20x5/` | ShengBTE runs | **κ invalid** — see §8 |
+| `test/MnIn2Se4/kappa_phono3py_lbte_11x11x11/` | phono3py LBTE with the old 4×4×1 FC2 | superseded by §6 |
+| `test/MnIn2Se4/shengbte_export/` | the defective `FORCE_CONSTANTS_3RD` / `CONTROL` pair | kept as evidence for §8 |
+| `MnIn2Se4/` (repository root) | the original 3×3×3 test dataset (κ ≈ 3.9 / 2.1) | **superseded** by this 4×4×2 work |
+
+### 11.3 Aggregate numbers
+
+- `test/MnIn2Se4/kappa_results_mn441.json` — one JSON with every κ value from
+  this report (FC2 comparison, cutoff scan, mesh scan, finite grain, Wigner,
+  FC3 triplet audit, and the explicit conclusions block).
+- `test/MnIn2Se4/kappa_results_442.json` — the raw output of `kappa_driver_442.py`.
+
+### 11.4 Environment
+
+phonopy 2.47.1, phono3py 3.24.0, symfc 1.6.0, Python 3.11.
+`sound_velocity.py` and the `kappa_*.py` drivers need only numpy + phonopy +
+phono3py; no proprietary code is required to reproduce the numbers in this
+report.
+
+### 11.5 Reproducing a single number
+
+```bash
+cd <repo-root>/test/MnIn2Se4
+python compare_441_vs_442.py            # §5  TA 322.9 vs 1348.3 m/s
+python fc2_442_phonon/sound_velocity.py .   # §4  TA/LA/C44 of the 4x4x2 FC2
+python kappa_cutscan.py                 # §6.2  RTA cutoff scan (~5 min)
+python kappa_lbte_scan.py               # §6.2  LBTE cutoff scan (~47 min)
+python kappa_driver_442.py              # §6.1  RTA + LBTE vs FC2 supercell
+```
+
+> Raw DFT output (OUTCAR, vasprun.xml, WAVECAR) is not committed — see the
+> repository README. The per-frame INCAR/KPOINTS/POSCAR/CONTCAR **are**
+> committed, so the FC2 fit can be reproduced with one phonopy call once the
+> forces are regenerated.
