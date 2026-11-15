@@ -1,91 +1,91 @@
-# Mn2In2Se5 晶格热导率重算指令（AutoZT kl-dft-cpu，4×4×1 换基矢超胞）
+# Mn2In2Se5 lattice thermal conductivity recalculation instructions (AutoZT kl-dft-cpu, 4×4×1 rebased supercell)
 
-> 给执行 AI：先按 AutoZT `AGENTS.md` 铁律 0 读 `AGENTS.md` 与 `skill/kl-dft-cpu/README.md`（含 [0105] 新增两节），
-> 再按本文件执行。本文件里列出的 `conf --set`、`register`，用户已通过本文件授权；`rerun`、`clean`、`-f`、`-y`
-> 仍须逐条请示。每个检查点不通过就停下来汇报，不要自行绕过。
+> To the executing AI: first, per iron rule 0 of the AutoZT `AGENTS.md`, read `AGENTS.md` and `skill/kl-dft-cpu/README.md` (including the two sections added by [0105]),
+> then execute this file. The `conf --set` and `register` commands listed here are already authorised by the user through this file; `rerun`, `clean`, `-f`, `-y`
+> still require an individual request each time. Whenever a checkpoint fails, stop and report; do not work around it on your own.
 
-## 0. 背景（为什么这样算）
+## 0. Background (why it is done this way)
 
-- 旧 3×3×1：超胞只保 12 个点群操作中的 4 个，力常数破对称，κ 随 q 网格来回跳（0.93→0.78→0.96→0.74）。
-- 旧 3×3×3：平衡帧残余力 0.103 eV/Å，结构不在平衡位置，虚频 −0.44 THz。
-- 新方案：用同一个已弛豫结构换一组基矢，(a, b, a3′)。在这组基矢下 **4×4×1 = 144 原子**，保住全部 12 个操作，
-  而且仍是对角超胞，pheasy 和 ShengBTE 都能直接用；安全截断 6.6 Å（3×3×3 菱方只有 5.1 Å）。
-  已用 phono3py 和 ShengBTE 2.1.0 做过对照：同一套力常数下，4×4×1 与 3×3×3 的 κ 在输出精度内完全相同。
-- AutoZT 需要 [0105] 补丁（分支 `claude/jolly-curie-jsvosv`），它修了这条链上会把这种原胞弄坏、或让结果不对称的地方：
-  1. S2/S3/S4 以前不带自旋：S1 用 ISPIN=2 + MAGMOM 弛豫，S4 却是非磁取力。这是残余力大、出虚频的一个直接原因。
-  2. 对称化以前会把原胞换成 27 原子的惯用胞（就地写回）。
-  3. S1 的 KSPACING 以前不能改。
-  4. ShengBTE 自动网格以前不保对称。
-  5. pheasy 遇到 9 个数的超胞矩阵会静默只取对角元。
+- Old 3×3×1: the supercell preserves only 4 of the 12 point-group operations, the force constants break symmetry, and κ jumps back and forth with the q-mesh (0.93→0.78→0.96→0.74).
+- Old 3×3×3: equilibrium-frame residual force 0.103 eV/Å, the structure is not at equilibrium, and there is an imaginary frequency of −0.44 THz.
+- New approach: use the same relaxed structure with a different set of basis vectors, (a, b, a3′). In this basis **4×4×1 = 144 atoms**, all 12 operations are preserved,
+  and it is still a diagonal supercell, so both pheasy and ShengBTE can use it directly; the safe cutoff is 6.6 Å (the 3×3×3 rhombohedral cell gives only 5.1 Å).
+  A cross-check with phono3py and ShengBTE 2.1.0 has been done: with the same force constants, the κ from 4×4×1 and from 3×3×3 agree to within the output precision.
+- AutoZT needs the [0105] patch (branch `claude/jolly-curie-jsvosv`); it fixes the places on this chain that would damage such a primitive cell or make the results asymmetric:
+  1. S2/S3/S4 previously carried no spin: S1 relaxed with ISPIN=2 + MAGMOM, but S4 evaluated forces non-magnetically. This is one direct cause of the large residual force and the imaginary frequencies.
+  2. Symmetrization used to replace the primitive cell with the 27-atom conventional cell (written back in place).
+  3. The KSPACING of S1 could not be changed before.
+  4. The ShengBTE automatic mesh did not preserve symmetry.
+  5. pheasy silently took only the diagonal elements when given a 9-number supercell matrix.
 
-### 0.1 磁序与 U（用户已定）
+### 0.1 Magnetic order and U (decided by the user)
 
-- 磁序固定为 **FM**（`MAGMOM = 2*5 7*0`），不做 AFM 比较，结果里要注明"假定铁磁"。
-- Mn 3d 加 **U_eff = 4 eV**（Dudarev，LDAUTYPE=2），In、Se 不加。
-- 判据（2026-11-02 修订）：要求的是**绝缘态，即整数占据**，0.3 eV 只是经验门槛。
-  U=4 的 S2 结果：带隙 0.254 eV（约 5 倍 SIGMA），磁矩 9.9844。
-  磁矩不是整数，用 SIGMA = 0.05 eV 的高斯展宽就能解释：Mn 3d 少数自旋导带很平，展宽尾巴会把少量电子挪过去。
-  核对方法：拿 S2 的输入，只把 `SIGMA` 改成 0.01，在 AutoZT 目录之外单独跑一个单点（独立诊断，几分钟）。
-  - 磁矩 = 10.00 ± 0.005：判定为绝缘，**U=4 不变**，继续 S3/S4。
-    AutoZT 各步保持 SIGMA = 0.05 不改，因为 S1–S4 必须一致。
-  - 仍约 9.98：确实有部分占据，停下汇报。
-- 不为了凑带隙门槛去调大 U。U 值只按文献或物理理由定，改 U 会让结构和所有声子一起变。
-- S4 每帧磁矩的期望值改为 16 × 9.9844 ≈ 159.75（SIGMA = 0.05 下），各帧之间相差应 < 0.2。
+- The magnetic order is fixed to **FM** (`MAGMOM = 2*5 7*0`); no AFM comparison is made, and the results must note "ferromagnetic assumed".
+- **U_eff = 4 eV** is applied to Mn 3d (Dudarev, LDAUTYPE=2); none on In or Se.
+- Criterion (revised 2026-11-02): what is required is an **insulating state, i.e. integer occupations**; 0.3 eV is only an empirical threshold.
+  The S2 result with U=4: band gap 0.254 eV (about 5× SIGMA), magnetic moment 9.9844.
+  The moment is not an integer, which the Gaussian broadening with SIGMA = 0.05 eV explains: the Mn 3d minority-spin conduction band is very flat and the broadening tail moves a small number of electrons across.
+  How to check: take the S2 input, change only `SIGMA` to 0.01, and run a separate single point outside the AutoZT directory (an independent diagnostic, a few minutes).
+  - Moment = 10.00 ± 0.005: judged insulating, **U=4 is kept**, continue with S3/S4.
+    All AutoZT steps keep SIGMA = 0.05 unchanged, because S1–S4 must be consistent.
+  - Still about 9.98: there really is partial occupation; stop and report.
+- Do not raise U just to reach the band-gap threshold. U is set only from the literature or physical arguments; changing U changes the structure and all the phonons with it.
+- The expected magnetic moment per S4 frame becomes 16 × 9.9844 ≈ 159.75 (with SIGMA = 0.05), and frames should differ by < 0.2.
 
-## 1. 前置检查（不通过就停）
+## 1. Pre-flight checks (stop if any fails)
 
-1. AutoZT 已切到含 [0105] 和 [0106] 的版本（分支 `claude/jolly-curie-jsvosv` 的 `3d13297` 或更新）：
-   - `grep -c "total drift" relax_common.py` 的结果 ≥ 1（[0106] 的力解析修复）；
-   - `git -C ~/software/AutoZT log --oneline -3` 里有 `[0105]`；
-   - `grep -c inherit_spin_u skill/kl-dft-cpu/gen_step4_disp.py` 的结果 ≥ 1；
-   - `ls scripts/rebase_for_diag_supercell.py` 存在。
-2. 本地自检结构（只读）：`python3 scripts/rebase_for_diag_supercell.py <附件POSCAR> --dim 4 4 1 -o /tmp/x`。
-   应输出 `R-3m (#166)，9 原子，12 个点群操作`，以及 `[OK] 输入基矢上的 4 4 1 已保全部点群操作，不用换基矢`。
+1. AutoZT is switched to a version containing [0105] and [0106] (`3d13297` of branch `claude/jolly-curie-jsvosv` or newer):
+   - `grep -c "total drift" relax_common.py` returns ≥ 1 (the [0106] force-parsing fix);
+   - `git -C ~/software/AutoZT log --oneline -3` contains `[0105]`;
+   - `grep -c inherit_spin_u skill/kl-dft-cpu/gen_step4_disp.py` returns ≥ 1;
+   - `ls scripts/rebase_for_diag_supercell.py` exists.
+2. Local structure self-check (read-only): `python3 scripts/rebase_for_diag_supercell.py <attached POSCAR> --dim 4 4 1 -o /tmp/x`.
+   It should print `R-3m (#166), 9 atoms, 12 point-group operations` and `[OK] 4 4 1 on the input basis vectors preserves all point-group operations, no rebasing needed`.
 
-## 2. 建材料（用新名字，不复用旧目录）
+## 2. Create the material (use a new name; do not reuse the old directory)
 
-- 材料名：**`Mn2In2Se5_441`**（新名字。旧材料目录里有 3×3×1 的 `step4_disp/disp-*`，还可能有 fit-fc-thermal 的
-  `kl_bundle/`；S5 见到 `kl_bundle` 会自动进入"导入旧力常数"模式，那就成了原胞和超胞对不上。）
-- 材料根 POSCAR = 附件 `POSCAR`（9 原子，已弛豫结构换基矢；原子顺序 Mn Mn In In Se×5）。
+- Material name: **`Mn2In2Se5_441`** (a new name. The old material directory contains the 3×3×1 `step4_disp/disp-*` and possibly fit-fc-thermal's
+  `kl_bundle/`; when S5 sees `kl_bundle` it automatically enters "import old force constants" mode, and then the primitive cell and the supercell would not match.)
+- Material-root POSCAR = the attached `POSCAR` (9 atoms, the relaxed structure rebased; atom order Mn Mn In In Se×5).
   ```
-  autozt -tt kl-dft-cpu -p Mn2In2Se5_441 register --poscar <附件POSCAR路径>
+  autozt -tt kl-dft-cpu -p Mn2In2Se5_441 register --poscar <path to the attached POSCAR>
   ```
-- **禁止**运行 `reuse_structure.py`：它会用别的技能的 CONTCAR 覆盖材料根 POSCAR，基矢就换回去了。
-- `nac` 保持默认开启（极性半导体需要 LO-TO 劈裂）。
+- **Never** run `reuse_structure.py`: it overwrites the material-root POSCAR with the CONTCAR of another skill and the basis vectors revert.
+- `nac` stays at its default of on (a polar semiconductor needs the LO-TO splitting).
 
-## 3. 各步 step.conf（全部用 `conf --set` 写，写完逐步 `conf` 查最终值）
+## 3. step.conf for each step (all written with `conf --set`; after writing, check the final values step by step with `conf`)
 
-| 步骤 | 设置 | 原因 |
+| step | setting | reason |
 |---|---|---|
-| step1_std_opt | `params.KSPACING=0.038` | 原胞 Γ **8×8×2**，保对称（0.03 会给 10×10×2/10×10×3，不保对称） |
-| step1_std_opt | `params.CELL_POLICY=none` | 明确不动输入胞（默认 primitive 对已是原胞的输入也不改，写 none 更保险） |
-| step1_std_opt | `params.AUTO_MAG=true`、`params.MAGMOM_OVERRIDE="Mn:5 In:0 Se:0"` | Mn²⁺ 高自旋 FM 起点（S2–S4 会自动继承） |
-| step1_std_opt | `params.U_OVERRIDE="Mn:4 In:0 Se:0"` | **用户决定：FM + U**。不加 U 时 PBE-D3 得到的是等效金属态（磁矩 9.31、"带隙" 54 meV）。给 Mn 显式写非零 U 会绕过硒化物的阴离子门控；S2–S4 由 [0105] 自动继承 LDAU* |
-| step1_std_opt | `params.CELL_FORCE_TOL_EV_A=0.002` | 末态最大力收紧到 2 meV/Å（默认 0.01，不满足 S4 的要求）。**需要 [0106]**：之前的版本读力恒报 0.0000，这道闸从没生效 |
-| step1_std_opt | `params.CELL_STAGE_EDIFFG=1E-6` | 变胞段能量判据从 1E-4 收紧到 1E-6 eV。不收紧的话 VASP 在力约 0.009 eV/Å 就停，三遍都过不了 0.002 的力闸 |
-| step1_std_opt | `FUNC` 保持 `auto` | 层状多组分会选 pbe-d3；S1 生成后核对 `workflow_method.txt` 的 FUNC；S2–S4 自动继承，不要中途改 |
+| step1_std_opt | `params.KSPACING=0.038` | primitive cell Γ **8×8×2**, symmetry-preserving (0.03 would give 10×10×2/10×10×3, which does not preserve symmetry) |
+| step1_std_opt | `params.CELL_POLICY=none` | explicitly leave the input cell untouched (the default primitive also leaves an already-primitive input unchanged; writing none is safer) |
+| step1_std_opt | `params.AUTO_MAG=true`, `params.MAGMOM_OVERRIDE="Mn:5 In:0 Se:0"` | high-spin Mn²⁺ FM starting point (S2–S4 inherit it automatically) |
+| step1_std_opt | `params.U_OVERRIDE="Mn:4 In:0 Se:0"` | **user decision: FM + U**. Without U, PBE-D3 gives an effectively metallic state (moment 9.31, "gap" 54 meV). Writing a non-zero U explicitly for Mn bypasses the anion gating of selenides; S2–S4 inherit LDAU* automatically via [0105] |
+| step1_std_opt | `params.CELL_FORCE_TOL_EV_A=0.002` | tightens the final-state maximum force to 2 meV/Å (the default 0.01 does not meet the S4 requirement). **Requires [0106]**: earlier versions always reported 0.0000 when reading forces, so this gate never took effect |
+| step1_std_opt | `params.CELL_STAGE_EDIFFG=1E-6` | tightens the energy criterion of the variable-cell stages from 1E-4 to 1E-6 eV. Without it VASP stops at a force of about 0.009 eV/Å and all three passes fail the 0.002 force gate |
+| step1_std_opt | `FUNC` stays `auto` | layered multi-component systems select pbe-d3; after S1 is generated, check FUNC in `workflow_method.txt`; S2–S4 inherit it automatically, do not change it midway |
 | step2_static | `params.KSPACING=0.038` | 8×8×2 |
-| step3_nac | `params.KSPACING=0.038` | 8×8×2（想更准可用 12×12×3，见第 5 节） |
-| step4_disp | `params.SUPERCELL="4 4 1"` | 对角三个数，**不要写 9 个数** |
-| step4_disp | `params.KSPACING=0.038` | 超胞 Γ **2×2×2**，与 S1 的 8×8×2 是同一套物理 k 点，参考帧残余力才能真正接近零 |
-| step4_disp | 其余保持默认 | `SUPERCELL_SYMMETRY=strict`、`METHOD=alm`、`FORCE_PREC=Accurate`、`FORCE_EDIFF=1E-7`、`FORCE_LREAL=.FALSE.`、`CUT3_MAX=7.0`、`MAX_DISP=500` |
-| step5_fc | `params.EQ_FORCE_MAX=0.01` | 平衡帧残余力 > 0.01 eV/Å 直接停（默认 0.2 太松，旧 3×3×3 的 0.103 就是被它放过的） |
-| step5_fc | `params.FC_IMPORT_DIR=off` | 强制自己拟合，绝不导入旧力常数 |
-| step6_kappa | `params.NAC=off`（2026-11-02 决定） | S3 的 DFPT 失败：ε∞ = 单位矩阵、Mn 的 Born 电荷 −0.9，结果无效。而且 U=4 下磁矩 9.9844 不随 SIGMA 变化，说明有少量真实的部分占据，在这个计算里不是干净的绝缘体，NAC 本身也不适用。只对本材料关闭，不要改项目级的 `nac: false`（那会影响同项目所有 kl 材料） |
-| step6_kappa | 其余保持默认 | `SOLVER=shengbte`、`BTE_METHOD=conv`、`MESH=auto`（[0105] 起网格自动上调到保对称）、`ISOTOPE=true` |
+| step3_nac | `params.KSPACING=0.038` | 8×8×2 (12×12×3 can be used for higher accuracy, see section 5) |
+| step4_disp | `params.SUPERCELL="4 4 1"` | three diagonal numbers, **do not write 9 numbers** |
+| step4_disp | `params.KSPACING=0.038` | supercell Γ **2×2×2**, the same physical k-point set as the 8×8×2 of S1, so that the reference-frame residual force can really approach zero |
+| step4_disp | the rest stays at default | `SUPERCELL_SYMMETRY=strict`, `METHOD=alm`, `FORCE_PREC=Accurate`, `FORCE_EDIFF=1E-7`, `FORCE_LREAL=.FALSE.`, `CUT3_MAX=7.0`, `MAX_DISP=500` |
+| step5_fc | `params.EQ_FORCE_MAX=0.01` | stops immediately if the equilibrium-frame residual force is > 0.01 eV/Å (the default 0.2 is too loose; it is what let the 0.103 of the old 3×3×3 through) |
+| step5_fc | `params.FC_IMPORT_DIR=off` | force a fresh fit, never import old force constants |
+| step6_kappa | `params.NAC=off` (decided 2026-11-02) | the S3 DFPT failed: ε∞ = identity matrix, Mn Born charge −0.9, so the result is invalid. Moreover, with U=4 the moment 9.9844 does not change with SIGMA, which shows a small genuine partial occupation — not a clean insulator in this calculation — so NAC itself does not apply. Turn it off for this material only; do not change the project-level `nac: false` (that would affect every kl material in the project) |
+| step6_kappa | the rest stays at default | `SOLVER=shengbte`, `BTE_METHOD=conv`, `MESH=auto` (since [0105] the mesh is raised automatically until it is symmetry-preserving), `ISOTOPE=true` |
 
-命令格式示例：
+Command examples:
 ```
 autozt -tt kl-dft-cpu -p Mn2In2Se5_441 -j step1_std_opt conf --set params.KSPACING=0.038
 autozt -tt kl-dft-cpu -p Mn2In2Se5_441 -j step4_disp conf --set params.SUPERCELL="4 4 1"
 autozt -tt kl-dft-cpu -p Mn2In2Se5_441 -j step4_disp conf
 ```
 
-**不要**在 S4 的 `[incar]` 里手写 ISPIN/MAGMOM：[0105] 会从 S1 继承，并按超胞展开成 `32*5 112*0`。手写反而可能和 S1 不一致。
+**Do not** hand-write ISPIN/MAGMOM in the S4 `[incar]`: [0105] inherits them from S1 and expands them to the supercell as `32*5 112*0`. Hand-writing them may actually be inconsistent with S1.
 
-## 4. 参考 KPOINTS（AutoZT 用 VASPKIT 按 KSPACING 生成；生成后逐个核对，必须一字不差）
+## 4. Reference KPOINTS (AutoZT generates them with VASPKIT from KSPACING; check each one after generation — they must match exactly)
 
-S1 / S2 / S3（9 原子原胞），文件 `KPOINTS_primitive_S1-S3_8x8x2`：
+S1 / S2 / S3 (9-atom primitive cell), file `KPOINTS_primitive_S1-S3_8x8x2`:
 ```
 Gamma 8x8x2
 0
@@ -93,7 +93,7 @@ Gamma
    8   8   2
 0.0  0.0  0.0
 ```
-S4 每个 `disp-*`（144 原子超胞），文件 `KPOINTS_supercell_S4_2x2x2`：
+For each S4 `disp-*` (144-atom supercell), file `KPOINTS_supercell_S4_2x2x2`:
 ```
 Gamma 2x2x2
 0
@@ -101,105 +101,105 @@ Gamma
    2   2   2
 0.0  0.0  0.0
 ```
-- 已核对：KSPACING=0.038 时，VASPKIT 不论"四舍五入"还是"向上取整"都给出上面两个网格。
-- 这组基矢下，原胞 Γ 网格 n n m 保对称的条件是：**前两个数相等，且 m 是 n/gcd(n,4) 的倍数**。
-  例：8 8 2、12 12 3、16 16 4 保对称；10 10 2、10 10 3、13 13 3 不保对称。
-  超胞（4×4×1 倒格基）n n m 保对称的条件是 m 是 n 的倍数：1 1 1、2 2 2、3 3 3 可以。
-- 生成的 KPOINTS 和上面不一样，就停下汇报，不要提交。
+- Verified: with KSPACING=0.038, VASPKIT gives the two meshes above whether it rounds or rounds up.
+- In this basis, the primitive-cell Γ mesh n n m preserves symmetry iff **the first two numbers are equal and m is a multiple of n/gcd(n,4)**.
+  Example: 8 8 2, 12 12 3, 16 16 4 preserve symmetry; 10 10 2, 10 10 3, 13 13 3 do not.
+  For the supercell (4×4×1 reciprocal basis) the condition for n n m to preserve symmetry is that m is a multiple of n: 1 1 1, 2 2 2, 3 3 3 are fine.
+- If the generated KPOINTS differ from the above, stop and report; do not submit.
 
-## 5. 逐步检查点（每步完成后检查；只读诊断按铁律 4 用 ssh tail/grep）
+## 5. Step-by-step checkpoints (check after each step; read-only diagnosis via ssh tail/grep per iron rule 4)
 
 **S1_opt**
-- CONTCAR 仍为 9 原子；|a| = |b| ≈ 4.03 Å，c 方向第三基矢 ≈ 18.7 Å（倾斜）。空间群 R-3m：用 `symmetry_audit.py --mode audit`，1e-5 与 1e-4 都要是 R-3m。
-- 收敛判据以 AutoZT 的 `relax_injob` 为准，三段式（relax_common `STAGE_SPEC`）：
-  - 段 a（ISIF=2）：力 < 0.05 eV/Å；
-  - 段 b/c（ISIF=3）：`EDIFFG = 1E-4` 是**正数，即能量判据**（相邻离子步能量差 < 1e-4 eV），不是 0.1 meV/Å 的力判据；
-  - 作业自己另外判：末态最大力 < `CELL_FORCE_TOL_EV_A`（默认 0.01 eV/Å），晶格变化和应力也要稳定，否则再跑一遍。
-  - 模板里的 `EDIFFG = -0.001` 会被三段式覆盖，**不生效**。
-- S1 结束后看最后一帧的最大力：
+- CONTCAR still has 9 atoms; |a| = |b| ≈ 4.03 Å and the third basis vector along c ≈ 18.7 Å (tilted). Space group R-3m: run `symmetry_audit.py --mode audit`; it must be R-3m at both 1e-5 and 1e-4.
+- Convergence is judged by AutoZT's `relax_injob`, in three stages (relax_common `STAGE_SPEC`):
+  - stage a (ISIF=2): force < 0.05 eV/Å;
+  - stages b/c (ISIF=3): `EDIFFG = 1E-4` is **positive, i.e. an energy criterion** (energy difference between adjacent ionic steps < 1e-4 eV), not a force criterion of 0.1 meV/Å;
+  - the job additionally checks: final-state maximum force < `CELL_FORCE_TOL_EV_A` (default 0.01 eV/Å), and the lattice change and stress must be stable too, otherwise another pass is run.
+  - the `EDIFFG = -0.001` in the template is overridden by the three-stage logic and **has no effect**.
+- After S1 finishes, look at the maximum force of the last frame:
   `awk '/TOTAL-FORCE/{f=1;n=0;x=0;next} f&&/^ -+/{if(n>0)f=0;next} f{m=sqrt($4^2+$5^2+$6^2);if(m>x)x=m;n++} END{print x}' OUTCAR`
-  - **≤ 0.003 eV/Å**：通过；
-  - 0.003–0.01 eV/Å：在 step1_std_opt 设 `CELL_FORCE_TOL_EV_A=0.002`，然后 `retry`（从 CONTCAR 续跑，不是 rerun），再 `start`。
-    原因：S4 要求平衡帧 < 0.005 eV/Å，0.01 的余量不够。
-  起始残余力 ~1 eV/Å 是正常的：附件结构是在旧的计算设置下弛豫的，这次 S1 用 PBE-D3 + FM，晶格会明显变化。
-- INCAR 里有 `ISPIN = 2`、`MAGMOM = 2*5 2*0 5*0`（这是 S1 自己的自动注入，[0105] 管的是 S2–S4）。
-- 只看**最终**总磁矩，弛豫中间值不算数。绝缘的 FM Mn²⁺ 应接近整数 10.0 μB/胞：
-  - ≈ 10.0：通过；
-  - 塌缩到 ≈ 0：停；
-  - 明显不是整数（如 9.3）：说明这个泛函下可能是金属或半金属。先报告，等 S2 的带隙结果，再决定是否继续 S3。
-- 记下 S1/S2 的最终总磁矩 M₀，后面 S4 的检查要用。
+  - **≤ 0.003 eV/Å**: pass;
+  - 0.003–0.01 eV/Å: set `CELL_FORCE_TOL_EV_A=0.002` on step1_std_opt, then `retry` (continue from CONTCAR, not rerun), and then `start`.
+    Reason: S4 requires the equilibrium frame to be < 0.005 eV/Å, and a margin of 0.01 is not enough.
+  An initial residual force of ~1 eV/Å is normal: the attached structure was relaxed under the old calculation settings, whereas this S1 uses PBE-D3 + FM, so the lattice will change noticeably.
+- The INCAR contains `ISPIN = 2` and `MAGMOM = 2*5 2*0 5*0` (this is S1's own automatic injection; [0105] governs S2–S4).
+- Only the **final** total magnetic moment counts; intermediate relaxation values do not. An insulating FM Mn²⁺ should be close to the integer 10.0 μB/cell:
+  - ≈ 10.0: pass;
+  - collapsed to ≈ 0: stop;
+  - clearly not an integer (e.g. 9.3): this suggests that the functional may give a metal or semimetal. Report first, wait for the S2 band gap, and only then decide whether to continue with S3.
+- Record the final total magnetic moment M₀ of S1/S2; the later S4 checks need it.
 
 **S2_static**
-- gen 日志有 `[OK] S2_static：自旋/DFT+U 继承 S1：ISPIN=2  MAGMOM=2*5 7*0 …`。
-- 总磁矩与 S1 相同。若判为金属：先停下汇报，不要直接关 nac（可能是磁态塌缩）。
-- gen 日志若出现"检出数值微畸变"：[0105] 起对称化保持原胞。核对 `step2_static/POSCAR` 仍是 9 原子、基矢不变。
+- The gen log contains `[OK] S2_static: spin/DFT+U inherited from S1: ISPIN=2  MAGMOM=2*5 7*0 …`.
+- The total moment equals that of S1. If it is judged metallic: stop and report first; do not simply turn nac off (it may be a collapse of the magnetic state).
+- If the gen log reports "numerical micro-distortion detected": since [0105] symmetrization keeps the primitive cell. Verify that `step2_static/POSCAR` still has 9 atoms and unchanged basis vectors.
 
 **S3_nac**
-- 日志有同样的继承行；OUTCAR 含 `MACROSCOPIC STATIC DIELECTRIC TENSOR`，且 ε_xx = ε_yy。
-- 可选更密网格（介电更准）：S3 设 `KSPACING=0.024`，生成后看 KPOINTS。若是 `12 12 3` 就保留；若是 `13 13 3`，改成 `0.026` 再生成，应为 `12 12 3`。
+- The log has the same inheritance line; the OUTCAR contains `MACROSCOPIC STATIC DIELECTRIC TENSOR`, and ε_xx = ε_yy.
+- An optional denser mesh (more accurate dielectric): set `KSPACING=0.024` for S3 and check the KPOINTS after generation. If it is `12 12 3`, keep it; if it is `13 13 3`, change to `0.026` and regenerate — it should be `12 12 3`.
 
-**S4_disp（gen 阶段，提交前）**
-- 日志有 `[OK] 超胞 4 4 1 保有 R-3m 的全部 12 个点群操作`。若被 `SUPERCELL_SYMMETRY` 拦下，说明原胞基矢被换了，停下汇报。
-- `SPOSCAR` 为 144 原子，晶格与附件 `SPOSCAR_441_reference` 相同（逐分量差 < 1e-3 Å；结构经 S1 重新弛豫后会有微小变化）。
-- `disp-00000/INCAR` 有 `ISPIN = 2`、`MAGMOM = 32*5 112*0`（日志有 `step4 00000：自旋/DFT+U 继承 S1` 一行）；所有 `disp-*/KPOINTS` 都是 `2 2 2`。
-- 帧数 ≤ `MAX_DISP`；超了就把 `CUT3_MAX` 降到 6.0，然后 retry。
+**S4_disp (gen stage, before submission)**
+- The log contains `[OK] supercell 4 4 1 preserves all 12 point-group operations of R-3m`. If it is blocked by `SUPERCELL_SYMMETRY`, the primitive-cell basis vectors have been changed: stop and report.
+- `SPOSCAR` has 144 atoms and its lattice matches the attached `SPOSCAR_441_reference` (component-wise difference < 1e-3 Å; there will be tiny changes because the structure was re-relaxed in S1).
+- `disp-00000/INCAR` has `ISPIN = 2` and `MAGMOM = 32*5 112*0` (the log contains a line `step4 00000: spin/DFT+U inherited from S1`); all `disp-*/KPOINTS` are `2 2 2`.
+- Number of frames ≤ `MAX_DISP`; if it exceeds that, lower `CUT3_MAX` to 6.0 and then retry.
 
-**S4_disp（算完）——最关键的一关**
-- 平衡帧 `disp-00000` 的最大残余力：
+**S4_disp (after the calculation) — the most critical gate**
+- Maximum residual force of the equilibrium frame `disp-00000`:
   ```
   awk '/TOTAL-FORCE/{f=1;n=0;next} f&&/^ -+/{if(n>0)f=0;next} f{m=sqrt($4^2+$5^2+$6^2);if(m>x)x=m;n++} END{print x}' disp-00000/OUTCAR
   ```
-  **< 0.005 eV/Å 合格**（旧 3×3×1 是 0.004）。0.005–0.01 汇报后继续；> 0.01 停：先查磁矩、KPOINTS、FUNC/IVDW 是否与 S1 一致。
-- 每帧总磁矩（取每个 OUTCAR 最后一次）：
+  **< 0.005 eV/Å passes** (the old 3×3×1 gave 0.004). For 0.005–0.01, report and continue; above 0.01, stop: first check whether the magnetic moment, KPOINTS and FUNC/IVDW are consistent with S1.
+- Total magnetic moment of each frame (take the last occurrence in each OUTCAR):
   `for f in disp-*/OUTCAR; do grep "number of electron" $f | tail -1 | awk '{printf "%.1f\n",$NF}'; done | sort | uniq -c`，
-  应只有一种值，且 ≈ 16 × M₀（M₀ = S2 的最终总磁矩；M₀ = 10 时就是 160）。
-  某帧跑到别的磁态，就把该帧列出来汇报。
+  There should be only one value, and it should be ≈ 16 × M₀ (M₀ = the final total magnetic moment of S2; when M₀ = 10 this is 160).
+  If a frame ends up in another magnetic state, list that frame and report it.
 
 **S5_fc（3090，pheasy）**
 - `fc_dataset.json`：`supercell_matrix = [[4,0,0],[0,4,0],[0,0,1]]`，`natom_super = 144`，`equilibrium_max_force < 0.01`。
 - `phonon_summary.json`：`stable = true`、`fc2_symmetry.broken = false`（`n_ops = 12`）、`fit_rmse_relative < 0.02`；
-  `min_frequency_THz` 不低于 −0.1。若仍有离开 Γ 点的虚频，停下汇报，附上 q 点和支序号。
-- `cutoff_scan.json` 候选截断上限约 6.6 Å（超过安全截断的档位会在 S4 被剔除）。
+  `min_frequency_THz` not below −0.1. If imaginary frequencies away from Γ remain, stop and report, including the q-point and branch index.
+- `cutoff_scan.json`: the candidate cutoff ceiling is about 6.6 Å (cutoffs above the safe cutoff are dropped in S4).
 
-**S5.1_plot**：只看 `band_nonac*`，0–1 THz 的声学支在 Γ 附近没有负频。
-`step3_nac` 目录还在，S5 仍会用那份无效的 vasprun 生成 BORN，所以 `band_nac*` 是错的，忽略。
-S6 要确认日志里是 `NAC=False`。
+**S5.1_plot**: look only at `band_nonac*`; the acoustic branches between 0 and 1 THz must have no negative frequencies near Γ.
+The `step3_nac` directory still exists, so S5 still generates BORN from that invalid vasprun; `band_nac*` is therefore wrong — ignore it.
+For S6, confirm that the log shows `NAC=False`.
 
 **S6_kappa（ShengBTE conv）**
-- 日志中**不能**出现 `rotations are incompatible with the q-point grid`（[0105] 已把自动网格上调到保对称；出现就停下汇报）。
-- `kappa_summary.json`：κ_xx = κ_yy，非对角元 ≈ 0；`mesh_converged = true`。若是因为 `MESH_CONV_MAX_LENGTH` 停的，汇报并请示是否调大。
-- κ_zz 对层间方向的网格很敏感（对照测试中 16×16×4 与 16×16×16 的 κ_zz 差 60%）。收敛后再做一次确认：
-  在收敛网格 n n m 上把第三个数加倍（例如 `MESH="16 16 8"` 加倍到 `"16 16 16"`；n n 2m 也满足保对称条件），
-  看 κ_zz 变化是否 < 5%。不满足就继续加密，并汇报。
+- The log **must not** contain `rotations are incompatible with the q-point grid` ([0105] already raises the automatic mesh until it is symmetry-preserving; if it appears, stop and report).
+- `kappa_summary.json`: κ_xx = κ_yy, off-diagonal elements ≈ 0; `mesh_converged = true`. If it stopped because of `MESH_CONV_MAX_LENGTH`, report and ask whether to raise it.
+- κ_zz is very sensitive to the interlayer-direction mesh (in the control test the κ_zz at 16×16×4 and 16×16×16 differ by 60%). After convergence, do one more confirmation:
+  on the converged mesh n n m, double the third number (e.g. from `MESH="16 16 8"` to `"16 16 16"`; n n 2m also satisfies the symmetry-preserving condition),
+  and check whether κ_zz changes by < 5%. If not, refine further and report.
 
-## 5.5 推进方式（AGENTS.md 铁律 8：不要自己写 bash/ssh 监控循环）
+## 5.5 How to drive the workflow (AGENTS.md iron rule 8: do not write your own bash/ssh monitoring loop)
 
-- 巡检只用 `autozt summary --diff`，或 AutoZT 的作用域 monitor：
-  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 monitor -d -i 300`。不要另起 bash 后台循环；已经起了的，按 PID 停掉。
-- **S1→S2→S3 和 S4 生成阶段：人工把关，不开自动推进。** 每步 OK 后先核对上面的检查点，再
-  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 start`。
-- **S4 先生成、不提交**：`autozt -tt kl-dft-cpu -p Mn2In2Se5_441 -j step4_disp init`，核对 SPOSCAR、
-  KPOINTS（2 2 2）、`disp-00000/INCAR`（ISPIN/MAGMOM）、帧数，然后再 `start`。S4 是最贵的一步，生成错了就白算几十帧。
-- S4 全部算完、平衡帧残余力和每帧磁矩核对通过之后，可以给这个材料开自动推进：
-  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 auto on`。S5 有 `EQ_FORCE_MAX=0.01` 硬闸兜底。
+- For monitoring use only `autozt summary --diff`, or AutoZT's scoped monitor:
+  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 monitor -d -i 300`. Do not start another bash background loop; if one is already running, stop it by PID.
+- **S1→S2→S3 and the S4 generation stage: human-checked, with auto-advance off.** After each step is OK, verify the checkpoints above first, then
+  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 start`.
+- **Generate S4 first, do not submit**: `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 -j step4_disp init`, then verify SPOSCAR,
+  KPOINTS (2 2 2), `disp-00000/INCAR` (ISPIN/MAGMOM) and the number of frames, and only then `start`. S4 is the most expensive step; a bad generation wastes dozens of frames.
+- Once all of S4 is done and the equilibrium-frame residual force and the per-frame moments have been verified, auto-advance may be switched on for this material:
+  `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 auto on`. S5 has the `EQ_FORCE_MAX=0.01` hard gate as a backstop.
 
-## 6. "原胞和超胞不匹配"的风险点与对应措施
+## 6. "Primitive cell and supercell mismatch" risks and the corresponding measures
 
-| 可能出错的地方 | 后果 | 本方案的措施 |
+| where it can go wrong | consequence | measure in this plan |
 |---|---|---|
-| 材料根 POSCAR 被 `reuse_structure.py` 覆盖 | 基矢回到旧的，4 4 1 不再保对称 | 禁止运行；S4 有对称闸兜底 |
-| S1 标准化原胞 | 基矢被换 | `CELL_POLICY=none` |
-| S2/S3/S4 微畸变对称化 | 以前会换成 27 原子惯用胞 | [0105] 已修（保持原胞）；检查点核对原子数 |
-| S4 写 9 个数的 SUPERCELL | 以前 pheasy 会静默只取对角元 | 只写 `4 4 1`；[0105] 起会直接报错 |
-| S5 导入旧 kl_bundle | 力常数对应别的胞 | 新材料名 + `FC_IMPORT_DIR=off` |
-| S1 磁性、S4 非磁 | 参考结构不在平衡位置，出虚频 | [0105] 自动继承；检查点核对 MAGMOM 和磁矩 |
-| k 网格不对称 / S1 与 S4 采样不一致 | 力带对称破缺偏差，残余力变大 | KSPACING=0.038（8×8×2 ↔ 2×2×2，同一套 k 点） |
-| ShengBTE 网格不对称 | κ_xx ≠ κ_yy | [0105] 自动上调；检查日志 |
+| material-root POSCAR overwritten by `reuse_structure.py` | basis vectors revert to the old ones and 4 4 1 no longer preserves symmetry | forbidden; the S4 symmetry gate is the backstop |
+| S1 standardizes the primitive cell | basis vectors are changed | `CELL_POLICY=none` |
+| symmetrization of small distortions in S2/S3/S4 | used to replace the cell with the 27-atom conventional cell | fixed by [0105] (keeps the primitive cell); the checkpoint verifies the atom count |
+| S4 given a 9-number SUPERCELL | pheasy used to silently take only the diagonal | write only `4 4 1`; since [0105] it raises an error instead |
+| S5 importing an old kl_bundle | the force constants belong to another cell | new material name + `FC_IMPORT_DIR=off` |
+| S1 magnetic, S4 non-magnetic | the reference structure is not at equilibrium and imaginary frequencies appear | automatic inheritance via [0105]; the checkpoint verifies MAGMOM and the moment |
+| asymmetric k-mesh / inconsistent sampling between S1 and S4 | symmetry-breaking bias in the forces, larger residual force | KSPACING=0.038 (8×8×2 ↔ 2×2×2, the same k-point set) |
+| asymmetric ShengBTE mesh | κ_xx ≠ κ_yy | raised automatically by [0105]; check the log |
 
-## 7. 汇报内容
+## 7. Reporting content
 
-每完成一步就按 AGENTS.md 第六节的格式汇报。最终汇报应包含：
-- S4 平衡帧残余力、帧数、每帧磁矩；
-- S5 的最低频率、拟合误差、选定的三阶截断；
-- S6 的 κ(300 K) xx/yy/zz、收敛网格、κ_zz 加密确认的结果；
-- 与旧 3×3×1 结果（0.74–0.96 W/mK 来回跳）的对比。
+Report after each completed step using the format of section 6 of AGENTS.md. The final report should contain:
+- the S4 equilibrium-frame residual force, the number of frames, and the per-frame moments;
+- the S5 minimum frequency, the fit error, and the selected third-order cutoff;
+- the S6 κ(300 K) xx/yy/zz, the converged mesh, and the result of the κ_zz refinement check;
+- the comparison with the old 3×3×1 results (jumping back and forth between 0.74 and 0.96 W/mK).

@@ -1,13 +1,13 @@
-# 给本地 AI：2026-11-07 之后的任务
+# For the local AI: tasks after 2026-11-07
 
-按顺序做。每一步做完汇报结果再进行下一步。
+Work through these in order. Report the result after each step before moving on.
 
-## 1. 合并整理好的仓库
+## 1. Merge the tidied-up repository
 
-整理在 `Andyw852/Mn2In2Se5-thermal` 的分支 `claude/jolly-curie-jsvosv` 上，先快进合并到 master：
+The tidying-up lives on the branch `claude/jolly-curie-jsvosv` of `Andyw852/Mn2In2Se5-thermal`; fast-forward it into master first:
 
 ```bash
-git clone https://github.com/Andyw852/Mn2In2Se5-thermal.git   # 已有本地副本就 cd 进去
+git clone https://github.com/Andyw852/Mn2In2Se5-thermal.git   # if you already have a local copy, cd into it
 cd Mn2In2Se5-thermal
 git fetch origin
 git checkout master
@@ -15,34 +15,34 @@ git merge --ff-only origin/claude/jolly-curie-jsvosv
 git push origin master
 ```
 
-`--ff-only` 失败说明 master 上有人推过新东西，停下汇报，不要强推。
+If `--ff-only` fails, something new has been pushed to master: stop and report, do not force-push.
 
-合并后核对：根目录只有 `Mn2In2Se5/ MnIn2Se4/ experiment/ analysis/ protocol/ README.md .gitignore`；
-`Mn2In2Se5/data/kappa/kappa_main_T100-800K.csv` 与原 `Mn2In2Se5_441-thermal` 里的同名文件 md5 相同。
+After merging, check: the root contains only `Mn2In2Se5/ MnIn2Se4/ experiment/ analysis/ protocol/ README.md .gitignore`;
+and `Mn2In2Se5/data/kappa/kappa_main_T100-800K.csv` has the same md5 as the file of the same name in the original `Mn2In2Se5_441-thermal`.
 
-## 2. 上传 Mn₂In₂Se₅ 的力常数和 DFT 输入（只读拷贝，集群上什么都不改）
+## 2. Upload the Mn₂In₂Se₅ force constants and DFT inputs (read-only copy; change nothing on the cluster)
 
-清单见 `Mn2In2Se5/fc/README.md`。S5 在 3090 上跑、S6 在 hanhai25 上跑，文件可能分在两台机器上，用 `ssh … ls` 找。
+The list is in `Mn2In2Se5/fc/README.md`. S5 ran on 3090 and S6 on hanhai25, so the files may be split across the two machines; find them with `ssh … ls`.
 
 ```bash
 cd Mn2In2Se5-thermal/Mn2In2Se5/fc
-# 例：<S5目录> = 3090 上 Mn2In2Se5_441/kl-dft-cpu/step5_fc
-scp 3090:<S5目录>/cutoff_scan/cut3_6p51/fc2.hdf5 .
-scp 3090:<S5目录>/cutoff_scan/cut3_6p51/fc3.hdf5 .
-scp 3090:<S5目录>/phono3py_disp.yaml .          # 没有就从 step4_disp 拿
-# ShengBTE 那次运行：<S6目录>/shengbte_runs/cut3_6p51_m16x16x4/
-scp hanhai25:<S6目录>/shengbte_runs/cut3_6p51_m16x16x4/FORCE_CONSTANTS_2ND .
-scp hanhai25:<S6目录>/shengbte_runs/cut3_6p51_m16x16x4/FORCE_CONSTANTS_3RD .
-scp hanhai25:<S6目录>/shengbte_runs/cut3_6p51_m16x16x4/BTE.KappaTensorVsT_RTA .
-scp jzzn:<S4目录>/SPOSCAR .
-ls -la                                         # 单个文件 > 95 MB 就停下汇报，不要推
+# example: <S5 dir> = Mn2In2Se5_441/kl-dft-cpu/step5_fc on 3090
+scp 3090:<S5 dir>/cutoff_scan/cut3_6p51/fc2.hdf5 .
+scp 3090:<S5 dir>/cutoff_scan/cut3_6p51/fc3.hdf5 .
+scp 3090:<S5 dir>/phono3py_disp.yaml .          # if absent, take it from step4_disp
+# the ShengBTE run: <S6 dir>/shengbte_runs/cut3_6p51_m16x16x4/
+scp hanhai25:<S6 dir>/shengbte_runs/cut3_6p51_m16x16x4/FORCE_CONSTANTS_2ND .
+scp hanhai25:<S6 dir>/shengbte_runs/cut3_6p51_m16x16x4/FORCE_CONSTANTS_3RD .
+scp hanhai25:<S6 dir>/shengbte_runs/cut3_6p51_m16x16x4/BTE.KappaTensorVsT_RTA .
+scp jzzn:<S4 dir>/SPOSCAR .
+ls -la                                         # if any single file is > 95 MB, stop and report; do not push
 md5sum fc2.hdf5 fc3.hdf5 > md5.txt
 ```
 
-DFT 输入放到 `Mn2In2Se5/data/dft_inputs/`（都是小文本）：
+Put the DFT inputs in `Mn2In2Se5/data/dft_inputs/` (all small text files):
 `step1_std_opt/{INCAR,KPOINTS,workflow_method.txt}`、`step2_static/{INCAR,KPOINTS}`、`step4_disp/disp-00000/{INCAR,KPOINTS}`，
-再写一个 `dft_summary.txt`：S1 末态最大力、S2 带隙与总磁矩、S4 平衡帧残余力、S4 帧数、每帧磁矩分布（`sort | uniq -c` 的输出）。
-POTCAR 不传（有版权）。
+Also write a `dft_summary.txt`: the final maximum force of S1, the S2 band gap and total magnetic moment, the S4 equilibrium-frame residual force, the number of S4 frames, and the per-frame magnetic-moment distribution (the output of `sort | uniq -c`).
+POTCAR is not uploaded (copyrighted).
 
 ```bash
 git add Mn2In2Se5/fc Mn2In2Se5/data/dft_inputs
@@ -50,14 +50,14 @@ git commit -m "Mn2In2Se5: force constants (cut3 6.51 A) + DFT inputs"
 git push origin master
 ```
 
-## 3. 删除两个多余的仓库（内容已并入本仓库）
+## 3. Delete the two redundant repositories (their contents are now merged into this one)
 
-| 仓库 | 去向 |
+| repository | destination |
 |---|---|
-| `Andyw852/Mn2In2Se5_441-thermal` | 全部并入 `Mn2In2Se5/`（`config/` 只保留了 step6 的 step.conf，hpc.yaml 等集群配置没搬） |
-| `Andyw852/MnIn2Se4-thermal` | 全部并入 `MnIn2Se4/archive_2026-10-28_fit-fc-thermal/` |
+| `Andyw852/Mn2In2Se5_441-thermal` | everything merged into `Mn2In2Se5/` (`config/` kept only the step6 step.conf; cluster configuration such as hpc.yaml was not moved) |
+| `Andyw852/MnIn2Se4-thermal` | everything merged into `MnIn2Se4/archive_2026-10-28_fit-fc-thermal/` |
 
-第 1 步核对通过后再删，删除不可恢复：
+Delete only after step 1 has been checked; deletion is irreversible:
 
 ```bash
 gh auth refresh -h github.com -s delete_repo
@@ -65,14 +65,14 @@ gh repo delete Andyw852/Mn2In2Se5_441-thermal --yes
 gh repo delete Andyw852/MnIn2Se4-thermal --yes
 ```
 
-别的仓库（taskflow、taskflow-v2.0 等）不在本次范围内，不要动。
+Other repositories (taskflow, taskflow-v2.0, etc.) are out of scope; do not touch them.
 
-## 4. 集群：MnIn₂Se₄ 按同一协议重算
+## 4. Cluster: recalculate MnIn₂Se₄ with the same protocol
 
-照 `MnIn2Se4/redo_441/README.md` 做（材料名 `MnIn2Se4_441`，与 Mn₂In₂Se₅ 的协议只差表里那几项）。
-S1→S2→S3、S4 生成阶段人工把关；S4 提交前核对 SPOSCAR（112 原子）、KPOINTS（2 2 2）、`disp-00000/INCAR` 的 ISPIN/MAGMOM。
+Follow `MnIn2Se4/redo_441/README.md` (material name `MnIn2Se4_441`; the protocol differs from Mn₂In₂Se₅ only in the items in that table).
+Human-check the S1→S2→S3 and S4 generation stages; before submitting S4, verify SPOSCAR (112 atoms), KPOINTS (2 2 2), and ISPIN/MAGMOM in `disp-00000/INCAR`.
 
-## 5. 不用做的
+## 5. What not to do
 
-- Mn₂In₂Se₅ 的 S6 不要 rerun：κ_zz 网格加密和 phono3py 交叉核对由仓库这边用上传的力常数做；
-  要是交叉核对发现问题，再定集群上怎么补。
+- Do not rerun S6 for Mn₂In₂Se₅: the κ_zz mesh refinement and the phono3py cross-check are done on the repository side with the uploaded force constants;
+  if the cross-check turns up problems, then decide how to follow up on the cluster.

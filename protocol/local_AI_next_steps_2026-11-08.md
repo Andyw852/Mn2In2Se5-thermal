@@ -1,18 +1,18 @@
-# 给本地 AI：2026-11-08 的任务
+# For the local AI: tasks for 2026-11-08
 
-11-07 那份的第 1–3 步已完成（仓库合并、力常数上传、两个旧仓库已删）。核对中发现一个影响所有 ShengBTE 结果的导出 bug，
-所以顺序调整如下。每步做完汇报再进行下一步；AGENTS.md 铁律照旧。
+Steps 1–3 of the 11-07 list are done (repository merged, force constants uploaded, the two old repositories deleted). The checking turned up an export bug that affects every ShengBTE result,
+so the order is adjusted as follows. Report after each step before moving on; the AGENTS.md iron rules still apply.
 
-## 0. 背景（一句话）
+## 0. Background (in one sentence)
 
-S6 用 hiphive 把 `fc3.hdf5` 转成 ShengBTE 的 `FORCE_CONSTANTS_3RD` 时，丢了 34% 的三阶项（4×4×1 超胞跨 a₃′ 边界的层间项），
-Mn₂In₂Se₅ 的生产 κ（2.059 / 0.209）作废。同一套力常数的正确值约为 300 K RTA κ_xx ≈ 2.96、κ_zz ≈ 0.84–1.1（κ_zz 网格还在收敛）。
-证据见本仓库 `analysis/shengbte_crosscheck/README.md`。
+When S6 used hiphive to convert `fc3.hdf5` into ShengBTE's `FORCE_CONSTANTS_3RD`, it lost 34% of the third-order terms (the interlayer terms crossing the a₃′ boundary in the 4×4×1 supercell),
+so the production κ of Mn₂In₂Se₅ (2.059 / 0.209) is superseded. With the same force constants the correct values are about 300 K RTA κ_xx ≈ 2.96 and κ_zz ≈ 0.84–1.1 (the κ_zz mesh is still converging).
+The evidence is in `analysis/shengbte_crosscheck/README.md` in this repository.
 
-## 1. 合并 AutoZT 的 [0127] 修复
+## 1. Merge the AutoZT [0127] fix
 
-分支 `claude/jolly-curie-jsvosv`（Andyw852/AutoZT，提交 `25a67fd`）。相对 master 只改 8 个文件
-（`fc_common.py`、`kappa_driver.py`、`fc_fit_driver.py`、两个 mlff 文件、`lattice_kappa.py`、CHANGELOG、新测试）。
+Branch `claude/jolly-curie-jsvosv` (Andyw852/AutoZT, commit `25a67fd`). It changes only 8 files relative to master
+(`fc_common.py`, `kappa_driver.py`, `fc_fit_driver.py`, two mlff files, `lattice_kappa.py`, CHANGELOG, a new test).
 
 ```bash
 cd ~/software/AutoZT
@@ -23,34 +23,34 @@ python3 -m pytest -q tests/test_0127_shengbte_fc3_export.py
 git push origin master
 ```
 
-- 这条分支上原来那个 OOM 自动加内存的补丁（旧编号 [0107]）已经 revert：master 后来把 signal 9 归为 `mpi_killed` 转人工处理，
-  两套逻辑冲突，所以不再合入。分支历史里有一个 revert 提交和一个 merge 提交，净改动只有 [0127]。
-- 合并后集群上的 AutoZT 也要更新到同一版本（S5/S6 的脚本随 gen 推送，用的是本地仓库的文件）。
+- The branch's original OOM auto-memory patch (old id [0107]) has been reverted: master later classified signal 9 as `mpi_killed` and routed it to human handling,
+  and the two logics conflict, so it is no longer merged. The branch history contains one revert commit and one merge commit; the net change is only [0127].
+- After merging, the AutoZT on the cluster must also be updated to the same version (the S5/S6 scripts are pushed by gen and come from the local repository files).
 
-## 2. 停掉作废的 S6 作业（需要用户批准）
+## 2. Stop the superseded S6 job (requires user approval)
 
-`Mn2In2Se5_441` 的 S6 作业 357276（jzzn）用的还是残缺的 3RD，算出来也作废。先 `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 brief`
-看它在算什么，再按铁律 2 请示 `stop`。
+The S6 job 357276 (jzzn) of `Mn2In2Se5_441` still uses the incomplete 3RD, so its result is superseded as well. First run `autozt -tt kl-dft-cpu -p Mn2In2Se5_441 brief`
+to see what it is computing, then request a `stop` per iron rule 2.
 
-## 3. Mn₂In₂Se₅ 的 S6 重跑（2026-11-08 修订：不用显式 MESH）
+## 3. Rerun S6 for Mn₂In₂Se₅ (revised 2026-11-08: no explicit MESH)
 
-最初写的 `MESH="16 16 16"` 已撤回：ShengBTE 迭代解在 20×20×5 上 OOM（750 GB），16×16×16 更大。现行设置
-（两个材料相同）：`MESH = auto`、`MESH_CONV_MAX_LENGTH = 50`（封顶 16×16×4）、`T_MIN/T_MAX/T_STEP = 50/800/50`。
-κ_xx 在 16×16×4 已收敛；κ_zz 的网格加密由仓库这边用 phono3py 做，见 `analysis/shengbte_crosscheck/README.md`。
+The originally written `MESH="16 16 16"` has been withdrawn: the ShengBTE iterative solve ran out of memory at 20×20×5 (750 GB), and 16×16×16 would be larger. The current settings
+(identical for both materials): `MESH = auto`, `MESH_CONV_MAX_LENGTH = 50` (capped at 16×16×4), `T_MIN/T_MAX/T_STEP = 50/800/50`.
+κ_xx is converged at 16×16×4; the κ_zz mesh refinement is done on the repository side with phono3py, see `analysis/shengbte_crosscheck/README.md`.
 
-每次 `conf --set` 后复核 `autozt conf` 和文件本身；`retry` 之后、`start` 之前确认生成的 `kappa_config.json`
-里 `mesh`、`mesh_conv_max_length`、温度列表与上面一致，不一致就停下。
+After each `conf --set`, re-check `autozt conf` and the file itself; after `retry` and before `start`, confirm that the generated `kappa_config.json`
+has `mesh`, `mesh_conv_max_length` and the temperature list matching the above; if not, stop.
 
-## 4. 集群：MnIn₂Se₄ 按同一协议重算（可以现在开始）
+## 4. Cluster: recalculate MnIn₂Se₄ with the same protocol (can start now)
 
-照 `MnIn2Se4/redo_441/README.md`（材料名 `MnIn2Se4_441`）。补充两点：
+Follow `MnIn2Se4/redo_441/README.md` (material name `MnIn2Se4_441`). Two additions:
 
-- **S4 提交前先把内存申请写好**，别等它爆：照 Mn₂In₂Se₅ S4 最后跑通的那套 `[submit]` 内存设置（整节点或当时用的值），
-  在 `init` 生成 S4 之前写进 `MnIn2Se4_441` 的 step4_disp step.conf；生成后核对 `disp-00000/submit.sh` 里有 `--mem`。
-- S5/S6 要在第 1 步合并 [0127] 之后再跑（否则 ShengBTE 的 3RD 又是残缺的）。
+- **Write the memory request before submitting S4**, do not wait for it to blow up: use the `[submit]` memory settings from the Mn₂In₂Se₅ S4 run that finally succeeded (a whole node, or the value used at the time),
+  and put them into the step4_disp step.conf of `MnIn2Se4_441` before `init` generates S4; after generation, verify that `disp-00000/submit.sh` contains `--mem`.
+- S5/S6 must run only after [0127] is merged in step 1 (otherwise ShengBTE's 3RD will be incomplete again).
 
-## 5. 汇报
+## 5. Reporting
 
-- 第 1 步：merge 提交号、测试结果、集群上 AutoZT 的版本。
-- 第 2 步：357276 是什么、是否已停。
-- 第 4 步：S1 末态力、S2 带隙与总磁矩（期望 ≈ 5 μB/胞）。
+- Step 1: the merge commit hash, the test results, and the AutoZT version on the cluster.
+- Step 2: what job 357276 is doing and whether it has been stopped.
+- Step 4: the S1 final force, the S2 band gap and total magnetic moment (expected ≈ 5 μB/cell).
