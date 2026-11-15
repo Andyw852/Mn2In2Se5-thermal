@@ -1,12 +1,12 @@
-# phono3py 位移超胞单点取力（3D）。声子硬约束：ISYM=0（位移破缺对称，勿对称化力）。
-# 精度（phonopy 官方超胞取力示例的口径）：PREC=Accurate、EDIFF=1E-8、LREAL=.FALSE.。
-#   位移帧的力直接变成 fc2/fc3：LREAL=Auto 的实空间投影带格点噪声，是 fc 里假软模的
-#   常见来源，也会污染 ShengBTE/fourphonon 的散射矩阵。三个值走 step.conf 的
-#   FORCE_PREC / FORCE_EDIFF / FORCE_LREAL（旧版注释写的是这套、正文却是
-#   Normal/Auto/1E-7，已对齐）。
-#   超胞很大（几百原子）时可用 FORCE_LREAL=Auto 换速度，但必须先在 3 帧上与 .FALSE.
-#   比力的最大偏差（< 1 meV/Å 才采用），并显式设 ROPT（如 ROPT = 1E-3）逐步收紧。
-#   ADDGRID 降低力的格点噪声，代价是略微变慢。
+# phono3py displaced-supercell single-point force run (3D). Hard phonon constraint: ISYM=0 (displacements break symmetry, do not symmetrize the forces).
+# precision (the convention of phonopy's official supercell force example): PREC=Accurate, EDIFF=1E-8, LREAL=.FALSE.
+#   the forces of the displaced frames become fc2/fc3 directly: the real-space projection of LREAL=Auto carries grid noise and is a
+#   common source of spurious soft modes in fc, and it also contaminates the ShengBTE/fourphonon scattering matrices. The three values come from step.conf's
+#   FORCE_PREC / FORCE_EDIFF / FORCE_LREAL (older comments said this, while the body used
+#   Normal/Auto/1E-7, now aligned).
+#   for very large supercells (hundreds of atoms) FORCE_LREAL=Auto can be traded for speed, but first, on 3 frames, against .FALSE.
+#   compare forces (adopt only if the max deviation is < 1 meV/Å) and set ROPT explicitly (e.g. ROPT = 1E-3) to tighten gradually.
+#   ADDGRID reduces grid noise in the forces at the cost of being slightly slower.
 SYSTEM  = kl-dft-cpu force 00000
 ISTART  = 0
 ICHARG  = 2
@@ -17,7 +17,7 @@ PREC    = Accurate
 ENCUT   = 410
 EDIFF   = 1E-7
 LREAL   = .FALSE.
-ADDGRID = .TRUE.          # 降低力的格点噪声（可选，phonopy 取力推荐）
+ADDGRID = .TRUE.          # reduces grid noise in the forces (optional, recommended for phonopy force runs)
 LASPH   = .TRUE.
 ALGO    = Normal
 NELM    = 200
@@ -35,7 +35,7 @@ LORBIT  = 0
 NCORE   = 4
 KPAR    = 2
 
-# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0105]，与弛豫同一势能面）----
+# ---- Spin / DFT+U: inherited from S1 step1_std_opt ([0105], same potential-energy surface as the relaxation) ----
 ISPIN    = 2
 MAGMOM   = 16*5 96*0
 LMAXMIX  = 4

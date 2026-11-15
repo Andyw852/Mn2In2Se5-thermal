@@ -1,107 +1,107 @@
 # =====================================================================
-# incar_3d.tpl —— step1 标准化后几何优化（弹性流程）(3D 体相,ISIF=3 全胞弛豫)
+# incar_3d.tpl -- step1 geometry optimization after standardization (elastic workflow) (3D bulk, ISIF=3 full-cell relaxation)
 #
-# 占位符(gen_step1 填充,双大括号包住键名):
-#   SYSTEM    来自 POSCAR 标题/化学式
-#   ENCUT     ceil(1.5 x max ENMAX in POTCAR),或 MANUAL_ENCUT
-#   GGA       由顶部 FUNC 决定(pbe / pbe-d3 -> PE,pbesol -> PS)
-#   VDW_LINE  pbe-d3 -> "IVDW = 12",其余 -> 注释行
-# 想手动固定某项,直接把占位符替换成数值(脚本只填模板里实际出现的)。
-# 其余参数可自由增删改,脚本原样透传;step2/3/4 从上一步继承并按各自规则改写。
+# placeholders (filled in by gen_step1, key names wrapped in double braces):
+#   SYSTEM    from the POSCAR title / chemical formula
+#   ENCUT     ceil(1.5 x max ENMAX in POTCAR), or MANUAL_ENCUT
+#   GGA       decided by FUNC at the top (pbe / pbe-d3 -> PE, pbesol -> PS)
+#   VDW_LINE  pbe-d3 -> "IVDW = 12", otherwise -> a comment line
+# to pin a value by hand, just replace its placeholder with a number (the script only fills placeholders that actually appear in the template).
+# other parameters may be added/removed/changed freely and are passed through verbatim; step2/3/4 inherit from the previous step and rewrite them per their own rules.
 #
-# 【自动注入,不要在本模板里写】ISPIN / MAGMOM / NUPDOWN / LMAXMIX / LDAU*
-#   写了会被静默覆盖;要改请改 gen_step1 顶部配置,或改生成后的 stepN/INCAR。
+# [injected automatically, do not write in this template] ISPIN / MAGMOM / NUPDOWN / LMAXMIX / LDAU*
+#   if written they are silently overridden; to change them, edit gen_step1's top-level config or the generated stepN/INCAR.
 #
-# 【ISIF=3 必读】EDIFFG 负值只判断力、不判断应力,单轮结果必然带 Pulay 应力。
-#   收敛后须 cp CONTCAR POSCAR 重跑,直到晶格常数变化 < 0.001 Å(通常 2~3 轮)。
+# [ISIF=3, must read] a negative EDIFFG checks forces only, not stress, so a single round necessarily carries Pulay stress.
+#   after convergence, cp CONTCAR POSCAR and rerun until the lattice-constant change is < 0.001 Å (usually 2-3 rounds).
 # =====================================================================
 
 SYSTEM = Mn2In2Se5
 
-# ---- 起始 / 泛函 ----
+# ---- Start / functional ----
 ISTART = 0
 ICHARG = 2
 GGA    = PE
 IVDW   = 12            # PBE + DFT-D3(BJ)
-# GGA_COMPAT = .FALSE.    # 可选:低对称/强各向异性胞,恢复梯度项旋转不变性
+# GGA_COMPAT = .FALSE.    # optional: for low-symmetry / strongly anisotropic cells, restores rotational invariance of the gradient terms
 
-# ---- 精度 ----
+# ---- Precision ----
 PREC    = Accurate
 ENCUT    = 540
 LREAL   = .FALSE.
 LASPH   = .TRUE.
 
-# ---- 电子步 ----
+# ---- Electronic steps ----
 ALGO   = Normal
-EDIFF  = 1E-7        # 弹性：收紧到 1E-7 服务近零应力基态
+EDIFF  = 1E-7        # elastic: tightened to 1E-7 to serve the near-zero-stress ground state
 NELM   = 100
 NELMIN = 6
-ISMEAR = 0                # 半导体/绝缘体/未知体系
+ISMEAR = 0                # semiconductor / insulator / unknown system
 SIGMA  = 0.05
-# 金属改为: ISMEAR = 1 / SIGMA = 0.2,并检查 OUTCAR 的 "entropy T*S" < 1 meV/atom
-# 弛豫阶段不要用 ISMEAR = -5(四面体法的力和应力不可靠),留给 step3/4 的 DOS
+# for metals use: ISMEAR = 1 / SIGMA = 0.2 and check that OUTCAR's "entropy T*S" < 1 meV/atom
+# do not use ISMEAR = -5 during relaxation (tetrahedron forces and stresses are unreliable); leave it for the step3/4 DOS
 
-# ---- 离子步 ----
+# ---- Ionic steps ----
 IBRION   = 1
 ISIF     = 3
-ISYM   = 2                # 保持空间群;若要搜索对称性破缺相(畸变/极化)改 0
+ISYM   = 2                # keep the space group; set 0 to search for symmetry-broken phases (distortion/polarization)
 POTIM    = 0.3
 NSW      = 100
 EDIFFG   = 1E-6
 
-# ---- 输出 ----
-LWAVE  = .FALSE.          # 多轮 Pulay 弛豫中晶胞在变,WAVECAR 无法跨轮复用
+# ---- Output ----
+LWAVE  = .FALSE.          # the cell changes during multi-round Pulay relaxation, so WAVECAR cannot be reused across rounds
 LCHARG = .TRUE.
 
-# ---- 并行 ----
-NCORE  = 6                # (总核数 / KPAR) 须能被 NCORE 整除
-KPAR   = 4                # 内存约 ×4;GPU(OpenACC)版必须 NCORE = 1
+# ---- Parallelization ----
+NCORE  = 6                # (total cores / KPAR) must be divisible by NCORE
+KPAR   = 4                # memory about x4; the GPU (OpenACC) build requires NCORE = 1
 
 
 # =====================================================================
-# 附:参数速查(仅注释)
+# Appendix: quick parameter reference (comments only)
 # =====================================================================
 # ---- IBRION ----
-# -1 静态(配 NSW=0) | 0 MD | 1 RMM-DIIS(收尾快) | 2 CG(首选,稳健)
-#  3 阻尼MD(救命) | 5/6 有限差分声子 | 7/8 DFPT
+# -1 static (with NSW=0) | 0 MD | 1 RMM-DIIS (fast to finish) | 2 CG (preferred, robust)
+#  3 damped MD (last resort) | 5/6 finite-difference phonons | 7/8 DFPT
 #
 # ---- ISIF ----
-#  2 只弛豫原子 | 3 原子+形状+体积(本模板) | 4 原子+形状,定容
-#  6 形状+体积,原子不动 | 7 只变体积(状态方程/体模量)
+#  2 relax atoms only | 3 atoms+shape+volume (this template) | 4 atoms+shape at fixed volume
+#  6 shape+volume, atoms fixed | 7 volume only (equation of state / bulk modulus)
 #
 # ---- ISMEAR ----
-#  0 高斯,SIGMA=0.05 —— 半导体/绝缘体,通用安全选项
-#  1 MP一阶,SIGMA=0.2 —— 金属弛豫
-# -5 四面体+Blöchl —— 精确总能与 DOS,需 k 点 >= 4,不可用于弛豫
+#  0 Gaussian, SIGMA=0.05 -- semiconductors/insulators, the general safe choice
+#  1 first-order MP, SIGMA=0.2 -- metal relaxation
+# -5 tetrahedron+Blöchl -- accurate total energy and DOS, needs k-points >= 4, must not be used for relaxation
 #
 # ---- EDIFFG ----
-# 负值 = 力判据(eV/Å):常规 -0.01,声子/高精度前 -0.001
-# 正值 = 能量差判据,一般不用
+# negative value = force criterion (eV/Å): -0.01 normally, -0.001 before phonons / high precision
+# positive value = energy-difference criterion, rarely used
 #
 # ---- ISYM ----
-#  2 默认(PBE/PBEsol/SCAN 弛豫、SCF、能带、DOS;共线自旋也用它)
-#  3 只对称化力和应力 —— 杂化泛函 LHFCALC=.T. 的默认值
-#  0 关空间群 —— MD / EFIELD / LDIPOL / LCALCPOL / SOC能带 / 需破缺对称性
-# -1 全关 —— 磁各向异性能 MAE(各 SAXIS 须共用同一 k 网格) / Wannier / 拓扑
-# 注:关对称后 IBZ 不再约化,k 点数可能翻数倍,能不关就别关
+#  2 default (PBE/PBEsol/SCAN relaxation, SCF, bands, DOS; also used for collinear spin)
+#  3 symmetrize forces and stress only -- the default for hybrid functionals with LHFCALC=.T.
+#  0 space group off -- MD / EFIELD / LDIPOL / LCALCPOL / SOC bands / symmetry breaking needed
+# -1 fully off -- magnetocrystalline anisotropy MAE (all SAXIS must share one k-grid) / Wannier / topology
+# note: with symmetry off the IBZ is no longer reduced and the k-point count can grow several-fold; avoid switching it off
 
-# ---- 磁性（gen_step1 按 POSCAR 自动判定：检测到磁性候选元素 Mn（高自旋 FM 起点））----
+# ---- Magnetism (decided automatically by gen_step1 from the POSCAR: magnetic candidate element Mn detected (high-spin FM start)) ----
 ISPIN    = 2
 MAGMOM   = 2*5  2*0  5*0
 
-# ---- LMAXMIX（gen_step1 按 POSCAR 自动判定：含 d 元素 In/Mn）----
+# ---- LMAXMIX (decided automatically by gen_step1 from the POSCAR: d elements In/Mn present) ----
 LMAXMIX  = 4
 
-# ---- DFT+U（gen_step1 按 POSCAR 自动判定：对 Mn(U=4,l=2) 加 U）----
-# ★ 以下 U 值来自 gen_step1 的 U_VALUES 表，是【文献常见起点】，
-#   不是对你这个体系的定论 —— 请务必自查文献后按需修改！
-#   改法一（只改这一次）：直接编辑下面 LDAUU 一行；
-#   改法二（以后都用新值）：改 gen_step1 的 U_VALUES / U_OVERRIDE 再重跑 gen。
-#   LDAUL/LDAUU/LDAUJ 每一列依次对应 POSCAR 的一种元素（与 POTCAR 同序）；
-#   LDAUL: 2=d 轨道, 3=f 轨道, -1=该元素不加 U（其 U/J 写 0）。
-#   LDAUTYPE=2(Dudarev) 只用有效 U=U-J，故 LDAUJ 一律给 0。
-#   注意：step2/step3 会原样继承这里的 U；step4(HSE) 是否保留由该脚本的
-#   HSE_U_MODE 决定（默认 remove=纯 HSE06）。
+# ---- DFT+U (decided automatically by gen_step1 from the POSCAR: add U for Mn (U=4, l=2)) ----
+# * The U values below come from gen_step1's U_VALUES table and are a [common literature starting point],
+#   not a verdict for your particular system -- always check the literature and adjust as needed!
+#   option 1 (this run only): edit the LDAUU line below directly;
+#   option 2 (new values from now on): change gen_step1's U_VALUES / U_OVERRIDE and rerun gen.
+#   each column of LDAUL/LDAUU/LDAUJ corresponds in turn to one POSCAR species (same order as POTCAR);
+#   LDAUL: 2=d orbital, 3=f orbital, -1=no U for that element (write 0 for its U/J).
+#   LDAUTYPE=2 (Dudarev) uses only the effective U=U-J, so LDAUJ is always 0.
+#   note: step2/step3 inherit these U values verbatim; whether step4 (HSE) keeps them is set by that script's
+#   HSE_U_MODE (default remove = pure HSE06).
 LDAU     = .TRUE.
 LDAUTYPE = 2
 LDAUL    = 2 -1 -1

@@ -21,7 +21,7 @@ LCHARG = .TRUE.
 LORBIT = 11
 KPAR   = 2
 
-# ---- NAC：LEPSILON DFPT 介电 + Born 有效电荷（gen_step3 注入）----
+# ---- NAC: LEPSILON DFPT dielectric + Born effective charges (injected by gen_step3) ----
 LEPSILON = .TRUE.
 LPEAD    = .TRUE.
 IBRION   = -1
@@ -29,7 +29,7 @@ NSW      = 0
 LWAVE    = .FALSE.
 LCHARG = .FALSE.
 
-# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0105]，与弛豫同一势能面）----
+# ---- Spin / DFT+U: inherited from S1 step1_std_opt ([0105], same potential-energy surface as the relaxation) ----
 ISPIN    = 2
 MAGMOM   = 1*5 6*0
 LMAXMIX  = 4

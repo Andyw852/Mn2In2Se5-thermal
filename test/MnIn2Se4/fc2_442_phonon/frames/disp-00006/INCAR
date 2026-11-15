@@ -1,9 +1,9 @@
-# phonopy 位移超胞单点取力（3D）。声子硬约束：ISYM=0（位移破缺对称，勿对称化力）。
-# 精度（对齐 kl-dft-cpu S4，phonopy 官方超胞取力示例口径）：PREC=Accurate、EDIFF=1E-7、
-# LREAL=.FALSE.。位移帧的力直接变成 fc2：LREAL=Auto 的实空间投影带格点噪声，是 fc 里
-# 假软模的常见来源。三个值走 step.conf 的 FORCE_PREC / FORCE_EDIFF / FORCE_LREAL。
-# 超胞很大（几百原子）时可用 FORCE_LREAL=Auto 换速度，但必须先在 3 帧上与 .FALSE.
-# 比力（最大偏差 < 1 meV/Å）并显式设 ROPT。ADDGRID 降低力的格点噪声。
+# phonopy displaced-supercell single-point force run (3D). Hard phonon constraint: ISYM=0 (displacements break symmetry, do not symmetrize the forces).
+# precision (aligned with kl-dft-cpu S4, the convention of phonopy's official supercell force example): PREC=Accurate, EDIFF=1E-7,
+# LREAL=.FALSE.; the forces of the displaced frames become fc2 directly: the real-space projection of LREAL=Auto carries grid noise and is
+# common source of spurious soft modes in fc. The three values come from step.conf's FORCE_PREC / FORCE_EDIFF / FORCE_LREAL.
+# for very large supercells (hundreds of atoms) FORCE_LREAL=Auto can be traded for speed, but first, on 3 frames, against .FALSE.
+# compare forces (max deviation < 1 meV/Å) and set ROPT explicitly. ADDGRID reduces grid noise in the forces.
 SYSTEM  = phonon-dft-cpu force 00006
 ISTART  = 0
 ICHARG  = 2
@@ -25,8 +25,8 @@ SIGMA   = 0.05
 IBRION  = -1
 NSW     = 0
 ISYM    = 0
-# 偶极修正由 gen 从 S1 的 INCAR 继承（未开 LDIPOL 时就是一行注释）
-# 偶极修正：step1_std_opt 未开（LDIPOL），本步保持一致
+# the dipole correction is inherited by gen from the S1 INCAR (a comment line when LDIPOL is off)
+# dipole correction: not enabled (LDIPOL) in step1_std_opt, kept consistent here
 
 LWAVE   = .FALSE.
 LCHARG  = .FALSE.
@@ -34,7 +34,7 @@ LORBIT  = 0
 NCORE   = 4
 KPAR    = 2
 
-# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0163]，与弛豫同一势能面）----
+# ---- Spin / DFT+U: inherited from S1 step1_std_opt ([0163], same potential-energy surface as the relaxation) ----
 ISPIN    = 2
 MAGMOM   = 32*5 192*0
 LMAXMIX  = 4

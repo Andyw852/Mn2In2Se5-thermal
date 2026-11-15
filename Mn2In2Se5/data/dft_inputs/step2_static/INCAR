@@ -24,7 +24,7 @@ LORBIT = 11
 NCORE  = 4
 KPAR   = 2
 
-# ---- 自旋 / DFT+U：继承自 S1 step1_std_opt（[0105]，与弛豫同一势能面）----
+# ---- Spin / DFT+U: inherited from S1 step1_std_opt ([0105], same potential-energy surface as the relaxation) ----
 ISPIN    = 2
 MAGMOM   = 2*5 7*0
 LMAXMIX  = 4
