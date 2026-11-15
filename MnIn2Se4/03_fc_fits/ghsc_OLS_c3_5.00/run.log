@@ -1,7 +1,7 @@
 DIM = 3 3 3
-[align] 已记录数据所依据的原子顺序 -> SPOSCAR.ref
-[stamp] 警告: 未找到 core/*.py (/data/wangchaoyue852/pheasy_mninse4_189/ghsc_OLS_c3_5.00), 指纹不含代码版本 -- 改过零空间代码请手动 FORCE_REBUILD
-拟合: OLS | 阶次 3 | c2=None c3=5.00 c4=None | DIM=3 3 3 | ndata=45/45 | dtype=float32
+[align] recorded the atomic order the data is based on -> SPOSCAR.ref
+[stamp] WARNING: core/*.py not found (/data/wangchaoyue852/pheasy_mninse4_189/ghsc_OLS_c3_5.00), fingerprint excludes the code version -- if you changed the null-space code, run FORCE_REBUILD by hand
+fit: OLS | order 3 | c2=None c3=5.00 c4=None | DIM=3 3 3 | ndata=45/45 | dtype=float32
 [1/4] cluster space
 [2026-09-28 19:07:54,882] Start Pheasy.
 {_______  {__     {__{________      {_         {__ __  {__      {__
@@ -81,9 +81,9 @@ DIM = 3 3 3
 [2026-09-28 19:08:20,814] Total number of free IFCs: 1272
 [2026-09-28 19:08:20,815] Construction of symmetry constraints finished, time cost: 0:00:05.455777.
 [2026-09-28 19:08:20,816] Finalize Pheasy, total time cost: 0:00:07.084606.
-[1.5/4] 数据顺序对齐 (SPOSCAR.ref -> pheasy SPOSCAR)
-[align] SPOSCAR.ref 与 pheasy SPOSCAR 顺序完全一致, 无需重排
-[3/4] sensing matrix (按全部 45 个构型建表, 供任意 NDATA<=45 复用)
+[1.5/4] data order alignment (SPOSCAR.ref -> pheasy SPOSCAR)
+[align] SPOSCAR.ref and pheasy SPOSCAR orders are fully consistent, no reordering needed
+[3/4] sensing matrix (built from all 45 configurations, reusable for any NDATA<=45)
 [2026-09-28 19:08:23,126] Start Pheasy.
  _____  _    _ ______           _______     __
 |  __ \| |  | |  ____|   /\    / ____\ \   / /
@@ -135,7 +135,7 @@ DIM = 3 3 3
 [2026-09-28 19:09:53,703] SM_prime kept sparse float32 CSR: shape=(25515, 3024), nnz=20998980, mem=0.17 GB
 [2026-09-28 19:09:53,703] Reading interatomic forces, 45 configurations.
 [SM-sparse] OLS sparse path: (25515, 3024) x (3024, 1272)
-[SM-twolevel] OLS 两级 matvec (不生成 SM): SM_prime(25515, 3024)(0.2GB) @ NS(3024, 1272)(0.0GB), SM.shape=(25515, 1272), 主机矩阵常驻~0.2GB（不含GPU分块构造临时内存）
+[SM-twolevel] OLS two-level matvec (SM not materialized): SM_prime(25515, 3024)(0.2GB) @ NS(3024, 1272)(0.0GB), SM.shape=(25515, 1272), host matrix resident ~0.2GB (excluding the temporary memory of the blocked GPU construction)
 [2026-09-28 19:09:53,712] Fitting force constants via the ordinary least-square.
 /home/wangchaoyue852/software/pheasy-gpu-gh/core/optimizer.py:5001: UserWarning: [lsmr] PHEASY_OLS_ATOL=1e-08 is below the float32 reachable floor 1.19e-06; raised to the floor -- a tighter request only makes the stopping test unreachable and burns the iteration budget.
   atol = float(_lsmr_tol("PHEASY_OLS_ATOL", atol, X))
@@ -156,8 +156,8 @@ DIM = 3 3 3
 [2026-09-28 19:10:18,392] Writing third-order force constants into file.
 [2026-09-28 19:10:18,393] Force constant fitting finished, time cost: 0:00:24.690060.
 [2026-09-28 19:10:18,394] Finalize Pheasy, total time cost: 0:00:26.491601.
-完成
+done
 fc2       max = 11.4958
 fc3       max = 37.0422
-[4.5/4] 输出力常数顺序回填 (pheasy 序 -> SPOSCAR.ref 序)
-[perm] 数据与 pheasy 顺序一致 (n_moved=0), 无需回填
+[4.5/4] back-fill the output force-constant ordering (pheasy order -> SPOSCAR.ref order)
+[perm] data already matches the pheasy ordering (n_moved=0), no back-fill needed

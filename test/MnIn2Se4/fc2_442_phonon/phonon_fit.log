@@ -4,20 +4,20 @@
   [ 1.00000,  1.00000,  1.00000]
 This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
   ph = Phonopy(uc, supercell_matrix=np.array(dim, dtype=int), primitive_matrix="auto")
-[..] 超胞=[4 0 0] [0 4 0] [0 0 2] 位移=7 帧 FD_DISTANCE=0.02
-[OK] 收力 7 帧
-[OK] fc2 拟合完成
-[OK] 已写出 fc2.hdf5
-[OK] 已写出 FORCE_CONSTANTS
+[..] supercell=[4 0 0] [0 4 0] [0 0 2] displacements=7 frames FD_DISTANCE=0.02
+[OK] collected forces for 7 frames
+[OK] fc2 fit complete
+[OK] wrote fc2.hdf5
+[OK] wrote FORCE_CONSTANTS
 /home/zyzhuqgroup/wangchao217/work/MnIn2Se4_441/phonon-dft-cpu/step3_phonon/phonon_fit_driver.py:171: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
   [ 1.00000,  1.00000,  2.00000]
   [-1.00000, -2.00000, -1.00000]
   [ 1.00000,  1.00000,  1.00000]
 This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
   ph_gate = Phonopy(uc, supercell_matrix=np.array(dim, dtype=int), primitive_matrix="auto")
-[..] 虚频门禁网格 mesh=20 20 20（3D，Γ 中心；PHONON_MESH）
+[..] imaginary-frequency gate mesh mesh=20 20 20 (3D, Gamma-centered; PHONON_MESH)
 /home/zyzhuqgroup/wangchao217/work/MnIn2Se4_441/phonon-dft-cpu/step3_phonon/phonon_fit_driver.py:217: DeprecationWarning: get_mesh_dict() is deprecated. Use the mesh property to access the Mesh result object; its qpoints, weights, frequencies, eigenvectors, and group_velocities attributes replace the dict keys.
   mesh_freqs = np.asarray(ph_gate.get_mesh_dict()["frequencies"], dtype=float)
-[..] NAC：未检测到 step2_nac（NAC 未启用或未跑）—— 本谱无 LO-TO
-[..] imag_policy=pass/none  min=0.0007 THz (0.02 cm-1)  ZA=pass  最终=pass
+[..] NAC: step2_nac not found (NAC disabled or not run) -- this spectrum has no LO-TO
+[..] imag_policy=pass/none  min=0.0007 THz (0.02 cm-1)  ZA=pass  verdict=pass
 [DONE] stable=true verdict=pass min_freq=0.0007 THz

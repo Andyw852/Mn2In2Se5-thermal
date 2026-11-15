@@ -1,7 +1,7 @@
 DIM = 3 3 3
-[align] 已记录数据所依据的原子顺序 -> SPOSCAR.ref
-[stamp] 警告: 未找到 core/*.py (/data/wangchaoyue852/pheasy_mninse4_189/ghsc_LASSO_c3_5.50), 指纹不含代码版本 -- 改过零空间代码请手动 FORCE_REBUILD
-拟合: LASSO | 阶次 3 | c2=None c3=5.50 c4=None | DIM=3 3 3 | ndata=45/45 | dtype=float32
+[align] recorded the atomic order the data is based on -> SPOSCAR.ref
+[stamp] WARNING: core/*.py not found (/data/wangchaoyue852/pheasy_mninse4_189/ghsc_LASSO_c3_5.50), fingerprint excludes the code version -- if you changed the null-space code, run FORCE_REBUILD by hand
+fit: LASSO | order 3 | c2=None c3=5.50 c4=None | DIM=3 3 3 | ndata=45/45 | dtype=float32
 [1/4] cluster space
 [2026-09-28 18:42:37,737] Start Pheasy.
 __________  ___ ______________   _____    ______________.___.
@@ -83,9 +83,9 @@ __________  ___ ______________   _____    ______________.___.
 [2026-09-28 18:42:59,767] Total number of free IFCs: 1352
 [2026-09-28 18:42:59,768] Construction of symmetry constraints finished, time cost: 0:00:04.811321.
 [2026-09-28 18:42:59,769] Finalize Pheasy, total time cost: 0:00:06.185866.
-[1.5/4] 数据顺序对齐 (SPOSCAR.ref -> pheasy SPOSCAR)
-[align] SPOSCAR.ref 与 pheasy SPOSCAR 顺序完全一致, 无需重排
-[3/4] sensing matrix (按全部 45 个构型建表, 供任意 NDATA<=45 复用)
+[1.5/4] data order alignment (SPOSCAR.ref -> pheasy SPOSCAR)
+[align] SPOSCAR.ref and pheasy SPOSCAR orders are fully consistent, no reordering needed
+[3/4] sensing matrix (built from all 45 configurations, reusable for any NDATA<=45)
 [2026-09-28 18:43:01,651] Start Pheasy.
                     ___           ___           ___           ___                   
       ___          /  /\         /  /\         /  /\         /  /\          __      
@@ -176,8 +176,8 @@ __________  ___ ______________   _____    ______________.___.
 [2026-09-28 18:45:13,245] Writing third-order force constants into file.
 [2026-09-28 18:45:13,245] Force constant fitting finished, time cost: 0:00:39.574907.
 [2026-09-28 18:45:13,246] Finalize Pheasy, total time cost: 0:00:41.659824.
-完成
+done
 fc2       max = 11.4957
 fc3       max = 37.0369
-[4.5/4] 输出力常数顺序回填 (pheasy 序 -> SPOSCAR.ref 序)
-[perm] 数据与 pheasy 顺序一致 (n_moved=0), 无需回填
+[4.5/4] back-fill the output force-constant ordering (pheasy order -> SPOSCAR.ref order)
+[perm] data already matches the pheasy ordering (n_moved=0), no back-fill needed
