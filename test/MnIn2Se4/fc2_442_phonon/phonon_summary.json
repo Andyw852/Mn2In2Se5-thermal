@@ -24,24 +24,24 @@
     "IMAG_QGAMMA": 0.05,
     "IMAG_QGAMMA_GRACE": 1.2,
     "IMAG_QGAMMA_EFFECTIVE": 0.06,
-    "near_gamma": "声学支：|q|_frac < IMAG_QGAMMA × IMAG_QGAMMA_GRACE（=0.06）；Petretto 严格窗口 = |q|_frac < IMAG_QGAMMA（=0.05）",
-    "q_norm_def": "分数坐标去掉真空轴分量后的欧氏范数（3D 用三分量）",
-    "IMAG_THR_semantics": "近 Γ 声学支上限（不是全局阈值）",
-    "IMAG_QGAMMA_GRACE_semantics": "用户 2026-09-22 批准：同一条近 Γ 软模跨 0.05 边界时不被升格为 fail；1.0 = 严格口径",
+    "near_gamma": "acoustic branches: |q|_frac < IMAG_QGAMMA × IMAG_QGAMMA_GRACE (=0.06); Petretto strict window = |q|_frac < IMAG_QGAMMA (=0.05)",
+    "q_norm_def": "Euclidean norm of the fractional coordinates after dropping the vacuum-axis component (all three components in 3D)",
+    "IMAG_THR_semantics": "upper bound for near-Γ acoustic branches (not a global threshold)",
+    "IMAG_QGAMMA_GRACE_semantics": "approved by the user on 2026-09-22: a single near-Γ soft mode that straddles the 0.05 boundary is not escalated to fail; 1.0 = strict criterion",
     "refs": [
-      "Petretto et al., Scientific Data 5, 180065 (2018)：0 < |q| < 0.05 失稳窗口、5 cm^-1 阈值",
-      "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022)：远离 Γ 的虚频是真失稳特征"
+      "Petretto et al., Scientific Data 5, 180065 (2018): 0 < |q| < 0.05 instability window, 5 cm^-1 threshold",
+      "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022): imaginary frequencies away from Γ are the signature of a genuine instability"
     ]
   },
   "policy_version": "imag_policy/1.0",
   "imag_policy_refs": [
-    "Petretto et al., Scientific Data 5, 180065 (2018)：0 < |q| < 0.05 失稳窗口、5 cm^-1 阈值",
-    "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022)：远离 Γ 的虚频是真失稳特征"
+    "Petretto et al., Scientific Data 5, 180065 (2018): 0 < |q| < 0.05 instability window, 5 cm^-1 threshold",
+    "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022): imaginary frequencies away from Γ are the signature of a genuine instability"
   ],
   "za_exponent": null,
   "za_verdict": "pass",
   "nac_applied": false,
-  "nac_note": "未检测到 step2_nac（NAC 未启用或未跑）—— 本谱无 LO-TO",
+  "nac_note": "step2_nac not found (NAC disabled or not run) -- this spectrum has no LO-TO",
   "band_file": "band-dft-cpu.yaml",
   "band_noNAC_file": null,
   "mesh_min_frequency_THz": 0.000719127304516045,
@@ -53,6 +53,6 @@
   "supercell": "[4 0 0] [0 4 0] [0 0 2]",
   "n_atoms_sc": 224,
   "fd_distance_A": 0.02,
-  "assessment_policy": "stable 由 imag_policy.classify_imag（mesh + 2D band 合并；近 Γ 声学支 warn、其余 fail）与 ZA 二次性结论中更坏者决定；只有 fail 挡下一步。阈值见 skill/_common/imag_policy.py。",
-  "note": "imag_policy=pass/none；无实质虚频，稳定；NAC=off（未检测到 step2_nac（NAC 未启用或未跑）—— 本谱无 LO-TO）"
+  "assessment_policy": "stable is decided by the worse of imag_policy.classify_imag (mesh + 2D band merged; near-Γ acoustic branches warn, everything else fail) and the ZA quadraticity verdict; only fail blocks the next step. See skill/_common/imag_policy.py for the thresholds.",
+  "note": "imag_policy=pass/none; no substantive imaginary frequencies, stable; NAC=off (step2_nac not found (NAC disabled or not run) -- this spectrum has no LO-TO)"
 }

@@ -53,20 +53,20 @@
       "IMAG_QGAMMA": 0.05,
       "IMAG_QGAMMA_GRACE": 1.2,
       "IMAG_QGAMMA_EFFECTIVE": 0.06,
-      "near_gamma": "声学支：|q|_frac < IMAG_QGAMMA × IMAG_QGAMMA_GRACE（=0.06）；Petretto 严格窗口 = |q|_frac < IMAG_QGAMMA（=0.05）",
-      "q_norm_def": "分数坐标去掉真空轴分量后的欧氏范数（3D 用三分量）",
-      "IMAG_THR_semantics": "近 Γ 声学支上限（不是全局阈值）",
-      "IMAG_QGAMMA_GRACE_semantics": "用户 2026-09-22 批准：同一条近 Γ 软模跨 0.05 边界时不被升格为 fail；1.0 = 严格口径",
+      "near_gamma": "acoustic branches: |q|_frac < IMAG_QGAMMA × IMAG_QGAMMA_GRACE (=0.06); Petretto strict window = |q|_frac < IMAG_QGAMMA (=0.05)",
+      "q_norm_def": "Euclidean norm of the fractional coordinates after dropping the vacuum-axis component (all three components in 3D)",
+      "IMAG_THR_semantics": "upper bound for near-Γ acoustic branches (not a global threshold)",
+      "IMAG_QGAMMA_GRACE_semantics": "approved by the user on 2026-09-22: a single near-Γ soft mode that straddles the 0.05 boundary is not escalated to fail; 1.0 = strict criterion",
       "refs": [
-        "Petretto et al., Scientific Data 5, 180065 (2018)：0 < |q| < 0.05 失稳窗口、5 cm^-1 阈值",
-        "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022)：远离 Γ 的虚频是真失稳特征"
+        "Petretto et al., Scientific Data 5, 180065 (2018): 0 < |q| < 0.05 instability window, 5 cm^-1 threshold",
+        "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022): imaginary frequencies away from Γ are the signature of a genuine instability"
       ]
     },
     "policy_version": "imag_policy/1.0"
   },
   "imag_policy_refs": [
-    "Petretto et al., Scientific Data 5, 180065 (2018)：0 < |q| < 0.05 失稳窗口、5 cm^-1 阈值",
-    "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022)：远离 Γ 的虚频是真失稳特征"
+    "Petretto et al., Scientific Data 5, 180065 (2018): 0 < |q| < 0.05 instability window, 5 cm^-1 threshold",
+    "Lin, Poncé, Marzari, npj Comput. Mater. 8, 236 (2022): imaginary frequencies away from Γ are the signature of a genuine instability"
   ],
   "imag_class": "noise",
   "min_freq_THz": -2.1684644194752085e-07,

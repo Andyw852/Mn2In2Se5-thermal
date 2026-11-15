@@ -53,7 +53,7 @@
       3.0958,
       0.31059
     ],
-    "note": "90 K 7.204/0.677 与 100 K 6.406/0.610 衔接；150 K 4.157/0.411 与 100-200 K 插值(~4.3/0.43)一致"
+    "note": "90 K 7.204/0.677 joins smoothly with 100 K 6.406/0.610; 150 K 4.157/0.411 agrees with the 100-200 K interpolation (~4.3/0.43)"
   },
   "run_dir_remote": "hanhai25:~/work/Mn2In2Se5_441/kl-dft-cpu/step6_kappa/shengbte_runs/cut3_6p51_m16x16x4",
   "jobid": "357276"
