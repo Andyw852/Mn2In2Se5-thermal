@@ -159,7 +159,7 @@ def cmd_bases(a):
                                      read_gamma=True, log_level=0)
         gi = np.asarray(ph3.thermal_conductivity.gamma_isotope)[0]
         B[el] = gi
-        print("[OK] B_%s（%.0f s）" % (el, time.time() - t1), flush=True)
+        print("[OK] B_%s(%.0f s)" % (el, time.time() - t1), flush=True)
 
     gb_1um = compute_bulk_boundary_scattering(gv, 1.0)      # Γ_b at L = 1 μm; ∝ 1/L
     np.savez_compressed(

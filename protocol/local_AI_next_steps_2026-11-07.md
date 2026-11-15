@@ -40,7 +40,7 @@ md5sum fc2.hdf5 fc3.hdf5 > md5.txt
 ```
 
 Put the DFT inputs in `Mn2In2Se5/data/dft_inputs/` (all small text files):
-`step1_std_opt/{INCAR,KPOINTS,workflow_method.txt}`、`step2_static/{INCAR,KPOINTS}`、`step4_disp/disp-00000/{INCAR,KPOINTS}`，
+`step1_std_opt/{INCAR,KPOINTS,workflow_method.txt}`, `step2_static/{INCAR,KPOINTS}`, `step4_disp/disp-00000/{INCAR,KPOINTS}`,
 Also write a `dft_summary.txt`: the final maximum force of S1, the S2 band gap and total magnetic moment, the S4 equilibrium-frame residual force, the number of S4 frames, and the per-frame magnetic-moment distribution (the output of `sort | uniq -c`).
 POTCAR is not uploaded (copyrighted).
 

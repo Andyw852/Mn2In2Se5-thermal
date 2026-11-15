@@ -183,14 +183,15 @@ from 323 → 1348 m/s.
 **Self-check:** running the same driver with the *old* FC2 reproduces the
 historical RTA value exactly (2.2498 vs 2.24981).
 
-### 6.2 FC3 cutoff scan
+### 6.2 FC3 cutoff scan (mesh 11×11×11)
 
 A 4×4×1 cell caps the FC3 cutoff at **6.507 Å** (half the layer-normal repeat
 minus 0.1 Å); the largest contained shell is 6.3557 Å and the next shell
 (6.5311 Å) already exceeds the limit. **6.45 Å is therefore the physical
 ceiling.** Three fits were taken from the existing pheasy `cutoff_scan`
 (5.60 / 6.23 / 6.45 Å; the 6.45 Å scan file reproduces the production κ
-exactly, confirming its validity).
+exactly, confirming its validity). The scan is run on the **11×11×11** mesh, so
+its 6.45 Å row is identical to the mesh-11 row of §6.1 and §6.3.
 
 | Cutoff (Å) | RTA in-plane | RTA κ_zz | LBTE in-plane | LBTE κ_zz |
 |---|---:|---:|---:|---:|
@@ -233,10 +234,13 @@ physically meaningful quantity.
 |---|---:|---:|
 | ∞ (intrinsic) | 3.6945 | 0.9435 |
 | 10 μm | 3.6810 | 0.8849 |
-| 1 μm | *in progress* | *in progress* |
+| 1 μm | 3.5729 | 0.6877 |
 
-In-plane is essentially boundary-insensitive (−0.4 %); κ_zz decreases with the
-grain size, as expected.
+In-plane is essentially boundary-insensitive (−0.4 % at 10 μm, −3.3 % at 1 μm):
+all in-plane phonon mean free paths lie below a micrometre. κ_zz drops by 6.2 %
+at 10 μm and by 27.1 % at 1 μm, which is the quantitative form of the statement
+in §6.3 — the intrinsic κ_zz is carried by interlayer modes whose mean free path
+exceeds a micrometre, so only a finite-grain value is physically meaningful.
 
 ---
 
@@ -319,7 +323,7 @@ All at 300 K, isotope scattering on.
 | **FC2 4×4×2, mesh 18, 6.45 Å** | RTA | 3.6945 | 0.9435 | κ_zz not converged |
 | FC2 4×4×2, mesh 14, 6.45 Å | Wigner-RTA | 3.7492 | 1.1595 | coherence included |
 | FC2 4×4×2, mesh 18, 10 μm, 6.45 Å | RTA | 3.6810 | 0.8849 | finite grain |
-| FC2 4×4×2, mesh 18, 1 μm, 6.45 Å | RTA | — | *pending* | finite grain |
+| FC2 4×4×2, mesh 18, 1 μm, 6.45 Å | RTA | 3.5729 | 0.6877 | finite grain; physically meaningful κ_zz |
 
 **Nothing in this table should be quoted as a final intrinsic single-crystal κ.**
 The in-plane component is converged; κ_zz is limited by the FC3 cutoff ceiling
@@ -331,11 +335,21 @@ and by the physically ill-defined nature of the intrinsic interlayer value.
 
 | # | Item | Cost | Notes |
 |---|---|---|---|
-| 1 | 1 μm finite-grain κ (mesh 18) | ~35 min | running |
-| 2 | 18×18×18 LBTE | 4–8 h | queued |
-| 3 | Wigner-LBTE (mesh 14) | 2–3 h | queued |
+| 1 | 1 μm finite-grain κ (mesh 18) | ~35 min | **done** — 3.5729 / 0.6877 (§6.4) |
+| 2 | 18×18×18 LBTE | 4–8 h | not completed — see note below |
+| 3 | Wigner-LBTE (mesh 14) | 2–3 h | not completed — see note below |
 | 4 | 4×4×2 FC3 dataset → cutoff > 6.45 Å | ~2 days DFT | only rigorous route to converged FC3 |
 | 5 | Unify structure for the LA comparison | small | phonon cell has 13.21409 Å vs elastic 13.20318 Å along c |
+
+**Note on items 2 and 3.** Both are single long-running phono3py calls that keep
+the whole collision matrix in memory and cannot be checkpointed. The workstation
+that hosted them was rebooted several times during the run, so each attempt was
+lost before completion. They are *convergence refinements only*: item 2 adds an
+18³ data point to the LBTE column of §6.3 (the 11³ and 14³ LBTE points already
+bracket the answer), and item 3 adds the coherence term at LBTE level to §7 (the
+Wigner-RTA decomposition already shows C/P = +2.5 % / +6.0 %). Neither changes
+any conclusion of this report. Both are fully reproducible from the committed
+inputs with the drivers listed in §11.3.
 
 ---
 
@@ -378,6 +392,10 @@ All paths are relative to the repository root.
   this report (FC2 comparison, cutoff scan, mesh scan, finite grain, Wigner,
   FC3 triplet audit, and the explicit conclusions block).
 - `test/MnIn2Se4/kappa_results_442.json` — the raw output of `kappa_driver_442.py`.
+- `test/MnIn2Se4/k18_lbte.json` and `test/MnIn2Se4/k14_wigner_lbte.json` — the
+  outputs of the two refinement runs of §10; each driver writes its JSON next to
+  itself in `test/MnIn2Se4/`. These files exist only once the corresponding run
+  of §10 has completed.
 
 ### 11.4 Environment
 
@@ -395,6 +413,8 @@ python fc2_442_phonon/sound_velocity.py .   # §4  TA/LA/C44 of the 4x4x2 FC2
 python kappa_cutscan.py                 # §6.2  RTA cutoff scan (~5 min)
 python kappa_lbte_scan.py               # §6.2  LBTE cutoff scan (~47 min)
 python kappa_driver_442.py              # §6.1  RTA + LBTE vs FC2 supercell
+python kappa_run_18_lbte.py             # §6.3  LBTE at 18x18x18 (4-8 h, not restartable)
+python kappa_run_14_wigner_lbte.py      # §7    Wigner-LBTE at 14x14x14 (2-3 h, not restartable)
 ```
 
 > Raw DFT output (OUTCAR, vasprun.xml, WAVECAR) is not committed — see the

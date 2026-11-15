@@ -151,13 +151,13 @@ Gamma
   ```
   **< 0.005 eV/Å passes** (the old 3×3×1 gave 0.004). For 0.005–0.01, report and continue; above 0.01, stop: first check whether the magnetic moment, KPOINTS and FUNC/IVDW are consistent with S1.
 - Total magnetic moment of each frame (take the last occurrence in each OUTCAR):
-  `for f in disp-*/OUTCAR; do grep "number of electron" $f | tail -1 | awk '{printf "%.1f\n",$NF}'; done | sort | uniq -c`，
+  `for f in disp-*/OUTCAR; do grep "number of electron" $f | tail -1 | awk '{printf "%.1f\n",$NF}'; done | sort | uniq -c`,
   There should be only one value, and it should be ≈ 16 × M₀ (M₀ = the final total magnetic moment of S2; when M₀ = 10 this is 160).
   If a frame ends up in another magnetic state, list that frame and report it.
 
-**S5_fc（3090，pheasy）**
-- `fc_dataset.json`：`supercell_matrix = [[4,0,0],[0,4,0],[0,0,1]]`，`natom_super = 144`，`equilibrium_max_force < 0.01`。
-- `phonon_summary.json`：`stable = true`、`fc2_symmetry.broken = false`（`n_ops = 12`）、`fit_rmse_relative < 0.02`；
+**S5_fc(3090,pheasy)**
+- `fc_dataset.json`:`supercell_matrix = [[4,0,0],[0,4,0],[0,0,1]]`,`natom_super = 144`,`equilibrium_max_force < 0.01`. 
+- `phonon_summary.json`:`stable = true`, `fc2_symmetry.broken = false`(`n_ops = 12`), `fit_rmse_relative < 0.02`;
   `min_frequency_THz` not below −0.1. If imaginary frequencies away from Γ remain, stop and report, including the q-point and branch index.
 - `cutoff_scan.json`: the candidate cutoff ceiling is about 6.6 Å (cutoffs above the safe cutoff are dropped in S4).
 
@@ -165,7 +165,7 @@ Gamma
 The `step3_nac` directory still exists, so S5 still generates BORN from that invalid vasprun; `band_nac*` is therefore wrong — ignore it.
 For S6, confirm that the log shows `NAC=False`.
 
-**S6_kappa（ShengBTE conv）**
+**S6_kappa(ShengBTE conv)**
 - The log **must not** contain `rotations are incompatible with the q-point grid` ([0105] already raises the automatic mesh until it is symmetry-preserving; if it appears, stop and report).
 - `kappa_summary.json`: κ_xx = κ_yy, off-diagonal elements ≈ 0; `mesh_converged = true`. If it stopped because of `MESH_CONV_MAX_LENGTH`, report and ask whether to raise it.
 - κ_zz is very sensitive to the interlayer-direction mesh (in the control test the κ_zz at 16×16×4 and 16×16×16 differ by 60%). After convergence, do one more confirmation:

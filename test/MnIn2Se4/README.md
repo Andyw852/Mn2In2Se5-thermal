@@ -66,14 +66,14 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 | | `fc2_442_phonon/fc2.hdf5` (FC2 held fixed) |
 | **Scripts** | `kappa_cutscan.py` (RTA), `kappa_lbte_scan.py` (LBTE) |
 | **Outputs** | `kappa_cutoff_scan_results.json`, `kappa_cutoff_convergence.png`, `KAPPA_CUTOFF_SCAN.md` |
-| **Result (LBTE, mesh 14)** | 5.60: 5.6473 / 2.7388 · 6.23: 4.7842 / 1.2241 · **6.45: 4.4075 / 1.2519** |
+| **Result (LBTE, mesh 11)** | 5.60: 5.6473 / 2.7388 · 6.23: 4.7842 / 1.2241 · **6.45: 4.4075 / 1.2519** (the 11³ row of §6, as a consistency check) |
 | **Verdict** | **not converged**: in-plane still −7.9 % in the last available step; ceiling reached |
 
 ## 6. κ versus q-mesh
 
 | | |
 |---|---|
-| **Scripts** | `kappa_driver_442.py` (`--mesh`), `kappa_run_18_lbte.py` |
+| **Scripts** | `kappa_driver_442.py` (`--mesh`, RTA + LBTE 11³/14³), `kappa_run_18_lbte.py` (18³ LBTE, writes `k18_lbte.json`) |
 | **Inputs** | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5`, `fit/POSCAR` |
 | **Outputs** | `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` |
 | **Result (RTA)** | 11³ 3.5375 / 1.2495 · 14³ 3.6474 / 1.0934 · 18³ 3.6945 / **0.9435** |
@@ -93,7 +93,8 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 
 | | |
 |---|---|
-| **Script** | `kappa_driver_442.py` (`conductivity_type="wigner"`), results in `kappa_wigner_mn441.json` |
+| **Script** | `kappa_driver_442.py` (`conductivity_type="wigner"`, RTA), results in `kappa_wigner_mn441.json` |
+| **LBTE-level refinement** | `kappa_run_14_wigner_lbte.py` — same mesh/cutoff with `is_LBTE=True`, writes `k14_wigner_lbte.json` |
 | **Result (Wigner-RTA, mesh 14, 6.45 Å)** | total **3.7492 / 1.1595**; population 3.6584 / 1.0934; coherence 0.0908 / 0.0661 (**+2.5 % / +6.0 %**) |
 | **Comparison, Mn₂In₂Se₅** | coherence contributes +4.5 % / **+12.4 %** — the lower κ_zz, the larger the coherence fraction |
 
@@ -145,7 +146,8 @@ test/MnIn2Se4/
 │   ├── FORCE_CONSTANTS_3RD_complete
 │   └── triplet_audit.json
 ├── kappa_driver_442.py              # §3 §8  main kappa driver (RTA / LBTE / Wigner)
-├── kappa_run_18_lbte.py             # §6     18^3 LBTE
+├── kappa_run_18_lbte.py             # §6     18^3 LBTE      -> k18_lbte.json
+├── kappa_run_14_wigner_lbte.py      # §8     Wigner-LBTE    -> k14_wigner_lbte.json
 ├── kappa_lbte_scan.py               # §5     LBTE cutoff scan
 ├── kappa_cutscan.py                 # §5     RTA cutoff scan
 ├── compare_441_vs_442.py            # §4

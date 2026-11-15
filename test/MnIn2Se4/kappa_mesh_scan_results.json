@@ -22,5 +22,18 @@
       "inplane": 4.5219,
       "kappa_zz": 1.0934
     }
+  },
+  "mesh18": {
+    "RTA": {
+      "inplane": 3.6945,
+      "kappa_zz": 0.9435
+    },
+    "LBTE": null,
+    "_note": "mesh-18 RTA value is the boundary_mfp=None entry of kappa_finite_grain.json; the 18^3 LBTE refinement did not complete (see REPORT section 10)."
+  },
+  "_provenance": {
+    "mesh11": "decision 2026-11-12, 4x4x1 -> 4x4x2 FC2 re-run",
+    "mesh14": "KAPPA_MESH_SCAN.md, 2026-11-14",
+    "mesh18_RTA": "kappa_finite_grain.json, 2026-11-15"
   }
 }
