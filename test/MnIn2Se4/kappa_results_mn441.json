@@ -1,6 +1,6 @@
 {
   "material": "MnIn2Se4_441",
-  "note": "从本轮会话记录补回（/tmp 被清理前的结果）",
+  "note": "Recovered from this session's log (results salvaged before /tmp was cleaned up)",
   "fc2": "4x4x2 (fc2_442_phonon/fc2.hdf5)",
   "fc3": "4x4x1, cutoff 6.45 A (fit_cut3_6p45/fc3.hdf5)",
   "T_K": 300.0,
@@ -34,6 +34,6 @@
     "complete_writer": 5586,
     "shengbte_export_hiphive": 3276,
     "kappa_shengbte_20x20x5": 5586,
-    "note": "旧 shengbte_export 缺 41.4% 三元组；20x20x5 的三元组完整但 CONTROL 里 Mn 位置写成 (0,0,0)（应为 (1,0,1)）——正是 [0151]/[0154] bug，其 kappa 仍不可用"
+    "note": "The old shengbte_export is missing 41.4% of the triplets; the 20x20x5 triplets are complete but CONTROL writes the Mn position as (0,0,0) (it should be (1,0,1)) -- exactly the [0151]/[0154] bug, so its kappa is still unusable"
   }
 }
