@@ -1,112 +1,112 @@
-# 外在散射 + 织构：把单晶本征 κ 换算成热压多晶实验值
+# Extrinsic scattering + texture: converting single-crystal intrinsic κ into hot-pressed polycrystalline experimental values
 
-## 模型（已定）
+## Model (settled)
 
-散射率相加（RTA）：
+Scattering rates add up (RTA):
 
 ```
-Γ_λ = Γ_ph-ph,λ(T)  +  Σ_元素 g_元素(x) · B_元素,λ  +  |v_λ| / (4π L)
-       三声子(本征)      Mn↔In 反位的质量无序（Tamura）     晶界（Casimir）
+Γ_λ = Γ_ph-ph,λ(T)  +  Σ_elem g_elem(x) · B_elem,λ  +  |v_λ| / (4π L)
+       three-phonon (intrinsic)    mass disorder of Mn↔In antisites (Tamura)   grain boundary (Casimir)
 ```
 
-再用织构参数 s 把 κ_xx、κ_zz 合成 Para / Perp（见仓库根 README）。三个参数：
+The texture parameter s is then used to combine κ_xx and κ_zz into Para / Perp (see the repository-root README). There are three parameters:
 
-| 参数 | 含义 | 取值范围（扫描） | 说明 |
+| parameter | meaning | range (scan) | note |
 |---|---|---|---|
-| **x** | 跑到 In 位上的 Mn 占全部 Mn 的比例（Mn↔In 成对交换，化学计量不变） | 0 → 完全无序上限，步长 0.01 | Mn 位为 (1−x)Mn + x In；In 位的 Mn 比例 = x·N_Mn/N_In。上限 Mn₂In₂Se₅ = 0.5，MnIn₂Se₄ = 2/3 |
-| **L** | 晶界平均自由程（各向同性） | 5 nm – 100 μm 对数 61 点，外加 ∞ | 热压晶粒一般 0.5–5 μm；层状材料的层错、孪晶会让有效 L 远小于晶粒 |
-| **s** | ⟨sin²θ⟩，θ = 晶粒 c 轴与热压方向夹角 | 0 – 2/3 | 0 = 完全织构，2/3 = 随机取向 |
+| **x** | fraction of all Mn that sits on In sites (Mn↔In pairwise exchange, stoichiometry unchanged) | 0 → complete-disorder limit, step 0.01 | the Mn site holds (1−x)Mn + x In; the Mn fraction on In sites = x·N_Mn/N_In. Upper bound Mn₂In₂Se₅ = 0.5, MnIn₂Se₄ = 2/3 |
+| **L** | grain-boundary mean free path (isotropic) | 5 nm – 100 μm, 61 log points, plus ∞ | hot-pressed grains are typically 0.5–5 μm; stacking faults and twins in layered materials make the effective L far smaller than the grain |
+| **s** | ⟨sin²θ⟩, where θ is the angle between the grain c axis and the pressing direction | 0 – 2/3 | 0 = fully textured, 2/3 = random orientation |
 
-**为什么只放 Mn↔In 反位**：两种阳离子质量差一倍多（54.9 vs 114.8），同一种结构里互换代价小，是这类层状
-Mn–In–Se 化合物里最常见的无序；Se 亚晶格只算天然同位素。只算质量差是**下限**——键强差、局域应变会让真实散射更强，
-所以拟合出的 x 是「等效 x」，把空位、层错里类似点缺陷的部分也吸收进去了。
+**Why only Mn↔In antisites**: the two cations differ in mass by more than a factor of two (54.9 vs 114.8), swapping them costs little within a given structure, and this is the most common
+disorder in layered Mn–In–Se compounds; for the Se sublattice only the natural isotopes are counted. Counting the mass difference alone is a **lower bound** — differences in bond strength and local strain make the real scattering stronger,
+so the fitted x is an "effective x" that also absorbs the point-defect-like part contributed by vacancies and stacking faults.
 
-**拟合怎么做**：只用高温段（300–623 K，两个方向都用），最小化 ln(模型/实验) 的均方根；
-(x, L) 网格扫描，每个 (x, L) 上 s 取最优。报告最优点和「可接受区」（rms ≤ max(1.25×最优, 最优+0.02)），
-x 和 L 往往有一条简并带（都在压低 κ），这时以可接受区为准，再用 XRD / SEM / 占位精修去破简并。
-低温段（55–145 K）不参与拟合，只看模型在那里对不对得上。
+**How the fit is done**: only the high-temperature range is used (300–623 K, both directions), minimizing the rms of ln(model/experiment);
+a grid scan over (x, L) is performed, with s optimized at every (x, L). The optimum and the "acceptable region" (rms ≤ max(1.25×optimum, optimum+0.02)) are reported;
+x and L usually form a degenerate band (both push κ down), in which case the acceptable region governs and XRD / SEM / occupancy refinement are used to break the degeneracy.
+The low-temperature range (55–145 K) is not used in the fit; it only checks whether the model matches there.
 
-**电子热导**：现在按 0 处理。若 κ_e 不可忽略，拟合出的外在散射会偏强。
+**Electronic thermal conductivity**: currently treated as 0. If κ_e is not negligible, the fitted extrinsic scattering will be too strong.
 
-## 脚本
+## Scripts
 
-`kappa_extrinsic.py`：
+`kappa_extrinsic.py`:
 
-1. `bases`：phono3py 跑一次本征 RTA（只有三声子），再对每种元素位点设 g = 1 只算质量无序散射（read_gamma，不重算三声子），
-   存 `bases.npz`。之后任意 (x, L) 只是对模式求和，几毫秒一个点。
-2. `eval --x --L`：打印 κ_xx、κ_zz(T)。
-3. `fit --exp ../../experiment/kappa_tot_digitized.csv --material ...`：拟合，写 `fit_<材料>.json`。
+1. `bases`: run phono3py once for the intrinsic RTA (three-phonon only), then set g = 1 on each element site to compute only the mass-disorder scattering (read_gamma, without recomputing the three-phonon terms),
+   and store `bases.npz`. Afterwards any (x, L) is just a sum over modes — a few milliseconds per point.
+2. `eval --x --L`: prints κ_xx and κ_zz(T).
+3. `fit --exp ../../experiment/kappa_tot_digitized.csv --material ...`: performs the fit and writes `fit_<material>.json`.
 
-验证：同一套力常数下，直接用 phono3py 开 `mass_variances` + `boundary_mfp` 算出的 κ 与本脚本的线性组合结果对比，
-见下面「验证」一节。
+Validation: with the same force constants, the κ computed directly by phono3py with `mass_variances` + `boundary_mfp` is compared against the linear-combination result of this script;
+see the "Validation" section below.
 
-## Mn₂In₂Se₅：力常数上传后要跑的（在仓库这边做）
+## Mn₂In₂Se₅: to be run after the force constants are uploaded (done on the repository side)
 
 ```bash
 cd analysis/extrinsic
 F=../../Mn2In2Se5/fc
-# 1) 本征 + 散射基底，网格与 ShengBTE 生产计算相同
+# 1) intrinsic + scattering bases, same mesh as the ShengBTE production calculation
 python3 kappa_extrinsic.py bases --disp-yaml $F/phono3py_disp.yaml --fc2 $F/fc2.hdf5 --fc3 $F/fc3.hdf5 \
         --mesh 16 16 4 --out work_Mn2In2Se5_m16164
-# 2) phono3py RTA 对 ShengBTE RTA（同一套力常数，κ(300 K) 应在几个百分点内）
+# 2) phono3py RTA vs ShengBTE RTA (same force constants; κ(300 K) should agree within a few percent)
 python3 kappa_extrinsic.py eval --bases work_Mn2In2Se5_m16164/bases.npz
-# 3) κ_zz 网格：第三个数加倍、再加倍（16 16 8、16 16 16，都保对称）
+# 3) κ_zz mesh: double the third number, then double again (16 16 8, 16 16 16, both symmetry-preserving)
 python3 kappa_extrinsic.py bases ... --mesh 16 16 8 --out work_Mn2In2Se5_m16168
-# 4) 在收敛网格上拟合
+# 4) fit on the converged mesh
 python3 kappa_extrinsic.py fit --bases work_Mn2In2Se5_m16168/bases.npz \
         --exp ../../experiment/kappa_tot_digitized.csv --material Mn2In2Se5
 ```
 
-## 结果
+## Results
 
-拟合用的实验值是读图值（`experiment/kappa_tot_digitized.csv`），拿到原始数据后重跑 `fit` 即可。
+The experimental values used in the fit are digitized from the figure (`experiment/kappa_tot_digitized.csv`); once the raw data are available, simply rerun `fit`.
 
-### 验证：线性组合 = 直接计算
+### Validation: linear combination = direct calculation
 
-同一套 MnIn₂Se₄ 力常数（11³ 网格），5 组 (x, L)（x = 0.05/0.10/0.20、x=0.10 + L=1 μm、L=0.1 μm），
-直接用 phono3py 开 `mass_variances` + `boundary_mfp` 算的 κ 与本脚本线性组合的结果，最大偏差 **0.01%**
-（`results/MnIn2Se4_oldfc_ALASSO5.20_m11/validation_vs_direct_phono3py.txt`）。
+With the same set of MnIn₂Se₄ force constants (11³ mesh) and 5 combinations of (x, L) (x = 0.05/0.10/0.20, x=0.10 + L=1 μm, L=0.1 μm),
+the κ computed directly by phono3py with `mass_variances` + `boundary_mfp` and the linear-combination result of this script differ by at most **0.01%**
+(`results/MnIn2Se4_oldfc_ALASSO5.20_m11/validation_vs_direct_phono3py.txt`).
 
-### MnIn₂Se₄（旧力常数，只作方法演示）
+### MnIn₂Se₄ (old force constants; method demonstration only)
 
-力常数是 pheasy 测试数据集里的 ALASSO 5.20 Å 那一档，DFT 设置不明，数字不能当结论，只看趋势。
-本征 κ(300 K) = 3.97 / 2.12（xx / zz），(2xx+zz)/3 = 3.35，实验 0.78，差 4.3 倍。高温段 16 个点的拟合：
+The force constants are the ALASSO 5.20 Å case from the pheasy test dataset; the DFT settings are unknown, so the numbers cannot be taken as conclusions — only the trends matter.
+Intrinsic κ(300 K) = 3.97 / 2.12 (xx / zz), (2xx+zz)/3 = 3.35, experiment 0.78, a factor of 4.3. Fit to the 16 high-temperature points:
 
-| 情形 | 最好的 rms(ln) | 含义 |
+| scenario | best rms(ln) | meaning |
 |---|---|---|
-| 本征（x=0，无晶界，s 最优） | 1.25 | 高 3.5 倍 |
-| 只加反位，x 到完全无序 2/3 | 0.76 | 仍高约 2.1 倍 |
-| 反位任意 + 晶界 L ≥ 0.5 μm | ≥ 0.34 | 仍高 ≥ 40% |
-| **反位任意 + L ≈ 6–36 nm** | **0.01–0.03** | 两个方向、整个温区都对上 |
+| intrinsic (x=0, no grain boundary, s optimal) | 1.25 | 3.5× too high |
+| antisites only, x up to complete disorder 2/3 | 0.76 | still about 2.1× too high |
+| any antisites + grain boundary L ≥ 0.5 μm | ≥ 0.34 | still ≥ 40% too high |
+| **any antisites + L ≈ 6–36 nm** | **0.01–0.03** | matches in both directions over the whole temperature range |
 
-- **织构 s = 0.33–0.37**，在整个可接受区里都稳定（完全随机是 0.67），是这组数据里定得最准的量。
-- **x 定不下来**：x 从 0.01 到 0.66 都能配一个 L 拟合好（x 越大 L 越大），质量无序和晶界在高温段的效果几乎可以互换。
-- 低温段（55–140 K，不参与拟合）当检验：沿可接受区，模型/实验 = 0.98–1.39；x ≈ 0.1–0.2、L ≈ 10–14 nm 一带最接近。
+- **Texture s = 0.33–0.37**, stable across the whole acceptable region (fully random is 0.67); it is the best-determined quantity in this dataset.
+- **x cannot be pinned down**: any x from 0.01 to 0.66 can be fitted well with a matching L (larger x goes with larger L); at high temperature the effects of mass disorder and grain boundaries are almost interchangeable.
+- The low-temperature range (55–140 K, excluded from the fit) serves as a check: along the acceptable region, model/experiment = 0.98–1.39, closest around x ≈ 0.1–0.2 and L ≈ 10–14 nm.
 
-**解读**：要对上实验，需要把声子平均自由程卡在 **约 10–30 nm**，比热压晶粒（微米级）小两个数量级，
-所以「晶界」这一项实际代表的是更细的结构：层错 / 堆垛畴、两种层状相的共生，或者顺磁 Mn²⁺ 的自旋–声子散射；
-也可能是本征 κ 本身算高了（旧力常数设置不明、截断 ≤ 5.2 Å）。要先用同一协议重算的 MnIn₂Se₄ 和 Mn₂In₂Se₅ 的力常数再判断。
+**Interpretation**: matching the experiment requires pinning the phonon mean free path at **about 10–30 nm**, two orders of magnitude smaller than the hot-pressed grains (micrometre scale),
+so the "grain boundary" term actually stands for finer structure: stacking faults / stacking domains, intergrowth of the two layered phases, or spin-phonon scattering of paramagnetic Mn²⁺;
+or the intrinsic κ may simply be overestimated (old force constants with unknown settings, cutoff ≤ 5.2 Å). A judgement must wait for force constants of MnIn₂Se₄ and Mn₂In₂Se₅ recalculated with the same protocol.
 
-### 参数取法（定下来的）
+### Parameter choices (settled)
 
-1. **s**：拟合，报可接受区。拿到 XRD 后用 Lotgering 因子独立核对。
-2. **x**：κ 数据定不了，按结构定。拿到 Rietveld 占位精修前统一用 **x = 0.10** 作参考值，并报 x = 0、0.20 的敏感性；
-   完全无序（Mn₂In₂Se₅ 0.5、MnIn₂Se₄ 2/3）作上限。
-3. **L**：在固定 x 上拟合，记为「有效平均自由程 L_eff」，不叫晶粒尺寸。L_eff 远小于 SEM 晶粒时，
-   说明还有纳米尺度的散射源，下一步才值得做层错 / 自旋无序的专门计算。
+1. **s**: take it from the fit and report the acceptable region. Once XRD is available, cross-check it independently with the Lotgering factor.
+2. **x**: the κ data cannot determine it, so it is fixed by structure. Until a Rietveld occupancy refinement is available, use **x = 0.10** uniformly as the reference value and report the sensitivity at x = 0 and 0.20;
+   complete disorder (Mn₂In₂Se₅ 0.5, MnIn₂Se₄ 2/3) serves as the upper bound.
+3. **L**: fitted at fixed x and called the "effective mean free path L_eff", not the grain size. When L_eff is much smaller than the SEM grain size,
+   there are additional nanoscale scattering sources, and only then is it worth doing dedicated calculations of stacking faults / spin disorder.
 
-### Mn₂In₂Se₅（暂定：本征 κ_zz 的 q 网格还没收敛）
+### Mn₂In₂Se₅ (provisional: the q-mesh for the intrinsic κ_zz is not yet converged)
 
-力常数可靠（S4 平衡帧残余力 0.0009 eV/Å），本征 κ 用 phono3py RTA（ShengBTE 生产值作废，见 `../shengbte_crosscheck/`）。
-300 K 本征 (2xx+zz)/3 ≈ 2.3，实验 0.60。高温段 16 个点：
+The force constants are reliable (S4 equilibrium-frame residual force 0.0009 eV/Å); the intrinsic κ comes from phono3py RTA (the ShengBTE production values are superseded, see `../shengbte_crosscheck/`).
+At 300 K the intrinsic (2xx+zz)/3 ≈ 2.3 versus experiment 0.60. The 16 high-temperature points:
 
-| 情形 | 16×16×4 | 16×16×8 |
+| scenario | 16×16×4 | 16×16×8 |
 |---|---|---|
-| 本征（s 最优）rms(ln) | 0.95 | 1.06 |
-| 反位到完全无序 x = 0.5，无晶界 | 0.36 | 0.57 |
-| 任意 x + 晶界 L ≈ 0.5–0.6 μm | ≥ 0.27 | ≥ 0.35 |
-| **任意 x + L_eff ≈ 6–60 nm** | **0.03–0.05** | **0.03–0.05** |
-| 织构 s（可接受区） | 0.16–0.28 | 0.14–0.28 |
+| intrinsic (s optimal) rms(ln) | 0.95 | 1.06 |
+| antisites up to complete disorder x = 0.5, no grain boundary | 0.36 | 0.57 |
+| any x + grain boundary L ≈ 0.5–0.6 μm | ≥ 0.27 | ≥ 0.35 |
+| **any x + L_eff ≈ 6–60 nm** | **0.03–0.05** | **0.03–0.05** |
+| texture s (acceptable region) | 0.16–0.28 | 0.14–0.28 |
 
-和 MnIn₂Se₄ 是同一个图景：只有把平均自由程卡在几十纳米才对得上；x 定不下来（x = 0.1 时 L_eff ≈ 14 nm，x = 0.5 时 ≈ 50 nm）。
-等 κ_zz 网格收敛、S6 用正确 3RD 重跑出迭代解后，再定最终数值。
+The picture is the same as for MnIn₂Se₄: it only matches if the mean free path is pinned at a few tens of nanometres; x cannot be pinned down (L_eff ≈ 14 nm at x = 0.1 and ≈ 50 nm at x = 0.5).
+The final numbers will be fixed once the κ_zz mesh is converged and S6 has been rerun with the correct 3RD to produce an iterative solution.

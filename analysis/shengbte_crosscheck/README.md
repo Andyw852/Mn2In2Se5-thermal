@@ -1,34 +1,34 @@
-# ShengBTE 与 phono3py 交叉核对（Mn₂In₂Se₅，截断 6.51 Å，2026-11-08）
+# ShengBTE versus phono3py cross-check (Mn₂In₂Se₅, cutoff 6.51 Å, 2026-11-08)
 
-## 结论
+## Conclusion
 
-**集群上 S6 的 ShengBTE κ（`Mn2In2Se5/data/kappa/`）作废。** 原因不在 ShengBTE，也不在力常数拟合，
-而在 `fc3.hdf5 → FORCE_CONSTANTS_3RD` 的格式转换：AutoZT 调 hiphive 的 `write_to_shengBTE`，它只收
-「超胞里不 wrap 就已是最短像」的原子对；4×4×1 超胞在 a₃′ 方向只有一层，跨这个边界的三元组全部被丢掉。
+**The ShengBTE κ from S6 on the cluster (`Mn2In2Se5/data/kappa/`) is superseded.** The cause lies neither in ShengBTE nor in the force-constant fit,
+but in the format conversion `fc3.hdf5 → FORCE_CONSTANTS_3RD`: AutoZT calls hiphive's `write_to_shengBTE`, which only accepts
+atom pairs that are already the shortest image inside the supercell without wrapping; the 4×4×1 supercell has only one layer along a₃′, so every triplet crossing that boundary is dropped.
 
-| | 三元组数（第一个原子在中心胞） |
+| | number of triplets (first atom in the central cell) |
 |---|---:|
-| `fc3.hdf5` 里的非零三元组 | 9164 |
-| 集群上的 `FORCE_CONSTANTS_3RD`（hiphive 导出） | 6038（缺 3126，34%） |
-| 缺的那些：原子间距 | 2.8–6.35 Å |
-| 缺的那些：\|Φ\| 中位数 / 最大 | 0.035 / 4.4 eV/Å³（保留的：0.042 / 32.7） |
+| non-zero triplets in `fc3.hdf5` | 9164 |
+| `FORCE_CONSTANTS_3RD` on the cluster (hiphive export) | 6038 (missing 3126, 34%) |
+| the missing ones: interatomic distance | 2.8–6.35 Å |
+| the missing ones: \|Φ\| median / maximum | 0.035 / 4.4 eV/Å³ (retained: 0.042 / 32.7) |
 
-## 同一套 fc2/fc3，300 K，RTA，q 网格 16×16×4（W m⁻¹ K⁻¹）
+## Same fc2/fc3, 300 K, RTA, q-mesh 16×16×4 (W m⁻¹ K⁻¹)
 
-| 计算 | κ_xx = κ_yy | κ_zz |
+| calculation | κ_xx = κ_yy | κ_zz |
 |---|---:|---:|
-| 集群 ShengBTE（hiphive 导出的 3RD） | 1.7224 | 0.2098 |
-| 本地 ShengBTE + **同一份**集群 3RD（`run_original_fc3/`） | 1.7224 | 0.2098 |
-| 本地 ShengBTE + **补全的** 3RD（`run_complete_fc3/`） | **2.9535** | **0.8346** |
-| phono3py RTA（`analysis/extrinsic/results/Mn2In2Se5_m16164/`） | **2.9743** | **0.8364** |
+| cluster ShengBTE (hiphive-exported 3RD) | 1.7224 | 0.2098 |
+| local ShengBTE + the **same** cluster 3RD (`run_original_fc3/`) | 1.7224 | 0.2098 |
+| local ShengBTE + the **completed** 3RD (`run_complete_fc3/`) | **2.9535** | **0.8346** |
+| phono3py RTA (`analysis/extrinsic/results/Mn2In2Se5_m16164/`) | **2.9743** | **0.8364** |
 
-本地 ShengBTE 用原文件逐位复现了集群结果，换成补全的文件就与 phono3py 一致（差 0.7% / 0.2%）。
-补全文件由 `write_fc3_sheng.py` 从 `fc3.hdf5` 写出：每个三元组的 2、3 号原子取相对 1 号原子的最短像，
-R 向量相对 CONTROL 坐标；写出后按超胞折回与 `fc3.hdf5` 逐元素比，差 5×10⁻¹⁵。
+Local ShengBTE reproduces the cluster results bit for bit with the original file, and agrees with phono3py once the completed file is used (0.7% / 0.2% difference).
+The completed file is written from `fc3.hdf5` by `write_fc3_sheng.py`: atoms 2 and 3 of each triplet are taken as the shortest images relative to atom 1,
+and the R vectors are relative to the CONTROL coordinates; after writing, everything is folded back by the supercell and compared element by element with `fc3.hdf5`, giving a difference of 5×10⁻¹⁵.
 
-## q 网格（phono3py RTA，κ_zz 对层间方向网格敏感）
+## q-mesh (phono3py RTA; κ_zz is sensitive to the interlayer-direction mesh)
 
-| q 网格 | κ_xx(300 K) | κ_zz(300 K) |
+| q-mesh | κ_xx(300 K) | κ_zz(300 K) |
 |---|---:|---:|
 | 16×16×4 | 2.974 | 0.836 |
 | 16×16×8 | 2.958 | 1.109 |
@@ -36,40 +36,40 @@ R 向量相对 CONTROL 坐标；写出后按超胞折回与 `fc3.hdf5` 逐元素
 | 16×16×12 | 2.963 | 1.304 |
 | 16×16×16 | 2.959 | 1.541 |
 
-面内网格：16×16×4 → 20×20×5，κ_xx 只变 +0.9%，所以 16×16×4 对 κ_xx 已经够了（集群 ShengBTE 在 20×20×5 上
-迭代解爆了 750 GB 内存，不需要再跑）。
+In-plane mesh: 16×16×4 → 20×20×5 changes κ_xx by only +0.9%, so 16×16×4 is already sufficient for κ_xx (the cluster ShengBTE run at 20×20×5
+blew up to 750 GB of memory in the iterative solve, so it does not need to be rerun).
 
-加晶界（Casimir）后的 κ_zz 随第三个数 4 / 8 / 12 / 16：
+κ_zz after adding grain boundaries (Casimir), versus the third number 4 / 8 / 12 / 16:
 
-| 晶粒 L | m = 4 | 8 | 12 | 16 |
+| grain L | m = 4 | 8 | 12 | 16 |
 |---|---:|---:|---:|---:|
-| ∞（本征） | 0.836 | 1.109 | 1.304 | 1.541 |
+| ∞ (intrinsic) | 0.836 | 1.109 | 1.304 | 1.541 |
 | 10 μm | 0.826 | 1.071 | 1.229 | 1.392 |
 | 1 μm | 0.754 | 0.877 | 0.937 | 0.973 |
-| 拟合区（x = 0.13，L = 16 nm） | 0.158 | 0.163 | 0.165 | 0.167 |
+| fitted region (x = 0.13, L = 16 nm) | 0.158 | 0.163 | 0.165 | 0.167 |
 
-本征 κ_zz 每加一档都涨 0.2–0.27，看不出收敛：层间方向低频声学声子的散射率随频率降得很快，寿命极长，RTA 下网格越密收进来的越多，「无限大完美单晶的 κ_zz」由样品尺寸决定，不是一个确定的数。有限尺寸下就收敛了：1 μm 晶粒时 16 → 外推约 1.0（最后一档只变 3.8%）。
-不收敛的部分来自层间方向平均自由程超过微米的长波声子；无限大单晶的「本征 κ_zz」要报成下限并注明，
-有限晶粒（1 μm）下约 0.95。
+The intrinsic κ_zz rises by 0.2–0.27 with every step and shows no convergence: the scattering rate of low-frequency acoustic phonons along the interlayer direction falls very rapidly with frequency and their lifetime is extremely long, so under RTA a denser mesh captures more of them, and the "κ_zz of an infinite perfect single crystal" is set by the sample size rather than being a well-defined number. It does converge at finite size: for a 1 μm grain, 16 → extrapolates to about 1.0 (the last step changes by only 3.8%).
+The non-converged part comes from long-wavelength phonons with mean free paths above a micrometre along the interlayer direction; the "intrinsic κ_zz" of an infinite single crystal must be reported as a lower bound with a note,
+and it is about 0.95 for a finite grain (1 μm).
 
-κ_xx 已收敛（< 1%）；本征 κ_zz 4 → 8 → 12 涨 33% → 18%，还没收敛（长波、低频、层间方向的声学模式，
-平均自由程很长，网格越密收进来越多）。
+κ_xx is converged (< 1%); the intrinsic κ_zz rises by 33% → 18% from 4 → 8 → 12 and is not yet converged (the long-wavelength, low-frequency acoustic modes along the interlayer direction
+have very long mean free paths, and a denser mesh captures more of them).
 
-**和实验对比时这个不敏感**：加上拟合区里的外在散射（如 x = 0.13、L = 16 nm），300 K 的 κ_zz 在三个网格上是
-0.158 / 0.163 / 0.165，κ_xx 都是 0.853——被截掉的正是那些长程模式。所以织构/外在散射的结论不受网格影响，
-需要密网格的只是「本征单晶 κ_zz」这个数。
+**This is insensitive when comparing with experiment**: adding the extrinsic scattering of the fitted region (e.g. x = 0.13, L = 16 nm), κ_zz at 300 K is
+0.158 / 0.163 / 0.165 on the three meshes, and κ_xx is 0.853 in all cases — the modes being cut off are exactly the long-range ones. The texture/extrinsic-scattering conclusions are therefore unaffected by the mesh;
+only the "intrinsic single-crystal κ_zz" number needs a dense mesh.
 
-## AutoZT 的修复
+## The AutoZT fix
 
-AutoZT 分支 `claude/jolly-curie-jsvosv` 的 **[0127]**：所有 ShengBTE 3RD 导出改用 `fc_common.write_shengbte_fc3`
-（全量写出 + 回折自检），S5/S6 复用旧文件前先与 `fc3.hdf5` 对比，不符自动重导。合并后对 S6 `retry` 即可。
+**[0127]** on the AutoZT branch `claude/jolly-curie-jsvosv`: all ShengBTE 3RD exports now use `fc_common.write_shengbte_fc3`
+(full write-out + fold-back self-check); S5/S6 compare against `fc3.hdf5` before reusing an old file and re-export automatically on a mismatch. After merging, a `retry` of S6 is all that is needed.
 
-旧 `MnIn2Se4/archive_2026-10-28_fit-fc-thermal/` 记录的「ShengBTE 比 phono3py 低 24 倍、判为 ShengBTE 求解器问题」
-可能是同一个原因，但那次 3RD 的来源（hiphive 还是 pheasy 原生导出）没有留档，需要核对后才能下结论。
+The note in the old `MnIn2Se4/archive_2026-10-28_fit-fc-thermal/` that "ShengBTE is 24× lower than phono3py, judged to be a ShengBTE solver problem"
+may have the same cause, but the provenance of that 3RD (hiphive or the native pheasy export) was not archived, so a conclusion requires checking it first.
 
-## 论文里建议的写法（Mn₂In₂Se₅，300 K）
+## Suggested wording for the paper (Mn₂In₂Se₅, 300 K)
 
-- κ_xx = κ_yy：**3.14**（ShengBTE 迭代解，16×16×4，三阶截断 6.51 Å）；RTA 2.96，面内网格已收敛（20×20×5 差 0.9%）。
-- κ_zz：本征值随层间网格单调增长、不收敛（RTA 16×16×16 已到 1.54），由长平均自由程的层间声学声子主导；
-  报**有限晶粒下的值**：L = 1 μm 时 **≈ 0.97–1.0**（RTA，16×16×16，网格误差 < 4%），并附 κ_zz 随平均自由程的累积曲线。
-- 与热压样品对比只依赖外在散射模型，它对网格不敏感（上表最后一行）。
+- κ_xx = κ_yy: **3.14** (ShengBTE iterative solution, 16×16×4, third-order cutoff 6.51 Å); RTA 2.96; the in-plane mesh is converged (20×20×5 differs by 0.9%).
+- κ_zz: the intrinsic value grows monotonically with the interlayer mesh and does not converge (RTA already reaches 1.54 at 16×16×16), and it is dominated by interlayer acoustic phonons with long mean free paths;
+  report the **finite-grain value**: **≈ 0.97–1.0** at L = 1 μm (RTA, 16×16×16, mesh error < 4%), together with the cumulative κ_zz versus mean free path curve.
+- The comparison with hot-pressed samples relies only on the extrinsic-scattering model, which is insensitive to the mesh (last row of the table above).

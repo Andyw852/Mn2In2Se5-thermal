@@ -1,38 +1,38 @@
-# 实验热导率（热压多晶）
+# Experimental thermal conductivity (hot-pressed polycrystal)
 
-`kappa_tot_figure.png`：实验总热导率 κ_tot，两个样品（图中写作 In₂Mn₂Se₅、In₂MnSe₄）、两个方向：
+`kappa_tot_figure.png`: experimental total thermal conductivity κ_tot, two samples (labelled In₂Mn₂Se₅ and In₂MnSe₄ in the figure), two directions:
 
-- **Para**：平行于热压方向。热压时片状晶粒的 c 轴倾向于沿压力方向，所以 Para ≈ 面外（κ_zz 为主）；
-- **Perp**：垂直于热压方向，≈ 面内（κ_xx 为主）。
+- **Para**: parallel to the pressing direction. During hot pressing the c axis of the platelet grains tends to align with the pressure direction, so Para ≈ out-of-plane (dominated by κ_zz);
+- **Perp**: perpendicular to the pressing direction, ≈ in-plane (dominated by κ_xx).
 
-两块面板：左 300–623 K（实心符号），右 2–145 K（空心符号）。
+Two panels: left 300–623 K (filled symbols), right 2–145 K (open symbols).
 
-`kappa_tot_digitized.csv`：**从图上读出的数**，不是原始数据。高温面板按符号颜色取质心，误差约 ±0.005 W/mK；
-低温面板符号重叠，只取了能分开的单个符号（55–140 K），误差约 ±0.01。拿到原始数据后替换本文件，列名不变：
+`kappa_tot_digitized.csv`: **numbers read off the figure**, not raw data. For the high-temperature panel the centroid of each symbol colour was taken, with an uncertainty of about ±0.005 W/mK;
+in the low-temperature panel the symbols overlap, so only individual symbols that could be separated were taken (55–140 K), with an uncertainty of about ±0.01. Replace this file once the raw data are available, keeping the column names unchanged:
 
 ```
 material,direction,T_K,kappa_tot_WmK,kappa_e_WmK,panel
 ```
 
-`kappa_e_WmK` 是电子热导，现在留空（按 0 处理）。有电导率 σ(T)（最好再有 Seebeck S(T)）后按
-κ_e = L·σ·T、L = 1.5 + exp(−|S|/116) ×10⁻⁸ W Ω K⁻²（S 用 μV/K）填进去，拟合会自动扣掉。
+`kappa_e_WmK` is the electronic thermal conductivity and is currently left empty (treated as 0). Once the electrical conductivity σ(T) (preferably also the Seebeck coefficient S(T)) is available, fill it in via
+κ_e = L·σ·T with L = 1.5 + exp(−|S|/116) ×10⁻⁸ W Ω K⁻² (S in μV/K); the fit then subtracts it automatically.
 
-## 读图时注意到的两点
+## Two things noticed while digitizing the figure
 
-1. 低温面板 145 K 和高温面板 300 K 衔接不上的程度在两个方向差别很大：Mn₂In₂Se₅ 的 Perp 从 0.79 降到 0.74（−6%），
-   Para 从约 0.47 降到 0.32（−32%）。低温一般是 PPMS 稳态法、高温是激光闪射，可能是两台仪器或两块样品。
-   所以先只用高温段拟合，低温段单独对照，不把两段硬拼在一起拟合。
-2. 两个样品的 Perp 都在 100–145 K 出现平台，没有本征晶体那种 κ ∝ 1/T 的上升（计算的 Mn₂In₂Se₅ 面内 κ
-   在 100 K 是 6.4 W/mK，实验 Perp 只有 0.79）。说明低温段被外在散射（晶界、点缺陷，可能还有自旋–声子）完全主导。
+1. The mismatch between the low-temperature panel at 145 K and the high-temperature panel at 300 K differs greatly between the two directions: for Mn₂In₂Se₅, Perp goes from 0.79 to 0.74 (−6%),
+   while Para goes from about 0.47 to 0.32 (−32%). Low temperature is usually PPMS steady-state and high temperature laser flash, so this may be two instruments or two samples.
+   We therefore fit only the high-temperature range first and compare the low-temperature range separately, rather than forcing the two ranges into a single fit.
+2. Both samples show a plateau in Perp at 100–145 K and lack the κ ∝ 1/T rise of an intrinsic crystal (the calculated in-plane κ of Mn₂In₂Se₅
+   is 6.4 W/mK at 100 K, while the experimental Perp is only 0.79). This shows that the low-temperature range is completely dominated by extrinsic scattering (grain boundaries, point defects, possibly also spin-phonon).
 
-## 还需要的实验数据
+## Experimental data still needed
 
-| 数据 | 用途 |
+| data | purpose |
 |---|---|
-| 两块面板的原始数据（CSV/Excel） | 替换读图值 |
-| 电导率 σ(T)、Seebeck S(T)（两个方向） | 扣 κ_e |
-| XRD：热压样品两个面的谱（求 Lotgering 因子或 (00l)/(hk0) 强度比） | 独立测定织构 s，和拟合值对比 |
-| SEM：断口晶粒尺寸（片的直径和厚度） | 约束晶界散射长度 L |
-| 密度（相对理论密度） | 气孔修正 |
-| 若有：Rietveld 精修的 Mn/In 占位（反位比例） | 直接给出无序参数 x |
-| 若有：磁化率 / 磁转变温度 | 判断低温段有没有自旋–声子散射 |
+| raw data for both panels (CSV/Excel) | replace the digitized values |
+| electrical conductivity σ(T), Seebeck S(T) (both directions) | subtract κ_e |
+| XRD: spectra of both faces of the hot-pressed sample (for the Lotgering factor or the (00l)/(hk0) intensity ratio) | independent determination of the texture s, compared with the fitted value |
+| SEM: fracture-surface grain size (platelet diameter and thickness) | constrain the grain-boundary scattering length L |
+| density (relative to theoretical) | porosity correction |
+| if available: Rietveld-refined Mn/In occupancy (antisite fraction) | gives the disorder parameter x directly |
+| if available: magnetic susceptibility / magnetic transition temperature | determine whether there is spin-phonon scattering in the low-temperature range |
