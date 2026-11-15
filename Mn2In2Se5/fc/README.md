@@ -1,21 +1,21 @@
-# Mn₂In₂Se₅ 力常数（截断 6.51 Å）
+# Mn₂In₂Se₅ force constants (cutoff 6.51 Å)
 
-生产计算用的是 S5 截断扫描里 **6.51 Å** 那一档（`kappa_main_T100-800K.json` 的 `source_fc = cutoff_scan/cut3_6p51`）。
+The production calculation used the **6.51 Å** case from the S5 cutoff scan (`source_fc = cutoff_scan/cut3_6p51` in `kappa_main_T100-800K.json`).
 
-## 文件
+## Files
 
-| 文件 | 大小 | 来源（集群） | 用途 |
+| file | size | source (cluster) | purpose |
 |---|---|---|---|
-| `fc2.hdf5` | 227 KB | 3090 `Mn2In2Se5_441/kl-dft-cpu/step5_fc/cutoff_scan/cut3_6p51/` | phono3py 复算、反位/晶界拟合 |
-| `fc3.hdf5` | 10.9 MB | 同上 | 同上 |
-| `phono3py_disp.yaml` | 616 KB | 3090 `step5_fc/` | 单胞、超胞矩阵、位移 |
-| `SPOSCAR` | 8.8 KB | 3090 `step4_disp/` | 核对原子顺序（32 Mn + 32 In + 80 Se = 144 原子） |
-| `FORCE_CONSTANTS_2ND` | 4.4 MB | jzzn `step6_kappa/shengbte_runs/cut3_6p51_m16x16x4/` | 与 phono3py 对照 |
-| `FORCE_CONSTANTS_3RD_hiphive_incomplete` | 4.6 MB | 同上（原名 `FORCE_CONSTANTS_3RD`） | **残缺，勿用**：hiphive 导出丢了 3126/9164 个跨 a3′ 边界的三元组，生产 κ 就是用它算的 |
-| `FORCE_CONSTANTS_3RD_complete` | 6.8 MB | 2026-11-08 由 `fc3.hdf5` 按最短像全量写出（9164 块） | 与 `CONTROL`（`../../analysis/shengbte_crosscheck/run_complete_fc3/`）配套；与 phono3py 差 < 1% |
-| `BTE.KappaTensorVsT_RTA` | 1.1 KB | 同上 | ShengBTE 的 RTA κ(T)，与 phono3py RTA 直接比 |
-| `BTE.KappaTensorVsT_CONV` | 1.1 KB | 同上 | ShengBTE 的收敛解，供参考 |
-| `md5.txt` | — | 本地生成 | fc2/fc3 与三个 FORCE_CONSTANTS 文件的 md5 |
+| `fc2.hdf5` | 227 KB | 3090 `Mn2In2Se5_441/kl-dft-cpu/step5_fc/cutoff_scan/cut3_6p51/` | phono3py recomputation, antisite/grain-boundary fitting |
+| `fc3.hdf5` | 10.9 MB | same as above | same as above |
+| `phono3py_disp.yaml` | 616 KB | 3090 `step5_fc/` | primitive cell, supercell matrix, displacements |
+| `SPOSCAR` | 8.8 KB | 3090 `step4_disp/` | check the atom order (32 Mn + 32 In + 80 Se = 144 atoms) |
+| `FORCE_CONSTANTS_2ND` | 4.4 MB | jzzn `step6_kappa/shengbte_runs/cut3_6p51_m16x16x4/` | comparison with phono3py |
+| `FORCE_CONSTANTS_3RD_hiphive_incomplete` | 4.6 MB | same as above (original name `FORCE_CONSTANTS_3RD`) | **incomplete, do not use**: the hiphive export lost 3126/9164 triplets crossing the a3′ boundary, and the production κ was computed with it |
+| `FORCE_CONSTANTS_3RD_complete` | 6.8 MB | written in full from `fc3.hdf5` under the minimum-image convention on 2026-11-08 (9164 blocks) | goes with `CONTROL` (`../../analysis/shengbte_crosscheck/run_complete_fc3/`); differs from phono3py by < 1% |
+| `BTE.KappaTensorVsT_RTA` | 1.1 KB | same as above | ShengBTE RTA κ(T), compared directly with phono3py RTA |
+| `BTE.KappaTensorVsT_CONV` | 1.1 KB | same as above | ShengBTE converged solution, for reference |
+| `md5.txt` | — | generated locally | md5 of fc2/fc3 and the three FORCE_CONSTANTS files |
 
 ## md5
 
@@ -27,9 +27,9 @@ ac7bf6b2477626a0c95ac3c79aa38d74  fc3.hdf5
 001e7ceee7c5d79f3f2f07d7f20e3bce  FORCE_CONSTANTS_3RD_complete
 ```
 
-## ShengBTE RTA 结果（`BTE.KappaTensorVsT_RTA`，单位 W m⁻¹ K⁻¹）——**用残缺 3RD 算的，作废**
+## ShengBTE RTA results (`BTE.KappaTensorVsT_RTA`, units W m⁻¹ K⁻¹) — **computed with the incomplete 3RD, superseded**
 
-ShengBTE 按 κ_αβ = 1/(N V) Σ f v v τ 逐 T 输出；非对角元约 1e-10（数值零），面内 xx = yy。
+ShengBTE outputs κ_αβ = 1/(N V) Σ f v v τ at each T; the off-diagonal elements are about 1e-10 (numerically zero), and in-plane xx = yy.
 
 | T (K) | κ_xx = κ_yy | κ_zz |
 |---|---|---|
@@ -42,9 +42,9 @@ ShengBTE 按 κ_αβ = 1/(N V) Σ f v v τ 逐 T 输出；非对角元约 1e-10�
 | 700 | 0.7440 | 0.0909 |
 | 800 | 0.6516 | 0.0796 |
 
-## 集群位置
+## Cluster locations
 
-- S5（力常数）：3090 `/data/wangchaoyue852/taskflow/work/Mn2In2Se5_441/kl-dft-cpu/step5_fc/`
-- S6（ShengBTE）：jzzn `/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu/step6_kappa/shengbte_runs/cut3_6p51_m16x16x4/`
+- S5 (force constants): 3090 `/data/wangchaoyue852/taskflow/work/Mn2In2Se5_441/kl-dft-cpu/step5_fc/`
+- S6 (ShengBTE): jzzn `/public/home/wangchao/AutoZT/work/Mn2In2Se5_441/kl-dft-cpu/step6_kappa/shengbte_runs/cut3_6p51_m16x16x4/`
 
-单文件最大 10.9 MB，远小于 GitHub 100 MB 上限。
+The largest single file is 10.9 MB, far below the GitHub 100 MB limit.

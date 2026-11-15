@@ -1,75 +1,75 @@
-# Mn₂In₂Se₅ S6 重跑结果（0127 修复后，ShengBTE）
+# Mn₂In₂Se₅ S6 rerun results (after the 0127 fix, ShengBTE)
 
-> 本目录是 S6 晶格热导率在 [0127] ShengBTE 三阶力常数导出修复后的最终结果，
-> 取代旧 kappa（旧结果因 hiphive 导出 FORCE_CONSTANTS_3RD 丢了 34% 跨层三阶项而作废）。
-> 对应作业 hanhai25 359384（2026-11-08 12:23→16:25，退出码 0）。
+> This directory holds the final S6 lattice thermal conductivity results after the [0127] fix to the ShengBTE third-order force-constant export,
+> superseding the old kappa (the old results are invalid because the hiphive export of FORCE_CONSTANTS_3RD lost 34% of the interlayer third-order terms).
+> Corresponding job: hanhai25 359384 (2026-11-08 12:23→16:25, exit code 0).
 
-## 计算配置
+## Calculation configuration
 
-| 项 | 值 |
+| item | value |
 |---|---|
-| solver | ShengBTE 2.1.0（hanhai25，OpenMPI 5.0.9-ucx，256 核） |
-| bte_method | conv（迭代解，主结果）；同时输出 RTA |
-| 网格策略 | MESH=auto + MESH_CONV_MAX_LENGTH=50 |
-| 最终网格 | 16×16×4（mesh_converged=False，stop_reason=MESH_CONV_MAX_LENGTH=50 reached） |
-| 截断 | 6.51 Å（16 shells，pick=largest；κ 在数据可确定范围内未到平台，取最大截断） |
-| 温度 | 50–800 K，步长 50（16 点） |
-| 同位素 / NAC | ISOTOPE=true / NAC=off |
-| 力常数 | source_fc = cutoff_scan/cut3_6p51（见 ../fc/） |
+| solver | ShengBTE 2.1.0 (hanhai25, OpenMPI 5.0.9-ucx, 256 cores) |
+| bte_method | conv (iterative solution, main result); RTA is also written |
+| mesh strategy | MESH=auto + MESH_CONV_MAX_LENGTH=50 |
+| final mesh | 16×16×4 (mesh_converged=False, stop_reason=MESH_CONV_MAX_LENGTH=50 reached) |
+| cutoff | 6.51 Å (16 shells, pick=largest; within the range the data can determine κ does not reach a plateau, so the largest cutoff is taken) |
+| temperature | 50–800 K, step 50 (16 points) |
+| isotope / NAC | ISOTOPE=true / NAC=off |
+| force constants | source_fc = cutoff_scan/cut3_6p51 (see ../fc/) |
 
-## 关键结果（300 K）
+## Key results (300 K)
 
-| 方法 | κ_xx=κ_yy | κ_zz | 单位 |
+| method | κ_xx=κ_yy | κ_zz | unit |
 |---|---|---|---|
-| CONV（迭代解） | 3.1412 | 0.84092 | W/m/K |
+| CONV (iterative solution) | 3.1412 | 0.84092 | W/m/K |
 | RTA | 2.9535 | 0.83455 | W/m/K |
 
-## 网格收敛（conv，300 K，选中截断 6.51 Å）
+## Mesh convergence (conv, 300 K, selected cutoff 6.51 Å)
 
-| mesh | κ_xx=κ_yy | κ_zz | 相对变化(xx/zz) |
+| mesh | κ_xx=κ_yy | κ_zz | relative change (xx/zz) |
 |---|---|---|---|
 | 12 12 3 (L=40 Å) | 2.8984 | 0.81543 | — |
 | 16 16 4 (L=50 Å) | 3.1412 | 0.84092 | +8.38% / +3.13% |
 
-> converged=False：xx/yy 差 8.38% 未达 5% 阈，已到 MESH_CONV_MAX_LENGTH=50 上限；
-> 下一档 20×20×5 会 OOM（750 GB 内存，实测 rc=137）。
-> κ_zz 的网格加密不在此目录，由 phono3py 补（本征 κ_zz 随网格持续增长未收敛，见 analysis/shengbte_crosscheck/）。
+> converged=False: xx/yy differs by 8.38%, which does not meet the 5% threshold, and the MESH_CONV_MAX_LENGTH=50 cap has been reached;
+> the next step, 20×20×5, runs out of memory (750 GB of RAM, measured rc=137).
+> The mesh refinement for κ_zz is not in this directory; it is supplied by phono3py (the intrinsic κ_zz keeps growing with the mesh and is not converged, see analysis/shengbte_crosscheck/).
 
-## 截断扫描（起始网格 12×12×3，300 K）
+## Cutoff scan (starting mesh 12×12×3, 300 K)
 
-> 三档截断均跑在**起始网格 12×12×3**（37 个 q 点），**不是**最终 16×16×4。
-> 选截断用的是 **CONV 迭代解**；选中 6.51 Å 后再把该档收敛到 16×16×4
-> （见上一节：同档在 16×16×4 上 CONV = 3.1412 / 0.84092，比 12×12×3 高 8.4%）。
-> **不要把下表数值当成 16×16×4 的结果。**
+> All three cutoffs were run on the **starting mesh 12×12×3** (37 q-points), **not** on the final 16×16×4.
+> The cutoff was chosen using the **CONV iterative solution**; after 6.51 Å was selected, that case was converged to 16×16×4
+> (see the previous section: at 16×16×4 the same case gives CONV = 3.1412 / 0.84092, 8.4% higher than at 12×12×3).
+> **Do not treat the values in the table below as 16×16×4 results.**
 
-| 截断 (Å) | 壳层 | CONV in-plane κ | CONV κ_zz | RTA in-plane κ | RTA κ_zz |
+| cutoff (Å) | shells | CONV in-plane κ | CONV κ_zz | RTA in-plane κ | RTA κ_zz |
 |---|---|---|---|---|---|
 | 5.68 | 12 | 3.0229 | 0.96837 | 2.9336 | 0.97466 |
 | 6.12 | 14 | 2.9422 | 0.88014 | 2.7954 | 0.88671 |
-| **6.51（选中）** | 16 | **2.8984** | **0.81543** | 2.7257 | 0.82116 |
+| **6.51 (selected)** | 16 | **2.8984** | **0.81543** | 2.7257 | 0.82116 |
 
-## 0127 重导验证
+## 0127 re-export verification
 
-- cut3_6p51：旧导出缺 3126/9164 个三元组 → 重导后 9164 块 / 9164 三元组，回折自检通过。
-- FORCE_CONSTANTS_3RD md5 = af86b14cb8013e6ac49426b5a36aefbc（7887357 字节）。
-- 旧残缺版在集群上已改名 stale_0127（未传）。
+- cut3_6p51: the old export was missing 3126/9164 triplets → after re-export there are 9164 blocks / 9164 triplets, and the fold-back self-check passes.
+- FORCE_CONSTANTS_3RD md5 = af86b14cb8013e6ac49426b5a36aefbc (7887357 bytes).
+- The old incomplete version has been renamed stale_0127 on the cluster (not uploaded).
 
-## 文件清单
+## File list
 
-| 文件 | 说明 |
+| file | description |
 |---|---|
-| kappa_summary.json | 最终 κ 汇总（16×16×4，50–800 K 全表，conv 为主） |
-| mesh_convergence.json | 网格收敛记录（12 12 3 → 16 16 4，未收敛） |
-| mesh_convergence_reference.json | 网格收敛参考 |
-| cutoff_selection.json | 截断选择（chosen_cut=6.51 Å） |
-| BTE.KappaTensorVsT_CONV | 迭代解 κ(T)，16×16×4 |
-| BTE.KappaTensorVsT_RTA | RTA κ(T)，16×16×4 |
-| FORCE_CONSTANTS_3RD | 6.51 Å 三阶力常数（0127 重导后，9164 块） |
-| FORCE_CONSTANTS_2ND | 6.51 Å 二阶力常数 |
-| shengbte.log | ShengBTE 运行日志（含 0127 重导记录） |
+| kappa_summary.json | final κ summary (16×16×4, full 50–800 K table, conv as the main result) |
+| mesh_convergence.json | mesh convergence record (12 12 3 → 16 16 4, not converged) |
+| mesh_convergence_reference.json | mesh convergence reference |
+| cutoff_selection.json | cutoff selection (chosen_cut=6.51 Å) |
+| BTE.KappaTensorVsT_CONV | iterative-solution κ(T), 16×16×4 |
+| BTE.KappaTensorVsT_RTA | RTA κ(T), 16×16×4 |
+| FORCE_CONSTANTS_3RD | 6.51 Å third-order force constants (after the 0127 re-export, 9164 blocks) |
+| FORCE_CONSTANTS_2ND | 6.51 Å second-order force constants |
+| shengbte.log | ShengBTE run log (including the 0127 re-export record) |
 
-## 说明
+## Notes
 
-- RTA vs CONV：kappa_summary.json 的 source=BTE.KappaTensorVsT_CONV，主结果是 conv；BTE.KappaTensorVsT_RTA 是同一网格的弛豫时间近似。
-- 截断未收敛：κ 随截断单调缓降，6.12–6.51 平台跨度 < 0.5 Å 阈，按 pick=largest 取 6.51 Å。
-- 上传整理：2026-11-08。
+- RTA vs CONV: `source=BTE.KappaTensorVsT_CONV` in kappa_summary.json; the main result is conv, and BTE.KappaTensorVsT_RTA is the relaxation-time approximation on the same mesh.
+- Cutoff not converged: κ decreases slowly and monotonically with the cutoff; the 6.12–6.51 plateau span is below the 0.5 Å threshold, so pick=largest gives 6.51 Å.
+- Uploaded and organized: 2026-11-08.
