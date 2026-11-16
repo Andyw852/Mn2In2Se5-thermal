@@ -1,0 +1,21 @@
+host=anode088 case=c560_m14 mesh=14 fc3=fc3_cut5p60.hdf5 threads=64
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+start mesh=[14, 14, 14] fc3=fc3_cut5p60.hdf5
+mesh=[14, 14, 14] fc3=fc3_cut5p60.hdf5 in-plane=5.1834 kzz=2.5236 (24s)
+DONE
+total 3
+drwxr-xr-x 2 wangchao217 zyzhuqgroup   4096 Nov 16 14:09 .
+drwxr-xr-x 3 wangchao217 zyzhuqgroup   4096 Nov 16 14:09 ..
+-rw-r--r-- 1 wangchao217 zyzhuqgroup 916472 Nov 16 14:09 kappa-m141414.hdf5
+-rw-r--r-- 1 wangchao217 zyzhuqgroup    252 Nov 16 14:09 result.json
