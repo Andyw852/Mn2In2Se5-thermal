@@ -68,7 +68,7 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 | **Outputs** | `kappa_cutoff_scan_results.json`, `kappa_cutoff_convergence.png`, `KAPPA_CUTOFF_SCAN.md` |
 | **Result (LBTE, mesh 11)** | 5.60: 5.6473 / 2.7388 · 6.23: 4.7842 / 1.2241 · **6.45: 4.4075 / 1.2519** (the 11³ row of §6, as a consistency check) |
 | **Verdict** | **not converged**: in-plane still −7.9 % in the last available step; ceiling reached |
-| **κ_zz redone on the converged term (14³)** | rest of the zone: 5.60 → 1.4175, 6.23 → 0.7020, 6.45 → **0.6444**; steps −50.5 % then **−8.2 %** (in-plane −22.9 % then −8.7 %). The 11³ κ_zz column ("−55 % then +2 %") is the Γ–Z artifact, so the old reading "κ_zz is flat at 6.45 Å" was wrong — κ_zz is not converged by ≈8 %, same as in-plane. `kappa_zz_scan/c560_m14`, `c623_m14` |
+| **κ_zz redone on the converged term (14³)** | rest of the zone: 5.60 → 1.4175, 6.23 → 0.7020, 6.45 → **0.6444**; steps −50.5 % then **−8.2 %** (in-plane −22.9 % then −8.7 %). The 11³ κ_zz column ("−55 % then +2 %") is the Γ–Z artifact, so the old reading "κ_zz is flat at 6.45 Å" was wrong — the last available step still moves κ_zz by −8 %, same as in-plane, and what follows beyond 6.45 Å is unbounded. `kappa_zz_scan/c560_m14`, `c623_m14` |
 
 ## 6. κ versus q-mesh
 
@@ -78,17 +78,17 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 | **Inputs** | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5`, `fit/POSCAR` |
 | **Outputs** | `kappa_zz_scan/m{11,14,18,24,30}/kappa-m*.hdf5` (raw phono3py, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` |
 | **Result (RTA)** | 11³ 3.5375 / 1.2495 · 14³ 3.6474 / 1.0934 · 18³ 3.6945 / 0.9435 · 24³ 3.7020 / 0.8052 · **30³ 3.6946 / 0.7645** (in-plane converged to ±0.2 %; the κ_zz totals are quadrature-contaminated) |
-| **Decomposition of κ_zz** | 11³: first Γ–Z point 0.6244 + rest 0.6251 (50.0 %) · 14³: 0.4490 + 0.6444 (41.1 %) · 18³: 0.2974 + 0.6461 (31.5 %) · 24³: 0.1594 + 0.6457 (19.8 %) · **30³: 0.1172 + 0.6473 (15.3 %)** — the rest term is converged to ±0.002 |
-| **Verdict** | in-plane converged (+3.1 % → +1.3 %). κ_zz still falls ~13 % per refinement, but the drift is **one q-point**: the first Γ–Z point's weight falls as 1/N while the rest of the zone is already converged at ≈0.65. **Intrinsic κ_zz = 0.646 ± 0.002 W m⁻¹ K⁻¹** (Γ–Z quadrature removed; the rest term is 0.6473 at 30³); the remaining FC3-cutoff systematic is ≈8 % downwards (§5). The 0.9435 / 0.8052 / 0.7645 totals are quadrature-contaminated and are **not** values of κ_zz |
+| **Decomposition of κ_zz** | 11³: first Γ–Z point 0.6244 + rest 0.6251 (50.0 %) · 14³: 0.4490 + 0.6444 (41.1 %) · 18³: 0.2974 + 0.6461 (31.5 %) · 24³: 0.1594 + 0.6457 (19.8 %) · **30³: 0.1172 + 0.6473 (15.3 %)** — the rest term is converged; first-point term decays as N^-1.8 (fit 14³–30³) |
+| **Verdict** | in-plane converged (+3.1 % → +1.3 %). κ_zz still falls ~13 % per refinement, but the drift is **one q-point**: the first Γ–Z point's contribution falls as N^-1.8 while the rest of the zone is already converged. **Intrinsic κ_zz = 0.648 ± 0.003 W m⁻¹ K⁻¹, q-mesh uncertainty only** (rest term 0.6473 at 30³ plus a +0.001 cell-bias correction; report §6.5). The FC3 cutoff is not converged: the last step moves κ_zz by −8 % and the remaining change is unbounded (§5). The 0.9435 / 0.8052 / 0.7645 totals are quadrature-contaminated and are **not** values of κ_zz |
 
 ## 7. Finite-grain κ (Casimir boundary scattering)
 
 | | |
 |---|---|
 | **Input** | same force constants as §6 |
-| **Output** | `kappa_finite_grain.json` |
-| **Result (mesh 30, RTA)** | ∞: 3.6946 / 0.7645 · 10 μm: 3.6790 / 0.7233 · **1 μm: 3.5618 / 0.6070** (mesh 18 / 24 for comparison: 3.6945 / 0.9435 · 3.5729 / 0.6877 and 3.7020 / 0.8052 · 3.5779 / 0.6287) |
-| **Meaning** | in-plane is boundary-insensitive (−3.3 %); κ_zz loses 27 %. The boundary suppresses the Γ–Z quadrature artifact much more than the converged part (§6), so the 1 μm value is close to the extrapolated intrinsic one |
+| **Output** | `kappa_zz_gamma_line.json` (`finite_grain`, per case; `estimate`, mesh-converged). `kappa_finite_grain.json` holds the older 18³ **totals** only (superseded) |
+| **Result (RTA, κ_zz on the rest term, mesh-converged)** | ∞: **0.648 ± 0.003** · 10 μm: **0.638 ± 0.002** · 1 μm: **0.58 ± 0.01**. In-plane (30³ total): 3.6946 / 3.6790 / 3.5618 |
+| **Meaning** | the grain effect is small: κ_zz −1.5 % at 10 μm and −10 % at 1 μm, in-plane −0.4 % / −3.6 %. The finite-grain **totals** (30³: 0.7233 / 0.6070) still contain the Γ–Z quadrature error and are not values of κ_zz — the 10 μm total is even above the intrinsic value, which is impossible. The earlier "−27 %" compared contaminated totals |
 | **How it is computed** | rebuilt from the per-mode data of the §6 runs by adding the Casimir rate mode by mode — validated against an explicit `boundary_mfp=1.0` run at 11³ (`kappa_zz_scan/m11_b1um`): 0.8976 both ways |
 | **Unit** | `boundary_mfp` is in **micrometres** in phono3py |
 
@@ -189,10 +189,11 @@ phonopy 2.47.1, phono3py 3.24.0, symfc 1.6.0, Python 3.11.
 - FC3 is still the **4×4×1, 6.45 Å** fit; the 4×4×1 cell caps the cutoff at
   6.507 Å, so the FC3 cutoff **cannot be converged** without a new 4×4×2 FC3
   dataset (~2 days of DFT).
-- **κ_zz is not converged on the q-mesh** (~13 % per refinement from 11³ on).
-  The cause is the q-point integration near Γ along c*, not a divergence: the
-  first Γ–Z point alone carries half of κ_zz at 11³ and its share falls as 1/N,
-  while the rest of the zone is already converged at ≈0.65 (§6). The intrinsic
-  value is finite; **0.9435 (18³ RTA) is a firm upper bound** (§7, §8).
+- **The κ_zz totals are not converged on the q-mesh** (~13 % per refinement
+  from 11³ on). The cause is the q-point integration near Γ along c*, not a
+  divergence: the first Γ–Z point alone carries half of κ_zz at 11³ and its
+  contribution falls as N^-1.8, while the rest of the zone is converged from
+  14³ on. Intrinsic κ_zz = **0.648 ± 0.003** (q-mesh only; §6), 10 μm 0.638,
+  1 μm 0.58 (§7). The totals (0.9435 at 18³, …) are not values of κ_zz.
 - ShengBTE cannot be used with a 4×4×2 FC2 and a 4×4×1 FC3, nor can the
   4×4×1 FC2 be exported cleanly (§9).
