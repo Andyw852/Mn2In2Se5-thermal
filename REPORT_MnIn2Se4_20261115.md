@@ -279,7 +279,7 @@ Two checks that this is the right reading:
   Mn₂In₂Se₅ κ_zz by 15.6 %, so the z-only rise was the artifact. Its rest term is
   now converged over four isotropic meshes (16³/24³/28³/32³:
   1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving
-  **κ_zz(Mn₂In₂Se₅) = 0.955 ± 0.032**, still cutoff-limited.
+  **κ_zz(Mn₂In₂Se₅) = 0.951 ± 0.032** (isotopes on), still cutoff-limited.
 - The rest term is only mildly sensitive to a Casimir boundary (−10 % at
   1 μm, §6.4), whereas the first Γ–Z point collapses by half at 1 μm and to
   4 % of the 30³ total.
@@ -577,7 +577,7 @@ Ordered by how much each item can still move κ_zz.
 | **1** | **FC3 in a 4×4×2 supercell (cutoff > 6.45 Å)** | ~2 days DFT | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
 | 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged, κ_zz = 0.648 ± 0.003 on the q-mesh (the FC3 cutoff, item 1, is not settled) |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
-| 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.955 ± 0.032** (in-plane RTA 3.0825 at 32³). What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |
+| 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.951 ± 0.032** after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |
 | 5 | Unify the structure for the LA comparison | small | phonon cell has 13.21409 Å vs elastic 13.20318 Å along c |
 
 **Dropped: 18³ LBTE and the Wigner-LBTE refinement.** At both 11³ and 14³ the

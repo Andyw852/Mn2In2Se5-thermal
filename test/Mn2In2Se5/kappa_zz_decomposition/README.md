@@ -86,11 +86,17 @@ Rest-term steps: **−3.21 %, +0.77 %, −0.41 %** — the term has stopped fall
 
 | quantity | estimate (16³–32³) |
 |---|---:|
-| **intrinsic κ_zz** | **0.955 ± 0.032** |
-| κ_zz at a 10 μm grain | 0.928 ± 0.039 |
-| κ_zz at a 1 μm grain | 0.788 ± 0.044 |
+| **intrinsic κ_zz** | **0.951 ± 0.032** (isotopes on) |
+| κ_zz at a 10 μm grain | 0.924 ± 0.039 |
+| κ_zz at a 1 μm grain | 0.784 ± 0.044 |
 
-**κ_zz(Mn₂In₂Se₅) = 0.95 ± 0.03 W m⁻¹ K⁻¹ on the q-mesh.** In-plane (RTA)
+> The table above gives the values **with isotope scattering on**, which is the
+> project standard (`ISOTOPE = true`). The mesh series itself was run without
+> isotopes; the isotope correction is a nearly uniform factor (0.9961 for the
+> intrinsic term) measured at 16³ and 24³, where the two meshes agree to 0.02 %,
+> so it transfers to these converged numbers. See `../iso_rerun/README.md`.
+
+**κ_zz(Mn₂In₂Se₅) = 0.951 ± 0.032 W m⁻¹ K⁻¹ on the q-mesh.** In-plane (RTA)
 converges on the same sequence: 2.9946 → 3.0204 → 3.0742 → **3.0825** (last step
 +0.3 %). What remains is *not* the mesh but the FC3 cutoff, measured below at
 −9.9 % in the last available step with no bound on what follows, so the value is

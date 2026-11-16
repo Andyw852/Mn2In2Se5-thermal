@@ -8,9 +8,9 @@ which were written before the Γ–Z decomposition of κ_zz
 
 | quantity | value | composition |
 |---|---:|---|
-| **in-plane κ** | **≈ 3.4 (3.3–3.4)** | RTA **3.0825** at 32³ (converged, last step +0.3 %) **× 1.0590** — the iterative (LBTE) correction now **measured with this same phono3py stack** (LBTE/RTA = 2.9879/2.8220 on a 10³ mesh, job 415925; the ShengBTE value 1.06 agrees) = 3.265, **+ coherence 0.1458** (Wigner-RTA at 16³, job 414720) = **3.41** |
-| in-plane FC3 cutoff | **−4.3 % in the last step (−8.0 % over 5.68 → 6.51 Å)** | redone on an isotropic 16³ mesh; inside the 10 % tolerance but not flat. The earlier "−2.7 % then −1.5 %" came from the 12×12×3 mesh and does not survive |
-| **κ_zz** | **0.955 ± 0.032** | rest term converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %); in-plane RTA converged at 3.0825 (32³). The z-only totals 0.84 → 1.54 are the Γ–Z quadrature artifact and must not be quoted. **Still cutoff-limited**, not mesh-limited |
+| **in-plane κ** | **≈ 3.4 (3.3–3.4)** | RTA **3.048** at 32³ (converged, last step +0.3 %, **isotopes on**, see `test/Mn2In2Se5/iso_rerun/`) **× 1.0590** — the iterative (LBTE) correction measured with this same phono3py stack (LBTE/RTA = 2.9879/2.8220 on a 10³ mesh, job 415925) = 3.227, **+ coherence 0.1466** (Wigner-RTA at 16³, isotopes on, job 419208) = **3.37** |
+| in-plane FC3 cutoff | **−4.3 % in the last step (−8.0 % over 5.68 → 6.51 Å)** | redone on an isotropic 16³ mesh with isotopes on (3.1440 → 3.0215 → 2.8925); inside the 10 % tolerance but not flat. The earlier "−2.7 % then −1.5 %" came from the 12×12×3 mesh and does not survive |
+| **κ_zz** | **0.951 ± 0.032** | rest term converged over four isotropic meshes (isotopes **off**: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), then corrected by the **isotope ratio 0.9961** measured at 16³ and 24³ (mesh-independent to 0.02 %) → 0.9547 × 0.9961. With isotopes on directly: 10 μm 0.924, 1 μm 0.784. The z-only totals 0.84 → 1.54 are the Γ–Z quadrature artifact and must not be quoted. **Still cutoff-limited**, not mesh-limited |
 | κ_zz FC3 cutoff | **not converged: −9.9 % in the last step, −20.6 % over 5.68 → 6.51 Å** | measured on an isotropic 16³ mesh with the rest-term decomposition (job 412029). **So Mn₂In₂Se₅ κ_zz needs a 4×4×2 FC3 to be citable at 10 %**, as MnIn₂Se₄ does. Fit-to-fit noise is ≈2 %, well below the −10 % step. See `test/Mn2In2Se5/kappa_zz_decomposition/README.md` |
 
 **Quote in-plane κ from the iterative solution, not RTA.** The RTA and LBTE
