@@ -3,6 +3,36 @@
 **2026-11-14** | using the existing 46-frame random-displacement dataset, three fc3 cases (**5.6 / 6.23 / 6.45 Å**) were re-fit with pheasy
 and κ was computed for each. fc2 is fixed to the new **4×4×2** (`../fc2_442_phonon/fc2.hdf5`).
 
+> ⚠️ **Read this before using the κ_zz column below.** The 11³ scan in this file
+> is contaminated: on that mesh about **half of the total κ_zz comes from the
+> single first Γ–Z q-point** (0.624 of 1.2495 — see `KAPPA_MESH_SCAN.md`), so
+> its "−55 % then +2 %" κ_zz pattern is a mesh quadrature artifact and says
+> nothing about the cutoff. The **in-plane** column is unaffected and remains
+> the result of this scan. The κ_zz comparison redone on the converged "rest"
+> term at **14³** is in §Redo below (report §6.6).
+
+## Redo for κ_zz on the converged term (14³)
+
+`kappa_zz_scan/c560_m14`, `c623_m14` and `kappa_zz_scan/m14`, decomposed with
+`kappa_zz_decompose.py`:
+
+| fc3 cutoff (Å) | in-plane (14³) | κ_zz total (14³) | κ_zz "rest of the zone" (14³) |
+|---|---:|---:|---:|
+| 5.60 | 5.1834 | 2.5236 | 1.4175 |
+| 6.23 | 3.9944 | 1.1297 | 0.7020 |
+| **6.45** | **3.6474** | **1.0934** | **0.6444** |
+
+| interval | in-plane | κ_zz rest | κ_zz rest measured on the contaminated 11³ total |
+|---|---:|---:|---:|
+| 5.60 → 6.23 | −22.9 % | **−50.5 %** | −55.3 % |
+| 6.23 → 6.45 | −8.7 % | **−8.2 %** | +2.3 % |
+
+**So κ_zz and the in-plane component behave the same way**: a large change
+between 5.60 and 6.23 Å and a further ≈8 % at 6.45 Å. The old "+2.3 %" was the
+Γ–Z artifact partly cancelling a real −8 % effect. Neither component is
+converged in the last available step, and the 4×4×1 cell cannot go beyond
+6.45 Å.
+
 ## Why stop at 6.45 Å
 
 The thickness of the 4×4×1 supercell along the layer normal is **13.214 Å**, so the safe-cutoff limit is h/2 − 0.1 = **6.507 Å**.
@@ -57,8 +87,11 @@ but the κ computed with the new 4×4×2 fc2 is **completely identical** (in-pla
 
 ## Conclusions
 
-1. **κzz is essentially flat from 6.23→6.45 (+2.3%)**, but it drops by 55% from 5.60→6.23 — which means
-   that the region around 6.45 Å is the **critical range** for κzz, and it sits right at the 4×4×1 ceiling.
+1. ~~**κzz is essentially flat from 6.23→6.45 (+2.3%)**, but it drops by 55% from 5.60→6.23~~
+   **Withdrawn.** This pattern is not a cutoff effect: on the 11³ mesh the κ_zz
+   sum is dominated by the first Γ–Z q-point, whose weight falls as 1/N with the
+   mesh while the rest of the zone is already converged. The κ_zz cutoff
+   comparison has to be repeated on the converged term.
 2. **The in-plane value still changes by −7.9% in the last step** (−15.3% in the previous one) — convergence is improving but **has not been reached**.
 3. **Verdict: the fc3 cutoff is not converged.** The cutoff can no longer be increased within 4×4×1, so a citable κ requires:
    - a **4×4×2 fc3 dataset** (224 atoms, safe cutoff 8.048 Å), scanning 7.0 / 7.6 / 8.05 Å;

@@ -1,0 +1,19 @@
+[
+  {
+    "method": "RTA",
+    "mesh": "14 14 14",
+    "boundary_mfp_um": null,
+    "fc3": "fc3.hdf5",
+    "T_K": [
+      300.0
+    ],
+    "kappa_xx": 3.647398318150856,
+    "kappa_yy": 3.647398326309452,
+    "kappa_zz": 1.093354836611244,
+    "inplane": 3.6473983222301536,
+    "kzz_over_inplane": 0.2997629378583271,
+    "seconds": 629.4,
+    "fc2_case": "4x4x2_new",
+    "fc2_path": "/home/wangchao/repo_thermal/test/MnIn2Se4/fc2_442_phonon/fc2.hdf5"
+  }
+]

@@ -1,0 +1,20 @@
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+[4x4x2_new] RTA  mesh=11 11 11 boundary_mfp=None 300K  in-plane=3.5375  kzz=1.2495  ratio=0.353  (154.6s)
+Traceback (most recent call last):
+  File "/home/wangchao/repo_thermal/test/MnIn2Se4/kappa_zz_scan/m11/../../kappa_driver_442.py", line 131, in <module>
+    main()
+  File "/home/wangchao/repo_thermal/test/MnIn2Se4/kappa_zz_scan/m11/../../kappa_driver_442.py", line 126, in main
+    json.dump(out, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'kappa_zz_scan/m11/result.json'

@@ -1,0 +1,14 @@
+{
+ "method": "RTA",
+ "mesh": "14 14 14",
+ "fc3": "fc3_cut6p23.hdf5",
+ "boundary_mfp_um": null,
+ "T_K": [
+  300.0
+ ],
+ "inplane": 3.994438733117132,
+ "kappa_xx": 3.9944387286496954,
+ "kappa_zz": 1.1296849322112585,
+ "seconds": 23.5,
+ "phono3py": "4.4.0"
+}

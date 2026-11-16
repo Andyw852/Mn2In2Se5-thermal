@@ -11,7 +11,7 @@ antisite disorder, grain boundaries and electronic contribution.
 | | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---|---|
 | Calculation protocol | AutoZT phonon-dft-cpu: PBE-D3 + U(Mn) = 4 eV + FM; FC2 in a **4×4×2** supercell (224 atoms, symmetry-reduced finite displacement, 7 frames); FC3 reused from the earlier 4×4×1 fit (cutoff 6.45 Å; a 4×4×1 cell caps it at 6.507 Å) | AutoZT kl-dft-cpu: PBE-D3 + U(Mn) = 4 eV + FM, 4×4×1 rebased cell (144 atoms), cutoff 6.51 Å |
-| κ_L(300 K) xx / zz (W/mK) | **4.41 / 1.25** (phono3py LBTE, 11³) → **4.52 / 1.09** (14³); in-plane converged, κ_zz not converged — see [report](REPORT_MnIn2Se4_20261115.md) | ~~2.059 / 0.209~~ (ShengBTE, FC3 export incomplete — invalid) → **2.96 / 0.84–1.11** (phono3py RTA, 16×16×4 / 16×16×8; κ_zz not converged) |
+| κ_L(300 K) xx / zz (W/mK) | **4.41 / 1.25** (phono3py LBTE, 11³) → **4.52 / 1.09** (14³); in-plane converged; κ_zz not converged on the q-mesh — its drift comes from the q-point sum near Γ along c*, the rest of the zone is converged at ≈0.65, and **0.94 (18³ RTA) is a firm upper bound** — see [report §6.3–6.5](REPORT_MnIn2Se4_20261115.md) | ~~2.059 / 0.209~~ (ShengBTE, FC3 export incomplete — invalid) → **2.96 / 0.84–1.11** (phono3py RTA, 16×16×4 / 16×16×8; κ_zz not converged) |
 | Experimental κ_tot(303 K) Perp / Para | 0.933 / 0.485 | 0.741 / 0.320 |
 | Status | FC2 fixed (interlayer TA 323 → 1348 m/s, now within 0.75 % of DFT elastic); FC3 cutoff and κ_zz mesh convergence still open | Force constants reliable; ShengBTE export bug fixed in AutoZT [0127]; S6 to be rerun on a converged κ_zz mesh (see `analysis/shengbte_crosscheck/`) |
 
