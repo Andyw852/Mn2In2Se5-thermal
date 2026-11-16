@@ -487,6 +487,11 @@ back to a 5×5×5 grid, giving a spurious κ_zz of 2.90 instead of 0.90).
 
 ## 7.5 VCA (virtual crystal) versus ordered baseline, at the largest cutoff
 
+> The full disorder treatment — what is included in which number, the parameters,
+> their provenance and the status of every literature reference — is collected in
+> [`analysis/disorder/README.md`](analysis/disorder/README.md). That is the document
+> to review before quoting these values.
+
 The Wigner/coherence term above is a **phonon-phonon** refinement. The other
 channel that matters for a real sample is **mass disorder from Mn/In antisite
 exchange**, which the VCA treatment handles by averaging the masses and putting

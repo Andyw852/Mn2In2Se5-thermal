@@ -1,5 +1,14 @@
 # ShengBTE versus phono3py cross-check (Mn₂In₂Se₅, cutoff 6.51 Å, 2026-11-08)
 
+## How disorder is treated here
+
+The numbers below include **natural isotope scattering** (L1). The antisite
+Mn/In disorder is **not** included in them: it is treated separately, either as a
+VCA mass-variance calculation (MnIn₂Se₄, `test/MnIn2Se4/vca_m20/`) or as the
+extrinsic fit in `../extrinsic/`. The comparison of all levels, with parameters
+and the provenance of every reference, is in
+[`../disorder/README.md`](../disorder/README.md).
+
 ## Values to quote at ≈10 % accuracy (updated 2026-11-16)
 
 *This section supersedes the mesh and finite-grain statements further down,
