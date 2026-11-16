@@ -32,6 +32,8 @@ h5="$d/kappa-m$N$N$N.hdf5"
 mkdir -p "$d" log
 if [ -f "$h5" ]; then echo "[skip] mesh $N already done"; exit 0; fi
 echo "host=$(hostname) mesh=$N threads=$OMP_NUM_THREADS isotope=False fc=Mn2In2Se5/fc"
+# phono3py writes kappa-*.hdf5 into the CWD, so run from the case directory
+cd "$d" || exit 1
 "$PY" "$BASE/run_kzz.py" --mesh "$N" "$N" "$N" --out "$d/result.json" \
     >> "$d/run.log" 2>&1
 if [ -f "$h5" ]; then echo "[done] mesh $N"; ls -la "$h5"; else echo "[FAIL] mesh $N"; tail -5 "$d/run.log"; fi

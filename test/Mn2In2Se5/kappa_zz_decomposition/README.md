@@ -64,6 +64,7 @@ An **isotropic 24³** mesh (job 410627, 26.8 min) settles it:
 |---|---:|---:|---:|---:|
 | 16×16×16 | 1.5472 | 0.5382 | 1.0090 | 34.8 % |
 | **24×24×24** | **1.3054** | 0.3288 | 0.9766 | 25.2 % |
+| 28×28×28 (job 411985, 74 min) | 1.2802 | 0.2960 | **0.9841** | 23.1 % |
 
 **Isotropic refinement lowers κ_zz by 15.6 %** (1.5472 → 1.3054), the opposite
 direction from the z-only series. That is the signature of the quadrature
@@ -71,13 +72,19 @@ artifact, not of real long-wavelength physics: the z-only scan was walking *up*
 the artifact, the isotropic scan walks *down* it. In-plane κ goes 2.9946 →
 3.0204, i.e. it is converged to +0.9 %.
 
-**There is no mesh-converged value yet.** Rest term (16³ → 24³):
+**The rest term flattens at 28³.** Rest term (16³ → 24³ → 28³):
 
-| quantity | 16³ | 24³ | step |
-|---|---:|---:|---:|
-| intrinsic κ_zz | 1.0090 | **0.9766** | −3.2 % |
-| κ_zz at a 10 μm grain | 0.9832 | 0.9473 | −3.6 % |
-| κ_zz at a 1 μm grain | 0.8404 | 0.8048 | −4.2 % |
+| quantity | 16³ | 24³ | **28³** | last step |
+|---|---:|---:|---:|---:|
+| intrinsic κ_zz | 1.0090 | 0.9766 | **0.9841** | **+0.77 %** |
+| κ_zz at a 10 μm grain | 0.9832 | 0.9473 | 0.9499 | +0.27 % |
+| κ_zz at a 1 μm grain | 0.8404 | 0.8048 | 0.8019 | −0.36 % |
+
+After the −3.2 % step from 16³ to 24³, the last step is **+0.8 %**, i.e. the
+rest term has stopped falling. With three cubic meshes the estimator now runs and
+returns **κ_zz = 0.955 ± 0.032** (±3 %; the residual bias correction is −0.029,
+which is what the ±0.032 mostly covers). The 32³ run will replace that
+extrapolation with a fourth measured point. **Provisional value: κ_zz ≈ 0.95–0.98.**
 
 **Submitted 2026-11-16:** isotropic **28³ and 32³** are running on HanHai as jobs
 **411985** and **411986** (separate nodes, 64 threads each, ~1 h and ~2.5 h).
