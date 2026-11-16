@@ -1,0 +1,98 @@
+[
+ {
+  "label": "MnIn2Se4 4x4x1 (the FC2 that was too soft)",
+  "fc2": "../../MnIn2Se4/fit_cut3_6p45/fc2.hdf5",
+  "poscar": "../../MnIn2Se4/fit/POSCAR",
+  "supercell": [
+   4,
+   4,
+   1
+  ],
+  "rho_kg_m3": 5249.3,
+  "v_interlayer_TA_m_s": 323.2,
+  "v_interlayer_LA_m_s": 2490.6,
+  "C44_GPa": 0.548,
+  "C33_GPa": 32.562,
+  "v_inplane_m_s": [
+   278.8,
+   1838.6,
+   3790.3
+  ],
+  "C44_GPa_from_inplane_route": 0.408,
+  "gamma_point_offset_THz": 0.0,
+  "reference_TA_m_s": 1338.319,
+  "deviation_TA_pct": -75.85,
+  "reference_C44_GPa": 9.402,
+  "deviation_C44_pct": -94.17
+ },
+ {
+  "label": "MnIn2Se4 4x4x2 (the corrected FC2)",
+  "fc2": "../../MnIn2Se4/fc2_442_phonon/fc2.hdf5",
+  "poscar": "../../MnIn2Se4/fit/POSCAR",
+  "supercell": [
+   4,
+   4,
+   2
+  ],
+  "rho_kg_m3": 5249.3,
+  "v_interlayer_TA_m_s": 1348.1,
+  "v_interlayer_LA_m_s": 3117.9,
+  "C44_GPa": 9.54,
+  "C33_GPa": 51.028,
+  "v_inplane_m_s": [
+   1074.3,
+   1643.6,
+   3568.6
+  ],
+  "C44_GPa_from_inplane_route": 6.058,
+  "gamma_point_offset_THz": 0.00073,
+  "reference_TA_m_s": 1338.319,
+  "deviation_TA_pct": 0.73,
+  "reference_C44_GPa": 9.402,
+  "deviation_C44_pct": 1.46
+ },
+ {
+  "label": "Mn2In2Se5 fc/ 4x4x1 (used for the kappa runs)",
+  "fc2": "../../../Mn2In2Se5/fc/fc2.hdf5",
+  "poscar": "../fit/POSCAR",
+  "supercell": [
+   4,
+   4,
+   1
+  ],
+  "rho_kg_m3": 5339.5,
+  "v_interlayer_TA_m_s": 1386.8,
+  "v_interlayer_LA_m_s": 3518.8,
+  "C44_GPa": 10.269,
+  "C33_GPa": 66.115,
+  "v_inplane_m_s": [
+   1260.1,
+   1814.5,
+   3820.3
+  ],
+  "C44_GPa_from_inplane_route": 8.479,
+  "gamma_point_offset_THz": 3.2e-05
+ },
+ {
+  "label": "Mn2In2Se5 fit/ 4x4x1 (other revision)",
+  "fc2": "../fit/fc2.hdf5",
+  "poscar": "../fit/POSCAR",
+  "supercell": [
+   4,
+   4,
+   1
+  ],
+  "rho_kg_m3": 5339.5,
+  "v_interlayer_TA_m_s": 1334.5,
+  "v_interlayer_LA_m_s": 3536.2,
+  "C44_GPa": 9.509,
+  "C33_GPa": 66.77,
+  "v_inplane_m_s": [
+   1335.5,
+   1798.3,
+   3821.2
+  ],
+  "C44_GPa_from_inplane_route": 9.524,
+  "gamma_point_offset_THz": 3.3e-05
+ }
+]

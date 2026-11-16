@@ -111,6 +111,16 @@ What can already be said:
 3. Both materials follow the same rule: **quote the rest of the zone, never the
    total, and never a z-only mesh scan.**
 
+## Precondition checked: the 4×4×1 FC2 is not soft between the layers
+
+Before trusting any of this, the FC2 was checked for the defect that ruined
+MnIn₂Se₄'s 4×4×1 FC2 (a one-layer-thick supercell that cannot represent the
+interlayer shear). `../fc_sound_velocity/` gives an interlayer TA of
+**1335–1387 m/s** (C₄₄ = 9.5–10.3 GPa) for Mn₂In₂Se₅'s 4×4×1 set, against
+**323 m/s / 0.55 GPa** for the known-bad MnIn₂Se₄ cell and 1348 m/s / 9.54 GPa
+for the corrected MnIn₂Se₄ 4×4×2. So Mn₂In₂Se₅'s FC2 is fine, the mesh scans
+below are meaningful, and no 4×4×2 FC2 is needed for this material.
+
 ## Reproduce
 
 ```bash
