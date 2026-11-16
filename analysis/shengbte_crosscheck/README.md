@@ -9,9 +9,9 @@ which were written before the Γ–Z decomposition of κ_zz
 | quantity | value | composition |
 |---|---:|---|
 | **in-plane κ** | **≈ 3.3** | RTA 3.020 at 24³ (in-plane mesh converged to ≈1 %) **× 1.06** for the iterative (LBTE) correction, taken from the converged ShengBTE solution = 3.20, **+ coherence 0.135** (Wigner-RTA at 16×16×4) = 3.34 |
-| in-plane FC3 cutoff | **converged** | steps −2.7 % then −1.5 % (`Mn2In2Se5/data/kappa_v2/README.md`) |
+| in-plane FC3 cutoff | **−4.3 % in the last step (−8.0 % over 5.68 → 6.51 Å)** | redone on an isotropic 16³ mesh; inside the 10 % tolerance but not flat. The earlier "−2.7 % then −1.5 %" came from the 12×12×3 mesh and does not survive |
 | **κ_zz** | **≤ ≈1.0 — no number yet** | rest term 0.977 at 24³ and **still falling 3.2 % per isotropic step**; isotropic 28³ and 32³ are running. The z-only totals 0.84 → 1.54 are dominated by the Γ–Z quadrature artifact and must not be quoted |
-| κ_zz FC3 cutoff | **under test** | the existing scan (−9.1 % then −7.4 %) was measured on the contaminated totals at 12×12×3; being redone on an isotropic 16³ mesh with the 5.68 / 6.12 Å FC3 fits |
+| κ_zz FC3 cutoff | **not converged: −9.9 % in the last step, −20.6 % over 5.68 → 6.51 Å** | just measured on an isotropic 16³ mesh with the rest-term decomposition (job 412029). **So Mn₂In₂Se₅ κ_zz needs a 4×4×2 FC3 to be citable at 10 %**, as MnIn₂Se₄ does. Fit-to-fit noise is ≈2 %, well below the −10 % step. See `test/Mn2In2Se5/kappa_zz_decomposition/README.md` |
 
 **Quote in-plane κ from the iterative solution, not RTA.** The RTA and LBTE
 in-plane values differ by ≈6 % here (and by 24 % for MnIn₂Se₄), so the RTA
@@ -93,5 +93,5 @@ may have the same cause, but the provenance of that 3RD (hiphive or the native p
 
 - κ_xx = κ_yy: **≈ 3.3** (RTA 3.020 at 24³, in-plane mesh converged to ≈1 %, corrected by ×1.06 for the iterative solution and + 0.135 for the coherence term; the converged ShengBTE iterative value is 3.14). Do **not** quote the raw RTA 2.96–3.02 as the final number.
 - κ_zz: **not quotable yet** — the intrinsic value is **≤ ≈1.0** and the q-mesh is not converged (rest term 0.977 at 24³, still falling; isotropic 28³/32³ running). The z-only scan 0.84 → 1.54 must **not** be quoted: it is the Γ–Z quadrature artifact, and isotropic refinement lowers κ_zz (16³ → 24³: 1.547 → 1.305). The earlier "finite-grain ≈0.97–1.0 at 1 μm" recommendation is withdrawn.
-- The FC3 cutoff for κ_zz is under test on an isotropic 16³ mesh (5.68 / 6.12 Å); for the in-plane component the cutoff is converged (−2.7 % then −1.5 %).
+- The FC3 cutoff: κ_zz is **not converged** (−9.9 % in the last available step, −20.6 % over 5.68 → 6.51 Å, on an isotropic 16³ mesh with the rest-term decomposition); the in-plane component moves −4.3 % in the last step (−8.0 % over the range). Both are at the 4×4×1 ceiling (6.61 Å), so a 4×4×2 FC3 is the only way to settle them.
 - The comparison with hot-pressed samples relies only on the extrinsic-scattering model, which is insensitive to the mesh (last row of the table above).

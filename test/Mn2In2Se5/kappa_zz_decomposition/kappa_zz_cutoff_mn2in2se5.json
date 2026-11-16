@@ -1,0 +1,417 @@
+{
+ "cases": [
+  {
+   "file": "cutoff_scan/c568_m161616/kappa-m161616.hdf5",
+   "mesh": [
+    16,
+    16,
+    16
+   ],
+   "n_bz_grid": 4096,
+   "T_K": 300.0,
+   "kappa_zz_stored": 2.04665122221269,
+   "intrinsic": {
+    "kappa_zz_total": 2.046651,
+    "kappa_zz_first_gamma_z_point": 0.801504,
+    "kappa_zz_rest": 1.245147,
+    "inplane_total": 3.181017
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.0625
+     ],
+     "q_cart_inv_A": 0.003849,
+     "weight": 2,
+     "kappa_zz_star": 0.801504
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.226148
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.1875
+     ],
+     "q_cart_inv_A": 0.011547,
+     "weight": 2,
+     "kappa_zz_star": 0.105934
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.065508
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.3125
+     ],
+     "q_cart_inv_A": 0.019244,
+     "weight": 2,
+     "kappa_zz_star": 0.05415
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.375
+     ],
+     "q_cart_inv_A": 0.023093,
+     "weight": 2,
+     "kappa_zz_star": 0.03653
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 1.124831,
+     "kappa_zz_first_gamma_z_point": 0.150817,
+     "kappa_zz_rest": 0.974014,
+     "inplane_total": 3.0734
+    },
+    "10_um": {
+     "kappa_zz_total": 1.759182,
+     "kappa_zz_first_gamma_z_point": 0.559409,
+     "kappa_zz_rest": 1.199773,
+     "inplane_total": 3.169403
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.721809,
+     "inside_without_first_point": 0.523338
+    },
+    "0.03": {
+     "outside": 0.402491,
+     "inside_without_first_point": 0.842656
+    }
+   }
+  },
+  {
+   "file": "cutoff_scan/c612_m161616/kappa-m161616.hdf5",
+   "mesh": [
+    16,
+    16,
+    16
+   ],
+   "n_bz_grid": 4096,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.6728921977968432,
+   "intrinsic": {
+    "kappa_zz_total": 1.672892,
+    "kappa_zz_first_gamma_z_point": 0.575224,
+    "kappa_zz_rest": 1.097668,
+    "inplane_total": 3.057082
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.0625
+     ],
+     "q_cart_inv_A": 0.003849,
+     "weight": 2,
+     "kappa_zz_star": 0.575224
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.1733
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.1875
+     ],
+     "q_cart_inv_A": 0.011547,
+     "weight": 2,
+     "kappa_zz_star": 0.08241
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.052249
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.3125
+     ],
+     "q_cart_inv_A": 0.019244,
+     "weight": 2,
+     "kappa_zz_star": 0.042614
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.375
+     ],
+     "q_cart_inv_A": 0.023093,
+     "weight": 2,
+     "kappa_zz_star": 0.02834
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 1.038565,
+     "kappa_zz_first_gamma_z_point": 0.139795,
+     "kappa_zz_rest": 0.89877,
+     "inplane_total": 2.958858
+    },
+    "10_um": {
+     "kappa_zz_total": 1.503915,
+     "kappa_zz_first_gamma_z_point": 0.437062,
+     "kappa_zz_rest": 1.066853,
+     "inplane_total": 3.046489
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.679052,
+     "inside_without_first_point": 0.418616
+    },
+    "0.03": {
+     "outside": 0.390407,
+     "inside_without_first_point": 0.707261
+    }
+   }
+  },
+  {
+   "file": "cutoff_scan/c651_m161616/kappa-m161616.hdf5",
+   "mesh": [
+    16,
+    16,
+    16
+   ],
+   "n_bz_grid": 4096,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.5226426188291842,
+   "intrinsic": {
+    "kappa_zz_total": 1.522643,
+    "kappa_zz_first_gamma_z_point": 0.533688,
+    "kappa_zz_rest": 0.988955,
+    "inplane_total": 2.926344
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.0625
+     ],
+     "q_cart_inv_A": 0.003849,
+     "weight": 2,
+     "kappa_zz_star": 0.533688
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.163008
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.1875
+     ],
+     "q_cart_inv_A": 0.011547,
+     "weight": 2,
+     "kappa_zz_star": 0.077411
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.047695
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.3125
+     ],
+     "q_cart_inv_A": 0.019244,
+     "weight": 2,
+     "kappa_zz_star": 0.039516
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.375
+     ],
+     "q_cart_inv_A": 0.023093,
+     "weight": 2,
+     "kappa_zz_star": 0.024531
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.956951,
+     "kappa_zz_first_gamma_z_point": 0.135745,
+     "kappa_zz_rest": 0.821205,
+     "inplane_total": 2.840575
+    },
+    "10_um": {
+     "kappa_zz_total": 1.371839,
+     "kappa_zz_first_gamma_z_point": 0.409174,
+     "kappa_zz_rest": 0.962666,
+     "inplane_total": 2.91716
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.613925,
+     "inside_without_first_point": 0.37503
+    },
+    "0.03": {
+     "outside": 0.366894,
+     "inside_without_first_point": 0.622061
+    }
+   }
+  },
+  {
+   "file": "scan/m161616/kappa-m161616.hdf5",
+   "mesh": [
+    16,
+    16,
+    16
+   ],
+   "n_bz_grid": 4096,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.5472090887407464,
+   "intrinsic": {
+    "kappa_zz_total": 1.547209,
+    "kappa_zz_first_gamma_z_point": 0.538234,
+    "kappa_zz_rest": 1.008976,
+    "inplane_total": 2.99464
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.0625
+     ],
+     "q_cart_inv_A": 0.003849,
+     "weight": 2,
+     "kappa_zz_star": 0.538234
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.162061
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.1875
+     ],
+     "q_cart_inv_A": 0.011547,
+     "weight": 2,
+     "kappa_zz_star": 0.075931
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.0468
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.3125
+     ],
+     "q_cart_inv_A": 0.019244,
+     "weight": 2,
+     "kappa_zz_star": 0.039334
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.375
+     ],
+     "q_cart_inv_A": 0.023093,
+     "weight": 2,
+     "kappa_zz_star": 0.024045
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.977163,
+     "kappa_zz_first_gamma_z_point": 0.136771,
+     "kappa_zz_rest": 0.840392,
+     "inplane_total": 2.901622
+    },
+    "10_um": {
+     "kappa_zz_total": 1.39686,
+     "kappa_zz_first_gamma_z_point": 0.413698,
+     "kappa_zz_rest": 0.983163,
+     "inplane_total": 2.984618
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.632779,
+     "inside_without_first_point": 0.376197
+    },
+    "0.03": {
+     "outside": 0.375328,
+     "inside_without_first_point": 0.633647
+    }
+   }
+  }
+ ],
+ "estimate": {}
+}

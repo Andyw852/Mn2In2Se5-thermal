@@ -1,0 +1,8 @@
+host=anode105 threads=64
+[run ] c568 (fc3_cut5p68)
+[done] c568
+[run ] c612 (fc3_cut6p12)
+[done] c612
+[run ] c651 (fc3_cut6p51_scan)
+[done] c651
+ALL DONE

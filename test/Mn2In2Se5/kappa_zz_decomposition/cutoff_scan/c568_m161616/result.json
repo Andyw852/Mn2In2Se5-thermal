@@ -1,0 +1,16 @@
+{
+ "material": "Mn2In2Se5",
+ "method": "RTA",
+ "mesh": "16 16 16",
+ "fc3": "fc3_cut5p68.hdf5",
+ "T_K": [
+  300.0
+ ],
+ "isotope": false,
+ "primitive_matrix": "P",
+ "inplane": 3.1810170383331444,
+ "kappa_xx": 3.181017038333143,
+ "kappa_zz": 2.04665122221269,
+ "seconds": 133.5,
+ "phono3py": "4.4.0"
+}

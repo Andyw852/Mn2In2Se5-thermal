@@ -128,7 +128,44 @@ interlayer shear). `../fc_sound_velocity/` gives an interlayer TA of
 for the corrected MnIn₂Se₄ 4×4×2. So Mn₂In₂Se₅'s FC2 is fine, the mesh scans
 below are meaningful, and no 4×4×2 FC2 is needed for this material.
 
-## κ_zz FC3 cutoff: being redone on an isotropic mesh
+## κ_zz FC3 cutoff: redone on an isotropic mesh — **not converged**
+
+The committed cutoff scan was measured on the contaminated totals at 12×12×3,
+so it was repeated on an isotropic **16³** mesh with the 5.68 / 6.12 / 6.51 Å FC3
+fits (HanHai job **412029**), and decomposed. Raw output in `cutoff_scan/`;
+`kappa_zz_cutoff_mn2in2se5.json` holds the numbers.
+
+| FC3 (Å) | in-plane | κ_zz total | **κ_zz rest of the zone** |
+|---|---:|---:|---:|
+| 5.68 | 3.181 | 2.047 | **1.2451** |
+| 6.12 | 3.057 | 1.673 | **1.0977** |
+| 6.51 (scan copy) | 2.926 | 1.523 | **0.9890** |
+| 6.51 (production) | 2.995 | 1.547 | **1.0090** |
+
+| interval | in-plane | κ_zz rest |
+|---|---:|---:|
+| 5.68 → 6.12 | −3.9 % | **−11.8 %** |
+| 6.12 → 6.51 | −4.3 % | **−9.9 %** |
+| 5.68 → 6.51 (total) | −8.0 % | **−20.6 %** |
+
+Three conclusions:
+
+1. **The κ_zz cutoff is not converged.** The last available step still moves the
+   rest term by −9.9 %, and the whole tested range by −20.6 %. At a 10 %
+   tolerance this fails: **Mn₂In₂Se₅ κ_zz would need a 4×4×2 FC3 dataset** to be
+   citable, exactly as MnIn₂Se₄ does (−8.2 % there).
+2. **The in-plane cutoff is not flat either**, contrary to the earlier
+   impression: −3.9 % then −4.3 %, −8.0 % over the range. That is inside the
+   10 % tolerance but it is not "converged" — the old "−2.7 % then −1.5 %" came
+   from the 12×12×3 mesh and does not survive on an isotropic mesh.
+3. **Fit-to-fit scatter is ≈2 %.** The scan copy of the 6.51 Å FC3 and the
+   production copy are different files (md5 `dfcaf00e…` vs `ac7bf6b2…`) and give
+   rest terms of 0.9890 and 1.0090 (+2.0 %), in-plane 2.926 / 2.995 (+2.3 %).
+   So ~2 % is the noise floor of the FC3 fit; the −10 % cutoff step is well
+   above it.
+
+## κ_zz FC3 cutoff: the earlier plan (kept for the record)
+
 
 The committed Mn₂In₂Se₅ cutoff scan (`Mn2In2Se5/data/kappa_v2/README.md`) gives
 κ_zz steps of −9.1 % then −7.4 % (5.68 → 6.12 → 6.51 Å), but it was measured on
