@@ -3,36 +3,36 @@
  "mesh": "16x16x16",
  "fc2": "4x4x1",
  "T_K": 300,
- "isotope": false,
- "note": "population and kappa_zz rest from kappa_zz_decomposition/cutoff_scan; coherence from wigner_cutoff (job 416261)",
+ "isotope": true,
+ "note": "population and kappa_zz rest from the ISOTOPE-ON runs (stage_iso/cut*), coherence from wigner_cutoff_iso (job 419208). All values now match the project configuration ISOTOPE=true.",
  "cutoff_A": [
   5.68,
   6.12,
   6.51
  ],
  "inplane_population": [
-  3.181,
-  3.0571,
-  2.9263
+  3.144,
+  3.0215,
+  2.8925
  ],
  "inplane_coherence": [
-  0.1544,
-  0.1478,
-  0.1452
+  0.1558,
+  0.1492,
+  0.1466
  ],
  "inplane_total": [
-  3.3354,
-  3.2049,
-  3.0715
+  3.2998,
+  3.1708,
+  3.0391
  ],
  "kzz_rest": [
-  1.2451,
-  1.0977,
-  0.989
+  1.2408,
+  1.0934,
+  0.985
  ],
  "kzz_coherence": [
-  0.1111,
-  0.112,
-  0.1115
+  0.1141,
+  0.1149,
+  0.1144
  ]
 }
