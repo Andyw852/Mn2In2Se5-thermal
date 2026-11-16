@@ -12,7 +12,8 @@ a q-point quadrature artifact as physics.
 | 11x11x11 | 3.5375 | 1.2495 | 107 s |
 | 14x14x14 | 3.6474 | 1.0934 | 566 s |
 | 18x18x18 | 3.6945 | 0.9435 | 2674 s |
-| **24x24x24** | **3.7020** | **0.8052** | 548 s (HanHai, 64 threads) |
+| 24x24x24 | 3.7020 | 0.8052 | 548 s (HanHai, 64 threads) |
+| **30x30x30** | **3.6946** | **0.7645** | 2017 s (HanHai, 64 threads) |
 
 In-plane: +3.11 % then +1.28 % per refinement -> **converged**.
 kappa_zz: -12.50 % then -13.70 % -> **not converged, and it falls**.
@@ -28,9 +29,10 @@ total on a coarse mesh:
 | mesh | kappa_zz total | first Gamma-Z point (+-q) | rest of the zone | first / total |
 |---|---:|---:|---:|---:|
 | 11^3 | 1.2495 | 0.6244 | 0.6251 | 50.0 % |
-| 14^3 | 1.0934 | 0.4490 | 0.6444 | 58.9 % |
+| 14^3 | 1.0934 | 0.4490 | 0.6444 | 41.1 % |
 | 18^3 | 0.9435 | 0.2974 | 0.6461 | 31.5 % |
-| **24^3** | **0.8052** | **0.1594** | **0.6457** | **19.8 %** |
+| 24^3 | 0.8052 | 0.1594 | 0.6457 | 19.8 % |
+| **30^3** | **0.7645** | **0.1172** | **0.6473** | **15.3 %** |
 
 Mechanism:
 
@@ -62,7 +64,8 @@ explicit `boundary_mfp=1.0` run (`kappa_zz_scan/m11_b1um`) gives 0.8976 too.
 | 11^3 | 1.1878 | 0.8976 |
 | 14^3 | 1.0282 | 0.7758 |
 | 18^3 | 0.8849 | 0.6877 |
-| **24^3** | **0.7640** | **0.6287** |
+| 24^3 | 0.7640 | 0.6287 |
+| **30^3** | **0.7233** | **0.6070** |
 
 At 11^3, between infinity and 1 um, the rest term moves 0.6251 -> 0.5857 (-6 %)
 while the first Gamma-Z point falls 0.6244 -> 0.3119 (-50 %). The boundary
@@ -70,20 +73,20 @@ therefore removes the artifact, not the physical heat current.
 
 ## 4. Intrinsic kappa_zz: estimate
 
-The "rest of the zone" is converged and the last step proves it:
-**0.6251 -> 0.6444 -> 0.6461 -> 0.6457** for 11^3 -> 14^3 -> 18^3 -> 24^3, i.e.
-+3.1 % over the whole range and **-0.06 %** in the last step, while the total
-still moves by -14.7 %. A naive linear fit in 1/N gives A = 0.667 with residuals
+The "rest of the zone" is converged and the last two steps prove it:
+**0.6251 -> 0.6444 -> 0.6461 -> 0.6457 -> 0.6473** for 11^3 -> 30^3, i.e. +3.6 %
+over the whole range and **+0.25 %** in the last step, while the total still
+moves by -5.1 % at 30^3. A naive linear fit in 1/N gives A = 0.667 with residuals
 up to +-0.007 and is dominated by the coarse 11^3 point; the measured sequence
-settles at **0.646**.
+settles at **0.646 +- 0.002**.
 
 | quantity | value (W/m.K) |
 |---|---:|
 | 18^3 RTA total (**firm upper bound**) | **0.9435** |
 | **intrinsic kappa_zz (mesh-converged)** | **0.646** |
-| statistical (mesh) spread | +-0.003 |
+| statistical (mesh) spread | ±0.002 (14³ → 30³) |
 | FC3-cutoff systematic (section 5 / report 6.6) | about -8 % (not included) |
-| 1 um grain, 18^3 RTA | 0.6877 |
+| 1 um grain, 30^3 RTA | 0.6070 |
 
 ## 5. The cutoff comparison has to be redone
 

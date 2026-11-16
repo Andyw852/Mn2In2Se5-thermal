@@ -76,10 +76,10 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 |---|---|
 | **Scripts** | `kappa_zz_scan.sh` (drives the whole scan), `kappa_driver_442.py --mesh N N N --rta --write-kappa`, `kappa_zz_decompose.py` (Γ–Z split + finite-grain rebuild) |
 | **Inputs** | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5`, `fit/POSCAR` |
-| **Outputs** | `kappa_zz_scan/m{11,14,18,24}/kappa-m*.hdf5` (raw phono3py, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` |
-| **Result (RTA)** | 11³ 3.5375 / 1.2495 · 14³ 3.6474 / 1.0934 · 18³ 3.6945 / 0.9435 · **24³ 3.7020 / 0.8052** (in-plane converged to +0.2 %; the κ_zz totals are quadrature-contaminated) |
-| **Decomposition of κ_zz** | 11³: first Γ–Z point 0.6244 + rest 0.6251 (50.0 %) · 14³: 0.4490 + 0.6444 (58.9 %) · 18³: 0.2974 + 0.6461 (31.5 %) · **24³: 0.1594 + 0.6457 (19.8 %)** — the rest term is converged to −0.06 % |
-| **Verdict** | in-plane converged (+3.1 % → +1.3 %). κ_zz still falls ~13 % per refinement, but the drift is **one q-point**: the first Γ–Z point's weight falls as 1/N while the rest of the zone is already converged at ≈0.65. **Intrinsic κ_zz = 0.646 W m⁻¹ K⁻¹** (Γ–Z quadrature removed at 24³); the remaining FC3-cutoff systematic is ≈8 % downwards (§5). The 0.9435 (18³) / 0.8052 (24³) totals are quadrature-contaminated and are **not** values of κ_zz |
+| **Outputs** | `kappa_zz_scan/m{11,14,18,24,30}/kappa-m*.hdf5` (raw phono3py, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` |
+| **Result (RTA)** | 11³ 3.5375 / 1.2495 · 14³ 3.6474 / 1.0934 · 18³ 3.6945 / 0.9435 · 24³ 3.7020 / 0.8052 · **30³ 3.6946 / 0.7645** (in-plane converged to ±0.2 %; the κ_zz totals are quadrature-contaminated) |
+| **Decomposition of κ_zz** | 11³: first Γ–Z point 0.6244 + rest 0.6251 (50.0 %) · 14³: 0.4490 + 0.6444 (41.1 %) · 18³: 0.2974 + 0.6461 (31.5 %) · 24³: 0.1594 + 0.6457 (19.8 %) · **30³: 0.1172 + 0.6473 (15.3 %)** — the rest term is converged to ±0.002 |
+| **Verdict** | in-plane converged (+3.1 % → +1.3 %). κ_zz still falls ~13 % per refinement, but the drift is **one q-point**: the first Γ–Z point's weight falls as 1/N while the rest of the zone is already converged at ≈0.65. **Intrinsic κ_zz = 0.646 ± 0.002 W m⁻¹ K⁻¹** (Γ–Z quadrature removed; the rest term is 0.6473 at 30³); the remaining FC3-cutoff systematic is ≈8 % downwards (§5). The 0.9435 / 0.8052 / 0.7645 totals are quadrature-contaminated and are **not** values of κ_zz |
 
 ## 7. Finite-grain κ (Casimir boundary scattering)
 
@@ -87,7 +87,7 @@ All energies in eV, lengths in Å, κ in W m⁻¹ K⁻¹, temperature 300 K unle
 |---|---|
 | **Input** | same force constants as §6 |
 | **Output** | `kappa_finite_grain.json` |
-| **Result (mesh 24, RTA)** | ∞: 3.7020 / 0.8052 · 10 μm: 3.6880 / 0.7640 · **1 μm: 3.5779 / 0.6287** (mesh 18 for comparison: 3.6945 / 0.9435 · 3.6810 / 0.8849 · 3.5729 / 0.6877) |
+| **Result (mesh 30, RTA)** | ∞: 3.6946 / 0.7645 · 10 μm: 3.6790 / 0.7233 · **1 μm: 3.5618 / 0.6070** (mesh 18 / 24 for comparison: 3.6945 / 0.9435 · 3.5729 / 0.6877 and 3.7020 / 0.8052 · 3.5779 / 0.6287) |
 | **Meaning** | in-plane is boundary-insensitive (−3.3 %); κ_zz loses 27 %. The boundary suppresses the Γ–Z quadrature artifact much more than the converged part (§6), so the 1 μm value is close to the extrapolated intrinsic one |
 | **How it is computed** | rebuilt from the per-mode data of the §6 runs by adding the Casimir rate mode by mode — validated against an explicit `boundary_mfp=1.0` run at 11³ (`kappa_zz_scan/m11_b1um`): 0.8976 both ways |
 | **Unit** | `boundary_mfp` is in **micrometres** in phono3py |

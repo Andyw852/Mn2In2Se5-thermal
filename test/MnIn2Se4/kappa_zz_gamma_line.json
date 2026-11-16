@@ -508,5 +508,200 @@
     "inplane_total": 3.688016
    }
   }
+ },
+ {
+  "file": "kappa_zz_scan/m30/kappa-m303030.hdf5",
+  "mesh": [
+   30,
+   30,
+   30
+  ],
+  "n_bz_grid": 27000,
+  "n_ir_grid": 2496,
+  "T_K": 300.0,
+  "inplane_total": 3.6946469466781418,
+  "kappa_zz_total": 0.7644990915516338,
+  "kappa_zz_stored": 0.764499091551633,
+  "kappa_dataset": "kappa",
+  "gamma_z_line": [
+   {
+    "q_reduced": [
+     0.033333,
+     0.033333,
+     0.033333
+    ],
+    "weight": 2,
+    "star_contribution": 0.117191,
+    "per_point_contribution": 0.058595
+   },
+   {
+    "q_reduced": [
+     0.066667,
+     0.066667,
+     0.066667
+    ],
+    "weight": 2,
+    "star_contribution": 0.035398,
+    "per_point_contribution": 0.017699
+   },
+   {
+    "q_reduced": [
+     0.1,
+     0.1,
+     0.1
+    ],
+    "weight": 2,
+    "star_contribution": 0.016821,
+    "per_point_contribution": 0.00841
+   },
+   {
+    "q_reduced": [
+     0.133333,
+     0.133333,
+     0.133333
+    ],
+    "weight": 2,
+    "star_contribution": 0.01179,
+    "per_point_contribution": 0.005895
+   },
+   {
+    "q_reduced": [
+     0.166667,
+     0.166667,
+     0.166667
+    ],
+    "weight": 2,
+    "star_contribution": 0.006924,
+    "per_point_contribution": 0.003462
+   },
+   {
+    "q_reduced": [
+     0.2,
+     0.2,
+     0.2
+    ],
+    "weight": 2,
+    "star_contribution": 0.004717,
+    "per_point_contribution": 0.002358
+   },
+   {
+    "q_reduced": [
+     0.233333,
+     0.233333,
+     0.233333
+    ],
+    "weight": 2,
+    "star_contribution": 0.002904,
+    "per_point_contribution": 0.001452
+   },
+   {
+    "q_reduced": [
+     0.266667,
+     0.266667,
+     0.266667
+    ],
+    "weight": 2,
+    "star_contribution": 0.002267,
+    "per_point_contribution": 0.001134
+   },
+   {
+    "q_reduced": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "weight": 2,
+    "star_contribution": 0.001699,
+    "per_point_contribution": 0.000849
+   },
+   {
+    "q_reduced": [
+     0.333333,
+     0.333333,
+     0.333333
+    ],
+    "weight": 2,
+    "star_contribution": 0.001296,
+    "per_point_contribution": 0.000648
+   },
+   {
+    "q_reduced": [
+     0.366667,
+     0.366667,
+     0.366667
+    ],
+    "weight": 2,
+    "star_contribution": 0.001103,
+    "per_point_contribution": 0.000551
+   },
+   {
+    "q_reduced": [
+     0.4,
+     0.4,
+     0.4
+    ],
+    "weight": 2,
+    "star_contribution": 0.00073,
+    "per_point_contribution": 0.000365
+   },
+   {
+    "q_reduced": [
+     0.433333,
+     0.433333,
+     0.433333
+    ],
+    "weight": 2,
+    "star_contribution": 0.000383,
+    "per_point_contribution": 0.000192
+   },
+   {
+    "q_reduced": [
+     0.466667,
+     0.466667,
+     0.466667
+    ],
+    "weight": 2,
+    "star_contribution": 0.000111,
+    "per_point_contribution": 5.5e-05
+   },
+   {
+    "q_reduced": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "weight": 1,
+    "star_contribution": 0.0,
+    "per_point_contribution": 0.0
+   }
+  ],
+  "kappa_zz_first_gamma_z_point": {
+   "q_reduced": [
+    0.033333,
+    0.033333,
+    0.033333
+   ],
+   "weight": 2,
+   "star_contribution": 0.117191,
+   "per_point_contribution": 0.058595
+  },
+  "kappa_zz_rest": 0.647309,
+  "kappa_zz_gamma_z_line_total": 0.203333,
+  "kappa_zz_finite_grain": {
+   "1_um": {
+    "kappa_zz_total": 0.606984,
+    "kappa_zz_first_gamma_z_point": 0.024671,
+    "kappa_zz_rest": 0.582312,
+    "ratio_to_intrinsic": 0.793962,
+    "inplane_total": 3.561782
+   },
+   "10_um": {
+    "kappa_zz_total": 0.723281,
+    "kappa_zz_first_gamma_z_point": 0.085203,
+    "kappa_zz_rest": 0.638078,
+    "ratio_to_intrinsic": 0.946085,
+    "inplane_total": 3.679033
+   }
+  }
  }
 ]

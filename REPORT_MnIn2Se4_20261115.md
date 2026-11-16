@@ -183,6 +183,12 @@ from 323 → 1348 m/s.
 **Self-check:** running the same driver with the *old* FC2 reproduces the
 historical RTA value exactly (2.2498 vs 2.24981).
 
+> **Scope of the κ_zz column here.** These are mesh-11 totals and still contain
+> the Γ–Z quadrature error of §6.3 (the first Γ–Z q-point alone is 0.6244 of
+> 1.2495). They quantify the *effect of the FC2 change*, which is what this
+> table is for, but they are not values of κ_zz. The intrinsic κ_zz is 0.646
+> (§6.5), and LBTE and RTA agree on it to 4·10⁻⁵.
+
 ### 6.2 FC3 cutoff scan (mesh 11×11×11)
 
 A 4×4×1 cell caps the FC3 cutoff at **6.507 Å** (half the layer-normal repeat
@@ -224,9 +230,11 @@ cutoff requires a 4×4×2 FC3 dataset (~2 days of DFT).
 | 11×11×11 | 3.5375 | — | 1.2495 | — |
 | 14×14×14 | 3.6474 | +3.11 % | 1.0934 | −12.50 % |
 | 18×18×18 | 3.6945 | +1.28 % | 0.9435 | −13.70 % |
-| **24×24×24** | **3.7020** | **+0.20 %** | **0.8052** | **−14.66 %** |
+| 24×24×24 | 3.7020 | +0.20 % | 0.8052 | −14.66 % |
+| **30×30×30** | **3.6946** | **−0.20 %** | **0.7645** | **−5.05 %** |
 
-- **In-plane is converged**: +3.11 % → +1.28 % → +0.20 % per refinement.
+- **In-plane is converged**: +3.11 % → +1.28 % → +0.20 % → −0.20 %, i.e. it
+  oscillates inside ±0.2 % from 18³ on.
 - The **total** κ_zz is not converged and is still falling by 14 % per step — but
   that is entirely the quadrature error of one q-point, as the next table shows.
 
@@ -242,16 +250,17 @@ mesh to carry half of the total:
 | Mesh | κ_zz total | first Γ–Z point (±q) | rest of the zone | first / total |
 |---|---:|---:|---:|---:|
 | 11³ | 1.2495 | 0.6244 | 0.6251 | 50.0 % |
-| 14³ | 1.0934 | 0.4490 | 0.6444 | 58.9 % |
+| 14³ | 1.0934 | 0.4490 | 0.6444 | 41.1 % |
 | 18³ | 0.9435 | 0.2974 | 0.6461 | 31.5 % |
-| **24³** | **0.8052** | **0.1594** | **0.6457** | **19.8 %** |
+| 24³ | 0.8052 | 0.1594 | 0.6457 | 19.8 % |
+| **30³** | **0.7645** | **0.1172** | **0.6473** | **15.3 %** |
 
 The "rest of the zone" column is the converged part and the "first Γ–Z point"
 column is the quadrature error. The numbers make the separation unambiguous:
-across 11³ → 24³ the total falls by 36 % while the **rest term moves from
-0.6251 to 0.6457 (+3 % in total, and −0.06 % in the last step)**. So **the
-intrinsic κ_zz is finite** — the three-dimensional integral of mode κ converges
-— and it is the rest column that converges to it (§6.5).
+across 11³ → 30³ the total falls by 39 % while the **rest term moves from 0.6251
+to 0.6473 (+3.6 % in total, and +0.25 % in the last step)**. So **the intrinsic
+κ_zz is finite** — the three-dimensional integral of mode κ converges — and it
+is the rest column that converges to it (§6.5).
 
 Two checks that this is the right reading:
 
@@ -268,11 +277,11 @@ Two checks that this is the right reading:
 
 ### 6.4 Finite-grain κ (Casimir boundary)
 
-| Boundary MFP | In-plane (24³) | κ_zz (24³) | κ_zz (18³) |
-|---|---:|---:|---:|
-| ∞ | 3.7020 | 0.8052 | 0.9435 |
-| 10 μm | 3.6880 | 0.7640 | 0.8849 |
-| 1 μm | 3.5779 | 0.6287 | 0.6877 |
+| Boundary MFP | In-plane (30³) | κ_zz (30³) | κ_zz (24³) | κ_zz (18³) |
+|---|---:|---:|---:|---:|
+| ∞ | 3.6946 | 0.7645 | 0.8052 | 0.9435 |
+| 10 μm | 3.6790 | 0.7233 | 0.7640 | 0.8849 |
+| 1 μm | 3.5618 | 0.6070 | 0.6287 | 0.6877 |
 
 All rows are **RTA**; they must not be mixed with the 11³/14³ LBTE values of
 §6.1, §6.3 and §9. The values are rebuilt from the per-mode data of the §6.3
@@ -282,19 +291,21 @@ explicit run 0.8976 — identical to four decimals), and at 18³ it reproduces t
 values measured earlier by direct boundary runs (3.6810/0.8849, 3.5729/0.6877).
 So no extra phono3py runs are needed.
 
-In-plane is boundary-insensitive (−0.4 % at 10 μm, −3.4 % at 1 μm) — the in-plane
-modes relax well inside a micrometre. κ_zz drops by 5.1 % at 10 μm and by 21.9 %
+In-plane is boundary-insensitive (−0.4 % at 10 μm, −3.6 % at 1 μm) — the in-plane
+modes relax well inside a micrometre. κ_zz drops by 5.4 % at 10 μm and by 20.6 %
 at 1 μm.
 
 Two things to read carefully here:
 
-- The ∞ row is **not** the intrinsic κ_zz: at 24³ it is 0.8052, of which 0.1594
+- The ∞ row is **not** the intrinsic κ_zz: at 30³ it is 0.7645, of which 0.1172
   is the Γ–Z quadrature error (§6.3). The intrinsic value is 0.646 (§6.5).
 - A Casimir boundary removes the quadrature error much more efficiently than it
   removes real heat current. At 11³, between ∞ and 1 μm, the "rest of the zone"
   term moves only 0.6251 → 0.5857 (−6 %) while the first Γ–Z point falls
-  0.6244 → 0.3119 (−50 %). That is why the 1 μm κ_zz (0.6287 at 24³) sits within
-  3 % of the intrinsic value (0.646) instead of being far below it.
+  0.6244 → 0.3119 (−50 %). That is why the 1 μm κ_zz (0.6070 at 30³) sits within
+  6 % of the intrinsic value (0.646) instead of being far below it, and why the
+  finite-grain value is so insensitive to the mesh (0.6877 at 18³ → 0.6287 at
+  24³ → 0.6070 at 30³, −12 % over five mesh refinements).
 
 ### 6.5 Intrinsic κ_zz: estimate
 
@@ -307,21 +318,23 @@ column against 1/N over the four meshes:
 | 11³ | 11 | 0.0909 | 0.6251 | 1.2495 |
 | 14³ | 14 | 0.0714 | 0.6444 | 1.0934 |
 | 18³ | 18 | 0.0556 | 0.6461 | 0.9435 |
-| **24³** | **24** | **0.0417** | **0.6457** | **0.8052** |
+| 24³ | 24 | 0.0417 | 0.6457 | 0.8052 |
+| **30³** | **30** | **0.0333** | **0.6473** | **0.7645** |
 
-The column is converged, and the last step proves it: **0.6251 → 0.6444 →
-0.6461 → 0.6457**, i.e. +3.1 % over the whole range and **−0.06 % from 18³ to
-24³**, while the total still moves by −14.7 %. A naive linear fit in 1/N,
-`rest = A + B/N`, gives A = 0.667 with residuals up to ±0.007 and is dominated
-by the coarse 11³ point; the measured sequence settles at 0.646.
+The column is converged, and the last two steps prove it: **0.6251 → 0.6444 →
+0.6461 → 0.6457 → 0.6473**, i.e. +3.6 % over the whole range and **+0.25 % from
+24³ to 30³** — while the total still moves by −14.7 % and then −5.1 %. A naive
+linear fit in 1/N, `rest = A + B/N`, gives A = 0.667 with residuals up to ±0.007
+because it is dominated by the coarse 11³ point; the measured sequence settles at
+**0.646 ± 0.002** (14³ → 30³).
 
-**Intrinsic κ_zz = 0.646 W m⁻¹ K⁻¹ at 300 K** (24³ RTA, Γ–Z quadrature removed).
-What remains is the FC3-cutoff uncertainty of §6.6: on the converged term the
-last cutoff step still lowers κ_zz by 8.2 %, and if that trend continued the
-value would settle near 0.60. Quote **κ_zz(intrinsic) = 0.65 ± 0.03 (statistical,
-mesh) with an ≈8 % FC3-cutoff systematic downwards**, and no more. The mesh
-bracket is closed: 0.9435 at 18³ and 0.8052 at 24³ are quadrature-contaminated
-totals, not values of κ_zz.
+**Intrinsic κ_zz = 0.646 W m⁻¹ K⁻¹ at 300 K** (30³ RTA, Γ–Z quadrature removed;
+statistical spread of the four finest meshes 0.002). What remains is the
+FC3-cutoff uncertainty of §6.6: on the converged term the last cutoff step still
+lowers κ_zz by 8.2 %, so if that trend continued the value would settle near
+0.60. Quote **κ_zz(intrinsic) = 0.646 with a ≈8 % FC3-cutoff systematic
+downwards**. The mesh bracket is closed; 0.9435 (18³), 0.8052 (24³) and 0.7645
+(30³) are quadrature-contaminated totals, not values of κ_zz.
 
 ### 6.6 FC3 cutoff comparison on the converged term
 
@@ -431,17 +444,20 @@ All at 300 K, isotope scattering on.
 | **FC2 4×4×2, mesh 14, 6.45 Å** | LBTE | 4.5219 | 1.0934 | cutoff not converged |
 | **FC2 4×4×2, mesh 18, 6.45 Å** | RTA | 3.6945 | 0.9435 | **upper bound on the intrinsic κ_zz** |
 | **FC2 4×4×2, mesh 24, 6.45 Å** | RTA | 3.7020 | 0.8052 | in-plane converged; κ_zz total still contaminated (§6.5) |
+| FC2 4×4×2, mesh 30, 6.45 Å | RTA | 3.6946 | 0.7645 | same |
 | FC2 4×4×2, mesh 14, 6.45 Å | Wigner-RTA | 3.7492 | 1.1595 | coherence included |
-| FC2 4×4×2, mesh 24, 10 μm, 6.45 Å | RTA | 3.6880 | 0.7640 | finite grain (24³ RTA) |
-| FC2 4×4×2, mesh 24, 1 μm, 6.45 Å | RTA | 3.5779 | 0.6287 | finite grain (24³ RTA) |
-| **FC2 4×4×2, 24³, Γ–Z quadrature removed** | RTA | 3.7020 | **0.646** | **intrinsic κ_zz** (§6.5) |
+| FC2 4×4×2, mesh 30, 10 μm, 6.45 Å | RTA | 3.6811 | 0.7233 | finite grain (30³ RTA) |
+| FC2 4×4×2, mesh 30, 1 μm, 6.45 Å | RTA | 3.5734 | 0.6070 | finite grain (30³ RTA) |
+| **FC2 4×4×2, 30³, Γ–Z quadrature removed** | RTA | 3.6946 | **0.647** | **intrinsic κ_zz** (§6.5) |
 
 **Reading this table.** The in-plane component is converged (+0.20 % from 18³ to
-24³). The κ_zz column needs care: the totals at 11³–24³ are contaminated by a
-q-point quadrature error near Γ along c* (§6.3), which is why they fall by 14 %
-per refinement even though the rest of the zone is converged. Removing that
-contribution gives the intrinsic value **0.646 W m⁻¹ K⁻¹** (§6.5); the remaining
-uncertainty is the ≈8 % FC3-cutoff systematic of §6.6, not the mesh.
+24³). The κ_zz column needs care: the totals at 11³–24³ — **including the LBTE
+ones** — are contaminated by a q-point quadrature error near Γ along c* (§6.3),
+which is why they fall by 14 % per refinement even though the rest of the zone
+is converged. Removing that contribution gives the intrinsic value
+**0.646 W m⁻¹ K⁻¹** (§6.5); the remaining uncertainty is the ≈8 % FC3-cutoff
+systematic of §6.6, not the mesh, and it applies to RTA and LBTE alike (for
+κ_zz the two agree to 4·10⁻⁵).
 
 ---
 
@@ -452,7 +468,7 @@ Ordered by how much each item can still move κ_zz.
 | # | Item | Cost | Why it matters |
 |---|---|---|---|
 | **1** | **FC3 in a 4×4×2 supercell (cutoff > 6.45 Å)** | ~2 days DFT | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
-| 2 | 24³ and 30³ q-mesh RTA | ~25 min + ~1 h on HanHai | **24³ done** (§6.3, §6.5): the rest term is converged at 0.646. 30³ is running as the final confirmation (HanHai, §11.6) |
+| 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged at 0.646 ± 0.002 over 14³ → 30³, κ_zz is settled |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
 | 4 | cumulative κ_zz versus mean free path, from the 18³ run | minutes | measures directly how much heat is carried by modes above 1 μm |
 | 5 | Unify the structure for the LA comparison | small | phonon cell has 13.21409 Å vs elastic 13.20318 Å along c |
@@ -487,7 +503,7 @@ All paths are relative to the repository root.
 | 5 | **4×4×1 vs 4×4×2** | `test/MnIn2Se4/fit/POSCAR`, `test/MnIn2Se4/fit_cut3_6p45/fc2.hdf5`, `test/MnIn2Se4/fc2_442_phonon/fc2.hdf5` | `test/MnIn2Se4/compare_441_vs_442_results.json` | `test/MnIn2Se4/compare_441_vs_442.py` |
 | 6.1 | **κ vs FC2 supercell** | the two FC2 files above + `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5` | `test/MnIn2Se4/kappa_results_442.json`, `test/MnIn2Se4/kappa_results_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` |
 | 6.2 | **FC3 cutoff scan** (5.60 / 6.23 / 6.45 Å) | `test/MnIn2Se4/fc3_cutoff_variants/fc3_cut5p60.hdf5`, `fc3_cut6p23.hdf5`, `fc3_cut6p45.hdf5` + `fc2_442_phonon/fc2.hdf5` | `test/MnIn2Se4/kappa_cutoff_scan_results.json`, `kappa_cutoff_convergence.png`, `KAPPA_CUTOFF_SCAN.md`; κ_zz cutoff comparison on the converged term: `kappa_zz_scan/c560_m14/`, `c623_m14/` | `test/MnIn2Se4/kappa_cutscan.py` (RTA), `test/MnIn2Se4/kappa_lbte_scan.py` (LBTE), `kappa_zz_scan.sh` |
-| 6.3 | **κ vs q-mesh** (11³ / 14³ / 18³ / 24³) and the Γ–Z decomposition | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5` | `kappa_zz_scan/m{11,14,18,24}/kappa-m*.hdf5` (raw phono3py output, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` | `test/MnIn2Se4/kappa_zz_scan.sh` (driver of the whole scan), `kappa_driver_442.py --mesh N N N --rta --write-kappa`, `kappa_zz_decompose.py` (Γ–Z split + finite-grain rebuild) |
+| 6.3 | **κ vs q-mesh** (11³ / 14³ / 18³ / 24³ / 30³) and the Γ–Z decomposition | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5` | `kappa_zz_scan/m{11,14,18,24,30}/kappa-m*.hdf5` (raw phono3py output, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` | `test/MnIn2Se4/kappa_zz_scan.sh` (driver of the whole scan), `kappa_driver_442.py --mesh N N N --rta --write-kappa`, `kappa_zz_decompose.py` (Γ–Z split + finite-grain rebuild) |
 | 6.4 | **Finite-grain κ** (Casimir 10 μm / 1 μm) | same force constants; the values are rebuilt from the per-mode data of the 6.3 runs, and validated against `kappa_zz_scan/m11_b1um/` (a real `boundary_mfp=1.0` run) | `test/MnIn2Se4/kappa_finite_grain.json`, and inside `kappa_zz_gamma_line.json` | `test/MnIn2Se4/kappa_zz_decompose.py --mfp 1 10`; `kappa_driver_442.py --boundary-mfp 1.0` for the validation run |
 | 7 | **Wigner coherence** | same force constants | `test/MnIn2Se4/kappa_wigner_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` (`conductivity_type="wigner"`), `test/MnIn2Se4/kappa_run_14_wigner_lbte.py` |
 | 8 | **FC3 → ShengBTE export audit** | `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5`, `test/MnIn2Se4/phono3py_disp.yaml` | `test/MnIn2Se4/shengbte_corrected/CONTROL_fixed`, `shengbte_corrected/FORCE_CONSTANTS_3RD_complete` (5586 triplets), `shengbte_corrected/triplet_audit.json` | `analysis/shengbte_crosscheck/write_fc3_sheng.py`, `analysis/shengbte_crosscheck/write_fc2_sheng.py` |
@@ -513,7 +529,7 @@ All paths are relative to the repository root.
   mesh of §6.3: total κ_zz, the contribution of the first Γ–Z q-point, the
   remaining "rest" term (the mesh-converged quantity), and the 1 μm / 10 μm
   finite-grain reconstruction from the same file.
-- `test/MnIn2Se4/kappa_zz_scan/m{11,14,18,24}/kappa-m*.hdf5` — the raw phono3py
+- `test/MnIn2Se4/kappa_zz_scan/m{11,14,18,24,30}/kappa-m*.hdf5` — the raw phono3py
   output of the scan, including per-mode κ, so `kappa_zz_decompose.py` can be
   re-run without repeating any calculation.
 - `test/MnIn2Se4/k18_lbte.json` / `k14_wigner_lbte.json` — outputs of the two
