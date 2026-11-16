@@ -84,7 +84,8 @@ def one(d, outstem):
     fig.suptitle("%s  %s, %d K, isotopes %s" % (d["material"], d["mesh"], d["T_K"],
                  "on" if d["isotope"] else "off"), fontsize=9.5, x=0.01, ha="left")
     fig.text(0.01, -0.03,
-             "Rightmost point = the largest cutoff the 4x4x1 cell allows (6.45 A); the curve "
+             "Rightmost point = the largest cutoff the 4x4x1 cell allows (%.2f A); the curve "
+             % max(d["cutoff_A"]) + 
              "is still falling there, so neither component is cutoff-converged.\n"
              "population/rest: point-by-point RTA; coherence: Wigner-RTA (SMM19). The kappa_zz "
              "coherence is grey because it was measured on the contaminated total and must not "

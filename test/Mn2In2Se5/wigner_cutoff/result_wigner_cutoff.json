@@ -1,0 +1,55 @@
+{
+ "material": "Mn2In2Se5",
+ "mesh": "16 16 16",
+ "fc2": "4x4x1",
+ "T_K": 300.0,
+ "isotope": false,
+ "primitive_matrix": "P",
+ "cases": {
+  "5p68": {
+   "TOT": {
+    "inplane": 3.3354340031782366,
+    "kappa_zz": 2.157789242588083
+   },
+   "population": {
+    "inplane": 3.1810170383331444,
+    "kappa_zz": 2.0466512222126902
+   },
+   "coherence": {
+    "inplane": 0.15441696484509237,
+    "kappa_zz": 0.11113802037539289
+   },
+   "seconds": 250.7
+  },
+  "6p12": {
+   "TOT": {
+    "inplane": 3.2049292207020654,
+    "kappa_zz": 1.7849147941178911
+   },
+   "population": {
+    "inplane": 3.057082447522219,
+    "kappa_zz": 1.6728921977968434
+   },
+   "coherence": {
+    "inplane": 0.1478467731798463,
+    "kappa_zz": 0.11202259632104772
+   },
+   "seconds": 250.1
+  },
+  "6p51": {
+   "TOT": {
+    "inplane": 3.0715475062459903,
+    "kappa_zz": 1.6341064415751445
+   },
+   "population": {
+    "inplane": 2.9263435043738157,
+    "kappa_zz": 1.5226426188291842
+   },
+   "coherence": {
+    "inplane": 0.14520400187217475,
+    "kappa_zz": 0.11146382274596034
+   },
+   "seconds": 252.2
+  }
+ }
+}
