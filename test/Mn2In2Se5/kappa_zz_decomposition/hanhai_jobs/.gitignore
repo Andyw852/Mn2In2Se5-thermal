@@ -1,0 +1,3 @@
+# the slurm stdout of these jobs is part of the record, so override the
+# repository-wide "slurm-*.out" rule for this directory
+!slurm-*.out
