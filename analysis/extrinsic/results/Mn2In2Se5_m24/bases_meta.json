@@ -1,0 +1,68 @@
+{
+ "poscar": null,
+ "disp_yaml": "in/phono3py_disp.yaml",
+ "supercell_matrix": [
+  [
+   4,
+   0,
+   0
+  ],
+  [
+   0,
+   4,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ]
+ ],
+ "phonon_supercell_matrix": null,
+ "primitive_matrix": "P",
+ "fc2": "/home/zyzhuqgroup/wangchao217/work/mn_bases/mn215/in/fc2.hdf5",
+ "fc3": "/home/zyzhuqgroup/wangchao217/work/mn_bases/mn215/in/fc3.hdf5",
+ "mesh": [
+  24,
+  24,
+  24
+ ],
+ "T": [
+  10.0,
+  20.0,
+  30.0,
+  40.0,
+  50.0,
+  60.0,
+  80.0,
+  100.0,
+  125.0,
+  150.0,
+  200.0,
+  250.0,
+  300.0,
+  325.0,
+  350.0,
+  375.0,
+  400.0,
+  450.0,
+  500.0,
+  550.0,
+  600.0,
+  625.0,
+  650.0
+ ],
+ "symbols": [
+  "Mn",
+  "Mn",
+  "In",
+  "In",
+  "Se",
+  "Se",
+  "Se",
+  "Se",
+  "Se"
+ ],
+ "seconds": 900,
+ "mode_kappa_sum_err": 0.0
+}

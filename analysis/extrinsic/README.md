@@ -128,7 +128,7 @@ Two things to keep in mind when reading this:
    (s 0.253 → 0.250, x and L unchanged), so the high-temperature fit was not biased
    by the mesh.
 
-Work directories with the bases: `work_MnIn2Se4_442_m24/`, `work_Mn2In2Se5_m24/`
+Tracked results: `results/MnIn2Se4_442_m24/` and `results/Mn2In2Se5_m24/` (bases.npz + bases_meta.json + fit JSON). Generated in the scratch directories
 (`bases.npz` + `bases_meta.json` + `fit_*.json`). They can be regenerated with the
 `bases` commands above (12–15 min on 64 cores each).
 
