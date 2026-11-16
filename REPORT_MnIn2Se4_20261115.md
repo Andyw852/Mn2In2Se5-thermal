@@ -485,6 +485,32 @@ back to a 5×5×5 grid, giving a spurious κ_zz of 2.90 instead of 0.90).
 
 ---
 
+## 7.5 VCA (virtual crystal) versus ordered baseline, at the largest cutoff
+
+The Wigner/coherence term above is a **phonon-phonon** refinement. The other
+channel that matters for a real sample is **mass disorder from Mn/In antisite
+exchange**, which the VCA treatment handles by averaging the masses and putting
+the disorder back as mass-variance (Tamura) scattering:
+
+| site | occupancy (i = 0.44) | mass (amu) | g |
+|---|---|---:|---:|
+| octahedral | 0.56 Mn + 0.44 In | 81.29 | 0.1337 |
+| tetrahedral | 0.22 Mn + 0.78 In | 101.65 | 0.0595 |
+| Se | natural | 78.96 | 0.0003 |
+
+Run at 20×20×20, 300 K, FC3 = 6.45 Å, FC2 = 4×4×2 (HanHai job 419636):
+
+| quantity | baseline (real masses + natural isotopes) | **VCA (i = 0.44)** | suppression |
+|---|---:|---:|---:|
+| in-plane κ | 3.6884 | **1.4891** | **2.48×** |
+| κ_zz rest of the zone | 0.6380 | **0.4455** | **1.43×** |
+
+The VCA cross-plane value (0.4455) is already close to the measured hot-pressed
+value (0.485), while the in-plane one (1.49) stays 1.6× above the measured 0.93 —
+mass disorder explains most of the cross-plane suppression but grain boundaries or
+strain are still needed in-plane. Scattering-rate comparison and the full setup:
+`test/figures/scattering/`.
+
 ## 8. FC3 → ShengBTE export audit (both materials)
 
 Writing `fc3.hdf5` to ShengBTE's `FORCE_CONSTANTS_3RD` via hiphive's
