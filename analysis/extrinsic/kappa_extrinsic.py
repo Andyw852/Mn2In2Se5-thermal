@@ -126,7 +126,11 @@ def cmd_bases(a):
     os.makedirs(a.out, exist_ok=True)
     os.chdir(a.out)
     t0 = time.time()
-    ph3 = Phono3py(uc, supercell_matrix=smat, primitive_matrix="P", log_level=0)
+    # FC2 may live on a larger supercell than FC3 (MnIn2Se4: FC2 4x4x2, FC3 4x4x1);
+    # without --dim-fc2 both are taken on the FC3 supercell, as before.
+    psmat = np.diag(a.dim_fc2) if a.dim_fc2 else None
+    ph3 = Phono3py(uc, supercell_matrix=smat, phonon_supercell_matrix=psmat,
+                   primitive_matrix=(np.reshape(a.pmat, (3, 3)) if a.pmat else "P"), log_level=0)
     ph3.fc2 = read_fc2_from_hdf5(fc2p)
     ph3.fc3 = read_fc3_from_hdf5(fc3p)
     ph3.mesh_numbers = a.mesh
@@ -167,6 +171,8 @@ def cmd_bases(a):
         mk0=mk0[..., [0, 1, 2]], g0=g0, gb_1um=gb_1um, freq=freq, weights=w,
         **{"B_" + el: B[el] for el in B})
     meta = {"poscar": a.poscar, "disp_yaml": a.disp_yaml, "supercell_matrix": smat.tolist(),
+            "phonon_supercell_matrix": None if psmat is None else psmat.tolist(),
+            "primitive_matrix": a.pmat or "P",
             "fc2": fc2p, "fc3": fc3p, "mesh": list(a.mesh), "T": T.tolist(), "symbols": symbols,
             "seconds": round(time.time() - t0), "mode_kappa_sum_err": sum_err}
     json.dump(meta, open("bases_meta.json", "w"), indent=1, ensure_ascii=False)
@@ -338,6 +344,11 @@ def main():
     b.add_argument("--poscar")
     b.add_argument("--dim", type=int, nargs=3)
     b.add_argument("--disp-yaml", help="phono3py_disp.yaml (if given, the cell and supercell matrix are read from it)")
+    b.add_argument("--dim-fc2", type=int, nargs=3,
+                   help="supercell of the FC2 file if it differs from the FC3 one (MnIn2Se4: 4 4 2)")
+    b.add_argument("--pmat", type=float, nargs=9,
+                   help="primitive matrix, row-major (default 'P'). MnIn2Se4 needs 1 1 2 -1 -2 -1 1 1 1 "
+                        "so that an N^3 mesh is symmetric, as in all its kappa runs")
     b.add_argument("--fc2", required=True)
     b.add_argument("--fc3", required=True)
     b.add_argument("--mesh", type=int, nargs=3, required=True)

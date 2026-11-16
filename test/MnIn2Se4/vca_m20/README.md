@@ -15,7 +15,7 @@ scattering**.
 | mesh | 20×20×20 |
 | T | 300 K |
 | averaged masses | Mn (octahedral) **81.29** amu, In (tetrahedral) **101.65** amu |
-| mass variances | `[0.1337, 0.0595, 0.0595, 0.0003, 0.0003, 0.0003, 0.0003]` |
+| mass variances | `[0.1337, 0.0595, 0.0595, 4.63e-4, 4.63e-4, 4.63e-4, 4.63e-4]` (the committed `result.json` is from the first run, which used 0.0003 for Se; rerun pending, expected change < 0.1 %) |
 
 The occupancies behind these numbers (octahedral 0.56 Mn + 0.44 In, tetrahedral
 0.22 Mn + 0.78 In, i = 0.44) come from the user's

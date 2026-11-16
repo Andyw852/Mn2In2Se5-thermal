@@ -57,6 +57,33 @@ python3 kappa_extrinsic.py fit --bases work_Mn2In2Se5_m16168/bases.npz \
         --exp ../../experiment/kappa_tot_digitized.csv --material Mn2In2Se5
 ```
 
+## MnIn₂Se₄ with the 4×4×2 FC2 and the redo for Mn₂In₂Se₅ (2026-11, pending)
+
+`bases` now takes `--dim-fc2` (FC2 on a larger supercell than FC3) and `--pmat`
+(primitive matrix; MnIn₂Se₄ needs it so that an N³ mesh is symmetric, as in all
+its κ runs). Without these options the behaviour is unchanged.
+
+Check (11³, 300 K, MnIn₂Se₄ 4×4×2 FC2 + 6.45 Å FC3): `eval --x 0` gives
+3.5375 / 1.2495, identical to the L1 RTA of report §6.3. At x = 0.44 (ordered
+masses, the L3 treatment), in-plane is 1.48. That is close to the VCA (L2)
+in-plane of 1.49 (20³), so the mass averaging of L2 matters little in-plane.
+
+```bash
+cd analysis/extrinsic
+M=../../test/MnIn2Se4
+python3 kappa_extrinsic.py bases --poscar $M/fit/POSCAR --dim 4 4 1 --dim-fc2 4 4 2 \
+        --pmat 1 1 2 -1 -2 -1 1 1 1 \
+        --fc2 $M/fc2_442_phonon/fc2.hdf5 --fc3 $M/fit_cut3_6p45/fc3.hdf5 \
+        --mesh 24 24 24 --out work_MnIn2Se4_442_m24
+# Mn2In2Se5: same FC set as the kappa_zz decomposition, isotropic mesh
+python3 kappa_extrinsic.py bases --disp-yaml ../../Mn2In2Se5/fc/phono3py_disp.yaml \
+        --fc2 ../../Mn2In2Se5/fc/fc2.hdf5 --fc3 ../../Mn2In2Se5/fc/fc3.hdf5 \
+        --mesh 24 24 24 --out work_Mn2In2Se5_m24
+```
+
+See `../disorder/README.md` §2 for which x to use for MnIn₂Se₄ (Döll i = 0.44
+or not). The fit itself leaves x undetermined.
+
 ## Results
 
 The experimental values used in the fit are digitized from the figure (`experiment/kappa_tot_digitized.csv`); once the raw data are available, simply rerun `fit`.

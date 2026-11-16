@@ -6,11 +6,11 @@ The VCA recipe is the user's (E:\...\Mn2In2Se5\fix\run_phono3py_kappa_vca.sh):
   i = 0.44, i.e. octahedral site 0.56 Mn + 0.44 In, tetrahedral 0.22 Mn + 0.78 In
     Mn (octahedral) mass 81.29 amu, g = 0.1337
     In (tetrahedral) mass 101.65 amu, g = 0.0595
-    Se natural isotope g = 0.0003
+    Se natural isotope g = 4.63e-4 (phonopy isotope data; was 0.0003 in the first run)
 
 The primitive cell is 7 atoms in the order  Mn In In Se Se Se Se  (checked against
 the disp yaml), so the mass-variance list is
-  [0.1337, 0.0595, 0.0595, 0.0003, 0.0003, 0.0003, 0.0003]
+  [0.1337, 0.0595, 0.0595, 4.63e-4, 4.63e-4, 4.63e-4, 4.63e-4]
 
 Two runs:
   baseline : original masses, is_isotope=True   (natural isotopes only)
@@ -31,7 +31,8 @@ from phono3py.file_IO import read_fc2_from_hdf5, read_fc3_from_hdf5
 BASE = os.path.dirname(os.path.abspath(__file__))
 MESH = [20, 20, 20]
 MASS = {"Mn": 81.29, "In": 101.65}          # VCA averages at i = 0.44
-G = [0.1337, 0.0595, 0.0595, 0.0003, 0.0003, 0.0003, 0.0003]   # Mn In In Se Se Se Se
+G_SE = 4.63e-4                          # natural Se, same value is_isotope=True uses in the baseline
+G = [0.1337, 0.0595, 0.0595, G_SE, G_SE, G_SE, G_SE]   # Mn In In Se Se Se Se
 
 
 def build():
