@@ -134,15 +134,15 @@ comparison.
 
 | quantity | baseline (L1) | **VCA (L2, i = 0.44)** | suppression |
 |---|---:|---:|---:|
-| in-plane κ | 3.6884 | **1.4891** | **2.48×** |
+| in-plane κ | 3.6884 | **1.4879** | **2.48×** |
 | κ_zz total (Γ–Z contaminated) | 0.8780 | 0.6954 | 1.26× |
-| **κ_zz rest of the zone** | **0.6380** | **0.4455** | **1.43×** |
+| **κ_zz rest of the zone** | **0.6380** | **0.4453** | **1.43×** |
 
 **These are not comparable to the hot-pressed measurements directly**
 (Perp 0.93, Para 0.485). The measured values mix the in-plane and
 out-of-plane components through texture, and include boundary scattering. An
 L2 value can only be compared with them after the same texture mixing (and,
-if wanted, a boundary term). Putting 1.49 next to 0.93, or 0.4455 next to 0.485,
+if wanted, a boundary term). Putting 1.49 next to 0.93, or 0.4453 next to 0.485,
 says nothing about whether i = 0.44 is right.
 
 ### 4.2 Mn₂In₂Se₅ — L1 only

@@ -15,7 +15,7 @@ scattering**.
 | mesh | 20×20×20 |
 | T | 300 K |
 | averaged masses | Mn (octahedral) **81.29** amu, In (tetrahedral) **101.65** amu |
-| mass variances | `[0.1337, 0.0595, 0.0595, 4.63e-4, 4.63e-4, 4.63e-4, 4.63e-4]` (the committed `result.json` is from the first run, which used 0.0003 for Se; rerun pending, expected change < 0.1 %) |
+| mass variances | `[0.1337, 0.0595, 0.0595, 4.63e-4, 4.63e-4, 4.63e-4, 4.63e-4]` — the Se value is phonopy's natural-isotope g, the same one the baseline gets from `is_isotope=True` |
 
 The occupancies behind these numbers (octahedral 0.56 Mn + 0.44 In, tetrahedral
 0.22 Mn + 0.78 In, i = 0.44) come from the user's
@@ -35,9 +35,9 @@ HanHai job **419636**, one job, two phono3py RTA runs:
 
 | quantity | baseline | **VCA** | suppression |
 |---|---:|---:|---:|
-| in-plane κ | 3.6884 | **1.4891** | **2.48×** |
+| in-plane κ | 3.6884 | **1.4879** | **2.48×** |
 | κ_zz total (raw) | 0.8780 | 0.6954 | 1.26× |
-| **κ_zz rest of the zone** | **0.6380** | **0.4455** | **1.43×** |
+| **κ_zz rest of the zone** | **0.6380** | **0.4453** | **1.43×** |
 
 `result.json` holds the raw κ values; the rest-of-the-zone terms come from
 `kappa_zz_decompose.py` applied to the two hdf5 files.

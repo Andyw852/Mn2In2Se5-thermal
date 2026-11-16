@@ -30,9 +30,9 @@ Two phono3py RTA runs in one job:
 
 | quantity | baseline | **VCA (i = 0.44)** | suppression |
 |---|---:|---:|---:|
-| in-plane κ | 3.6884 | **1.4891** | **2.48×** |
+| in-plane κ | 3.6884 | **1.4879** | **2.48×** |
 | κ_zz total (raw, Γ–Z contaminated) | 0.8780 | 0.6954 | 1.26× |
-| **κ_zz rest of the zone** | **0.6380** | **0.4455** | **1.43×** |
+| **κ_zz rest of the zone** | **0.6380** | **0.4453** | **1.43×** |
 
 The in-plane component is suppressed much more strongly than the cross-plane one,
 because it is carried by higher-frequency modes where the mass-variance rate

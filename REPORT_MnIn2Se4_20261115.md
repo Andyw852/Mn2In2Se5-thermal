@@ -507,10 +507,10 @@ Run at 20×20×20, 300 K, FC3 = 6.45 Å, FC2 = 4×4×2 (HanHai job 419636):
 
 | quantity | baseline (real masses + natural isotopes) | **VCA (i = 0.44)** | suppression |
 |---|---:|---:|---:|
-| in-plane κ | 3.6884 | **1.4891** | **2.48×** |
-| κ_zz rest of the zone | 0.6380 | **0.4455** | **1.43×** |
+| in-plane κ | 3.6884 | **1.4879** | **2.48×** |
+| κ_zz rest of the zone | 0.6380 | **0.4453** | **1.43×** |
 
-The VCA cross-plane value (0.4455) is already close to the measured hot-pressed
+The VCA cross-plane value (0.4453) is already close to the measured hot-pressed
 value (0.485), while the in-plane one (1.49) stays 1.6× above the measured 0.93 —
 mass disorder explains most of the cross-plane suppression but grain boundaries or
 strain are still needed in-plane. Scattering-rate comparison and the full setup:
