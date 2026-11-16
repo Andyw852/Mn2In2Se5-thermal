@@ -1,0 +1,23 @@
+{
+ "material": "MnIn2Se4",
+ "mesh": "10 10 10",
+ "fc2": "4x4x2",
+ "fc3_cutoff_A": 6.45,
+ "T_K": 300.0,
+ "isotope": true,
+ "Wigner_RTA": {
+  "TOT": {
+   "inplane": 5.0256512559538455,
+   "kappa_zz": 2.729694316895623
+  },
+  "population": {
+   "inplane": 3.502661550482668,
+   "kappa_zz": 1.2609911250212222
+  },
+  "coherence": {
+   "inplane": 1.5229897054711774,
+   "kappa_zz": 1.4687031918744007
+  },
+  "seconds": 11.9
+ }
+}

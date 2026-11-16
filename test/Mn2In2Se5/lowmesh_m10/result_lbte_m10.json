@@ -1,0 +1,18 @@
+{
+ "material": "Mn2In2Se5",
+ "mesh": "10 10 10",
+ "fc2": "4x4x1",
+ "fc3_cutoff_A": 6.51,
+ "T_K": 300.0,
+ "isotope": false,
+ "primitive_matrix": "P",
+ "LBTE": {
+  "inplane": 2.9879133130627222,
+  "kappa_zz": 1.8971794828493274
+ },
+ "RTA_same_run": {
+  "inplane": 2.8219622371557302,
+  "kappa_zz": 1.9274807216561927
+ },
+ "seconds": 606.7
+}

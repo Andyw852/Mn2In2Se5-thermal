@@ -552,8 +552,8 @@ components.
 
 | quantity | value | composition |
 |---|---:|---|
-| **in-plane κ** | **≈ 4.6** | LBTE 4.5219 at 14³ **+1.3 %** mesh correction measured on the RTA series (14³ → 30³: 3.6474 → 3.6946) = 4.58, **+ coherence 0.091** (§7, Wigner-RTA at 14³) = 4.67 |
-| **κ_zz** | **≈ 0.71** | 0.648 (intrinsic, q-mesh converged; LBTE = RTA to 4·10⁻⁵) **+ coherence 0.066** (§7) = 0.714 |
+| **in-plane κ** | **≈ 4.5 (range 4.3–5.2)** | **LBTE 4.5219** at 14³ (HanHai job 412627, reproduced twice); Wigner-RTA **TOT 4.3013** at the same mesh/cutoff; naive population+coherence sum **5.176**. phono3py 4.4.0's SMM19-**LBTE** returns TOT = the LBTE population (the coherence attribute is not added, job 415323), so **4.52 is the defensible value** and 5.18 the upper bound. The +1.3 % mesh correction measured on the RTA series (14³ → 30³) only shifts this to 4.53. |
+| **κ_zz** | **≈ 0.71** | 0.648 (intrinsic, q-mesh converged; LBTE = RTA to 4·10⁻⁵) **+ coherence 0.066** (the 3.24.0-scale value; the 4.4.0 Wigner-RTA coherence is 0.598 but it was measured on the *contaminated* 14³ total, so it cannot be transferred to the converged value) = 0.714 |
 | FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
 
 **Warning on the in-plane number.** For in-plane κ, LBTE and RTA differ by

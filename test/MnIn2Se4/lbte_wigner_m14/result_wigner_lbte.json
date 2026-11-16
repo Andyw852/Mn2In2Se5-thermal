@@ -1,0 +1,26 @@
+{
+ "material": "MnIn2Se4",
+ "mesh": "14 14 14",
+ "fc2": "4x4x2",
+ "fc3_cutoff_A": 6.45,
+ "T_K": 300.0,
+ "isotope": true,
+ "solver": "phono3py 4.4.0, transport_type=SMM19, is_LBTE=True",
+ "seconds": 3739.7,
+ "TOT": {
+  "inplane": 4.521873961759615,
+  "kappa_zz": 1.0934392613427621
+ },
+ "population_LBTE": {
+  "inplane": 4.521873961759615,
+  "kappa_zz": 1.0934392613427621
+ },
+ "population_RTA": {
+  "inplane": 3.6473977449600996,
+  "kappa_zz": 1.0933547936422015
+ },
+ "coherence": {
+  "inplane": 0.6538814663467323,
+  "kappa_zz": 0.5982020484679604
+ }
+}
