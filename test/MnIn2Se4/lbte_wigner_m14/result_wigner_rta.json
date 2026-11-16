@@ -1,0 +1,27 @@
+{
+ "material": "MnIn2Se4",
+ "mesh": "14 14 14",
+ "fc2": "4x4x2",
+ "fc3_cutoff_A": 6.45,
+ "T_K": 300.0,
+ "isotope": true,
+ "LBTE_from_job_412627": {
+  "inplane": 4.5219,
+  "kappa_zz": 1.0934
+ },
+ "Wigner_RTA": {
+  "TOT": {
+   "inplane": 4.301279211306831,
+   "kappa_zz": 1.6915568421101574
+  },
+  "population": {
+   "inplane": 3.6473977449600987,
+   "kappa_zz": 1.0933547936421975
+  },
+  "coherence": {
+   "inplane": 0.6538814663467323,
+   "kappa_zz": 0.59820204846796
+  },
+  "seconds": 11.6
+ }
+}
