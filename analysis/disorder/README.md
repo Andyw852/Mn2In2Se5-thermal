@@ -95,19 +95,49 @@ for Mn₂In₂Se₅**, so its numbers are L1 only.
 
 `analysis/extrinsic/`: three parameters
 
-| parameter | meaning | what the κ data determine (Mn₂In₂Se₅) |
+| parameter | meaning | what the κ data determine |
 |---|---|---|
-| x | fraction of all Mn on In sites (antisite) | **not determined**: any x in 0.01–0.5 fits, provided L moves with it |
-| L | effective phonon mean free path ("grain boundary") | **only together with x**: L_eff ≈ 14 nm at x = 0.1, ≈ 50 nm at x = 0.5 |
-| s | ⟨sin²θ⟩ texture, 0 = fully textured, 2/3 = random | **determined**: 0.14–0.28 (acceptable region) |
+| x | fraction of all Mn on In sites (antisite) | **not determined in either material**: Mn₂In₂Se₅ accepts x = 0.01–0.50, MnIn₂Se₄ x = 0–0.66, provided L moves with it |
+| L | effective phonon mean free path ("grain boundary") | **only together with x**: Mn₂In₂Se₅ 6–60 nm, MnIn₂Se₄ 6–43 nm |
+| s | ⟨sin²θ⟩ texture, 0 = fully textured, 2/3 = random | **determined**: Mn₂In₂Se₅ 0.153–0.283, MnIn₂Se₄ 0.330–0.377 |
 
 (x, L) form a degenerate band, because mass disorder and boundary scattering
-lower κ almost interchangeably at high temperature. The grid optimum
-(x = 0.13, L = 15.9 nm, s = 0.253) is one point on that band. It must not be
-quoted as "the fitted x" or "the grain size". x has to come from a structural
-refinement (XRD / Rietveld occupancy). L_eff ~10–50 nm is far below hot-pressed
-grain sizes, so it stands for nanoscale scattering (stacking faults, intergrowth,
-spin disorder), not for grain boundaries.
+lower κ almost interchangeably at high temperature. The grid optimum is one point
+on that band and must not be quoted as "the fitted x" or "the grain size". x has
+to come from a structural refinement (XRD / Rietveld occupancy). L_eff of
+tens of nanometres is far below hot-pressed grain sizes, so it stands for
+nanoscale scattering (stacking faults, intergrowth, spin disorder), not for grain
+boundaries.
+
+### 3.4 Latest fits (2026-11-17): recomputed on 24³ with the corrected force constants
+
+Both materials were re-fitted from scratch: the earlier MnIn₂Se₄ fit used the
+superseded 4×4×1 FC2, and the Mn₂In₂Se₅ fit used a z-only-refined mesh.
+`kappa_extrinsic.py` now takes `--dim-fc2` and `--pmat` so that a mixed
+FC2/FC3 supercell is possible (this was the missing capability).
+
+| | **MnIn₂Se₄** | **Mn₂In₂Se₅** |
+|---|---:|---:|
+| force constants | FC2 4×4×2, FC3 6.45 Å | `Mn2In2Se5/fc/` (4×4×1), 6.51 Å |
+| mesh | 24³ | 24³ (isotropic) |
+| rms of ln(model/exp) | **1.2 %** | **3.2 %** |
+| intrinsic (no disorder) rms | 87 % | 114 % |
+| best x | **0.45** | 0.13 |
+| best L | 30.7 nm | 15.9 nm |
+| best s | 0.35 | 0.250 |
+| fitted g_Mn / g_In | 0.1324 / 0.0609 | 0.1031 / 0.0354 |
+
+**Two consistency checks fell out of this:**
+
+1. The MnIn₂Se₄ fit lands on **x = 0.45**, i.e. on the Döll **i = 0.44**, and its
+   fitted mass variances (g_Mn 0.1324, g_In 0.0609) agree with the VCA values
+   (0.1337, 0.0595) to 1 % and 2.4 %. The κ data therefore support the VCA
+   occupation model independently — that is the argument for using x = 0.44 for
+   MnIn₂Se₄ in L3.
+2. Re-fitting Mn₂In₂Se₅ on an isotropic 24³ mesh barely moves it
+   (s 0.253 → 0.250, x 0.13, L 15.9 nm unchanged). The z-only mesh did not bias
+   the high-temperature fit, because that fit is dominated by the extrinsic,
+   mesh-insensitive part of κ.
 
 ⚠️ **The Mn₂In₂Se₅ fit has to be redone.** The bases it uses
 (`results/Mn2In2Se5_m16164`, `_m16168`) are z-only meshes, whose κ_zz carries
@@ -167,7 +197,7 @@ the RTA rows only, or apply the same corrections to both.
 | Tamura-type mass-variance scattering | the formula behind `mass_variances` | **reference identified, not checked against the paper**: S. Tamura, *Phys. Rev. B* **27**, 858 (1983). Check volume and page before submission |
 | phono3py itself | every κ in this repository | **reference identified, not checked against the paper**: A. Togo, L. Chaput, I. Tanaka, *Phys. Rev. B* **91**, 094306 (2015); A. Togo, L. Chaput, T. Tadano, I. Tanaka, *J. Phys.: Condens. Matter* **35**, 353001 (2023). Check before submission |
 | Simoncelli–Marzari–Mauri (SMM19), Nat. Phys. 15, 809 (2019) | the Wigner/coherence term (`transport_type="SMM19"`) | **verified**: this citation is written in the docstring of phono3py's `conductivity/smm19/__init__.py` |
-| Döll single-crystal occupancies at i = 0.44 | the VCA masses and g values; and, by §2, the x of L3 for MnIn₂Se₄ | **NOT verified here**: the number comes from the user's `run_phono3py_kappa_vca.sh`, which attributes it to a "Döll single-crystal occupancy" without a bibliographic entry. **The exact paper must be supplied before this can go into a manuscript.** Until then, neither the L2 numbers nor the choice of x for MnIn₂Se₄ have a source |
+| Döll single-crystal occupancies at i = 0.44 | the VCA masses and g values; and, by §2, the x of L3 for MnIn₂Se₄ | **Bibliographic reference NOT verified here**: the number comes from the user's `run_phono3py_kappa_vca.sh`, which attributes it to a "Döll single-crystal occupancy" without a paper reference. **The exact citation must be supplied before this can go into a manuscript.** Note however that the independent L3 fit now lands on **x = 0.45**, with mass variances matching the VCA values to 1-2 % (section 3.4) -- the kappa data are consistent with i = 0.44 even though they cannot supply the reference themselves |
 
 ---
 

@@ -86,6 +86,54 @@ or not). The fit itself leaves x undetermined.
 
 ## Results
 
+### 2026-11-17 — refit on 24³ with the corrected force constants
+
+Both materials were refitted from scratch. MnIn₂Se₄ had to wait for
+`--dim-fc2/--pmat` (its FC2 lives on 4×4×2 while FC3 is 4×4×1).
+
+Bases (24³, RTA, three-phonon only):
+
+| | command | intrinsic κ(300 K) xx / zz |
+|---|---|---:|
+| MnIn₂Se₄ | `bases --dim 4 4 1 --dim-fc2 4 4 2 --pmat 1 1 2 -1 -2 -1 1 1 1` | 3.7576 / 0.8107 |
+| Mn₂In₂Se₅ | `bases --disp-yaml Mn2In2Se5/fc/phono3py_disp.yaml` | 3.0204 / 1.3054 |
+
+(The Mn₂In₂Se₅ value is exactly the committed 24³ isotope-off RTA, which confirms
+the pipeline; the MnIn₂Se₄ value differs from the committed 24³ RTA by +1.5 %
+because the bases are three-phonon-only while the committed number has isotopes.)
+
+Fits:
+
+| | **MnIn₂Se₄** | **Mn₂In₂Se₅** |
+|---|---:|---:|
+| rms of ln(model/exp) | **1.2 %** | **3.2 %** |
+| intrinsic (no disorder) rms | 87 % | 114 % |
+| best x | **0.45** | 0.13 |
+| best L | 30.7 nm | 15.9 nm |
+| best s | 0.35 | 0.250 |
+| acceptable x | 0–0.66 | 0.01–0.50 |
+| acceptable L | 5.9–42.7 nm | 5.9–59.5 nm |
+| **acceptable s** | **0.330–0.377** | **0.153–0.283** |
+| fitted g_Mn / g_In | 0.1324 / 0.0609 | 0.1031 / 0.0354 |
+
+Two things to keep in mind when reading this:
+
+1. **x and L remain degenerate** in both materials; only s is constrained. Report
+   the bands, not the single optimum.
+2. In **MnIn₂Se₄** the fitted x (0.45) coincides with the Döll single-crystal
+   i = 0.44, and the fitted mass variances (0.1324 / 0.0609) coincide with the VCA
+   values (0.1337 / 0.0595) to 1 % / 2.4 %. That is independent support for the
+   VCA occupation model — see `../disorder/README.md` §3.4.
+3. In **Mn₂In₂Se₅** the isotropic 24³ refit barely moves the earlier z-only result
+   (s 0.253 → 0.250, x and L unchanged), so the high-temperature fit was not biased
+   by the mesh.
+
+Work directories with the bases: `work_MnIn2Se4_442_m24/`, `work_Mn2In2Se5_m24/`
+(`bases.npz` + `bases_meta.json` + `fit_*.json`). They can be regenerated with the
+`bases` commands above (12–15 min on 64 cores each).
+
+## Results (earlier, superseded)
+
 The experimental values used in the fit are digitized from the figure (`experiment/kappa_tot_digitized.csv`); once the raw data are available, simply rerun `fit`.
 
 ### Validation: linear combination = direct calculation

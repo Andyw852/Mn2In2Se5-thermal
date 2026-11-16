@@ -41,8 +41,9 @@ def calc(name):
     return json.loads((REPO / "test/figures/kappa_vs_T" / name).read_text())
 
 
-def extrinsic():
-    d = json.loads((HERE / "extrinsic_mn2in2se5.json").read_text())
+def extrinsic(name):
+    """extrinsic model curve: returns T, kappa_Perp, kappa_Para"""
+    d = json.loads((HERE / name).read_text())
     T = np.array([r["T"] for r in d["rows"]])
     kxx = np.array([r["kxx"] for r in d["rows"]])
     kzz = np.array([r["kzz"] for r in d["rows"]])
@@ -69,11 +70,13 @@ def draw(ax, lo, hi):
                 marker="o", ms=3.0, mfc=col, zorder=2)
         ax.plot(T[keep], np.array(d["kzz_rest"])[keep], "-", color=col, lw=1.5,
                 marker="s", ms=3.0, mfc="white", zorder=2)
-    # extrinsic model, Mn2In2Se5 only
-    T, perp, para = extrinsic()
-    keep = (T >= lo) & (T <= hi)
-    ax.plot(T[keep], perp[keep], "--", color=C_215, lw=1.6, alpha=0.9, zorder=3)
-    ax.plot(T[keep], para[keep], "--", color=C_215, lw=1.6, alpha=0.9, zorder=3)
+    # extrinsic model, both materials
+    for name, col in (("extrinsic_mn2in2se5.json", C_215),
+                      ("extrinsic_mnin2se4.json", C_441)):
+        T, perp, para = extrinsic(name)
+        keep = (T >= lo) & (T <= hi)
+        ax.plot(T[keep], perp[keep], "--", color=col, lw=1.6, alpha=0.9, zorder=3)
+        ax.plot(T[keep], para[keep], "--", color=col, lw=1.6, alpha=0.9, zorder=3)
     ax.set_xlim(lo, hi)
     ax.set_xlabel("Temperature (K)")
     ax.set_ylabel(r"$\kappa_{\rm tot}$ (W m$^{-1}$ K$^{-1}$)")
@@ -104,7 +107,7 @@ def main():
         Line2D([], [], color="#555555", lw=1.5, marker="s", ms=3, mfc="white",
                label="calc intrinsic, $\\kappa_{zz}$"),
         Line2D([], [], color=C_215, lw=1.6, ls="--",
-               label="calc extrinsic model, In$_2$Mn$_2$Se$_5$"),
+               label="calc extrinsic model (both materials)"),
     ]
     fig.legend(handles=handles, fontsize=7, frameon=False, ncol=4,
                loc="lower center", bbox_to_anchor=(0.5, -0.06), handletextpad=0.4,
@@ -113,10 +116,10 @@ def main():
              "Symbols: hot-pressed polycrystal experiment (digitised). Solid lines: our intrinsic "
              "single-crystal RTA (In$_2$MnSe$_4$ 14$^3$/6.45 A, In$_2$Mn$_2$Se$_5$ "
              "16$^3$/6.51 A; neither FC3 cutoff converged).\n"
-             "Dashed: extrinsic model for In$_2$Mn$_2$Se$_5$ (x = 0.13 Mn/In antisite disorder, "
-             "L = 16 nm grain boundary, texture s = 0.25) -- it converts the intrinsic curves into "
-             "the measured polycrystal values. The In$_2$MnSe$_4$ extrinsic fit still rests on the "
-             "superseded 4x4x1 FC2, so only its intrinsic curve is shown.",
+             "Dashed: extrinsic model (Mn/In antisite mass disorder + grain boundary + texture), "
+             "fitted to the same experimental CSV: In$_2$Mn$_2$Se$_5$ x = 0.13, L = 16 nm, s = 0.25; "
+             "In$_2$MnSe$_4$ x = 0.45, L = 31 nm, s = 0.35. Both now use the corrected force "
+             "constants (In$_2$MnSe$_4$ 4x4x2 FC2).",
              fontsize=6, color="#555555", transform=fig.transFigure)
     fig.tight_layout(rect=(0, 0.14, 1, 0.97))
     for ext in ("png", "pdf"):

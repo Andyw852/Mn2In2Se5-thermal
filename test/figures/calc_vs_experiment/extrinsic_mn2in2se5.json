@@ -1,166 +1,167 @@
 {
- "s": 0.2533,
+ "material": "Mn2In2Se5",
+ "s": 0.25,
  "rows": [
   {
    "T": 10.0,
-   "kxx": 0.1585,
-   "kzz": 0.0677,
-   "intrinsic_kxx": 312.3382,
-   "intrinsic_kzz": 136.3421
+   "kxx": 0.1639,
+   "kzz": 0.0707,
+   "intrinsic_kxx": 311.5899,
+   "intrinsic_kzz": 221.2135
   },
   {
    "T": 20.0,
-   "kxx": 0.5523,
-   "kzz": 0.1361,
-   "intrinsic_kxx": 123.6785,
-   "intrinsic_kzz": 35.1893
+   "kxx": 0.5597,
+   "kzz": 0.1403,
+   "intrinsic_kxx": 121.3266,
+   "intrinsic_kzz": 48.7594
   },
   {
    "T": 30.0,
-   "kxx": 0.8358,
-   "kzz": 0.1693,
-   "intrinsic_kxx": 64.0451,
-   "intrinsic_kzz": 16.7975
+   "kxx": 0.8443,
+   "kzz": 0.1739,
+   "intrinsic_kxx": 63.5054,
+   "intrinsic_kzz": 23.5234
   },
   {
    "T": 40.0,
-   "kxx": 1.0005,
-   "kzz": 0.1852,
-   "intrinsic_kxx": 39.388,
-   "intrinsic_kzz": 10.3475
+   "kxx": 1.0095,
+   "kzz": 0.1899,
+   "intrinsic_kxx": 39.2635,
+   "intrinsic_kzz": 14.8008
   },
   {
    "T": 50.0,
-   "kxx": 1.087,
-   "kzz": 0.1929,
-   "intrinsic_kxx": 27.294,
-   "intrinsic_kzz": 7.2663
+   "kxx": 1.0961,
+   "kzz": 0.1975,
+   "intrinsic_kxx": 27.2777,
+   "intrinsic_kzz": 10.596
   },
   {
    "T": 60.0,
-   "kxx": 1.1284,
-   "kzz": 0.1963,
-   "intrinsic_kxx": 20.5418,
-   "intrinsic_kzz": 5.5341
+   "kxx": 1.1375,
+   "kzz": 0.2008,
+   "intrinsic_kxx": 20.5576,
+   "intrinsic_kzz": 8.1928
   },
   {
    "T": 80.0,
-   "kxx": 1.1466,
-   "kzz": 0.1972,
-   "intrinsic_kxx": 13.5987,
-   "intrinsic_kzz": 3.72
+   "kxx": 1.1549,
+   "kzz": 0.2015,
+   "intrinsic_kxx": 13.627,
+   "intrinsic_kzz": 5.6154
   },
   {
    "T": 100.0,
-   "kxx": 1.1293,
-   "kzz": 0.1948,
-   "intrinsic_kxx": 10.1706,
-   "intrinsic_kzz": 2.8045
+   "kxx": 1.1368,
+   "kzz": 0.1989,
+   "intrinsic_kxx": 10.1978,
+   "intrinsic_kzz": 4.2786
   },
   {
    "T": 125.0,
-   "kxx": 1.0926,
-   "kzz": 0.1903,
-   "intrinsic_kxx": 7.767,
-   "intrinsic_kzz": 2.1529
+   "kxx": 1.0992,
+   "kzz": 0.1942,
+   "intrinsic_kxx": 7.7907,
+   "intrinsic_kzz": 3.3084
   },
   {
    "T": 150.0,
-   "kxx": 1.0523,
-   "kzz": 0.1853,
-   "intrinsic_kxx": 6.3045,
-   "intrinsic_kzz": 1.7523
+   "kxx": 1.0581,
+   "kzz": 0.189,
+   "intrinsic_kxx": 6.325,
+   "intrinsic_kzz": 2.7037
   },
   {
    "T": 200.0,
-   "kxx": 0.9759,
-   "kzz": 0.1754,
-   "intrinsic_kxx": 4.6032,
-   "intrinsic_kzz": 1.2829
+   "kxx": 0.9806,
+   "kzz": 0.1788,
+   "intrinsic_kxx": 4.6192,
+   "intrinsic_kzz": 1.9874
   },
   {
    "T": 250.0,
-   "kxx": 0.9096,
-   "kzz": 0.1665,
-   "intrinsic_kxx": 3.6364,
-   "intrinsic_kzz": 1.0147
+   "kxx": 0.9136,
+   "kzz": 0.1695,
+   "intrinsic_kxx": 3.6493,
+   "intrinsic_kzz": 1.5748
   },
   {
    "T": 300.0,
-   "kxx": 0.8527,
-   "kzz": 0.1585,
-   "intrinsic_kxx": 3.0095,
-   "intrinsic_kzz": 0.8403
+   "kxx": 0.8561,
+   "kzz": 0.1613,
+   "intrinsic_kxx": 3.0204,
+   "intrinsic_kzz": 1.3054
   },
   {
    "T": 325.0,
-   "kxx": 0.8272,
-   "kzz": 0.1548,
-   "intrinsic_kxx": 2.7715,
-   "intrinsic_kzz": 0.774
+   "kxx": 0.8303,
+   "kzz": 0.1575,
+   "intrinsic_kxx": 2.7816,
+   "intrinsic_kzz": 1.2029
   },
   {
    "T": 350.0,
-   "kxx": 0.8034,
-   "kzz": 0.1513,
-   "intrinsic_kxx": 2.5688,
-   "intrinsic_kzz": 0.7175
+   "kxx": 0.8064,
+   "kzz": 0.1539,
+   "intrinsic_kxx": 2.5782,
+   "intrinsic_kzz": 1.1154
   },
   {
    "T": 375.0,
-   "kxx": 0.7812,
-   "kzz": 0.148,
-   "intrinsic_kxx": 2.394,
-   "intrinsic_kzz": 0.6688
+   "kxx": 0.7839,
+   "kzz": 0.1506,
+   "intrinsic_kxx": 2.4027,
+   "intrinsic_kzz": 1.0398
   },
   {
    "T": 400.0,
-   "kxx": 0.7603,
-   "kzz": 0.1449,
-   "intrinsic_kxx": 2.2416,
-   "intrinsic_kzz": 0.6263
+   "kxx": 0.7629,
+   "kzz": 0.1474,
+   "intrinsic_kxx": 2.2498,
+   "intrinsic_kzz": 0.9739
   },
   {
    "T": 450.0,
-   "kxx": 0.7222,
-   "kzz": 0.1391,
-   "intrinsic_kxx": 1.9888,
-   "intrinsic_kzz": 0.5557
+   "kxx": 0.7244,
+   "kzz": 0.1414,
+   "intrinsic_kxx": 1.9962,
+   "intrinsic_kzz": 0.8645
   },
   {
    "T": 500.0,
-   "kxx": 0.6883,
-   "kzz": 0.1338,
-   "intrinsic_kxx": 1.7875,
-   "intrinsic_kzz": 0.4996
+   "kxx": 0.6902,
+   "kzz": 0.136,
+   "intrinsic_kxx": 1.7942,
+   "intrinsic_kzz": 0.7772
   },
   {
    "T": 550.0,
-   "kxx": 0.6578,
-   "kzz": 0.129,
-   "intrinsic_kxx": 1.6234,
-   "intrinsic_kzz": 0.4537
+   "kxx": 0.6594,
+   "kzz": 0.1311,
+   "intrinsic_kxx": 1.6295,
+   "intrinsic_kzz": 0.706
   },
   {
    "T": 600.0,
-   "kxx": 0.6302,
-   "kzz": 0.1246,
-   "intrinsic_kxx": 1.487,
-   "intrinsic_kzz": 0.4156
+   "kxx": 0.6316,
+   "kzz": 0.1266,
+   "intrinsic_kxx": 1.4926,
+   "intrinsic_kzz": 0.6468
   },
   {
    "T": 625.0,
-   "kxx": 0.6173,
-   "kzz": 0.1225,
-   "intrinsic_kxx": 1.4271,
-   "intrinsic_kzz": 0.3989
+   "kxx": 0.6186,
+   "kzz": 0.1245,
+   "intrinsic_kxx": 1.4324,
+   "intrinsic_kzz": 0.6208
   },
   {
    "T": 650.0,
-   "kxx": 0.6051,
-   "kzz": 0.1205,
-   "intrinsic_kxx": 1.3718,
-   "intrinsic_kzz": 0.3835
+   "kxx": 0.6063,
+   "kzz": 0.1224,
+   "intrinsic_kxx": 1.3769,
+   "intrinsic_kzz": 0.5968
   }
  ]
 }
