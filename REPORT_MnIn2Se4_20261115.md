@@ -517,6 +517,28 @@ is converged. Removing that contribution gives the intrinsic value
 not the mesh, and it applies to RTA and LBTE alike (for
 κ_zz the two agree to 4·10⁻⁵).
 
+### 9.1 Values to quote at ≈10 % accuracy
+
+Two corrections relative to the table above: **in-plane κ must come from the
+LBTE solution, not RTA**, and the **coherence** term should be added to both
+components.
+
+| quantity | value | composition |
+|---|---:|---|
+| **in-plane κ** | **≈ 4.6** | LBTE 4.5219 at 14³ **+1.3 %** mesh correction measured on the RTA series (14³ → 30³: 3.6474 → 3.6946) = 4.58, **+ coherence 0.091** (§7, Wigner-RTA at 14³) = 4.67 |
+| **κ_zz** | **≈ 0.71** | 0.648 (intrinsic, q-mesh converged; LBTE = RTA to 4·10⁻⁵) **+ coherence 0.066** (§7) = 0.714 |
+| FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
+
+**Warning on the in-plane number.** For in-plane κ, LBTE and RTA differ by
+**24 %** (4.5219 vs 3.6474 at 14³), which is larger than the 10 % tolerance. The
+RTA 3.69–3.70 that heads the table above would therefore be ≈20 % low; quote the
+LBTE-based 4.6.
+
+**Warning on the κ_zz number.** 0.648 is the *q-mesh-converged* value; adding the
+coherence term (+0.066) gives 0.71. Both sit on top of the ≈−10 % FC3-cutoff
+estimate, so the honest statement is **κ_zz ≈ 0.65–0.71, FC3 cutoff limited by
+the 4×4×1 cell (estimated ≈10 %)**.
+
 ---
 
 ## 10. Open items

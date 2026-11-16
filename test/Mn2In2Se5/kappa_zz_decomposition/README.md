@@ -128,6 +128,18 @@ interlayer shear). `../fc_sound_velocity/` gives an interlayer TA of
 for the corrected MnIn₂Se₄ 4×4×2. So Mn₂In₂Se₅'s FC2 is fine, the mesh scans
 below are meaningful, and no 4×4×2 FC2 is needed for this material.
 
+## κ_zz FC3 cutoff: being redone on an isotropic mesh
+
+The committed Mn₂In₂Se₅ cutoff scan (`Mn2In2Se5/data/kappa_v2/README.md`) gives
+κ_zz steps of −9.1 % then −7.4 % (5.68 → 6.12 → 6.51 Å), but it was measured on
+the **contaminated totals at 12×12×3** — exactly the mistake that made MnIn₂Se₄'s
+cutoff behaviour look like "+2.3 %" when the real step was −8 %. It is therefore
+being repeated on an isotropic **16³** mesh with the 5.68 Å and 6.12 Å FC3 fits
+(HanHai job **412029**, three ~2.5 min runs; the 6.51 Å scan copy is included as
+a cross-check against the production 6.51 Å run already in `scan/m161616/`),
+followed by the same decomposition. Results land in
+`scan/c{568,612,651}_m161616/` — new directories, nothing is overwritten.
+
 ## Reproduce
 
 ```bash
