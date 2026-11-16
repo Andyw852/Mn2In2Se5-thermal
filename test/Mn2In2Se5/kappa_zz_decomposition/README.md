@@ -52,24 +52,60 @@ Two things happen at once and z-only refinement cannot separate them:
   weight falls as 1/N_z while the lifetime grows as N_z^p, so the term grows as
   N_z^(p−1). A rising κ_zz under z-only refinement is therefore **not** by itself
   evidence of real long-wavelength physics.
-- **But the rest of the zone also rises**, 0.6510 → 1.0090 (×1.55), and it is not
-  flat. So the artifact does not explain the whole increase either: the
-  interlayer direction is genuinely under-resolved in this material, and its
-  κ_zz does not converge under z-only refinement.
+- **And the rest of the zone also rises**, 0.6510 → 1.0090 (×1.55). So z-only
+  refinement alone cannot separate the artifact from a genuine under-resolution
+  of the interlayer direction.
+
+## The decisive test: isotropic refinement
+
+An **isotropic 24³** mesh (job 410627, 26.8 min) settles it:
+
+| mesh | κ_zz total | first Γ–Z point | rest of the zone | first / total |
+|---|---:|---:|---:|---:|
+| 16×16×16 | 1.5472 | 0.5382 | 1.0090 | 34.8 % |
+| **24×24×24** | **1.3054** | 0.3288 | 0.9766 | 25.2 % |
+
+**Isotropic refinement lowers κ_zz by 15.6 %** (1.5472 → 1.3054), the opposite
+direction from the z-only series. That is the signature of the quadrature
+artifact, not of real long-wavelength physics: the z-only scan was walking *up*
+the artifact, the isotropic scan walks *down* it. In-plane κ goes 2.9946 →
+3.0204, i.e. it is converged to +0.9 %.
+
+Mesh-converged estimate on the rest term (two cubic meshes, cell-bias
+correction, first-point exponent 1.22):
+
+| quantity | estimate |
+|---|---:|
+| **intrinsic κ_zz** | **0.926 ± 0.051** |
+| κ_zz at a 10 μm grain | 0.912 ± 0.036 |
+| κ_zz at a 1 μm grain | 0.786 ± 0.036 |
+
+The rest term is still drifting (1.0090 → 0.9766, −3.2 % per isotropic step) and
+there are only two cubic meshes, so **±0.05 is a real uncertainty, not a
+formality**: a 32³ mesh is needed before Mn₂In₂Se₅ κ_zz can be quoted as a
+number. What can already be said:
+
+- it is near **0.93**, not 1.54;
+- the reference values 0.84 → 1.54 from the z-only scan span a factor of 1.8 for
+  the *same* force constants, so quoting 1.541 (16×16×16 RTA) would overstate
+  κ_zz by ≈65 %;
+- the earlier finite-grain claim of ≈0.97–1.0 at 1 μm
+  (`analysis/shengbte_crosscheck/README.md`) is too high — on the rest term the
+  1 μm value is 0.786 ± 0.036;
+- the +4.5 % / +12.4 % coherence ratios at 16×16×4 are measured against a
+  population term that carries the artifact, so they must not be quoted either.
 
 **Consequences**
 
 1. The old statement in `REPORT_MnIn2Se4_20261115.md` §6.3 that a rising trend
    proves the Mn₂In₂Se₅ value is physical ("missing long-wavelength modes,
-   intrinsic value not well-defined") is **withdrawn**: the artifact contributes.
-2. Equally, the MnIn₂Se₄ conclusion cannot be transplanted as "the same
-   artifact" — here the rest term does *not* converge, whereas for MnIn₂Se₄ it
-   does (0.6461 → 0.6473 from 18³ to 30³).
-3. **Mn₂In₂Se₅ κ_zz is not converged and no value of it should be quoted yet**,
-   including the +4.5 % / +12.4 % coherence ratios from the RTA runs at 16×16×4,
-   whose population term is itself mesh-dependent. Settling it needs isotropic
-   meshes at least to 24³ (one 24³ run is queued) plus a finite-grain analysis on
-   the rest term, in the same way as §6.4 of the MnIn₂Se₄ report.
+   intrinsic value not well-defined") is **withdrawn**.
+2. The MnIn₂Se₄ result must not be transplanted verbatim either: for MnIn₂Se₄ the
+   rest term is flat (0.6461 → 0.6473, 18³ → 30³) and κ_zz is settled on the
+   mesh; for Mn₂In₂Se₅ the rest term is still falling at 24³ (−3.2 % per step),
+   so one more isotropic mesh is needed.
+3. Both materials follow the same rule: **quote the rest of the zone, never the
+   total, and never a z-only mesh scan.**
 
 ## Reproduce
 
@@ -77,12 +113,13 @@ Two things happen at once and z-only refinement cannot separate them:
 cd test/Mn2In2Se5/kappa_zz_decomposition
 python ../../MnIn2Se4/kappa_zz_decompose.py "scan/*/kappa-m*.hdf5" \
        --poscar ../fit/POSCAR --pmat 1 0 0 0 1 0 0 0 1 \
-       --no-estimate --json kappa_zz_mesh_decomposition.json
+       --json kappa_zz_mesh_decomposition.json
 ```
 
 This reproduces `kappa_zz_mesh_decomposition.json` byte for byte.
-`--no-estimate` is needed because only **one** cubic mesh (16³) has been run so
-far and the estimator needs at least two; add the queued 24³ and drop the flag.
+The estimate uses the two cubic meshes (16³, 24³); the z-only cases only appear
+in the decomposition tables, which is why `--no-estimate` must **not** be used
+any more.
 
 `primitive_matrix="P"` in phono3py resolves to the **identity** for this cell,
 which is why `--pmat 1 0 0 0 1 0 0 0 1` is the right matrix here. `../fit/POSCAR`

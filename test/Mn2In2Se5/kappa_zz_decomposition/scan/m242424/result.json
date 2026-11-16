@@ -1,0 +1,15 @@
+{
+ "material": "Mn2In2Se5",
+ "method": "RTA",
+ "mesh": "24 24 24",
+ "T_K": [
+  300.0
+ ],
+ "isotope": false,
+ "primitive_matrix": "P",
+ "inplane": 3.020366401153938,
+ "kappa_xx": 3.0203664011539377,
+ "kappa_zz": 1.30544645540338,
+ "seconds": 1610.4,
+ "phono3py": "4.4.0"
+}

@@ -256,8 +256,12 @@ def main():
         print(f"\n== mesh-converged kappa_zz (rest term + cell-bias correction, N >= {a.nmin}) ==")
         for g in grains:
             series = [r for r in rows if re.search(a.estimate_cases, name(r))] or rows
-            if len({r["mesh"][0] for r in series}) != len(series):
-                raise SystemExit("estimate: more than one case per mesh -- narrow --estimate-cases")
+            # the estimate only uses cubic meshes, so a material may legitimately
+            # have several cases at the same N as long as only one of them is
+            # cubic (e.g. Mn2In2Se5: 16x16x4 ... 16x16x16 plus an isotropic 24^3)
+            cubic = [r for r in series if len(set(r["mesh"])) == 1]
+            if len({r["mesh"][0] for r in cubic}) != len(cubic):
+                raise SystemExit("estimate: more than one cubic case per mesh -- narrow --estimate-cases")
             e = estimate_intrinsic(series, g, a.nmin)
             if e is None:
                 print("   need at least two cubic meshes with N >= nmin")

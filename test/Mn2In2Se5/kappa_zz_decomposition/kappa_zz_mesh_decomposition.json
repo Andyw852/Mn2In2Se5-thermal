@@ -351,7 +351,162 @@
      "inside_without_first_point": 0.422072
     }
    }
+  },
+  {
+   "file": "scan/m242424/kappa-m242424.hdf5",
+   "mesh": [
+    24,
+    24,
+    24
+   ],
+   "n_bz_grid": 13824,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.30544645540338,
+   "intrinsic": {
+    "kappa_zz_total": 1.305446,
+    "kappa_zz_first_gamma_z_point": 0.328814,
+    "kappa_zz_rest": 0.976633,
+    "inplane_total": 3.020366
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.041667
+     ],
+     "q_cart_inv_A": 0.002566,
+     "weight": 2,
+     "kappa_zz_star": 0.328814
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.083333
+     ],
+     "q_cart_inv_A": 0.005132,
+     "weight": 2,
+     "kappa_zz_star": 0.08719
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.049598
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.166667
+     ],
+     "q_cart_inv_A": 0.010264,
+     "weight": 2,
+     "kappa_zz_star": 0.028921
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.208333
+     ],
+     "q_cart_inv_A": 0.01283,
+     "weight": 2,
+     "kappa_zz_star": 0.018144
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.014287
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.851726,
+     "kappa_zz_first_gamma_z_point": 0.046955,
+     "kappa_zz_rest": 0.80477,
+     "inplane_total": 2.905092
+    },
+    "10_um": {
+     "kappa_zz_total": 1.151519,
+     "kappa_zz_first_gamma_z_point": 0.204207,
+     "kappa_zz_rest": 0.947312,
+     "inplane_total": 3.007101
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.579416,
+     "inside_without_first_point": 0.397217
+    },
+    "0.03": {
+     "outside": 0.363452,
+     "inside_without_first_point": 0.613181
+    }
+   }
   }
  ],
- "estimate": {}
+ "estimate": {
+  "intrinsic": {
+   "meshes": [
+    16,
+    24
+   ],
+   "rest": [
+    1.008976,
+    0.976633
+   ],
+   "first_point_exponent_fit": 1.215,
+   "first_point_exponent_steps": [
+    1.215
+   ],
+   "bias_finest_mesh": -0.050782,
+   "kappa_zz_estimate": 0.9259,
+   "uncertainty": 0.0508
+  },
+  "1_um": {
+   "meshes": [
+    16,
+    24
+   ],
+   "rest": [
+    0.840392,
+    0.80477
+   ],
+   "first_point_exponent_fit": 2.637,
+   "first_point_exponent_steps": [
+    2.637
+   ],
+   "bias_finest_mesh": -0.018623,
+   "kappa_zz_estimate": 0.7861,
+   "uncertainty": 0.0356
+  },
+  "10_um": {
+   "meshes": [
+    16,
+    24
+   ],
+   "rest": [
+    0.983163,
+    0.947312
+   ],
+   "first_point_exponent_fit": 1.741,
+   "first_point_exponent_steps": [
+    1.741
+   ],
+   "bias_finest_mesh": -0.034947,
+   "kappa_zz_estimate": 0.9124,
+   "uncertainty": 0.0359
+  }
+ }
 }
