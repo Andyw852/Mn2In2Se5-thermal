@@ -330,9 +330,11 @@ Reading:
   2.0 at 10 μm, against 1.8 without a boundary). That is expected: the
   boundary caps the long lifetimes, so the first point becomes an ordinary
   quadrature sample, whose share scales towards N^-3.
-- No κ_zz is carried by modes with mean free paths above 10 μm at any mesh.
-  The "MFP > 1 μm" fraction of the totals (31.5 % at 18³) is exactly the first
-  Γ–Z point (§6.3). Long-MFP physics therefore plays no part in κ_zz here.
+- **Essentially no κ_zz is carried by modes with mean free paths above 10 μm**:
+  the 10 μm value is 1.5 % below the intrinsic one at every mesh (0.638 vs
+  0.648). The "MFP > 1 μm" fraction of the *totals* (31.5 % at 18³) is not
+  long-MFP physics at all — it is the first Γ–Z point (§6.3), i.e. the
+  quadrature error.
 
 ### 6.5 Intrinsic κ_zz: estimate
 
@@ -349,11 +351,12 @@ quantity to converge is the **rest of the zone**:
 
 **Decay of the first-point term.** Fitted over 14³–30³, the first-point term
 falls as **N^-1.8**, with step exponents of 1.64, 2.17 and 1.38. It is *not* 1/N,
-and "the scattering rate falls as ω²" is not what the data show. The
-single-point lifetimes of the interlayer acoustic branch, computed separately up
-to 60³, grow as about ω^-1.3 to ω^-1.9 (TA: 650 ps at 11³ to 10 800 ps at 60³).
-Any exponent below 3 makes the 3D integral finite, so the intrinsic κ_zz is
-well defined.
+and "the scattering rate falls as ω²" is not what the data show. A separate
+single-point lifetime estimate of the interlayer acoustic branch gives
+τ ∝ ω^-p with p ≈ 1.3–1.9, consistent with the measured N^-1.8; that estimate is
+not part of this repository, and **the exponent quoted here (N^-1.8) is measured
+directly from the committed data**. Any p < 3 leaves the 3D integral finite, so
+the intrinsic κ_zz is well defined.
 
 **Bias of the rest term.** Dropping the first point also drops the true
 contribution c(N) of the cell around it, so rest(N) = κ_zz − c(N). Taking
@@ -557,7 +560,7 @@ All paths are relative to the repository root.
 | 6.1 | **κ vs FC2 supercell** | the two FC2 files above + `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5` | `test/MnIn2Se4/kappa_results_442.json`, `test/MnIn2Se4/kappa_results_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` |
 | 6.2 | **FC3 cutoff scan** (5.60 / 6.23 / 6.45 Å) | `test/MnIn2Se4/fc3_cutoff_variants/fc3_cut5p60.hdf5`, `fc3_cut6p23.hdf5`, `fc3_cut6p45.hdf5` + `fc2_442_phonon/fc2.hdf5` | `test/MnIn2Se4/kappa_cutoff_scan_results.json`, `kappa_cutoff_convergence.png`, `KAPPA_CUTOFF_SCAN.md`; κ_zz cutoff comparison on the converged term: `kappa_zz_scan/c560_m14/`, `c623_m14/` | `test/MnIn2Se4/kappa_cutscan.py` (RTA), `test/MnIn2Se4/kappa_lbte_scan.py` (LBTE), `kappa_zz_scan.sh` |
 | 6.3 | **κ vs q-mesh** (11³ / 14³ / 18³ / 24³ / 30³) and the Γ–Z decomposition | `fc2_442_phonon/fc2.hdf5`, `fit_cut3_6p45/fc3.hdf5` | `kappa_zz_scan/m{11,14,18,24,30}/kappa-m*.hdf5` (raw phono3py output, per-mode κ), `kappa_zz_gamma_line.json`, `kappa_mesh_scan_results.json`, `kappa_mesh_convergence.png`, `KAPPA_MESH_SCAN.md` | `test/MnIn2Se4/kappa_zz_scan.sh` (driver of the whole scan), `kappa_driver_442.py --mesh N N N --rta --write-kappa`, `kappa_zz_decompose.py` (Γ–Z split + finite-grain rebuild) |
-| 6.4 | **Finite-grain κ** (Casimir 10 μm / 1 μm) | same force constants; the values are rebuilt from the per-mode data of the 6.3 runs, and validated against `kappa_zz_scan/m11_b1um/` (a real `boundary_mfp=1.0` run) | `test/MnIn2Se4/kappa_finite_grain.json`, and inside `kappa_zz_gamma_line.json` | `test/MnIn2Se4/kappa_zz_decompose.py --mfp 1 10`; `kappa_driver_442.py --boundary-mfp 1.0` for the validation run |
+| 6.4 | **Finite-grain κ** (Casimir 10 μm / 1 μm), on the rest term | same force constants; the values are rebuilt from the per-mode data of the 6.3 runs, and validated against `kappa_zz_scan/m11_b1um/` (a real `boundary_mfp=1.0` run) | `test/MnIn2Se4/kappa_zz_gamma_line.json` (`finite_grain` per case, `estimate` mesh-converged); `kappa_finite_grain.json` is the older 18³ **totals** and is superseded | `test/MnIn2Se4/kappa_zz_decompose.py --mfp 1 10`; `kappa_driver_442.py --boundary-mfp 1.0` for the validation run |
 | 7 | **Wigner coherence** | same force constants | `test/MnIn2Se4/kappa_wigner_mn441.json` | `test/MnIn2Se4/kappa_driver_442.py` (`conductivity_type="wigner"`), `test/MnIn2Se4/kappa_run_14_wigner_lbte.py` |
 | 8 | **FC3 → ShengBTE export audit** | `test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5`, `test/MnIn2Se4/phono3py_disp.yaml` | `test/MnIn2Se4/shengbte_corrected/CONTROL_fixed`, `shengbte_corrected/FORCE_CONSTANTS_3RD_complete` (5586 triplets), `shengbte_corrected/triplet_audit.json` | `analysis/shengbte_crosscheck/write_fc3_sheng.py`, `analysis/shengbte_crosscheck/write_fc2_sheng.py` |
 
@@ -569,6 +572,7 @@ All paths are relative to the repository root.
 | `test/MnIn2Se4/fit_cut3_6p45/` | 4×4×1 FC2 + FC3 at cutoff 6.45 Å | still used as the FC3 of record |
 | `test/MnIn2Se4/kappa_shengbte_11x11x11/`, `kappa_shengbte_20x20x5/` | ShengBTE runs | **κ invalid** — see §8 |
 | `test/MnIn2Se4/kappa_phono3py_lbte_11x11x11/` | phono3py LBTE with the old 4×4×1 FC2 | superseded by §6 |
+| `test/MnIn2Se4/kappa_finite_grain.json` | κ_zz **totals** at 18³ with 10 μm / 1 μm / ∞ boundary | **superseded** — the totals contain the Γ–Z quadrature error; §6.4 now quotes the rest term, stored in `kappa_zz_gamma_line.json` |
 | `test/MnIn2Se4/shengbte_export/` | the defective `FORCE_CONSTANTS_3RD` / `CONTROL` pair | kept as evidence for §8 |
 | `MnIn2Se4/` (repository root) | the original 3×3×3 test dataset (κ ≈ 3.9 / 2.1) | **superseded** by this 4×4×2 work |
 

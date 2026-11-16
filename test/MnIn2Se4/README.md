@@ -163,7 +163,7 @@ test/MnIn2Se4/
 ├── kappa_results_mn441.json         # aggregate snapshot
 ├── kappa_cutoff_scan_results.json   # §5
 ├── kappa_mesh_scan_results.json     # §6
-├── kappa_finite_grain.json          # §7
+├── kappa_finite_grain.json          # §7  SUPERSEDED (18^3 totals only)
 ├── kappa_wigner_mn441.json          # §8
 ├── kappa_cutoff_convergence.png     # §5 figure
 ├── kappa_mesh_convergence.png       # §6 figure
