@@ -438,6 +438,32 @@ That term is not included in any of the earlier numbers.
 | **Total (TOT)** | **3.7492** | **1.1595** |
 | Population (P) | 3.6584 | 1.0934 |
 | Coherence (C) | 0.0908 | 0.0661 |
+
+> ⚠️ **The coherence number above is version-dependent and not reproducible with
+> the current stack.** The table was produced with phono3py **3.24.0**
+> (`conductivity_type="wigner"`). Re-running the same physical setting on
+> HanHai with phono3py **4.4.0** (`transport_type="SMM19"`, the 4.4.0
+> spelling) gives the *same* population (3.6474, i.e. within 0.3 %) but a
+> coherence term **7× larger**:
+>
+> | | in-plane | κ_zz |
+> |---|---:|---:|
+> | population (4.4.0) | 3.6474 | 1.0934 |
+> | coherence (4.4.0) | **0.6539** | 0.5982 |
+> | TOT (4.4.0) | 4.3013 | 1.6916 |
+>
+> The two implementations are structurally the same (TOT = P + C, C carries the
+> s₁,s₂ cross terms in both), so the difference must sit in the effective
+> heat-capacity matrix — 4.4.0 uses `mode_cv_matrix_smm19`, which the source
+> labels experimental. Local compute is forbidden here, so 3.24.0 cannot be
+> re-run for a controlled comparison.
+>
+> **Why it matters**: adding 0.65 instead of 0.09 to the in-plane LBTE value
+> moves it from 4.61 to 5.17 (**+12 %**), which crosses the 10 % tolerance. Until
+> this is settled, every in-plane number that includes a coherence term must be
+> quoted as a **range (4.6–5.2)** with this note; the 4.6 in §9.1 is the
+> 3.24.0-based value and the 5.17 the 4.4.0-based one. All other conclusions of
+> this report are **population-only** and unaffected.
 | C / P | **+2.5 %** | **+6.0 %** |
 
 The population term reproduces the plain RTA κ_zz exactly (1.0934), confirming
