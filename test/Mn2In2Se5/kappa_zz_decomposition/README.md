@@ -79,6 +79,13 @@ the artifact, the isotropic scan walks *down* it. In-plane κ goes 2.9946 →
 | κ_zz at a 10 μm grain | 0.9832 | 0.9473 | −3.6 % |
 | κ_zz at a 1 μm grain | 0.8404 | 0.8048 | −4.2 % |
 
+**Submitted 2026-11-16:** isotropic **28³ and 32³** are running on HanHai as jobs
+**411985** and **411986** (separate nodes, 64 threads each, ~1 h and ~2.5 h).
+They use the **`Mn2In2Se5/fc/`** force constants — the same set as the 16³/24³
+runs above, i.e. the set whose C₄₄ was verified in `../fc_sound_velocity/` — so
+the rest-term series stays on one footing. `hanhai_jobs/submit_one_mesh.sh` is
+the driver.
+
 An earlier version of this file quoted 0.926 ± 0.051 (10 μm 0.912, 1 μm 0.786).
 That number came from the cell-bias correction of
 `kappa_zz_decompose.py`, which assumes a rest term that *rises* towards the limit
