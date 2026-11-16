@@ -1,0 +1,38 @@
+{
+ "material": "Mn2In2Se5",
+ "mesh": "16x16x16",
+ "fc2": "4x4x1",
+ "T_K": 300,
+ "isotope": false,
+ "note": "population and kappa_zz rest from kappa_zz_decomposition/cutoff_scan; coherence from wigner_cutoff (job 416261)",
+ "cutoff_A": [
+  5.68,
+  6.12,
+  6.51
+ ],
+ "inplane_population": [
+  3.181,
+  3.0571,
+  2.9263
+ ],
+ "inplane_coherence": [
+  0.1544,
+  null,
+  null
+ ],
+ "inplane_total": [
+  3.3354,
+  null,
+  null
+ ],
+ "kzz_rest": [
+  1.2451,
+  1.0977,
+  0.989
+ ],
+ "kzz_coherence": [
+  0.1111,
+  null,
+  null
+ ]
+}
