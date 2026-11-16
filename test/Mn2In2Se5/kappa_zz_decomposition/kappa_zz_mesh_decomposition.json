@@ -470,9 +470,10 @@
    "first_point_exponent_steps": [
     1.215
    ],
-   "bias_finest_mesh": -0.050782,
-   "kappa_zz_estimate": 0.9259,
-   "uncertainty": 0.0508
+   "status": "NOT CONVERGED: only two meshes",
+   "kappa_zz_rest_finest_mesh": 0.9766,
+   "kappa_zz_estimate": null,
+   "uncertainty": null
   },
   "1_um": {
    "meshes": [
@@ -487,9 +488,10 @@
    "first_point_exponent_steps": [
     2.637
    ],
-   "bias_finest_mesh": -0.018623,
-   "kappa_zz_estimate": 0.7861,
-   "uncertainty": 0.0356
+   "status": "NOT CONVERGED: only two meshes",
+   "kappa_zz_rest_finest_mesh": 0.8048,
+   "kappa_zz_estimate": null,
+   "uncertainty": null
   },
   "10_um": {
    "meshes": [
@@ -504,9 +506,10 @@
    "first_point_exponent_steps": [
     1.741
    ],
-   "bias_finest_mesh": -0.034947,
-   "kappa_zz_estimate": 0.9124,
-   "uncertainty": 0.0359
+   "status": "NOT CONVERGED: only two meshes",
+   "kappa_zz_rest_finest_mesh": 0.9473,
+   "kappa_zz_estimate": null,
+   "uncertainty": null
   }
  }
 }

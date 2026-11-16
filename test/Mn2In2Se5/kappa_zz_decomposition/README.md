@@ -71,27 +71,31 @@ artifact, not of real long-wavelength physics: the z-only scan was walking *up*
 the artifact, the isotropic scan walks *down* it. In-plane κ goes 2.9946 →
 3.0204, i.e. it is converged to +0.9 %.
 
-Mesh-converged estimate on the rest term (two cubic meshes, cell-bias
-correction, first-point exponent 1.22):
+**There is no mesh-converged value yet.** Rest term (16³ → 24³):
 
-| quantity | estimate |
-|---|---:|
-| **intrinsic κ_zz** | **0.926 ± 0.051** |
-| κ_zz at a 10 μm grain | 0.912 ± 0.036 |
-| κ_zz at a 1 μm grain | 0.786 ± 0.036 |
+| quantity | 16³ | 24³ | step |
+|---|---:|---:|---:|
+| intrinsic κ_zz | 1.0090 | **0.9766** | −3.2 % |
+| κ_zz at a 10 μm grain | 0.9832 | 0.9473 | −3.6 % |
+| κ_zz at a 1 μm grain | 0.8404 | 0.8048 | −4.2 % |
 
-The rest term is still drifting (1.0090 → 0.9766, −3.2 % per isotropic step) and
-there are only two cubic meshes, so **±0.05 is a real uncertainty, not a
-formality**: a 32³ mesh is needed before Mn₂In₂Se₅ κ_zz can be quoted as a
-number. What can already be said:
+An earlier version of this file quoted 0.926 ± 0.051 (10 μm 0.912, 1 μm 0.786).
+That number came from the cell-bias correction of
+`kappa_zz_decompose.py`, which assumes a rest term that *rises* towards the limit
+(it misses a positive cell contribution, as in MnIn₂Se₄). Here the rest term
+*falls*, i.e. further near-Γ points are still overweighted. Extrapolating that
+fall with the first-point exponent has no basis, and with two meshes the trend
+cannot be tested. The script now refuses to give an estimate in this case.
+Isotropic 28³ and 32³ meshes are needed to see whether the rest term flattens.
+What can already be said:
 
-- it is near **0.93**, not 1.54;
+- the rest term is 0.98 at 24³ and still falling: κ_zz is below ≈1.0, not 1.54;
 - the reference values 0.84 → 1.54 from the z-only scan span a factor of 1.8 for
   the *same* force constants, so quoting 1.541 (16×16×16 RTA) would overstate
   κ_zz by ≈65 %;
 - the earlier finite-grain claim of ≈0.97–1.0 at 1 μm
   (`analysis/shengbte_crosscheck/README.md`) is too high — on the rest term the
-  1 μm value is 0.786 ± 0.036;
+  1 μm rest term is 0.80 at 24³ and still falling;
 - the +4.5 % / +12.4 % coherence ratios at 16×16×4 are measured against a
   population term that carries the artifact, so they must not be quoted either.
 

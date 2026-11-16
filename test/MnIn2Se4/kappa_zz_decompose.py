@@ -162,7 +162,7 @@ def decompose(path, mfps, rec, q_spheres, temp_index=0):
     return out
 
 
-def estimate_intrinsic(rows, key=("intrinsic",), nmin=14):
+def estimate_intrinsic(rows, key=("intrinsic",), nmin=14, tol=0.01):
     """Mesh-converged kappa_zz from the rest term, with the cell-bias correction.
 
     Model: rest(N) = K - c0 N^-s, where s is the measured decay exponent of the
@@ -185,13 +185,24 @@ def estimate_intrinsic(rows, key=("intrinsic",), nmin=14):
     s = -np.polyfit(np.log(N), np.log(f1), 1)[0]
     step = [float(-np.log(f1[i + 1] / f1[i]) / np.log(N[i + 1] / N[i])) for i in range(len(N) - 1)]
     c = (rest[-1] - rest[0]) / ((N[-1] / N[0]) ** s - 1)
-    K = rest[-1] + c
+    out = {"meshes": N.astype(int).tolist(), "rest": rest.round(6).tolist(),
+           "first_point_exponent_fit": round(float(s), 3),
+           "first_point_exponent_steps": [round(x, 3) for x in step]}
+    # The bias model only describes a rest term that RISES towards K (it misses
+    # a positive cell contribution). A falling rest term means other near-Gamma
+    # points are still overweighted; extrapolating it with the first-point
+    # exponent has no basis. With two meshes the drift cannot be told from noise.
+    last_step = (rest[-1] - rest[-2]) / rest[-2]
+    if len(N) < 3 or (c < 0 and abs(last_step) > tol):
+        why = "only two meshes" if len(N) < 3 else f"rest term still falling ({last_step:+.1%} in the last step)"
+        out.update({"status": f"NOT CONVERGED: {why}",
+                    "kappa_zz_rest_finest_mesh": round(float(rest[-1]), 4),
+                    "kappa_zz_estimate": None, "uncertainty": None})
+        return out
     unc = max(abs(c), float(rest.max() - rest.min()))
-    return {"meshes": N.astype(int).tolist(), "rest": rest.round(6).tolist(),
-            "first_point_exponent_fit": round(float(s), 3),
-            "first_point_exponent_steps": [round(x, 3) for x in step],
-            "bias_finest_mesh": round(float(c), 6),
-            "kappa_zz_estimate": round(float(K), 4), "uncertainty": round(unc, 4)}
+    out.update({"status": "converged", "bias_finest_mesh": round(float(c), 6),
+                "kappa_zz_estimate": round(float(rest[-1] + c), 4), "uncertainty": round(unc, 4)})
+    return out
 
 
 def main():
@@ -268,6 +279,10 @@ def main():
                 break
             label = "intrinsic" if len(g) == 1 else g[1]
             est[label] = e
+            if e["kappa_zz_estimate"] is None:
+                print(f"{label:>10}: {e['status']} -- rest term {e['kappa_zz_rest_finest_mesh']:.4f} "
+                      f"at N={e['meshes'][-1]}, still moving, not quotable (rest series {e['rest']})")
+                continue
             print(f"{label:>10}: {e['kappa_zz_estimate']:.4f} +- {e['uncertainty']:.4f}   "
                   f"(rest at N={e['meshes'][-1]}: {e['rest'][-1]:.4f}, bias {e['bias_finest_mesh']:+.4f}, "
                   f"first-point exponent {e['first_point_exponent_fit']:.2f}, steps {e['first_point_exponent_steps']})")
