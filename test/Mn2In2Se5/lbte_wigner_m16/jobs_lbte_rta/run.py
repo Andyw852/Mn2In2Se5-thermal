@@ -51,16 +51,16 @@ t0 = time.time()
 ph3.run_thermal_conductivity(temperatures=[300.0], is_LBTE=False, is_isotope=False,
                              transport_type="SMM19", write_kappa=True, log_level=0)
 tc = ph3.thermal_conductivity
-def pick(*names):
-    for n in names:
-        if hasattr(tc, n):
-            return np.asarray(getattr(tc, n))
-    raise AttributeError(str(names))
-tot, pop = snap(pick("kappa_TOT_RTA", "kappa_TOT_exact")), snap(pick("kappa_P_RTA", "kappa_P_exact"))
+# phono3py 4.4.0 interband (SMM19/NJC23/IBDB19) solvers expose
+#   kappa        = TOT (intra + inter)
+#   kappa_intra  = population part
+#   kappa_inter  = coherence part
+# There is no kappa_TOT_RTA / kappa_C on this object in 4.4.0.
+tot = snap(tc.kappa)
+pop = snap(tc.kappa_intra)
+coh = snap(tc.kappa_inter)
 out = dict(meta)
-out["Wigner_RTA"] = {"TOT": tot, "population": pop,
-                     "coherence": {"inplane": tot["inplane"] - pop["inplane"],
-                                   "kappa_zz": tot["kappa_zz"] - pop["kappa_zz"]},
+out["Wigner_RTA"] = {"TOT": tot, "population": pop, "coherence": coh,
                      "seconds": round(time.time() - t0, 1)}
 dump("result_wigner_rta.json", out)
 
