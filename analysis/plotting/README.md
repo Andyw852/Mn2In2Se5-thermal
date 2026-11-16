@@ -2,7 +2,7 @@
 
 These are the plotting scripts used earlier in the project. They were living only
 on the backup drive (`E:\backup\joint_research_project\xia\Mn2In2Se5\fix\`) and
-are versioned here now.
+are versioned here now. `plot_phonon_band.py` is left out on purpose: its comments are in Chinese and this repository is English-only, so it remains on the backup drive under `Mn2In2Se5/fix/`.
 
 | script | what it plots |
 |---|---|
