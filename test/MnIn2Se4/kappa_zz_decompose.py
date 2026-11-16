@@ -221,6 +221,8 @@ def main():
     ap.add_argument("--estimate-cases", default=r"^m\d+$",
                     help="regex on the case (directory) name selecting the mesh series for the "
                          "estimate; default picks m11, m14, ... and leaves out the cutoff cases")
+    ap.add_argument("--temp-index", type=int, default=0,
+                    help="which temperature to analyse (index into the hdf5 temperature axis)")
     ap.add_argument("--no-estimate", action="store_true",
                     help="skip the mesh extrapolation (e.g. for a cutoff scan at one mesh)")
     a = ap.parse_args()
@@ -229,7 +231,7 @@ def main():
     files = []
     for f in a.files:
         files.extend(sorted(glob.glob(f)) or [f])
-    rows = [decompose(f, a.mfp, rec, a.sphere) for f in files]
+    rows = [decompose(f, a.mfp, rec, a.sphere, temp_index=a.temp_index) for f in files]
     skipped = [f for f, r in zip(files, rows) if r is None]
     rows = sorted((r for r in rows if r is not None), key=lambda r: (r["mesh"][0], r["file"]))
     for f in skipped:

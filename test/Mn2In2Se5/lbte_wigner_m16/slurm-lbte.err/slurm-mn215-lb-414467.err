@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/zyzhuqgroup/wangchao217/work/mn215_lbte/run.py", line 59, in <module>
+    tot, pop = snap(pick("kappa_TOT_RTA", "kappa_TOT_exact")), snap(pick("kappa_P_RTA", "kappa_P_exact"))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zyzhuqgroup/wangchao217/work/mn215_lbte/run.py", line 58, in pick
+    raise AttributeError(str(names))
+AttributeError: ('kappa_TOT_RTA', 'kappa_TOT_exact')
