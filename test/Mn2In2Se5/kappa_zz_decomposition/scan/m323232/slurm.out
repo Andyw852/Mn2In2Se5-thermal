@@ -1,0 +1,5 @@
+host=anode128 mesh=32 threads=64 isotope=False fc=Mn2In2Se5/fc
+[FAIL] mesh 32
+start mesh=[32, 32, 32] supercell=144 atoms isotope=False
+mesh=[32, 32, 32] in-plane=3.0825 kzz=1.2305 (8955s)
+DONE

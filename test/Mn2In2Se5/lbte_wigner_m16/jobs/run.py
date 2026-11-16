@@ -29,7 +29,9 @@ ph3.mesh_numbers = MESH
 ph3.init_phph_interaction()
 
 def snap(k):
-    a = np.asarray(k)[0]
+    # see the note in ../../MnIn2Se4/lbte_wigner_m14/jobs/run.py: the kappa
+    # arrays can be (1, 6) or (1, 1, 6); this crashed after a successful solve.
+    a = np.asarray(k).reshape(-1, 6)[0]
     return {"inplane": float(0.5 * (a[0] + a[1])), "kappa_zz": float(a[2])}
 
 out = {"material": "Mn2In2Se5", "mesh": " ".join(map(str, MESH)),

@@ -32,7 +32,11 @@ ph3.mesh_numbers = MESH
 ph3.init_phph_interaction()
 
 def snap(k):
-    a = np.asarray(k)[0]
+    # phono3py returns these kappa arrays as (1, 6) or (1, 1, 6) depending on the
+    # solver; flatten everything except the last (Voigt) axis. The first version
+    # of this script indexed only one axis and crashed AFTER a successful LBTE
+    # solve, before writing the JSON.
+    a = np.asarray(k).reshape(-1, 6)[0]
     return {"inplane": float(0.5 * (a[0] + a[1])), "kappa_zz": float(a[2])}
 
 out = {"material": "MnIn2Se4", "mesh": " ".join(map(str, MESH)),

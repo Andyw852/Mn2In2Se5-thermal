@@ -1,0 +1,15 @@
+host=anode107 threads=64 job=mn441-lbte
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+start LBTE
+DONE

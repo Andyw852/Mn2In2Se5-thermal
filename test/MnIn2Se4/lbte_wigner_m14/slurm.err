@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/zyzhuqgroup/wangchao217/work/mn441_lbte_wigner/run.py", line 45, in <module>
+    out["LBTE"] = snap(ph3.thermal_conductivity.kappa)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zyzhuqgroup/wangchao217/work/mn441_lbte_wigner/run.py", line 36, in snap
+    return {"inplane": float(0.5 * (a[0] + a[1])), "kappa_zz": float(a[2])}
+                                           ~^^^
+IndexError: index 1 is out of bounds for axis 0 with size 1
