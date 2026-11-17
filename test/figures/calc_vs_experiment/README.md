@@ -49,18 +49,28 @@ cd test/figures/calc_vs_experiment && python3 plot_calc_vs_experiment.py
 
 ## What the figure says (300 K)
 
-| | calc intrinsic (L1) | calc extrinsic (L3) | experiment |
+| | calc intrinsic (L1), single-crystal component | calc extrinsic (L3), texture-mixed | experiment |
 |---|---:|---:|---:|
-| Mn₂In₂Se₅ in-plane | 2.99 | 0.77 | 0.74 |
-| Mn₂In₂Se₅ cross-plane | 1.01 | 0.34 | 0.32 |
-| MnIn₂Se₄ in-plane | 3.65 | 0.91 | 0.93 |
-| MnIn₂Se₄ cross-plane | 0.64 | 0.35 | 0.49 |
+| Mn₂In₂Se₅ Perp (L1: in-plane) | 2.99 | 0.77 | 0.74 |
+| Mn₂In₂Se₅ Para (L1: cross-plane) | 1.01 | 0.335 | 0.32 |
+| MnIn₂Se₄ Perp (L1: in-plane) | 3.65 | 0.91 | 0.93 |
+| MnIn₂Se₄ Para (L1: cross-plane) | 0.64 | **0.49** | 0.49 |
 
-The L3 curves match the measurements closely overall (rms of ln(model/exp) is
-1.2 % for MnIn₂Se₄ and 3.2 % for Mn₂In₂Se₅), but **not in every single direction**:
-the MnIn₂Se₄ cross-plane point is 0.35 calculated against 0.49 measured (29 % low),
-which is the model's weakest point and is driven by the fitted texture/mean free path.
-The intrinsic curves are
+The two calculated columns are not the same kind of quantity. The L1 column is
+the pure single-crystal component (in-plane, or κ_zz). The L3 column is what the
+figure draws: the extrinsic κ_xx and κ_zz combined with the fitted texture s,
+Perp = (1 − s/2)κ_xx + (s/2)κ_zz and Para = s·κ_xx + (1 − s)κ_zz, which is what
+the measurement corresponds to. An earlier version of this table gave 0.35 for
+MnIn₂Se₄ Para, which matches neither the texture-mixed value (0.488) nor the
+unmixed extrinsic κ_zz (0.173); the correct, texture-mixed value is 0.488
+(`extrinsic_mnin2se4.json`, 300 K, κ_xx = 1.0715, κ_zz = 0.1732, s = 0.35).
+
+How well L3 matches: the fit's rms of ln(model/experiment) over the 16
+high-temperature points (300–623 K, both directions) is 1.2 % for MnIn₂Se₄ and
+3.2 % for Mn₂In₂Se₅. At 300 K the deviations are +3.8 % / +4.7 % (Mn₂In₂Se₅ Perp /
+Para) and −2.0 % / +0.5 % (MnIn₂Se₄ Perp / Para). This is a 3-parameter fit to the
+same data (x, L, s; x and L degenerate), so the agreement shows the model *can*
+describe the data, not that x or L are determined. The intrinsic curves are
 3–4× too high in-plane. At 100 K the gap is larger still (Mn₂In₂Se₅ in-plane:
 10.2 calculated vs 0.79 measured), i.e. the 20–150 K range is entirely
-extrinsic-limited.
+extrinsic-limited. The low-temperature points were not used in the fit.
