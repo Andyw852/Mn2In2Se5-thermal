@@ -62,8 +62,10 @@ def draw(ax, lo, hi):
             ax.plot(*zip(*sel), "none", marker=mk, ms=6.0,
                     mfc=col if filled else "white", mec=col, mew=1.1, zorder=4)
     # intrinsic calculation
-    for d, col in ((calc("data_mnin2se5.json"), C_215),
-                   (calc("data_mnin2se4.json"), C_441)):
+    # 30^3 ordered totals: the convention used by the figures from 2026-11-17
+    # (kappa_zz = plain mesh total, NOT the rest-of-zone term)
+    for d, col in ((calc("data_mn2in2se5_m30.json"), C_215),
+                   (calc("data_mnin2se4_m30.json"), C_441)):
         T = np.array(d["T_K"])
         keep = (T >= lo) & (T <= hi)
         ax.plot(T[keep], np.array(d["inplane"])[keep], "-", color=col, lw=1.5,
@@ -113,14 +115,14 @@ def main():
                loc="lower center", bbox_to_anchor=(0.5, -0.06), handletextpad=0.4,
                columnspacing=1.2)
     fig.text(0.01, -0.15,
-             "Symbols: hot-pressed polycrystal experiment (digitised). Solid lines: our intrinsic "
-             "single-crystal RTA (In$_2$MnSe$_4$ 14$^3$/6.45 A, In$_2$Mn$_2$Se$_5$ "
-             "16$^3$/6.51 A; neither FC3 cutoff converged).\n"
+             "Symbols: hot-pressed polycrystal experiment (digitised).\n"
+             "Solid: ordered single crystal, phono3py RTA on a 30$^3$ mesh, natural isotopes; "
+             "$\\kappa_{zz}$ is the plain mesh total (no $\\Gamma$–Z decomposition, so it may still "
+             "be ~15 % high). FC2 4x4x2 (In$_2$MnSe$_4$) / 4x4x1 (In$_2$Mn$_2$Se$_5$).\n"
              "Dashed: extrinsic model (Mn/In antisite mass disorder + grain boundary + texture), "
-             "fitted to the same experimental CSV: In$_2$Mn$_2$Se$_5$ x = 0.13, L = 16 nm, s = 0.25; "
-             "In$_2$MnSe$_4$ x = 0.45, L = 31 nm, s = 0.35. Both now use the corrected force "
-             "constants (In$_2$MnSe$_4$ 4x4x2 FC2).",
-             fontsize=6, color="#555555", transform=fig.transFigure)
+             "fitted to the same CSV: In$_2$Mn$_2$Se$_5$ x = 0.13, L = 16 nm, s = 0.25; "
+             "In$_2$MnSe$_4$ x = 0.45, L = 31 nm, s = 0.35.",
+             fontsize=6, color="#555555", transform=fig.transFigure, wrap=True)
     fig.tight_layout(rect=(0, 0.14, 1, 0.97))
     for ext in ("png", "pdf"):
         fig.savefig(str(HERE / ("calc_vs_experiment." + ext)), dpi=300, bbox_inches="tight")
