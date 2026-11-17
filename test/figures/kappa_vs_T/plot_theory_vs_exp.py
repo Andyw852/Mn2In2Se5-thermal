@@ -53,10 +53,22 @@ def load_exp():
     return {k: sorted(v) for k, v in rows.items()}
 
 
-def load_calc():
+def load_calc(source):
+    """source 'm30-total': jobs30/run_<mat>/result_<mat>_m30.json, kappa_zz = plain total (default).
+    source 'm20-rest' : data_*_vca.json, kappa_zz = rest-of-zone term (the earlier version)."""
     out = {}
     for m, fn in (("MnIn2Se4", "data_mnin2se4_vca.json"), ("Mn2In2Se5", "data_mn2in2se5_vca.json")):
-        out[m] = json.loads((HERE / fn).read_text())
+        if source == "m20-rest":
+            out[m] = json.loads((HERE / fn).read_text())
+            continue
+        f = HERE / "jobs30" / f"run_{m}" / f"result_{m}_m30.json"
+        if not f.exists():
+            raise SystemExit(f"missing {f} -- run jobs30/submit.sh first, or use --source m20-rest")
+        r = json.loads(f.read_text())
+        out[m] = {"T_K": r["T_K"],
+                  "baseline_inplane": r["ordered"]["inplane"], "vca_inplane": r["vca"]["inplane"],
+                  "baseline_kzz_rest": r["ordered"]["kappa_zz_total"],   # key names kept for the plot code;
+                  "vca_kzz_rest": r["vca"]["kappa_zz_total"]}            # values are the 30^3 totals
     return out
 
 
@@ -155,7 +167,14 @@ def fig_log(exp, calc):
 
 
 def main():
-    exp, calc = load_exp(), load_calc()
+    import argparse
+    global NOTE
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--source", choices=["m30-total", "m20-rest"], default="m30-total")
+    a = ap.parse_args()
+    if a.source == "m30-total":
+        NOTE = NOTE.replace("20$^3$", "30$^3$").replace("κ$_{zz}$ (Γ–Z term removed)", "κ$_{zz}$ (30$^3$ total)")
+    exp, calc = load_exp(), load_calc(a.source)
     fig_same_axes(exp, calc)
     fig_log(exp, calc)
     print("wrote theory_vs_exp.{png,pdf} and theory_vs_exp_log.{png,pdf}")

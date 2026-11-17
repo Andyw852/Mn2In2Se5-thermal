@@ -28,8 +28,14 @@ Both were re-fitted on 24³ with the corrected force constants (2026-11-17):
 
 The MnIn₂Se₄ fit is new: the previous one rested on the superseded 4×4×1 FC2 and
 could not be drawn. `kappa_extrinsic.py --dim-fc2/--pmat` made it possible.
-Note that its fitted x (0.45) coincides with the Döll single-crystal i = 0.44 —
-an independent support for the VCA occupation model.
+Its fitted x (0.45) happens to lie near the i = 0.44 used for the VCA, but this
+is **not** independent support: the acceptable region of the same fit spans
+x = 0.00–0.66, i.e. the whole range, because x and L are degenerate. The κ data
+do not determine x (see `../../analysis/disorder/README.md` §3.3).
+
+κ_zz convention: the L1 lines here use the 14³ rest term (`kzz_rest`). If the
+paper quotes 30³ totals (see `../kappa_vs_T/jobs30/`), switch these lines to the
+30³ totals as well, so that all figures use one convention.
 
 ## Style
 
