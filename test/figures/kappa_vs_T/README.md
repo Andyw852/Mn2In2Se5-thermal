@@ -10,6 +10,20 @@ the **rest of the zone** at every temperature.
 | `Mn2In2Se5_kappa_vs_T.png/.pdf` | same |
 | `both_kappa_vs_T.png/.pdf` | both materials on the same axes |
 
+## With and without VCA disorder
+
+`vca_vs_T.png / .pdf` compares the ordered crystal with the VCA treatment on the
+same 20³ mesh (so only the disorder differs between a pair of curves):
+
+- `data_mnin2se4_vca.json` — MnIn₂Se₄, x = 0.44, HanHai job 424495
+- `data_mn2in2se5_vca.json` — Mn₂In₂Se₅, x = 0.13, HanHai job 424496
+
+Each file holds `baseline_*` (natural isotopes, ordered masses) and `vca_*`
+(averaged site masses + mass-variance scattering) at all twelve temperatures,
+with κ_zz as the rest-of-the-zone term at every T. The main `kappa_vs_T.png`
+curves stay on the converged meshes (14³ / 16³); the VCA pair is on 20³ because
+that is the mesh both members of the pair share.
+
 ## How the data were produced
 
 Two RTA runs per material, `write_kappa=True`:
