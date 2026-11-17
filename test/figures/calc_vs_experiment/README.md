@@ -56,7 +56,11 @@ cd test/figures/calc_vs_experiment && python3 plot_calc_vs_experiment.py
 | MnIn₂Se₄ in-plane | 3.65 | 0.91 | 0.93 |
 | MnIn₂Se₄ cross-plane | 0.64 | 0.35 | 0.49 |
 
-The L3 curves reproduce the measurements to 1–3 %, while the intrinsic curves are
+The L3 curves match the measurements closely overall (rms of ln(model/exp) is
+1.2 % for MnIn₂Se₄ and 3.2 % for Mn₂In₂Se₅), but **not in every single direction**:
+the MnIn₂Se₄ cross-plane point is 0.35 calculated against 0.49 measured (29 % low),
+which is the model's weakest point and is driven by the fitted texture/mean free path.
+The intrinsic curves are
 3–4× too high in-plane. At 100 K the gap is larger still (Mn₂In₂Se₅ in-plane:
 10.2 calculated vs 0.79 measured), i.e. the 20–150 K range is entirely
 extrinsic-limited.
