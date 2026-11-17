@@ -1,0 +1,5 @@
+material,vca_x,case,mesh,fc3_cutoff_A,T_K,kappa_inplane,kappa_zz_total,kappa_zz_rest
+MnIn2Se4,0.44,no VCA,20x20x20,6.45,300,3.6884,0.8780,0.6380
+MnIn2Se4,0.44,VCA,20x20x20,6.45,300,1.4879,0.6953,0.4453
+Mn2In2Se5,0.13,no VCA,20x20x20,6.51,300,2.9984,1.3730,0.9837
+Mn2In2Se5,0.13,VCA,20x20x20,6.51,300,1.6335,1.2246,0.7920

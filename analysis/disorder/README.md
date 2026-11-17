@@ -175,7 +175,48 @@ L2 value can only be compared with them after the same texture mixing (and,
 if wanted, a boundary term). Putting 1.49 next to 0.93, or 0.4453 next to 0.485,
 says nothing about whether i = 0.44 is right.
 
-### 4.2 Mn₂In₂Se₅ — L1 only
+### 4.2 Mn₂In₂Se₅ — L2 added (2026-11-17)
+
+Run the same way as MnIn₂Se₄: 20×20×20, 300 K, FC3 = 6.51 Å, FC2 4×4×1, HanHai job
+424147. The VCA construction uses this material's own fitted x = 0.13:
+
+| site | occupancy (x = 0.13) | VCA mass (amu) | mass variance g |
+|---|---|---:|---:|
+| Mn | 0.87 Mn + 0.13 In | **62.73** | **0.1031** |
+| In | 0.87 In + 0.13 Mn | **107.03** | **0.0354** |
+| Se | natural | 78.96 | 4.63×10⁻⁴ |
+
+| quantity | baseline (L1) | **VCA (L2)** | suppression |
+|---|---:|---:|---:|
+| in-plane κ | 2.9984 | **1.6335** | **1.84×** |
+| κ_zz total (raw) | 1.3730 | 1.2246 | 1.12× |
+| **κ_zz rest of the zone** | **0.9837** | **0.7920** | **1.24×** |
+
+### 4.3 Both materials side by side
+
+Same route for both (phono3py RTA, 20³, 300 K, largest FC3 cutoff, baseline with
+natural isotopes). Machine-readable copy: `vca_summary.csv` / `vca_summary.json`.
+
+| material | x | case | in-plane κ | κ_zz rest |
+|---|---:|---|---:|---:|
+| **MnIn₂Se₄** | 0.44 | no VCA | 3.6884 | 0.6380 |
+| | | **VCA** | **1.4879** | **0.4453** |
+| | | *suppression* | *2.48×* | *1.43×* |
+| **Mn₂In₂Se₅** | 0.13 | no VCA | 2.9984 | 0.9837 |
+| | | **VCA** | **1.6335** | **0.7920** |
+| | | *suppression* | *1.84×* | *1.24×* |
+
+Two observations:
+
+- The antisite disorder suppresses the **in-plane** component much more strongly
+  than the cross-plane one in both materials (2.5× vs 1.4× for MnIn₂Se₄, 1.8× vs
+  1.2× for Mn₂In₂Se₅), because the in-plane heat is carried by higher-frequency
+  modes where the mass-variance rate (∝ g·ω²) is large.
+- MnIn₂Se₄ has the stronger disorder response despite the smaller x, because at
+  x = 0.44 each site is close to a 50/50 mixture (maximum mass variance), while at
+  x = 0.13 the sites stay nearly pure.
+
+### 4.4 Earlier L1-only statement (superseded by 4.2)
 
 | quantity | value |
 |---|---|
