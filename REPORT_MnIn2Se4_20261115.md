@@ -683,15 +683,15 @@ not the mesh, and it applies to RTA and LBTE alike (for
 ### 9.1 Values to quote at ≈10 % accuracy
 
 Conventions: **in-plane κ comes from the LBTE solution, not RTA**. **κ_zz is
-quoted as the 30³ total**, the same convention as all figures, with the
-mesh-extrapolated value alongside. The **coherence** term is the phono3py
-3.24.0 value (§7).
+quoted as the mesh-converged rest term plus coherence**; the 30³ total is kept
+only as the figure convention, because it still contains the Γ–Z quadrature
+artifact (§6.5). The **coherence** term is the phono3py 3.24.0 value (§7).
 
 | quantity | value | composition |
 |---|---:|---|
 | **in-plane κ** | **≈ 4.6** | **LBTE 4.5219** at 14³ (HanHai job 412627, reproduced twice), +1.3 % mesh correction measured on the RTA series (14³ → 30³) = 4.58, **+ coherence 0.09** (3.24.0) = **4.67** |
-| **κ_zz, quoted** | **≈ 0.83** | **30³ total 0.7645** (RTA; LBTE = RTA for κ_zz to 4·10⁻⁵) **+ coherence 0.066** (3.24.0) = 0.831 |
-| κ_zz, mesh-extrapolated (reference) | ≈ 0.71 | 0.646 from extrapolating the 14³–30³ totals, κ(N) = κ∞ + A·N^-1.8; this agrees with the rest term of §6.5 (0.648). Adding the coherence gives 0.71 |
+| **κ_zz, quoted** | **≈ 0.71** | **0.648 ± 0.003** (rest term, §6.5) **+ coherence 0.066** (3.24.0) = 0.714 |
+| κ_zz, 30³ total (figure convention) | ≈ 0.83 | **30³ total 0.7645** (RTA; LBTE = RTA for κ_zz to 4·10⁻⁵) **+ coherence 0.066** = 0.831; still carries the Γ–Z artifact |
 | FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
 
 **Both materials, one convention per row** (300 K). Pick one κ_zz row and
@@ -700,13 +700,14 @@ use it for both materials:
 | 300 K | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---:|---:|
 | in-plane κ | ≈ 4.6 | ≈ 3.37 |
-| κ_zz, mesh-converged + coherence | ≈ 0.71 (0.646 + 0.066) | ≈ 1.09 (0.977 + 0.112) |
-| κ_zz, 30³ total + coherence (as in the figures) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
+| **κ_zz, mesh-converged + coherence (quoted)** | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
+| κ_zz, 30³ total + coherence (figure convention only) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
 | κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | **not converged, unbounded**: steps −11.8 %, −9.9 % barely shrink |
 
 Mn₂In₂Se₅ sources: the rest-term plateau of §6.3 (×0.9961 isotopes); 30³ total
 from `test/figures/kappa_vs_T/jobs30/` (isotopes on); coherence 0.1115 at 16³
-(§7, 4.4.0 SMM19, soft-mode cutoff check pending); in-plane from
+(§7, 4.4.0 SMM19; the soft-mode cutoff check of job 440011 moved it by
+−0.3 % in κ_zz and −7 % in-plane, so the value is used); in-plane from
 `analysis/disorder/README.md` §4.4.
 
 **Warning on the in-plane number.** For in-plane κ, LBTE and RTA differ by
@@ -715,15 +716,14 @@ RTA 3.69–3.70 that heads the table above would therefore be ≈20 % low; quote
 LBTE-based 4.6. The earlier upper end of 5.2 came from the 4.4.0 SMM19 coherence
 term and is withdrawn (§7).
 
-**Warning on the κ_zz number.** The quoted 0.83 is the 30³ total plus
-coherence. It carries two known upward biases:
-
-- the mesh: the 24³ → 30³ step is still −5 %, and the 30³ total lies ≈15–18 %
-  above the extrapolated 0.646;
-- the FC3 cutoff: estimated ≈10 %.
-
-The honest statement is therefore **κ_zz ≈ 0.83 at 30³, with the converged value
-expected near 0.65–0.71, FC3 cutoff limited by the 4×4×1 cell**.
+**Warning on the κ_zz number.** The quoted value 0.71 has the Γ–Z artifact
+removed, so its only known bias is the **FC3 cutoff** (≈10 %, estimated from the
+shrinking steps, §6.6). If the 30³ total is quoted instead — the figure
+convention — it additionally carries the mesh artifact: the 24³ → 30³ step is
+still −5 % and the total lies ≈15–18 % above 0.646, so that number is ≈0.83 but
+is **not** an intrinsic value. The honest statement for the text is **κ_zz ≈ 0.71
+(mesh-converged + coherence), with the FC3 cutoff as the remaining limit set by
+the 4×4×1 cell**.
 
 **Note on disorder.** On totals, the VCA suppression of κ_zz is 1.30×, against
 1.43× on the rest term (§7.5). Quote the convention with the number.
