@@ -475,10 +475,17 @@ That term is not included in any of the earlier numbers.
 >   would double κ_zz. For a crystal with κ of a few W m⁻¹ K⁻¹ this is
 >   implausible, and it is not seen in 3.24.0.
 >
+> **Verified on HanHai as well** (job 437142, phono3py 4.4.0, 11³, same
+> force constants): SMM19 and NJC23 both give C = 1.2421 / 1.1654 and IBDB19
+> gives C = 0.1141 / 0.0670, i.e. the same numbers as in the table above. The
+> discrepancy is therefore **phono3py 4.4.0 itself**, not the local
+> `phonors` 0.4.0 pin needed to run it, and not the machine.
+>
 > **Decision**: the coherence term is taken from **3.24.0** (κ_zz +0.066,
 > in-plane +0.09 at 14³). 4.4.0 `IBDB19` gives the same magnitude (κ_zz 0.067
-> at 11³). The 4.4.0 `SMM19` / `NJC23` coherence is not used anywhere in this
-> report until it reproduces a published benchmark. Reproduction script:
+> at 11³), so it is the fallback if a 4.x run is required. The 4.4.0
+> `SMM19`/`NJC23` coherence is not used anywhere in this report until it
+> reproduces a published benchmark. Reproduction script:
 > `test/figures/kappa_vs_T/jobs30/wig.py <mesh> <SMM19|NJC23|IBDB19>`.
 
 
@@ -493,6 +500,24 @@ internal consistency.
 | Population | 2.9752 | 0.9007 |
 | Coherence | 0.1350 | 0.1115 |
 | C / P | +4.5 % | **+12.4 %** |
+
+> **Provenance of the Mn₂In₂Se₅ coherence term**: it comes from HanHai job 416475,
+> which used `transport_type="SMM19"` on phono3py **4.4.0** — the same
+> implementation that fails for MnIn₂Se₄ above. For this material it is
+> nevertheless usable, because it is **mesh-stable and variant-consistent**
+> (verified in job 437030, 4.4.0, 6.51 Å, isotopes off):
+>
+> | mesh | SMM19 C in-plane / κ_zz | IBDB19 C in-plane / κ_zz |
+> |---|---:|---:|
+> | 11³ | 0.1515 / 0.1079 | 0.1495 / 0.1039 |
+> | 12³ | 0.1574 / 0.1114 | 0.1547 / 0.1075 |
+> | 14³ | 0.1492 / 0.1102 | — |
+> | 16³ (the value above) | 0.1452 / 0.1115 | — |
+>
+> The spread over 11³–16³ is ±5 % in-plane and ±2 % in κ_zz, and SMM19 agrees
+> with IBDB19 to 3 %, so the +12.4 % is retained. (Contrast MnIn₂Se₄, where the
+> same 4.4.0 SMM19 term changes by a factor of 2 between 11³ and 14³.) The
+> 4.4.0 SMM19 problem is therefore material-specific, not a blanket defect.
 
 Both materials follow the same rule: **the lower κ_zz, the larger the coherence
 fraction.** For Mn₂In₂Se₅ the calculation requires `primitive_matrix="P"`;
