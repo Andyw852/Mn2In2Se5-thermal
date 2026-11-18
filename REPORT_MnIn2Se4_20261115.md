@@ -550,11 +550,23 @@ internal consistency.
 > This does **not** mean the 4.4.0 implementation is reliable for Mn₂In₂Se₅.
 > The defect is the unregularized ω → 0 contribution described above. Whether
 > it shows up depends on how soft the lowest modes on the mesh are, and on
-> their inter-band velocity matrix elements. Mn₂In₂Se₅ apparently does not
-> trigger it on these meshes. **Pending check**: re-run Mn₂In₂Se₅ 16³ with
-> SMM19 and IBDB19 at `cutoff_frequency=0.3`. If C is essentially unchanged,
-> the +12.4 % stands as "insensitive to the soft-mode cutoff". If it drops,
-> use the IBDB19 value.
+> their inter-band velocity matrix elements. **The cutoff test was run** (job
+> 440011, 4.4.0, 16³, 6.51 Å, isotopes off, `cutoff_frequency=0.3`):
+>
+> | coherence C, in-plane / κ_zz | default | cutoff 0.3 THz |
+> |---|---:|---:|
+> | 4.4.0 SMM19 | 0.1458 / 0.1112 | **0.1353 / 0.1109** |
+> | 4.4.0 IBDB19 | — | **0.1329 / 0.1070** |
+>
+> Removing the soft modes changes C by −7 % in-plane and −0.3 % in κ_zz, and
+> SMM19 then agrees with IBDB19 to 2 %. So the +12.4 % stands, and in this
+> material the term is **insensitive to the soft-mode cutoff** — i.e. the
+> 4.4.0 defect is present in the implementation but is not triggered here
+> (the soft modes carry almost none of the coherence weight). (For comparison,
+> the same cutoff test on MnIn₂Se₄ collapses its 4.4.0 SMM19 value from
+> 1.242/1.165 to 0.108/0.069.) The population terms printed by the cutoff runs
+> are not results: the cutoff removes those modes from P as well
+> (κ_zz P 1.547 → 0.801).
 
 The coherence fraction of κ_zz is about +10 % for MnIn₂Se₄ (0.066 on the
 mesh-extrapolated 0.646) and +12 % for Mn₂In₂Se₅. These are comparable. The
