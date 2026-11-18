@@ -170,6 +170,13 @@ def estimate_intrinsic(rows, key=("intrinsic",), nmin=14, tol=0.01):
     mesh is c(Nmax) = [rest(Nmax) - rest(Nref)] / [(Nmax/Nref)^s - 1], with Nref
     the coarsest mesh >= nmin. The quoted uncertainty is the larger of |c| and
     the full range of rest over N >= nmin.
+
+    The correction is applied only when the rest term RISES over the series
+    (c >= 0). If it falls and has levelled off (last step within tol), the
+    result is the plateau instead: mean and full range of the trailing meshes
+    whose steps are all within tol. A two-mesh plateau also includes the step
+    into it in the uncertainty. If it is still falling, or there are only two
+    meshes, no estimate is given.
     """
     def pick(r):
         x = r
@@ -198,6 +205,24 @@ def estimate_intrinsic(rows, key=("intrinsic",), nmin=14, tol=0.01):
         out.update({"status": f"NOT CONVERGED: {why}",
                     "kappa_zz_rest_finest_mesh": round(float(rest[-1]), 4),
                     "kappa_zz_estimate": None, "uncertainty": None})
+        return out
+    if c < 0:
+        # Rest term fell over the series but has now levelled off. Do NOT
+        # extrapolate the fall (that gave 0.951 for Mn2In2Se5, below every
+        # measured rest value). Quote the plateau: the trailing meshes whose
+        # consecutive steps are all within tol, their mean and full range.
+        k = len(rest) - 1
+        while k > 0 and abs(rest[k] - rest[k - 1]) / rest[k - 1] <= tol:
+            k -= 1
+        plateau = rest[k:]
+        unc = float(plateau.max() - plateau.min())
+        if len(plateau) < 3 and k > 0:
+            # a two-mesh plateau is weak evidence: also allow for the step into it
+            unc = max(unc, float(abs(rest[k] - rest[k - 1])))
+        out.update({"status": "converged (plateau; falling series, no extrapolation)",
+                    "plateau_meshes": N[k:].astype(int).tolist(),
+                    "kappa_zz_estimate": round(float(plateau.mean()), 4),
+                    "uncertainty": round(unc, 4)})
         return out
     unc = max(abs(c), float(rest.max() - rest.min()))
     out.update({"status": "converged", "bias_finest_mesh": round(float(c), 6),
@@ -284,6 +309,10 @@ def main():
             if e["kappa_zz_estimate"] is None:
                 print(f"{label:>10}: {e['status']} -- rest term {e['kappa_zz_rest_finest_mesh']:.4f} "
                       f"at N={e['meshes'][-1]}, still moving, not quotable (rest series {e['rest']})")
+                continue
+            if "plateau_meshes" in e:
+                print(f"{label:>10}: {e['kappa_zz_estimate']:.4f} +- {e['uncertainty']:.4f}   "
+                      f"(plateau over N={e['plateau_meshes']}, rest series {e['rest']}; no extrapolation)")
                 continue
             print(f"{label:>10}: {e['kappa_zz_estimate']:.4f} +- {e['uncertainty']:.4f}   "
                   f"(rest at N={e['meshes'][-1]}: {e['rest'][-1]:.4f}, bias {e['bias_finest_mesh']:+.4f}, "

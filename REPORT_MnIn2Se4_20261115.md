@@ -278,8 +278,12 @@ Two checks that this is the right reading:
   `test/Mn2In2Se5/kappa_zz_decomposition/`): isotropic 16³ → 24³ *lowers*
   Mn₂In₂Se₅ κ_zz by 15.6 %, so the z-only rise was the artifact. Its rest term is
   now converged over four isotropic meshes (16³/24³/28³/32³:
-  1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving
-  **κ_zz(Mn₂In₂Se₅) = 0.951 ± 0.032** (isotopes on), still cutoff-limited.
+  1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), a plateau over
+  24³–32³ of 0.9803 ± 0.0075, giving **κ_zz(Mn₂In₂Se₅) = 0.977 ± 0.008**
+  (isotopes on, ×0.9961). It is still cutoff-limited. The earlier
+  0.951 ± 0.032 came from extrapolating the 16³ → 32³ fall with the
+  first-point exponent. That has no basis once the rest term has levelled off,
+  and it gave a value below every measured mesh. It is withdrawn.
 - The rest term is only mildly sensitive to a Casimir boundary (−10 % at
   1 μm, §6.4), whereas the first Γ–Z point collapses by half at 1 μm and to
   4 % of the 30³ total.
@@ -690,6 +694,21 @@ mesh-extrapolated value alongside. The **coherence** term is the phono3py
 | κ_zz, mesh-extrapolated (reference) | ≈ 0.71 | 0.646 from extrapolating the 14³–30³ totals, κ(N) = κ∞ + A·N^-1.8; this agrees with the rest term of §6.5 (0.648). Adding the coherence gives 0.71 |
 | FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
 
+**Both materials, one convention per row** (300 K). Pick one κ_zz row and
+use it for both materials:
+
+| 300 K | MnIn₂Se₄ | Mn₂In₂Se₅ |
+|---|---:|---:|
+| in-plane κ | ≈ 4.6 | ≈ 3.37 |
+| κ_zz, mesh-converged + coherence | ≈ 0.71 (0.646 + 0.066) | ≈ 1.09 (0.977 + 0.112) |
+| κ_zz, 30³ total + coherence (as in the figures) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
+| κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | **not converged, unbounded**: steps −11.8 %, −9.9 % barely shrink |
+
+Mn₂In₂Se₅ sources: the rest-term plateau of §6.3 (×0.9961 isotopes); 30³ total
+from `test/figures/kappa_vs_T/jobs30/` (isotopes on); coherence 0.1115 at 16³
+(§7, 4.4.0 SMM19, soft-mode cutoff check pending); in-plane from
+`analysis/disorder/README.md` §4.4.
+
 **Warning on the in-plane number.** For in-plane κ, LBTE and RTA differ by
 **24 %** (4.5219 vs 3.6474 at 14³), which is larger than the 10 % tolerance. The
 RTA 3.69–3.70 that heads the table above would therefore be ≈20 % low; quote the
@@ -717,10 +736,10 @@ Ordered by how much each item can still move κ_zz.
 
 | # | Item | Cost | Why it matters |
 |---|---|---|---|
-| **1** | **FC3 in a 4×4×2 supercell (cutoff > 6.45 Å)** | ~2 days DFT | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
+| **1** | **FC3 in a 4×4×2 supercell — Mn₂In₂Se₅ first, then MnIn₂Se₄** | ~2 days DFT each | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
 | 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged, κ_zz = 0.648 ± 0.003 on the q-mesh (the FC3 cutoff, item 1, is not settled) |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
-| 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.951 ± 0.032** after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |
+| 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.977 ± 0.008** (plateau 24³–32³; the earlier 0.951 ± 0.032 was an unjustified extrapolation and is withdrawn) after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |
 | 5 | Unify the structure for the LA comparison | small | phonon cell has 13.21409 Å vs elastic 13.20318 Å along c |
 
 **Dropped: 18³ LBTE and the Wigner-LBTE refinement.** At both 11³ and 14³ the

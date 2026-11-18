@@ -26,9 +26,13 @@ The two meshes agree to **0.02 %**, which is what justifies the transfer.
 
 | quantity (300 K) | isotopes off (converged) | **isotopes on (corrected)** |
 |---|---:|---:|
-| **κ_zz intrinsic** | 0.9547 ± 0.0323 | **0.951 ± 0.032** |
-| κ_zz, 10 μm grain | 0.9281 | **0.924** |
-| κ_zz, 1 μm grain | 0.7879 | **0.784** |
+| **κ_zz intrinsic** | 0.9803 ± 0.0075 | **0.977 ± 0.008** |
+| κ_zz, 10 μm grain | 0.9472 ± 0.0056 | **0.944** |
+| κ_zz, 1 μm grain | 0.8009 ± 0.0087 | **0.798** |
+
+(Plateau of the rest term over 24³–32³. An earlier version of this table gave
+0.951 ± 0.032 / 0.924 / 0.784, from extrapolating the 16³ → 32³ fall; that is
+withdrawn, see `../kappa_zz_decomposition/README.md`.)
 | in-plane κ (RTA, 32³) | 3.0825 | **3.048** |
 
 In-plane: the ratio is 0.98841 at 16³ and 0.98899 at 24³ (−1.1 %), also

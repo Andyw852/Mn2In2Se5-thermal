@@ -220,7 +220,7 @@ Two observations:
 
 | quantity | value |
 |---|---|
-| κ_zz intrinsic (isotopes on) | **0.951 ± 0.032** |
+| κ_zz intrinsic (isotopes on) | **0.977 ± 0.008** (plateau 24³–32³ × 0.9961; the earlier 0.951 ± 0.032 was an unjustified extrapolation) |
 | in-plane κ (RTA 32³, isotopes on) | 3.048 |
 | in-plane κ (L1 + LBTE correction + coherence) | ≈ 3.37 |
 

@@ -1,6 +1,109 @@
 {
  "cases": [
   {
+   "file": "scan/m161612/kappa-m161612.hdf5",
+   "mesh": [
+    16,
+    16,
+    12
+   ],
+   "n_bz_grid": 3072,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.30903003461122,
+   "intrinsic": {
+    "kappa_zz_total": 1.30903,
+    "kappa_zz_first_gamma_z_point": 0.406591,
+    "kappa_zz_rest": 0.902439,
+    "inplane_total": 2.998579
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.083333
+     ],
+     "q_cart_inv_A": 0.005132,
+     "weight": 2,
+     "kappa_zz_star": 0.406591
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.166667
+     ],
+     "q_cart_inv_A": 0.010264,
+     "weight": 2,
+     "kappa_zz_star": 0.12542
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.062802
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.333333
+     ],
+     "q_cart_inv_A": 0.020527,
+     "weight": 2,
+     "kappa_zz_star": 0.044943
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.416667
+     ],
+     "q_cart_inv_A": 0.025659,
+     "weight": 2,
+     "kappa_zz_star": 0.019653
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      -0.5
+     ],
+     "q_cart_inv_A": 0.030791,
+     "weight": 1,
+     "kappa_zz_star": 0.0
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.941013,
+     "kappa_zz_first_gamma_z_point": 0.151328,
+     "kappa_zz_rest": 0.789685,
+     "inplane_total": 2.905478
+    },
+    "10_um": {
+     "kappa_zz_total": 1.233862,
+     "kappa_zz_first_gamma_z_point": 0.346277,
+     "kappa_zz_rest": 0.887585,
+     "inplane_total": 2.988551
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.662743,
+     "inside_without_first_point": 0.239696
+    },
+    "0.03": {
+     "outside": 0.374385,
+     "inside_without_first_point": 0.528054
+    }
+   }
+  },
+  {
    "file": "scan/m161616/kappa-m161616.hdf5",
    "mesh": [
     16,
@@ -100,6 +203,152 @@
     "0.03": {
      "outside": 0.375328,
      "inside_without_first_point": 0.633647
+    }
+   }
+  },
+  {
+   "file": "scan/m16164/kappa-m16164.hdf5",
+   "mesh": [
+    16,
+    16,
+    4
+   ],
+   "n_bz_grid": 1024,
+   "T_K": 300.0,
+   "kappa_zz_stored": 0.8409331811438344,
+   "intrinsic": {
+    "kappa_zz_total": 0.840933,
+    "kappa_zz_first_gamma_z_point": 0.189918,
+    "kappa_zz_rest": 0.651015,
+    "inplane_total": 3.010529
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.189918
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      -0.5
+     ],
+     "q_cart_inv_A": 0.030791,
+     "weight": 1,
+     "kappa_zz_star": 0.0
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.758147,
+     "kappa_zz_first_gamma_z_point": 0.147623,
+     "kappa_zz_rest": 0.610525,
+     "inplane_total": 2.915058
+    },
+    "10_um": {
+     "kappa_zz_total": 0.830991,
+     "kappa_zz_first_gamma_z_point": 0.184461,
+     "kappa_zz_rest": 0.646531,
+     "inplane_total": 3.000225
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.5809,
+     "inside_without_first_point": 0.070115
+    },
+    "0.03": {
+     "outside": 0.368582,
+     "inside_without_first_point": 0.282433
+    }
+   }
+  },
+  {
+   "file": "scan/m16168/kappa-m16168.hdf5",
+   "mesh": [
+    16,
+    16,
+    8
+   ],
+   "n_bz_grid": 2048,
+   "T_K": 300.0,
+   "kappa_zz_stored": 1.1157192143817238,
+   "intrinsic": {
+    "kappa_zz_total": 1.115719,
+    "kappa_zz_first_gamma_z_point": 0.331171,
+    "kappa_zz_rest": 0.784548,
+    "inplane_total": 2.994213
+   },
+   "gamma_z_line": [
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.125
+     ],
+     "q_cart_inv_A": 0.007698,
+     "weight": 2,
+     "kappa_zz_star": 0.331171
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.25
+     ],
+     "q_cart_inv_A": 0.015395,
+     "weight": 2,
+     "kappa_zz_star": 0.094905
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      0.375
+     ],
+     "q_cart_inv_A": 0.023093,
+     "weight": 2,
+     "kappa_zz_star": 0.048804
+    },
+    {
+     "q_reduced": [
+      0.0,
+      0.0,
+      -0.5
+     ],
+     "q_cart_inv_A": 0.030791,
+     "weight": 1,
+     "kappa_zz_star": 0.0
+    }
+   ],
+   "finite_grain": {
+    "1_um": {
+     "kappa_zz_total": 0.882733,
+     "kappa_zz_first_gamma_z_point": 0.168769,
+     "kappa_zz_rest": 0.713964,
+     "inplane_total": 2.901401
+    },
+    "10_um": {
+     "kappa_zz_total": 1.077049,
+     "kappa_zz_first_gamma_z_point": 0.300841,
+     "kappa_zz_rest": 0.776207,
+     "inplane_total": 2.984219
+    }
+   },
+   "kappa_zz_outside_sphere": {
+    "0.02": {
+     "outside": 0.637694,
+     "inside_without_first_point": 0.146854
+    },
+    "0.03": {
+     "outside": 0.362476,
+     "inside_without_first_point": 0.422072
     }
    }
   },
@@ -433,10 +682,14 @@
     0.681,
     1.255
    ],
-   "status": "converged",
-   "bias_finest_mesh": -0.025484,
-   "kappa_zz_estimate": 0.9547,
-   "uncertainty": 0.0323
+   "status": "converged (plateau; falling series, no extrapolation)",
+   "plateau_meshes": [
+    24,
+    28,
+    32
+   ],
+   "kappa_zz_estimate": 0.9803,
+   "uncertainty": 0.0075
   },
   "1_um": {
    "meshes": [
@@ -457,10 +710,14 @@
     2.705,
     2.824
    ],
-   "status": "converged",
-   "bias_finest_mesh": -0.008194,
-   "kappa_zz_estimate": 0.7879,
-   "uncertainty": 0.0443
+   "status": "converged (plateau; falling series, no extrapolation)",
+   "plateau_meshes": [
+    24,
+    28,
+    32
+   ],
+   "kappa_zz_estimate": 0.8009,
+   "uncertainty": 0.0087
   },
   "10_um": {
    "meshes": [
@@ -481,10 +738,14 @@
     1.643,
     2.086
    ],
-   "status": "converged",
-   "bias_finest_mesh": -0.016192,
-   "kappa_zz_estimate": 0.9281,
-   "uncertainty": 0.0388
+   "status": "converged (plateau; falling series, no extrapolation)",
+   "plateau_meshes": [
+    24,
+    28,
+    32
+   ],
+   "kappa_zz_estimate": 0.9472,
+   "uncertainty": 0.0056
   }
  }
 }

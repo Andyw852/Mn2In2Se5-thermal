@@ -82,13 +82,21 @@ the artifact, the isotropic scan walks *down* it. In-plane κ goes 2.9946 →
 | κ_zz at a 1 μm grain | 0.8404 | 0.8048 | 0.8019 | 0.7961 | −0.72 % |
 
 Rest-term steps: **−3.21 %, +0.77 %, −0.41 %** — the term has stopped falling
-(the last step is inside ±1 %). The mesh-converged estimate is
+(the last step is inside ±1 %). The mesh-converged value is the **plateau**
+over 24³–32³: mean and full range of the rest term, with no extrapolation.
 
-| quantity | estimate (16³–32³) |
+| quantity | plateau 24³–32³, isotopes on |
 |---|---:|
-| **intrinsic κ_zz** | **0.951 ± 0.032** (isotopes on) |
-| κ_zz at a 10 μm grain | 0.924 ± 0.039 |
-| κ_zz at a 1 μm grain | 0.784 ± 0.044 |
+| **intrinsic κ_zz** | **0.977 ± 0.008** |
+| κ_zz at a 10 μm grain | 0.944 ± 0.006 |
+| κ_zz at a 1 μm grain | 0.798 ± 0.009 |
+
+An earlier version gave 0.951 ± 0.032 (10 μm 0.924, 1 μm 0.784). That number
+came from the cell-bias correction of `kappa_zz_decompose.py`, which
+extrapolated the whole 16³ → 32³ fall with the first-point exponent. Once the
+rest term has levelled off, that has no basis: it gave a value below every
+measured mesh (0.9766–0.9841). The script now reports the plateau for a
+falling series. The earlier number is withdrawn.
 
 > The table above gives the values **with isotope scattering on**, which is the
 > project standard (`ISOTOPE = true`). The mesh series itself was run without
@@ -96,7 +104,7 @@ Rest-term steps: **−3.21 %, +0.77 %, −0.41 %** — the term has stopped fall
 > intrinsic term) measured at 16³ and 24³, where the two meshes agree to 0.02 %,
 > so it transfers to these converged numbers. See `../iso_rerun/README.md`.
 
-**κ_zz(Mn₂In₂Se₅) = 0.951 ± 0.032 W m⁻¹ K⁻¹ on the q-mesh.** In-plane (RTA)
+**κ_zz(Mn₂In₂Se₅) = 0.977 ± 0.008 W m⁻¹ K⁻¹ on the q-mesh.** In-plane (RTA)
 converges on the same sequence: 2.9946 → 3.0204 → 3.0742 → **3.0825** (last step
 +0.3 %). What remains is *not* the mesh but the FC3 cutoff, measured below at
 −9.9 % in the last available step with no bound on what follows, so the value is

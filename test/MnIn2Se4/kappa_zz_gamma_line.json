@@ -756,10 +756,13 @@
     2.725,
     2.605
    ],
-   "status": "converged",
-   "bias_finest_mesh": -0.002092,
-   "kappa_zz_estimate": 0.5802,
-   "uncertainty": 0.0133
+   "status": "converged (plateau; falling series, no extrapolation)",
+   "plateau_meshes": [
+    24,
+    30
+   ],
+   "kappa_zz_estimate": 0.5835,
+   "uncertainty": 0.0065
   },
   "10_um": {
    "meshes": [
@@ -780,9 +783,14 @@
     2.31,
     1.767
    ],
-   "status": "converged",
-   "bias_finest_mesh": -0.000121,
-   "kappa_zz_estimate": 0.638,
+   "status": "converged (plateau; falling series, no extrapolation)",
+   "plateau_meshes": [
+    14,
+    18,
+    24,
+    30
+   ],
+   "kappa_zz_estimate": 0.6384,
    "uncertainty": 0.0017
   }
  }
