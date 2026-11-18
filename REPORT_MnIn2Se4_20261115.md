@@ -462,12 +462,14 @@ That term is not included in any of the earlier numbers.
 > - **The population term agrees between the versions; only the coherence
 >   term differs**, by ≈12× (in-plane) and ≈17× (κ_zz) for the same SMM19
 >   method.
-> - **The heat-capacity matrix is not the cause.** The SMM19 formula,
->   C_jj' = ¼(ω_j + ω_j')(C_j/ω_j + C_j'/ω_j'), is the same in both versions
->   (checked in the 4.4.0 source, `mode_cv_matrix_smm19`). Evaluated directly,
->   it is numerically almost identical to the NJC23 matrix at 300 K, which is
->   why 4.4.0 `SMM19` and `NJC23` agree to four decimals. The difference must
->   therefore sit in 4.4.0's new inter-band kernel or velocity matrix.
+> - **The formula is the same in both versions; the handling of ω → 0 is
+>   not.** The SMM19 heat-capacity matrix,
+>   C_jj' = ¼(ω_j + ω_j')(C_j/ω_j + C_j'/ω_j'), is identical in both
+>   (checked in the 4.4.0 source, `mode_cv_matrix_smm19`). Its C_j/ω_j factor
+>   diverges as ω_j → 0. Evaluated directly, it is numerically almost
+>   identical to the NJC23 matrix at 300 K, which is why 4.4.0 `SMM19` and
+>   `NJC23` agree to four decimals. The IBDB19 matrix stays finite as ω → 0.
+>   See the cutoff test below.
 > - **The 4.4.0 coherence term is not stable with the mesh**: 1.165 at 11³
 >   against 0.598 at 14³ (κ_zz), a factor of 2. The 3.24.0 term is stable
 >   (0.067 at 11³, 0.066 at 14³).
@@ -481,12 +483,39 @@ That term is not included in any of the earlier numbers.
 > discrepancy is therefore **phono3py 4.4.0 itself**, not the local
 > `phonors` 0.4.0 pin needed to run it, and not the machine.
 >
+> **Cause: unregularized soft modes.** Excluding the modes below 0.3 THz
+> (`cutoff_frequency=0.3`) and re-running MnIn₂Se₄ 11³ gives:
+>
+> | coherence C, in-plane / κ_zz | default cutoff | cutoff 0.3 THz |
+> |---|---:|---:|
+> | 4.4.0 SMM19 | 1.242 / 1.165 | **0.108 / 0.069** |
+> | 4.4.0 IBDB19 | 0.114 / 0.067 | 0.106 / 0.066 |
+> | 3.24.0 SMM19 | 0.106 / 0.067 | 0.105 / 0.066 |
+>
+> With the soft modes removed, 4.4.0 SMM19 agrees with IBDB19 and 3.24.0. The
+> excess (≈90 % of the 4.4.0 value) therefore comes **entirely from modes
+> below 0.3 THz**, i.e. the soft acoustic modes next to Γ, where C/ω diverges.
+> 3.24.0 evidently regularizes or excludes them in the coherence term, while
+> the 4.4.0 inter-band path does not. This also explains the mesh instability:
+> on MnIn₂Se₄ the softest mesh modes are the first Γ–Z point (TA 0.09 THz at
+> 11³), whose frequency changes with N — the same modes as the quadrature
+> error of §6.3. On a 6³ mesh the 4.4.0 SMM19 coherence is 8.0 / 8.4, i.e.
+> six times the population, so the term is erratic, not merely large. The
+> cutoff run is a diagnostic only; it also removes those
+> modes from the population term (κ_zz P 1.250 → 0.584), so its P is not a
+> result.
+>
+> **Rule for this report**: the coherence term comes from phono3py 3.24.0
+> SMM19, or from 4.x `IBDB19`. 4.x `SMM19`/`NJC23` is not used, for either
+> material, unless it is shown to be insensitive to the low-frequency cutoff
+> for the case in question.
+>
 > **Decision**: the coherence term is taken from **3.24.0** (κ_zz +0.066,
 > in-plane +0.09 at 14³). 4.4.0 `IBDB19` gives the same magnitude (κ_zz 0.067
 > at 11³), so it is the fallback if a 4.x run is required. The 4.4.0
 > `SMM19`/`NJC23` coherence is not used anywhere in this report until it
 > reproduces a published benchmark. Reproduction script:
-> `test/figures/kappa_vs_T/jobs30/wig.py <mesh> <SMM19|NJC23|IBDB19>`.
+> `test/figures/kappa_vs_T/jobs30/wig.py <mesh> <SMM19|NJC23|IBDB19> [cutoff_THz]`.
 
 
 The population term reproduces the plain RTA κ_zz exactly (1.0934), confirming
@@ -516,11 +545,22 @@ internal consistency.
 >
 > The spread over 11³–16³ is ±5 % in-plane and ±2 % in κ_zz, and SMM19 agrees
 > with IBDB19 to 3 %, so the +12.4 % is retained. (Contrast MnIn₂Se₄, where the
-> same 4.4.0 SMM19 term changes by a factor of 2 between 11³ and 14³.) The
-> 4.4.0 SMM19 problem is therefore material-specific, not a blanket defect.
+> same 4.4.0 SMM19 term changes by a factor of 2 between 11³ and 14³.)
+>
+> This does **not** mean the 4.4.0 implementation is reliable for Mn₂In₂Se₅.
+> The defect is the unregularized ω → 0 contribution described above. Whether
+> it shows up depends on how soft the lowest modes on the mesh are, and on
+> their inter-band velocity matrix elements. Mn₂In₂Se₅ apparently does not
+> trigger it on these meshes. **Pending check**: re-run Mn₂In₂Se₅ 16³ with
+> SMM19 and IBDB19 at `cutoff_frequency=0.3`. If C is essentially unchanged,
+> the +12.4 % stands as "insensitive to the soft-mode cutoff". If it drops,
+> use the IBDB19 value.
 
-Both materials follow the same rule: **the lower κ_zz, the larger the coherence
-fraction.** For Mn₂In₂Se₅ the calculation requires `primitive_matrix="P"`;
+The coherence fraction of κ_zz is about +10 % for MnIn₂Se₄ (0.066 on the
+mesh-extrapolated 0.646) and +12 % for Mn₂In₂Se₅. These are comparable. The
+earlier statement "the lower κ_zz, the larger the coherence fraction" does
+not follow from these two materials: MnIn₂Se₄ has the lower κ_zz and the
+slightly smaller fraction. It is withdrawn. For Mn₂In₂Se₅ the calculation requires `primitive_matrix="P"`;
 with `"auto"` the 16×16×4 mesh breaks grid symmetry (phono3py silently falls
 back to a 5×5×5 grid, giving a spurious κ_zz of 2.90 instead of 0.90).
 

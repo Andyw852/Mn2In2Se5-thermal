@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Wigner coherence term of MnIn2Se4, for comparing phono3py versions (report §7).
 
-  python wig.py <mesh> [SMM19|NJC23|IBDB19]
+  python wig.py <mesh> [SMM19|NJC23|IBDB19] [cutoff_THz]
 
 phono3py 3.x : conductivity_type="wigner" (SMM19); the variant argument is ignored.
 phono3py 4.x : transport_type=<variant>; prints kappa_intra (population) and
@@ -9,6 +9,8 @@ phono3py 4.x : transport_type=<variant>; prints kappa_intra (population) and
 Prints in-plane (xx) and zz at 300 K, isotopes on, 4x4x2 FC2 + 6.45 A FC3.
 Reference result (11^3): 3.24.0 P 3.554/1.250, C 0.106/0.067;
 4.4.0 SMM19 C 1.242/1.165, NJC23 C 1.242/1.165, IBDB19 C 0.114/0.067.
+With cutoff_THz = 0.3 (diagnostic: excludes the soft modes, also from P):
+4.4.0 SMM19 C 0.108/0.069, IBDB19 C 0.106/0.066, 3.24.0 C 0.105/0.066.
 """
 import os
 import sys
@@ -21,11 +23,13 @@ from phonopy.interface.vasp import read_vasp
 R = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "MnIn2Se4"))
 N = int(sys.argv[1])
 VARIANT = sys.argv[2] if len(sys.argv) > 2 else "SMM19"
+CUTOFF = float(sys.argv[3]) if len(sys.argv) > 3 else None   # THz; None = phono3py default
 
 ph3 = phono3py.Phono3py(read_vasp(f"{R}/fit/POSCAR"),
                         supercell_matrix=[[4, 0, 0], [0, 4, 0], [0, 0, 1]],
                         phonon_supercell_matrix=[[4, 0, 0], [0, 4, 0], [0, 0, 2]],
-                        primitive_matrix=[[1, 1, 2], [-1, -2, -1], [1, 1, 1]], log_level=0)
+                        primitive_matrix=[[1, 1, 2], [-1, -2, -1], [1, 1, 1]], log_level=0,
+                        **({} if CUTOFF is None else {"cutoff_frequency": CUTOFF}))
 ph3.fc3 = read_fc3_from_hdf5(f"{R}/fit_cut3_6p45/fc3.hdf5")
 ph3.fc2 = read_fc2_from_hdf5(f"{R}/fc2_442_phonon/fc2.hdf5")
 ph3.mesh_numbers = [N] * 3
