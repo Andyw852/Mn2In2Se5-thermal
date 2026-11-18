@@ -6,6 +6,10 @@ the experiments are on hot-pressed polycrystals, so the two differ by texture,
 antisite disorder, grain boundaries and electronic contribution.
 `analysis/extrinsic/` puts those into a single model and fits it to experiment.
 
+## Latest progress report
+
+**[`PROGRESS_REPORT_20261118.md`](PROGRESS_REPORT_20261118.md)** — values to quote, the three paper figures, the uncertainty budget and the open items.
+
 ## Status (2026-11-15)
 
 | | MnIn₂Se₄ | Mn₂In₂Se₅ |
