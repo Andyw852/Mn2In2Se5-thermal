@@ -439,32 +439,48 @@ That term is not included in any of the earlier numbers.
 | Population (P) | 3.6584 | 1.0934 |
 | Coherence (C) | 0.0908 | 0.0661 |
 
-> ⚠️ **The coherence number above is version-dependent and not reproducible with
-> the current stack.** The table was produced with phono3py **3.24.0**
-> (`conductivity_type="wigner"`). Re-running the same physical setting on
-> HanHai with phono3py **4.4.0** (`transport_type="SMM19"`, the 4.4.0
-> spelling) gives the *same* population (3.6474, i.e. within 0.3 %) but a
-> coherence term **7× larger**:
->
-> | | in-plane | κ_zz |
-> |---|---:|---:|
-> | population (4.4.0) | 3.6474 | 1.0934 |
-> | coherence (4.4.0) | **0.6539** | 0.5982 |
-> | TOT (4.4.0) | 4.3013 | 1.6916 |
->
-> The two implementations are structurally the same (TOT = P + C, C carries the
-> s₁,s₂ cross terms in both), so the difference must sit in the effective
-> heat-capacity matrix — 4.4.0 uses `mode_cv_matrix_smm19`, which the source
-> labels experimental. Local compute is forbidden here, so 3.24.0 cannot be
-> re-run for a controlled comparison.
->
-> **Why it matters**: adding 0.65 instead of 0.09 to the in-plane LBTE value
-> moves it from 4.61 to 5.17 (**+12 %**), which crosses the 10 % tolerance. Until
-> this is settled, every in-plane number that includes a coherence term must be
-> quoted as a **range (4.6–5.2)** with this note; the 4.6 in §9.1 is the
-> 3.24.0-based value and the 5.17 the 4.4.0-based one. All other conclusions of
-> this report are **population-only** and unaffected.
 | C / P | **+2.5 %** | **+6.0 %** |
+
+> ⚠️ **The coherence term depends on the phono3py version. The 3.24.0 value
+> above is the one to use.**
+>
+> On HanHai, phono3py **4.4.0** (`transport_type="SMM19"`) gave the same
+> population at 14³ but a coherence term about 7× larger (in-plane 0.6539,
+> κ_zz 0.5982; TOT 4.3013 / 1.6916). A controlled comparison was run
+> afterwards in a separate environment: same force constants, 11³, 300 K,
+> isotopes on, both versions:
+>
+> | version, method | in-plane P / C | κ_zz P / C |
+> |---|---:|---:|
+> | 3.24.0, Wigner (SMM19) | 3.554 / **0.106** | 1.250 / **0.067** |
+> | 4.4.0, `SMM19` | 3.538 / **1.242** | 1.250 / **1.165** |
+> | 4.4.0, `NJC23` | 3.538 / 1.242 | 1.250 / 1.165 |
+> | 4.4.0, `IBDB19` | 3.538 / 0.114 | 1.250 / 0.067 |
+>
+> What this shows:
+>
+> - **The population term agrees between the versions; only the coherence
+>   term differs**, by ≈12× (in-plane) and ≈17× (κ_zz) for the same SMM19
+>   method.
+> - **The heat-capacity matrix is not the cause.** The SMM19 formula,
+>   C_jj' = ¼(ω_j + ω_j')(C_j/ω_j + C_j'/ω_j'), is the same in both versions
+>   (checked in the 4.4.0 source, `mode_cv_matrix_smm19`). Evaluated directly,
+>   it is numerically almost identical to the NJC23 matrix at 300 K, which is
+>   why 4.4.0 `SMM19` and `NJC23` agree to four decimals. The difference must
+>   therefore sit in 4.4.0's new inter-band kernel or velocity matrix.
+> - **The 4.4.0 coherence term is not stable with the mesh**: 1.165 at 11³
+>   against 0.598 at 14³ (κ_zz), a factor of 2. The 3.24.0 term is stable
+>   (0.067 at 11³, 0.066 at 14³).
+> - A coherence term as large as the population term (κ_zz 1.165 vs 1.250)
+>   would double κ_zz. For a crystal with κ of a few W m⁻¹ K⁻¹ this is
+>   implausible, and it is not seen in 3.24.0.
+>
+> **Decision**: the coherence term is taken from **3.24.0** (κ_zz +0.066,
+> in-plane +0.09 at 14³). 4.4.0 `IBDB19` gives the same magnitude (κ_zz 0.067
+> at 11³). The 4.4.0 `SMM19` / `NJC23` coherence is not used anywhere in this
+> report until it reproduces a published benchmark. Reproduction script:
+> `test/figures/kappa_vs_T/jobs30/wig.py <mesh> <SMM19|NJC23|IBDB19>`.
+
 
 The population term reproduces the plain RTA κ_zz exactly (1.0934), confirming
 internal consistency.
@@ -510,10 +526,16 @@ Run at 20×20×20, 300 K, FC3 = 6.45 Å, FC2 = 4×4×2 (HanHai job 419636):
 | in-plane κ | 3.6884 | **1.4879** | **2.48×** |
 | κ_zz rest of the zone | 0.6380 | **0.4453** | **1.43×** |
 
-The VCA cross-plane value (0.4453) is already close to the measured hot-pressed
-value (0.485), while the in-plane one (1.49) stays 1.6× above the measured 0.93 —
-mass disorder explains most of the cross-plane suppression but grain boundaries or
-strain are still needed in-plane. Scattering-rate comparison and the full setup:
+On the 30³-total convention used for the figures, the same pair gives in-plane
+3.6946 → **1.5340** (2.41×) and κ_zz 0.7645 → **0.5904** (1.30×). The κ_zz
+suppression is smaller on totals (1.30× against 1.43× on the rest term),
+because the VCA raises the share of the Γ–Z point (27 % → 36 % at 20³). The
+total therefore *understates* the disorder effect on κ_zz.
+
+These single-crystal values cannot be set against the hot-pressed
+measurements (Perp 0.93, Para 0.485) directly. The measurement mixes the two
+components through texture and contains boundary scattering; see
+`test/figures/calc_vs_experiment/` for the texture-mixed comparison. Scattering-rate comparison and the full setup:
 `test/figures/scattering/`.
 
 ## 8. FC3 → ShengBTE export audit (both materials)
@@ -560,7 +582,7 @@ All at 300 K, isotope scattering on.
 | **FC2 4×4×2, mesh 18, 6.45 Å** | RTA | 3.6945 | 0.9435 | **upper bound on the intrinsic κ_zz** |
 | **FC2 4×4×2, mesh 24, 6.45 Å** | RTA | 3.7020 | 0.8052 | in-plane converged; κ_zz total still contaminated (§6.5) |
 | FC2 4×4×2, mesh 30, 6.45 Å | RTA | 3.6946 | 0.7645 | same |
-| FC2 4×4×2, mesh 14, 6.45 Å | Wigner-RTA | 3.7492 | 1.1595 | coherence included |
+| FC2 4×4×2, mesh 14, 6.45 Å | Wigner-RTA (3.24.0) | 3.7492 | 1.1595 | coherence included (3.24.0; the 4.4.0 SMM19 coherence is not used, §7) |
 | FC2 4×4×2, 14³–30³, Γ–Z quadrature removed, 10 μm | RTA | 3.6790 | **0.638 ± 0.002** | finite grain (§6.4) |
 | FC2 4×4×2, 14³–30³, Γ–Z quadrature removed, 1 μm | RTA | 3.5618 | **0.58 ± 0.01** | finite grain (§6.4) |
 | **FC2 4×4×2, 14³–30³, Γ–Z quadrature removed** | RTA | 3.6946 | **0.648 ± 0.003** | **intrinsic κ_zz, q-mesh converged; FC3 cutoff not converged** (§6.5) |
@@ -577,25 +599,36 @@ not the mesh, and it applies to RTA and LBTE alike (for
 
 ### 9.1 Values to quote at ≈10 % accuracy
 
-Two corrections relative to the table above: **in-plane κ must come from the
-LBTE solution, not RTA**, and the **coherence** term should be added to both
-components.
+Conventions: **in-plane κ comes from the LBTE solution, not RTA**. **κ_zz is
+quoted as the 30³ total**, the same convention as all figures, with the
+mesh-extrapolated value alongside. The **coherence** term is the phono3py
+3.24.0 value (§7).
 
 | quantity | value | composition |
 |---|---:|---|
-| **in-plane κ** | **≈ 4.5 (range 4.3–5.2)** | **LBTE 4.5219** at 14³ (HanHai job 412627, reproduced twice); Wigner-RTA **TOT 4.3013** at the same mesh/cutoff; naive population+coherence sum **5.176**. phono3py 4.4.0's SMM19-**LBTE** returns TOT = the LBTE population (the coherence attribute is not added, job 415323), so **4.52 is the defensible value** and 5.18 the upper bound. The +1.3 % mesh correction measured on the RTA series (14³ → 30³) only shifts this to 4.53. |
-| **κ_zz** | **≈ 0.71** | 0.648 (intrinsic, q-mesh converged; LBTE = RTA to 4·10⁻⁵) **+ coherence 0.066** (the 3.24.0-scale value; the 4.4.0 Wigner-RTA coherence is 0.598 but it was measured on the *contaminated* 14³ total, so it cannot be transferred to the converged value) = 0.714 |
+| **in-plane κ** | **≈ 4.6** | **LBTE 4.5219** at 14³ (HanHai job 412627, reproduced twice), +1.3 % mesh correction measured on the RTA series (14³ → 30³) = 4.58, **+ coherence 0.09** (3.24.0) = **4.67** |
+| **κ_zz, quoted** | **≈ 0.83** | **30³ total 0.7645** (RTA; LBTE = RTA for κ_zz to 4·10⁻⁵) **+ coherence 0.066** (3.24.0) = 0.831 |
+| κ_zz, mesh-extrapolated (reference) | ≈ 0.71 | 0.646 from extrapolating the 14³–30³ totals, κ(N) = κ∞ + A·N^-1.8; this agrees with the rest term of §6.5 (0.648). Adding the coherence gives 0.71 |
 | FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
 
 **Warning on the in-plane number.** For in-plane κ, LBTE and RTA differ by
 **24 %** (4.5219 vs 3.6474 at 14³), which is larger than the 10 % tolerance. The
 RTA 3.69–3.70 that heads the table above would therefore be ≈20 % low; quote the
-LBTE-based 4.6.
+LBTE-based 4.6. The earlier upper end of 5.2 came from the 4.4.0 SMM19 coherence
+term and is withdrawn (§7).
 
-**Warning on the κ_zz number.** 0.648 is the *q-mesh-converged* value; adding the
-coherence term (+0.066) gives 0.71. Both sit on top of the ≈−10 % FC3-cutoff
-estimate, so the honest statement is **κ_zz ≈ 0.65–0.71, FC3 cutoff limited by
-the 4×4×1 cell (estimated ≈10 %)**.
+**Warning on the κ_zz number.** The quoted 0.83 is the 30³ total plus
+coherence. It carries two known upward biases:
+
+- the mesh: the 24³ → 30³ step is still −5 %, and the 30³ total lies ≈15–18 %
+  above the extrapolated 0.646;
+- the FC3 cutoff: estimated ≈10 %.
+
+The honest statement is therefore **κ_zz ≈ 0.83 at 30³, with the converged value
+expected near 0.65–0.71, FC3 cutoff limited by the 4×4×1 cell**.
+
+**Note on disorder.** On totals, the VCA suppression of κ_zz is 1.30×, against
+1.43× on the rest term (§7.5). Quote the convention with the number.
 
 ---
 
