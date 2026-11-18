@@ -24,6 +24,9 @@ problem: a 4×4×1 cell contains only **one** unit cell along the layer normal
 
 **Remedy:** recompute FC2 in a **4×4×2** supercell (224 atoms, safe FC3 cutoff
 raised to 8.05 Å), then re-evaluate κ.
+(Note added 2026-11-18: the 8.05 Å is the minimum-image limit. By the same rule
+the 4×4×1 cell already allows 8.01 Å for FC3; the 6.45/6.51 Å quoted elsewhere
+is AutoZT's more conservative parallelepiped rule. See §10 item 1.)
 
 ---
 
@@ -736,7 +739,7 @@ Ordered by how much each item can still move κ_zz.
 
 | # | Item | Cost | Why it matters |
 |---|---|---|---|
-| **1** | **FC3 in a 4×4×2 supercell — Mn₂In₂Se₅ first, then MnIn₂Se₄** | ~2 days DFT each | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
+| **1** | **FC3 cutoff beyond 6.45 / 6.51 Å — Mn₂In₂Se₅ first.** No larger supercell is needed for this: the existing 4×4×1 cells allow 7.96 / 8.01 Å by the minimum-image rule (no pair has two images inside the cutoff), and 4×4×2 gains nothing under either rule. Plan in `dft/fc3_cutoff_extend/`: (0) check that pheasy uses true minimum-image vectors; (1) refit the existing frames at 6.7–7.9 Å; (2) only if the data/parameter ratio drops below 3, add ≈ 30 frames in the same 4×4×1 cell | step 1 hours, no DFT; step 2 ≈ 4–6 k core-h | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
 | 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged, κ_zz = 0.648 ± 0.003 on the q-mesh (the FC3 cutoff, item 1, is not settled) |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
 | 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.977 ± 0.008** (plateau 24³–32³; the earlier 0.951 ± 0.032 was an unjustified extrapolation and is withdrawn) after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |

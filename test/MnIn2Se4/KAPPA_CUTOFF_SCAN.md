@@ -41,6 +41,8 @@ The largest shell that can be included is **6.3557 Å**; the next shell at 6.531
 **So 6.45 Å is already the physical limit of 4×4×1 and cannot be pushed any higher.**
 Testing a larger cutoff requires a 4×4×2 fc3 supercell (safe limit 8.048 Å) and hence a new DFT dataset.
 
+> **Correction (2026-11-18).** The two limits above use different rules. 6.507 Å is AutoZT's parallelepiped rule (half the shortest interplanar distance − 0.1); 8.048 Å is the minimum-image rule (half the shortest supercell lattice vector − 0.1). With the minimum-image rule — the real no-aliasing condition — **the existing 4×4×1 cell already allows 8.01 Å**, and 4×4×2 (8.05 Å) gains nothing. Under the parallelepiped rule 4×4×2 gives 6.55 Å, again no gain. So the next step is a refit of the existing frames at larger cutoffs, not a new supercell. See `../../dft/fc3_cutoff_extend/README.md`.
+
 ## Data source
 
 The three fc3 cases are taken directly from `cutoff_scan/` in the original AutoZT fit directory (pheasy RFE-OLS fit, 2026-11-10):
