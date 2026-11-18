@@ -686,16 +686,16 @@ not the mesh, and it applies to RTA and LBTE alike (for
 ### 9.1 Values to quote at ≈10 % accuracy
 
 Conventions: **in-plane κ comes from the LBTE solution, not RTA**. **κ_zz is
-quoted as the mesh-converged rest term plus coherence**; the 30³ total is kept
-only as the figure convention, because it still contains the Γ–Z quadrature
-artifact (§6.5). The **coherence** term is the phono3py 3.24.0 value (§7).
+quoted as the mesh-converged rest term plus coherence**. The figures use the
+same convention (`test/figures/paper/`). The 30³ total is kept in the data only,
+because it still contains the Γ–Z quadrature artifact (§6.5). The **coherence** term is the phono3py 3.24.0 value (§7).
 
 | quantity | value | composition |
 |---|---:|---|
 | **in-plane κ** | **≈ 4.6** | **LBTE 4.5219** at 14³ (HanHai job 412627, reproduced twice), +1.3 % mesh correction measured on the RTA series (14³ → 30³) = 4.58, **+ coherence 0.09** (3.24.0) = **4.67** |
 | **κ_zz, quoted** | **≈ 0.71** | **0.648 ± 0.003** (rest term, §6.5) **+ coherence 0.066** (3.24.0) = 0.714 |
-| κ_zz, 30³ total (figure convention) | ≈ 0.83 | **30³ total 0.7645** (RTA; LBTE = RTA for κ_zz to 4·10⁻⁵) **+ coherence 0.066** = 0.831; still carries the Γ–Z artifact |
-| FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**; the 4×4×1 cell caps the cutoff at 6.45 Å. |
+| κ_zz, 30³ total (reference only, not quoted, not plotted) | ≈ 0.83 | **30³ total 0.7645** (RTA; LBTE = RTA for κ_zz to 4·10⁻⁵) **+ coherence 0.066** = 0.831; still carries the Γ–Z artifact |
+| FC3 cutoff | **≈ −10 %, estimated downward** | last measured steps −8.7 % (in-plane) and −8.2 % (κ_zz) in §6.6, and they are shrinking. This is an **estimate from the shrinking steps, not a demonstration**. The fit stops at 6.45 Å, which is AutoZT's conservative parallelepiped limit; by the minimum-image rule the 4×4×1 data would allow ≈ 8 Å (§10 item 1, not pursued). |
 
 **Both materials, one convention per row** (300 K). Pick one κ_zz row and
 use it for both materials:
@@ -704,7 +704,8 @@ use it for both materials:
 |---|---:|---:|
 | in-plane κ | ≈ 4.6 | ≈ 3.37 |
 | **κ_zz, mesh-converged + coherence (quoted)** | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
-| κ_zz, 30³ total + coherence (figure convention only) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
+| κ_zz, 30³ total + coherence (reference only) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
+| in-plane FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−22.9 %, −8.7 %) | steps −3.9 %, −4.3 % (16³, isotopes on), **not shrinking**: upper bound |
 | κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | **not converged, unbounded**: steps −11.8 %, −9.9 % barely shrink |
 
 Mn₂In₂Se₅ sources: the rest-term plateau of §6.3 (×0.9961 isotopes); 30³ total
@@ -731,6 +732,23 @@ the 4×4×1 cell**.
 **Note on disorder.** On totals, the VCA suppression of κ_zz is 1.30×, against
 1.43× on the rest term (§7.5). Quote the convention with the number.
 
+**Comparing the two materials.** The in-plane ordering (MnIn₂Se₄ ≈ 4.6 >
+Mn₂In₂Se₅ ≈ 3.37) is robust: a 37 % gap, against cutoff effects of ≲ 10 %
+(MnIn₂Se₄) and ≈ 4 % per step (Mn₂In₂Se₅). The κ_zz ordering is **not**. Mn₂In₂Se₅ κ_zz
+(≈ 1.09) is an upper bound because its cutoff is not converged. A further
+20–30 % drop would bring it to ≈ 0.75–0.85, close to MnIn₂Se₄ (≈ 0.71). Do not
+state "Mn₂In₂Se₅ has the higher κ_zz" as a result.
+
+**Suggested text for the paper (cutoff).**
+
+> Third-order force constants were included up to 6.45 Å (MnIn₂Se₄) and
+> 6.51 Å (Mn₂In₂Se₅). For MnIn₂Se₄ the last increase of the cutoff
+> (6.23 → 6.45 Å) lowered κ by about 8 %, with shrinking steps. We therefore
+> estimate the remaining truncation error at ≲ 10 %, most likely an
+> overestimate. For Mn₂In₂Se₅ the last two steps (5.68 → 6.12 → 6.51 Å)
+> lowered the in-plane κ by 4 % each and κ_zz by 12 % and 10 %. Neither trend
+> has levelled off, so both values should be regarded as upper bounds.
+
 ---
 
 ## 10. Open items
@@ -739,7 +757,7 @@ Ordered by how much each item can still move κ_zz.
 
 | # | Item | Cost | Why it matters |
 |---|---|---|---|
-| **1** | **FC3 cutoff beyond 6.45 / 6.51 Å — Mn₂In₂Se₅ first.** No larger supercell is needed for this: the existing 4×4×1 cells allow 7.96 / 8.01 Å by the minimum-image rule (no pair has two images inside the cutoff), and 4×4×2 gains nothing under either rule. Plan in `dft/fc3_cutoff_extend/`: (0) check that pheasy uses true minimum-image vectors; (1) refit the existing frames at 6.7–7.9 Å; (2) only if the data/parameter ratio drops below 3, add ≈ 30 frames in the same 4×4×1 cell | step 1 hours, no DFT; step 2 ≈ 4–6 k core-h | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
+| **1** | **FC3 cutoff beyond 6.45 / 6.51 Å — Mn₂In₂Se₅ first.** No larger supercell is needed for this: the existing 4×4×1 cells allow 7.96 / 8.01 Å by the minimum-image rule (no pair has two images inside the cutoff), and 4×4×2 gains nothing under either rule. Plan in `dft/fc3_cutoff_extend/`: (0) check that pheasy uses true minimum-image vectors; (1) refit the existing frames at 6.7–7.9 Å; (2) only if the data/parameter ratio drops below 3, add ≈ 30 frames in the same 4×4×1 cell. **Not pursued (decision 2026-11-18).** The cutoff uncertainty is the only remaining one and is reported instead (§9.1, suggested text). The plan stays available in case a referee asks; step 1 needs no DFT | step 1 hours, no DFT; step 2 ≈ 4–6 k core-h | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
 | 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged, κ_zz = 0.648 ± 0.003 on the q-mesh (the FC3 cutoff, item 1, is not settled) |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
 | 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.977 ± 0.008** (plateau 24³–32³; the earlier 0.951 ± 0.032 was an unjustified extrapolation and is withdrawn) after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |
