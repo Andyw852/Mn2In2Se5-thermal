@@ -1,0 +1,59 @@
+{
+ "material": "Mn2In2Se5",
+ "fc2": "4x4x1",
+ "fc3": "6.51 A",
+ "T_K": 300.0,
+ "isotope": false,
+ "mesh": 16,
+ "cutoff_THz": 0.3,
+ "cases": {
+  "SMM19": {
+   "cutoff_THz": 0.3,
+   "TOT": {
+    "inplane": 3.139800753593134,
+    "kappa_zz": 0.9121554564126331
+   },
+   "population": {
+    "inplane": 3.0044722295840867,
+    "kappa_zz": 0.8012969065244819
+   },
+   "coherence": {
+    "inplane": 0.1353285240090476,
+    "kappa_zz": 0.11085854988815114
+   },
+   "seconds": 239.0
+  },
+  "IBDB19": {
+   "cutoff_THz": 0.3,
+   "TOT": {
+    "inplane": 3.1373547611265913,
+    "kappa_zz": 0.9083364155088712
+   },
+   "population": {
+    "inplane": 3.0044722295840867,
+    "kappa_zz": 0.8012969065244818
+   },
+   "coherence": {
+    "inplane": 0.13288253154250462,
+    "kappa_zz": 0.10703950898438941
+   },
+   "seconds": 272.8
+  },
+  "SMM19_default": {
+   "cutoff_THz": 0.0,
+   "TOT": {
+    "inplane": 3.140427108284871,
+    "kappa_zz": 1.6583591289767206
+   },
+   "population": {
+    "inplane": 2.9946399239366714,
+    "kappa_zz": 1.5472090887407466
+   },
+   "coherence": {
+    "inplane": 0.14578718434819993,
+    "kappa_zz": 0.11115004023597397
+   },
+   "seconds": 275.0
+  }
+ }
+}

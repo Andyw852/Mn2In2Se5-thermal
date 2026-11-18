@@ -492,7 +492,8 @@ That term is not included in any of the earlier numbers.
 > | 4.4.0 IBDB19 | 0.114 / 0.067 | 0.106 / 0.066 |
 > | 3.24.0 SMM19 | 0.106 / 0.067 | 0.105 / 0.066 |
 >
-> With the soft modes removed, 4.4.0 SMM19 agrees with IBDB19 and 3.24.0. The
+> With the soft modes removed, 4.4.0 SMM19 agrees with IBDB19 and 3.24.0 to 5 %
+> in-plane and 5 % in κ_zz (0.108/0.069 against 0.114/0.067 and 0.105/0.066). The
 > excess (≈90 % of the 4.4.0 value) therefore comes **entirely from modes
 > below 0.3 THz**, i.e. the soft acoustic modes next to Γ, where C/ω diverges.
 > 3.24.0 evidently regularizes or excludes them in the coherence term, while
@@ -540,11 +541,12 @@ internal consistency.
 > |---|---:|---:|
 > | 11³ | 0.1515 / 0.1079 | 0.1495 / 0.1039 |
 > | 12³ | 0.1574 / 0.1114 | 0.1547 / 0.1075 |
-> | 14³ | 0.1492 / 0.1102 | — |
+> | 14³ | 0.1492 / 0.1102 | 0.1465 / 0.1062 |
 > | 16³ (the value above) | 0.1452 / 0.1115 | — |
 >
-> The spread over 11³–16³ is ±5 % in-plane and ±2 % in κ_zz, and SMM19 agrees
-> with IBDB19 to 3 %, so the +12.4 % is retained. (Contrast MnIn₂Se₄, where the
+> The spread over 11³–16³ is ±5 % in-plane and ±2 % in κ_zz. SMM19 and IBDB19
+> agree to **1.3–1.7 % in-plane and 3.6–3.8 % in κ_zz** (11³–14³), so the
+> +12.4 % is retained. (Contrast MnIn₂Se₄, where the
 > same 4.4.0 SMM19 term changes by a factor of 2 between 11³ and 14³.)
 >
 > This does **not** mean the 4.4.0 implementation is reliable for Mn₂In₂Se₅.
@@ -559,7 +561,7 @@ internal consistency.
 > | 4.4.0 IBDB19 | — | **0.1329 / 0.1070** |
 >
 > Removing the soft modes changes C by −7 % in-plane and −0.3 % in κ_zz, and
-> SMM19 then agrees with IBDB19 to 2 %. So the +12.4 % stands, and in this
+> SMM19 then agrees with IBDB19 to **1.8 % in-plane and 3.6 % in κ_zz**. So the +12.4 % stands, and in this
 > material the term is **insensitive to the soft-mode cutoff** — i.e. the
 > 4.4.0 defect is present in the implementation but is not triggered here
 > (the soft modes carry almost none of the coherence weight). (For comparison,
