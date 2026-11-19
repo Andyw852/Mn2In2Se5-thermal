@@ -24,9 +24,10 @@ Points to state in the captions:
 - **Fig. 2.**
   - Ordered and VCA are single-crystal components without boundary scattering
     or texture. They are an upper reference, not a fit.
-  - The VCA occupancies are MnIn₂Se₄ i = 0.44 (Döll, source still to be
-    supplied) and Mn₂In₂Se₅ x = 0.13 (from the degenerate L3 fit). Neither
-    comes from a structural refinement.
+  - The VCA occupancies are MnIn₂Se₄ i = 0.44 (single-crystal refinement of
+    Range et al., Z. Naturforsch. 46b, 1122 (1991)) and Mn₂In₂Se₅ x = 0.13
+    (from the degenerate L3 fit; the literature gives ≈ 0.21–0.30, see
+    `analysis/disorder/README.md` §5.1).
   - L3 is a 3-parameter fit to the same 300–623 K points. Only the texture s
     is determined; x and L are degenerate.
   - The experiment is κ_tot, with κ_e not subtracted.

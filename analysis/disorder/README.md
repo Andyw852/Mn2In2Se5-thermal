@@ -238,7 +238,57 @@ the RTA rows only, or apply the same corrections to both.
 | Tamura-type mass-variance scattering | the formula behind `mass_variances` | **reference identified, not checked against the paper**: S. Tamura, *Phys. Rev. B* **27**, 858 (1983). Check volume and page before submission |
 | phono3py itself | every κ in this repository | **reference identified, not checked against the paper**: A. Togo, L. Chaput, I. Tanaka, *Phys. Rev. B* **91**, 094306 (2015); A. Togo, L. Chaput, T. Tadano, I. Tanaka, *J. Phys.: Condens. Matter* **35**, 353001 (2023). Check before submission |
 | Simoncelli–Marzari–Mauri (SMM19), Nat. Phys. 15, 809 (2019) | the Wigner/coherence term (`transport_type="SMM19"`) | **verified**: this citation is written in the docstring of phono3py's `conductivity/smm19/__init__.py` |
-| Döll single-crystal occupancies at i = 0.44 | the VCA masses and g values; and, by §2, the x of L3 for MnIn₂Se₄ | **Bibliographic reference NOT verified here**: the number comes from the user's `run_phono3py_kappa_vca.sh`, which attributes it to a "Döll single-crystal occupancy" without a paper reference. **The exact citation must be supplied before this can go into a manuscript.** Note however that the independent L3 fit now lands on **x = 0.45**, with mass variances matching the VCA values to 1-2 % (section 3.4) -- the kappa data are consistent with i = 0.44 even though they cannot supply the reference themselves |
+| Döll single-crystal occupancies at i = 0.44 | the VCA masses and g values; and, by §2, the x of L3 for MnIn₂Se₄ | **Source identified (2026-11-19), full text not yet read**: K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), doi:10.1515/znb-1991-0825; see §5.1. Earlier note:  the number comes from the user's `run_phono3py_kappa_vca.sh`, which attributes it to a "Döll single-crystal occupancy" without a paper reference. **The exact citation must be supplied before this can go into a manuscript.** Note however that the independent L3 fit now lands on **x = 0.45**, with mass variances matching the VCA values to 1-2 % (section 3.4) -- the kappa data are consistent with i = 0.44 even though they cannot supply the reference themselves |
+
+### 5.1 Occupancy literature (search of 2026-11-19)
+
+Found through abstracts, citation listings and search snippets. The publishers'
+and arXiv/PMC hosts are blocked by this environment's network policy, so **no full
+text was read**; check each number against the paper before submission.
+
+**MnIn₂Se₄ — the source of i = 0.44.** K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), doi:10.1515/znb-1991-0825,
+"The Crystal Structure of MnIn₂Se₄, a Ternary Layered Semiconductor".
+Single-crystal X-ray structure of CVT crystals (AlCl₃ transport) from the same
+group as Döll et al., *J. Cryst. Growth* **104**, 593 (1990), doi:10.1016/0022-0248(90)90002-3.
+Reported: R-3m, a = 4.051(1) Å, c = 39.464(2) Å, Z = 3, R = 0.064 for 609 reflections,
+octahedral site **M_oct = 0.56 Mn + 0.44 In**. The tetrahedral composition
+0.22 Mn + 0.78 In used in §3.2 follows from the stoichiometry (1 Mn and 2 In per
+formula unit over 1 octahedral + 2 tetrahedral sites); it was not seen in the
+snippets. So the citation for i = 0.44 is Range et al. 1991, not the 1990 growth paper.
+
+- The samples are CVT single crystals, like the ones characterised by the
+  experimental side (a = 4.05, c = 39.35 Å). The hot-pressed pellets have a
+  different thermal history; in the sulfide MnIn₂S₄ the inversion depends on
+  synthesis temperature (i ≈ 0.28 conventionally, tunable under high-pressure
+  synthesis; Z. Anorg. Allg. Chem. 2020, doi:10.1002/zaac.202000014, and an
+  SSRN preprint by Gainza et al.), so the pellet value may differ.
+- A 2001 study of MnIn₂(1−z)Ga₂zSe₄ (Mater. Res. Bull.) describes Mn and In as
+  randomly distributed over the cation sites in MnIn₂Se₄, consistent with strong mixing.
+- Mammadov et al., *Condensed Matter and Interphases* **27**(1), 57–66 (2025),
+  doi:10.17308/kcmf.2025.27/12487: Rietveld refinement of MnIn₂Se₄ and Mn₂In₂Se₅
+  from powder data, and a **5–6 mol % homogeneity range of MnIn₂Se₄ towards
+  In₂Se₃**, i.e. off-stoichiometry and vacancies are possible. Occupancies not seen.
+
+**Mn₂In₂Se₅ — no structural source was used so far (x = 0.13 came from the fit).**
+
+| source | what it reports (from snippets) | x (fraction of Mn on In sites) |
+|---|---|---|
+| Williams et al., *J. Mater. Chem. C* **12**, 1753 (2024), doi:10.1039/D3TC03550F | single crystals; "~21 % site mixing" between Mn and In sites (definition not seen) | ≈ 0.21 if the 21 % is the fraction of a site occupied by the other cation |
+| *Molecules* **30**, 1904 (2025), doi:10.3390/molecules30091904 | room-temperature phase: octahedral sites ≈ 70 % Mn, tetrahedral ≈ 70 % In; a high-temperature layered polymorph with 0.5/0.5 mixing | ≈ 0.30 (equal Mn and In counts) |
+
+With these values the existing 24³ L3 fit (`../extrinsic/results/*_m24/fit_*.json`,
+`profile_x`, s re-optimised) still describes the 300–623 K data:
+
+| | x | best L | rms of ln(model/exp) |
+|---|---:|---:|---:|
+| MnIn₂Se₄ | 0.44 (Range 1991) | 30.7 nm | 1.22 % |
+| Mn₂In₂Se₅ | 0.21 (Williams 2024) | 22.1 nm | 3.6 % |
+| Mn₂In₂Se₅ | 0.30 (Molecules 2025) | 30.7 nm | 3.8 % |
+| Mn₂In₂Se₅ | 0.13 (fit optimum, for comparison) | 15.9 nm | 3.2 % |
+
+So x can now be fixed from the literature and only L and s fitted. The VCA (L2)
+run for Mn₂In₂Se₅ used x = 0.13; a rerun at x = 0.21–0.30 would give its
+literature-based VCA curve (not done).
 
 ---
 
