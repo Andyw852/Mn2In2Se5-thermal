@@ -323,9 +323,13 @@ The 4×4×1 FC2 of {L['MnIn2Se4']} gave a too-soft interlayer TA (322.9 m/s) and
 <p class="lead">Ordered crystal, 3-phonon + natural isotopes, RTA. κ_zz is the mesh-converged term (Γ–Z quadrature
 error removed). Stars: the 300 K values of §1.</p>
 <figure><img alt="Intrinsic kappa versus temperature" src="{figs['intrinsic']}"></figure>
-<p class="cap">Meshes 14³ ({L['MnIn2Se4']}) and 16³ ({L['Mn2In2Se5']}). The stars sit above the lines because
-in-plane LBTE exceeds RTA (24 % for {L['MnIn2Se4']}) and because they include coherence. Bar: FC3-cutoff
-estimate (≈ −10 %). Arrow: {L['Mn2In2Se5']} cutoff not converged, value is an upper bound.</p>
+<p class="cap"><b>Lines</b>: RTA population term, computed at every temperature (meshes 14³ for {L['MnIn2Se4']} and 16³ for
+{L['Mn2In2Se5']}). <b>Stars</b>: the 300 K values of §1, which use the more accurate treatment of §2.4 (in-plane LBTE
+instead of RTA, plus the Wigner coherence term for both components). That treatment was run at 300 K only, so it
+appears as a single point. The stars lie above the lines at 300 K by +28 % (in-plane) and +11 % (κ_zz) for
+{L['MnIn2Se4']}, and by +14 % and +8 % for {L['Mn2In2Se5']}; the same correction applies to the curves at other
+temperatures in approximate form. Quote numbers from §1, not read off the lines. Bar: FC3-cutoff estimate (≈ −10 %).
+Arrow: {L['Mn2In2Se5']} cutoff not converged, value is an upper bound.</p>
 
 <h2><span class="n">5</span>Calculation vs hot-pressed experiment</h2>
 <p class="lead">One panel per material and direction. Dashed: ordered single crystal. Solid: VCA antisite-disordered
