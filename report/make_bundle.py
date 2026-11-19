@@ -57,8 +57,8 @@ source file and conventions.
 
 | folder | contents |
 |---|---|
-| `report/` | `calc_vs_experiment_report.html`: the full report, one file, opens offline in any browser |
-| `figures/` | the four report figures, `.png` at 300 dpi and vector `.pdf` |
+| `report/` | `calc_vs_experiment_report_zh.html` (中文版) and `calc_vs_experiment_report.html` (English): the full report, one file each, opens offline in any browser |
+| `figures/` | the four report figures, `.png` at 300 dpi and vector `.pdf`; `*_zh` = Chinese labels |
 | `data/` | every dataset plotted in the figures, as CSV / JSON |
 | `scripts/` | the plotting scripts |
 
@@ -82,11 +82,14 @@ Needs Python 3 with numpy and matplotlib only.
 
 ```bash
 cd scripts
-python3 plot_figures.py            # data/ -> figures/*.png, *.pdf
+python3 plot_figures.py            # data/ -> figures/*.png, *.pdf (English and *_zh Chinese labels)
 python3 make_report_html.py        # data/ -> figures/ and report/calc_vs_experiment_report.html
+python3 make_report_html_zh.py     # data/ -> figures/*_zh and report/calc_vs_experiment_report_zh.html
 ```
 
-To change a figure, edit the matching `fig_*` function in `scripts/plot_figures.py`.
+To change a figure, edit the matching `fig_*` function in `scripts/plot_figures.py`
+(Chinese labels: the `ZH` dictionary there; they need a CJK font such as Microsoft YaHei,
+SimHei, PingFang SC or Noto Sans CJK SC).
 `export_plot_data.py` and `independent_checks.py` are included to show how `data/`
 was produced; they need the full repository (force constants, phono3py output)
 and phonopy, so they do not run inside this bundle. Links in the HTML that point to
@@ -102,11 +105,13 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     zpath = out / f"{NAME}.zip"
     items = [("README.md", readme())]
-    items += [(f"report/{p.name}", p) for p in [HERE / "calc_vs_experiment_report.html"]]
+    items += [(f"report/{p.name}", p) for p in [HERE / "calc_vs_experiment_report.html",
+                                                 HERE / "calc_vs_experiment_report_zh.html"]]
     items += [(f"figures/{p.name}", p) for p in sorted((HERE / "figures").glob("fig*.*"))]
     items += [(f"data/{p.name}", p) for p in sorted((HERE / "plot_data").iterdir())]
     items += [(f"scripts/{n}", HERE / n) for n in
-              ("plot_figures.py", "make_report_html.py", "export_plot_data.py", "independent_checks.py")]
+              ("plot_figures.py", "make_report_html.py", "make_report_html_zh.py", "export_plot_data.py",
+               "independent_checks.py")]
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
         for arc, src in items:
             arc = f"{NAME}/{arc}"
