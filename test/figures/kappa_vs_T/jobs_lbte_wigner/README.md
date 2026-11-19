@@ -51,28 +51,46 @@ needed.
 
 ## Jobs (HanHai, `submit.sh`)
 
-LBTE holds the collision matrix of **all requested temperatures at once**:
-about 2.6 GB per temperature for MnIn₂Se₄ at 14³ and 9.1 GB for Mn₂In₂Se₅ at 16³,
-plus a similar amount for the solver. Hence the temperature split for Mn₂In₂Se₅.
+**Revised 2026-11-19 after job 459221.** LBTE cost grows almost linearly with the
+number of temperatures (measured at 8³, 4 cores: RTA 28 s for 1 or 9 T; LBTE
+98 s for 1 T and 611 s for 9 T, i.e. ≈ 33 s fixed + 64 s per T). The first
+estimate assumed a temperature-independent cost and was 4–5× too low. Job 1
+(MnIn₂Se₄ 14³, 9 T) runs at ≈ 45 min per temperature on 64 threads.
 
-| # | job | command | memory | time (64 threads, estimate) |
+The LBTE/RTA ratio hardly depends on the mesh (MnIn₂Se₄ in-plane 1.246 at 11³,
+1.240 at 14³), so **Mn₂In₂Se₅ LBTE runs on 12³** (cost per T 0.88× that of
+MnIn₂Se₄ 14³; 16³ would be 4.6×, ≈ 3.5 h per T). Its coherence term (Wigner-RTA,
+cost like RTA, independent of the number of T) stays on 16³.
+
+Memory: LBTE holds the collision matrix of all requested temperatures at once:
+2.6 GB per T for MnIn₂Se₄ 14³, 1.9 GB per T for Mn₂In₂Se₅ 12³, plus a similar
+amount for the solver.
+
+| # | job | command | memory | time (64 threads) |
 |---|---|---|---:|---:|
-| 0 | smoke test (any machine, first) | `python3 run_lbte_wigner.py --material MnIn2Se4 --mesh 6 --temps 100 300` | < 1 GB | 2 min (4 cores) |
-| 1 | MnIn₂Se₄ ordered, 14³, 9 T | `sbatch --export=ALL,MAT=MnIn2Se4,CASE=ordered submit.sh` | ≈ 50 GB | 1–2 h |
-| 2 | MnIn₂Se₄ VCA, 14³, 9 T | `sbatch --export=ALL,MAT=MnIn2Se4,CASE=vca submit.sh` | ≈ 50 GB | 1–2 h |
-| 3a–c | Mn₂In₂Se₅ ordered, 16³, 3 × 3 T | `sbatch --export=ALL,MAT=Mn2In2Se5,CASE=ordered,TEMPS="30 60 100" submit.sh`, then `TEMPS="150 200 300"`, `TEMPS="400 500 700"` | ≈ 60 GB each | 3–5 h each |
-| 4a–c | Mn₂In₂Se₅ VCA (x = 0.19), 16³, 3 × 3 T | same as 3 with `CASE=vca` | ≈ 60 GB each | 3–5 h each |
-| 5 | Mn₂In₂Se₅ VCA (x = 0.19), RTA only, 20³, 12 T, per-mode hdf5 | `sbatch --export=ALL,MAT=Mn2In2Se5,CASE=vca,MESH=20,STEPS=rta,WRITE_KAPPA=1,TEMPS="30 60 90 100 120 150 200 300 400 500 600 700" submit.sh` | ≈ 20 GB | 1 h |
+| 0 | smoke test (done: 459142) | `python3 run_lbte_wigner.py --material MnIn2Se4 --mesh 6 --temps 100 300` | < 1 GB | 2 min (4 cores) |
+| 1 | MnIn₂Se₄ ordered, 14³, 9 T (running: 459221) | `sbatch --export=ALL,MAT=MnIn2Se4,CASE=ordered submit.sh` | ≈ 50 GB | ≈ 7–8 h |
+| 2 | MnIn₂Se₄ VCA, 14³, 9 T (queued: 459595) | `sbatch --export=ALL,MAT=MnIn2Se4,CASE=vca submit.sh` | ≈ 50 GB | ≈ 7–8 h |
+| 3L | Mn₂In₂Se₅ ordered, **LBTE on 12³**, 9 T | `sbatch --export=ALL,MAT=Mn2In2Se5,CASE=ordered,MESH=12,STEPS="rta lbte" submit.sh` | ≈ 35 GB | ≈ 6–7 h |
+| 4L | Mn₂In₂Se₅ VCA (x = 0.19), LBTE on 12³, 9 T | same as 3L with `CASE=vca` | ≈ 35 GB | ≈ 6–7 h |
+| 3C | Mn₂In₂Se₅ ordered, **coherence on 16³**, 9 T | `sbatch --export=ALL,MAT=Mn2In2Se5,CASE=ordered,STEPS="rta coherence" submit.sh` | ≈ 20 GB | ≈ 1 h |
+| 4C | Mn₂In₂Se₅ VCA (x = 0.19), coherence on 16³, 9 T | same as 3C with `CASE=vca` | ≈ 20 GB | ≈ 1 h |
+| 5 | Mn₂In₂Se₅ VCA (x = 0.19), RTA only, 20³, 12 T, per-mode hdf5 | `sbatch --export=ALL,MAT=Mn2In2Se5,CASE=vca,MESH=20,STEPS=rta,WRITE_KAPPA=1,TEMPS="30 60 90 100 120 150 200 300 400 500 600 700" submit.sh` | ≈ 20 GB | ≈ 1 h |
 
-Order: 0 → 1, 2 (MnIn₂Se₄; these alone already settle the question for one
-material) → 3, 4 → 5. Jobs 1–4 are independent and can run in parallel.
+The former jobs 3a–c / 4a–c (16³, LBTE, 3 × 3 T) are withdrawn: ≈ 11 h each and
+no better ratio.
+
+Order: 0 → 1, 2 → (after job 1 passes the 4.5219 check) 3L, 4L, 3C, 4C, 5, all
+independent of each other. Do not cancel a running job to resubmit it: the
+driver writes its JSON only at the end of each case, so a cancelled job loses
+everything. Each job above fits in the 24 h limit with a large margin.
 
 Job 5 replaces the existing Mn₂In₂Se₅ VCA curve, which used x = 0.13 from the
 fit, by the literature x = 0.19. It writes the per-mode hdf5 (`WRITE_KAPPA=1`)
 for the Γ–Z decomposition with `test/MnIn2Se4/kappa_zz_decompose.py`.
 
-If a job is killed for memory, split its temperatures further (`TEMPS="30 60"`
-etc.); results of different temperature sets are combined afterwards.
+If a job is killed for memory, split its temperatures (`TEMPS="30 60 100"` etc.);
+results of different temperature sets are combined afterwards.
 
 ## Checks before trusting the results
 
@@ -85,8 +103,9 @@ etc.); results of different temperature sets are combined afterwards.
 | job 1 RTA 300 K, MnIn₂Se₄ 14³ | 3.6474 / 1.0934 | REPORT §6.3 |
 | job 1 LBTE 300 K | in-plane 4.5219 (± 0.5 %); κ_zz = RTA to < 0.1 % | REPORT §9.1, job 412627 |
 | job 1 coherence 300 K | ≈ 0.09 / 0.066 | REPORT §7 |
-| job 3b RTA 300 K, Mn₂In₂Se₅ 16³ | in-plane 2.9599, κ_zz total 1.5432 | `test/Mn2In2Se5/iso_rerun/` |
-| job 3b coherence 300 K | ≈ 0.147 / 0.114 (that was SMM19; IBDB19 may differ by a few %) | job 419208 |
+| job 3C RTA 300 K, Mn₂In₂Se₅ 16³ | in-plane 2.9599, κ_zz total 1.5432 | `test/Mn2In2Se5/iso_rerun/` |
+| job 3C coherence 300 K | ≈ 0.147 / 0.114 (that was SMM19; IBDB19 may differ by a few %) | job 419208 |
+| job 3L LBTE/RTA in-plane 300 K, 12³ | ≈ 1.06 (10³ reference: 2.9879 / 2.8220 = 1.059, job 415925) | `analysis/shengbte_crosscheck/README.md` |
 
 If job 1 does not reproduce 4.5219, stop and report; nothing else is meaningful
 before that.

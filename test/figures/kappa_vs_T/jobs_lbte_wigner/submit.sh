@@ -23,8 +23,8 @@ set -u
 REPO=${REPO:-$HOME/work/Mn2In2Se5-thermal}      # clone of the repository on HanHai
 PY=${PY:-$HOME/software/pybin/python3}
 export OMP_NUM_THREADS=64 OPENBLAS_NUM_THREADS=64 MKL_NUM_THREADS=64
-TAG=${TEMPS:+_T$(echo "$TEMPS" | tr ' ' '-')}
-WD=$REPO/test/figures/kappa_vs_T/jobs_lbte_wigner/run_${MAT}_${CASE}${TAG}
+TAG=${MESH:+_m$MESH}${STEPS:+_$(echo "$STEPS" | tr ' ' '-')}${TEMPS:+_T$(echo "$TEMPS" | tr ' ' '-')}
+WD=$REPO/test/figures/kappa_vs_T/jobs_lbte_wigner/run_${MAT}_${CASE}${TAG}   # one directory per job
 mkdir -p "$WD" && cd "$WD" || exit 1
 ARGS=(--material "$MAT" --cases "$CASE")
 [ -n "${MESH:-}" ]  && ARGS+=(--mesh "$MESH")
