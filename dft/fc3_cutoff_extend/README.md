@@ -103,7 +103,60 @@ Cost: 144-atom (Mn₂In₂Se₅) / 112-atom (MnIn₂Se₄) frames at the S4 sett
 parallel. To reach a ratio of ≈ 3 at 7.9 Å, Mn₂In₂Se₅ needs roughly 85–90 frames
 in total, i.e. ≈ 30–35 more.
 
+
+## Step 1 in practice: the refit scan on 3090 (pheasy-gpu + ALASSO)
+
+The production fit lives in `Mn2In2Se5_441/kl-dft-cpu/step5_fc/` and is **not**
+modified. The extension runs in a **sibling directory**,
+`step5_fc/cutoff_scan_ext/`, which is a copy of the driver, the config, the
+normalised dataset, `disp_matrix.pkl`, `cs.pkl` and `POSCAR`/`SPOSCAR`, with only
+these config keys changed:
+
+| key | production | extension |
+|---|---|---|
+| `cut3_candidates` | 3.88 … 6.51 | **6.51, 6.67, 6.90, 7.11, 7.43** (6.51 kept as the anchor) |
+| `cut3_safe_cutoff` | 6.6097 | **8.0** (justified by the minimum-image analysis above) |
+| `dataset_dir` | `../step4_disp` | the **absolute** path (the relative one does not resolve from the new directory) |
+
+Scripts in this directory:
+
+| file | what |
+|---|---|
+| `submit_fit_ext_gpu.sh` | the refit job: pheasy-gpu, `PHEASY_FIT_METHOD=ALASSO`, probes the cards and pins a free one |
+| `gpu_watch.sh` | waits until a card has `NEED_MIB` free, then submits `submit_fit_ext_gpu.sh`; bounded to 24 h |
+
+### Two GPU traps, both hit while setting this up — do not reintroduce them
+
+1. **`PHEASY_GPU_MODE` accepts only `auto`, `cpu`, `required`.** Writing `prefer`
+   raises `ValueError: PHEASY_GPU_MODE must be auto, cpu, or required` from
+   `core/gpu_backend.py` deep inside `optimizer.fit`, after the slave-master
+   matrix has already been built. Use `required`: it fails closed instead of
+   silently falling back to the CPU fit.
+2. **`--gres=gpu:1` does not reserve the card on this node.** Other jobs of the
+   same account take "the first visible GPU" without a GRES request, so a fresh
+   job can start with < 1 GiB free and the dense solve aborts with
+   `GPU dense solve exceeds the configured VRAM budget` (from
+   `pheasy_gpu/core/optimizer.py`, `_gpu_dense`). Both scripts therefore read
+   `nvidia-smi` per card, require `NEED_MIB` (default 6000) free, pin
+   `CUDA_VISIBLE_DEVICES` to the freest one, and refuse to run otherwise.
+   The node has five working RTX 3090 and one dead card (84:00.0), which makes
+   some `nvidia-smi` queries exit non-zero — the probes are per card for that
+   reason.
+
+Note that even the **production** 6.51 Å fit recorded `pheasy_gpu_used: False`
+in its `fit_metrics.json` (GPU requested, CPU used). Whether the GPU path works
+here therefore cannot be inferred from that file; it depends on the card being
+free at start-up.
+
 ## Files
+
+| file | what |
+|---|---|
+| `make_frames.py` | extra frames for either 4×4×1 dataset; prints both cutoff limits for any `--dim`; never overwrites |
+| `submit_frames.sh` | one jzzn job per frame (cpu192, 48 cores, regular QOS, the modules and MPI settings of the earlier S4 runs) |
+| `check_frames.py` | completion, SCF convergence, max force, force drift per frame |
+| `submit_fit_ext_gpu.sh` | the refit scan job (pheasy-gpu + ALASSO, GPU pinned); see "Step 1 in practice" |
+| `gpu_watch.sh` | submits the refit job once a card is free |
 
 | file | what |
 |---|---|
