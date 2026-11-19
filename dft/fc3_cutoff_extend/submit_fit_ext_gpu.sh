@@ -44,7 +44,10 @@ export PHEASY_GPU_SM=1
 export PHEASY_GPU_SM_NGPU=1
 export PHEASY_GPU_SM_DEVICES=0
 export PHEASY_GPU_LASSO_RESIDENT=1
-export PHEASY_GPU_RESIDENT_FALLBACK=1
+# Do NOT set PHEASY_GPU_RESIDENT_FALLBACK=1 here: that opts into a substitute
+# backend when the VRAM pre-flight fails, which is exactly the silent downgrade
+# the required-GPU rule is meant to prevent. With the flag unset the run raises
+# instead, and gpu_watch.sh retries when a card is actually free.
 export PHEASY_GPU_MEM_FRACTION=0.9
 export PHEASY_TWOLEVEL_CACHE_T=0
 export PHEASY_FIT_METHOD=ALASSO

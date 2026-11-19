@@ -143,6 +143,16 @@ Scripts in this directory:
    some `nvidia-smi` queries exit non-zero — the probes are per card for that
    reason.
 
+3. **Do not set `PHEASY_GPU_RESIDENT_FALLBACK=1`.** It opts into a substitute
+   backend when the VRAM pre-flight fails; the source notes that this can return
+   an unmarked non-dense result. With it unset, `PHEASY_GPU_MODE=required` fails
+   closed and `gpu_watch.sh` retries once a card is genuinely free.
+
+For the record: `PHEASY_GPU_MODE=prefer` was a mistake in a local draft of this
+script, **not** in the AutoZT templates. Those set only `PHEASY_USE_GPU=1`, which
+`gpu_backend.gpu_mode_from_env()` already maps to `required`, so AutoZT's own
+fits cannot silently fall back to the CPU either.
+
 Note that even the **production** 6.51 Å fit recorded `pheasy_gpu_used: False`
 in its `fit_metrics.json` (GPU requested, CPU used). Whether the GPU path works
 here therefore cannot be inferred from that file; it depends on the card being
