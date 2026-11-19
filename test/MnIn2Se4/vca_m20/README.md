@@ -19,8 +19,9 @@ scattering**.
 
 The occupancies behind these numbers (octahedral 0.56 Mn + 0.44 In, tetrahedral
 0.22 Mn + 0.78 In, i = 0.44) come from the user's
-`run_phono3py_kappa_vca.sh`; **the bibliographic source for them is not yet
-verified** — see `analysis/disorder/README.md` §5.
+`run_phono3py_kappa_vca.sh` and are the single-crystal refinement of K.-J. Range,
+U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122 (1991)
+(verified against the paper in `references/`; see `analysis/disorder/README.md` §5.1).
 
 ## Runs
 

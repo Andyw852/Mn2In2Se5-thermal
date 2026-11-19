@@ -81,8 +81,8 @@ python3 kappa_extrinsic.py bases --disp-yaml ../../Mn2In2Se5/fc/phono3py_disp.ya
         --mesh 24 24 24 --out work_Mn2In2Se5_m24
 ```
 
-See `../disorder/README.md` §2 for which x to use for MnIn₂Se₄ (Döll i = 0.44
-or not). The fit itself leaves x undetermined.
+See `../disorder/README.md` §2 for which x to use for MnIn₂Se₄ (i = 0.44 from
+Range et al. 1991, adopted; Mn₂In₂Se₅ x ≈ 0.21 from Williams et al. 2024, §5.1 there). The fit itself leaves x undetermined.
 
 ## Results
 
@@ -120,8 +120,8 @@ Two things to keep in mind when reading this:
 
 1. **x and L remain degenerate** in both materials; only s is constrained. Report
    the bands, not the single optimum.
-2. In **MnIn₂Se₄** the fitted x (0.45) coincides with the Döll single-crystal
-   i = 0.44, and the fitted mass variances (0.1324 / 0.0609) coincide with the VCA
+2. In **MnIn₂Se₄** the fitted x (0.45) coincides with the single-crystal
+   i = 0.44 of Range et al. 1991, and the fitted mass variances (0.1324 / 0.0609) coincide with the VCA
    values (0.1337 / 0.0595) to 1 % / 2.4 %. That is independent support for the
    VCA occupation model — see `../disorder/README.md` §3.4.
 3. In **Mn₂In₂Se₅** the isotropic 24³ refit barely moves the earlier z-only result
