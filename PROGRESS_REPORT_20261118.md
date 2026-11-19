@@ -104,7 +104,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 
 | | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---|---|
-| VCA (L2) occupancy | i = 0.44 (single-crystal XRD, K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122 (1991); verified) | x = 0.13 (taken from the L3 fit). Literature for the R-3m phase: ≈ 0.21 (Williams *et al.*, *J. Mater. Chem. C* **12**, 1753 (2024)); see `analysis/disorder/README.md` §5.1 |
+| VCA (L2) occupancy | i = 0.44 (single-crystal XRD, K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122 (1991); verified) | x = 0.13 (taken from the L3 fit). Literature for the R-3m phase: **0.19(2)** (Williams *et al.*, *J. Mater. Chem. C* **12**, 1753 (2024), ESI Table S7); see `analysis/disorder/README.md` §5.1 |
 | VCA suppression at 300 K, in-plane / κ_zz | 2.48× / 1.43× | 1.84× / 1.24× |
 | L3 fit: texture s | **0.35** (0.33–0.38) | **0.25** (0.15–0.28) |
 | L3 fit: x, L_eff | 0.45, 30.7 nm; x **not determined** (0.00–0.66 acceptable) | 0.13, 15.9 nm; x **not determined** (0.01–0.50) |
@@ -166,7 +166,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 |---|---|---|
 | 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **not pursued** (decision 2026-11-18). The plan is kept in [`dft/fc3_cutoff_extend/`](dft/fc3_cutoff_extend/): refitting the existing frames needs no DFT, if a referee asks |
 | 2 | literature source for Döll i = 0.44 | **closed 2026-11-19**: K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), atomic-position table: M_oct = 0.56 Mn + 0.44 In, M_tet = 0.78 In + 0.22 Mn. PDF in `references/`. The 1990 *J. Cryst. Growth* paper is not the source |
-| 3 | Mn₂In₂Se₅ antisite occupancy | literature: ~21 % Mn/In site mixing in the R-3m phase (Williams *et al.* 2024, powder Rietveld), i.e. x ≈ 0.21, inside the L3 acceptable range. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). Still open: confirm the definition in their ESI; a VCA rerun at x = 0.21 |
+| 3 | Mn₂In₂Se₅ antisite occupancy | **closed 2026-11-19 for the literature value**: x = 0.19(2) in the R-3m phase (Williams *et al.* 2024, ESI Table S7, powder Rietveld), inside the L3 acceptable range; L3 with x fixed gives L = 22 nm. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). Optional: VCA rerun at x = 0.19 (estimated −9 % in-plane vs x = 0.13). A refinement of our own samples would still be better |
 | 4 | κ_e of the measured samples | open. It needs the electrical conductivity (Wiedemann–Franz) |
 | 5 | Tamura and phono3py references | identified but not checked against the papers (`analysis/disorder/README.md` §5) |
 

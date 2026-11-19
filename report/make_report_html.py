@@ -385,7 +385,7 @@ single crystal. Dotted: L3 fit (§7). Dash-dot ({L['MnIn2Se4']} only): minimum �
 <figure><img alt="Calculated kappa against the hot-pressed experiment" src="{figs['calc_vs_exp']}"></figure>
 <p class="cap">Ordered and VCA: RTA, 20³ (same mesh for each pair), Perp ↔ in-plane, Para ↔ κ_zz, no grain boundary
 and no texture, so they are upper references. VCA occupancy: {L['MnIn2Se4']} i = 0.44 (single-crystal refinement, Range et al., Z. Naturforsch.
-46b, 1122 (1991)), {L['Mn2In2Se5']} x = 0.13 (taken from the L3 fit; the literature value for this R-3m phase is ≈ 0.21, see §7). VCA lowers κ strongly but stays
+46b, 1122 (1991)), {L['Mn2In2Se5']} x = 0.13 (taken from the L3 fit; the literature value for this R-3m phase is 0.19(2), see §7). VCA lowers κ strongly but stays
 well above experiment and cannot produce the low-temperature maximum near 100 K; that needs a nanoscale mean free path.</p>
 
 <h2><span class="n">5</span>Scattering rates at 300 K</h2>
@@ -422,8 +422,8 @@ degenerate: acceptable x spans 0–0.66 and 0.01–0.50. The fitted x is therefo
 the closeness of 0.45 to the single-crystal 0.44 is a coincidence of the fit. XRD (texture), SEM (grain size) and a Rietveld
 occupancy refinement would break the degeneracy.</li>
 <li><b>Fixing x from the literature</b> (analysis/disorder/README.md §5.1): {L['MnIn2Se4']} x = 0.44 (single-crystal XRD,
-Range et al., Z. Naturforsch. 46b, 1122 (1991)) gives L = 30.7 nm, rms 1.2 %. {L['Mn2In2Se5']} x ≈ 0.21 (~21 % Mn/In site mixing in
-the R-3m phase, Williams et al., J. Mater. Chem. C 12, 1753 (2024)) gives L = 22.1 nm, rms 3.6 %. With x fixed, only L and
+Range et al., Z. Naturforsch. 46b, 1122 (1991)) gives L = 30.7 nm, rms 1.2 %. {L['Mn2In2Se5']} x = 0.19(2) (powder Rietveld of the
+R-3m phase, Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7) gives L = 22.1 nm, rms 3.4 %. With x fixed, only L and
 s are fitted, and L ≈ 20–30 nm in both materials. (The 0.704/0.296 occupancy of Chernoukhov et al., Molecules 30, 1904
 (2025) belongs to a different, quenched polymorph, P3̄m1, and is not used.)</li>
 <li><b>Not to be combined with VCA</b>: L3 already contains the antisite scattering through x, so the VCA and L3

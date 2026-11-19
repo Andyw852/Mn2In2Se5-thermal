@@ -268,12 +268,12 @@ c = 48.72 Å (hexagonal setting of `Mn2In2Se5/fc/phono3py_disp.yaml`).
 
 | source | phase | method | reported mixing | x for our model |
 |---|---|---|---|---|
-| A. J. Williams *et al.*, *J. Mater. Chem. C* **12**, 1753–1762 (2024) | **3R, R-3m** (our phase), CVT crystals | **powder** Rietveld (the crystals were too pliable for a single-crystal solution); occupancies in ESI Tables S6–S7, not in `references/` | "A much better fit was achieved with ~21% site mixing between the Mn and In sites." Their Raman calculation swaps 20 % of the Mn and In sites | **≈ 0.21** |
+| A. J. Williams *et al.*, *J. Mater. Chem. C* **12**, 1753–1762 (2024), and its ESI | **3R, R-3m** (our phase), CVT crystals; a = 4.0189(2), c = 48.830(4) Å | **powder** Rietveld, Rwp = 0.0798 (the crystals were too pliable for a single-crystal solution) | ESI Table S7: Mn site (z = 0.6998) **0.81(2) Mn + 0.19 In**, In site (z = 0.55435) **0.81(2) In + 0.19 Mn**. The main text rounds this to "~21% site mixing"; their Raman supercell swaps 20 % | **0.19(2)** |
 | I. V. Chernoukhov *et al.*, *Molecules* **30**, 1904 (2025) | **P-phase, P3̄m1**: a different polymorph, stabilised by quenching from 900 °C | powder XRD | room temperature: Mn1 = 0.704(2) Mn + 0.296 In, In1 = 0.704(2) In + 0.296 Mn; at 850 °C 0.5 / 0.5 | **not applicable** to the R-phase; shows that quenching from high T increases mixing |
 
-So the literature value for our Mn₂In₂Se₅ is **x ≈ 0.21** (Williams 2024). The
-definition of the 21 % (fraction of each site taken by the other cation) should
-be confirmed in their ESI before quoting more than one digit.
+So the literature value for our Mn₂In₂Se₅ is **x = 0.19(2)** (Williams 2024, ESI
+Table S7). Because Mn and In are equal in number, the fraction of each site taken
+by the other cation equals the fraction of all Mn on In sites, i.e. our x.
 
 With x fixed, the existing 24³ L3 fit (`../extrinsic/results/*_m24/fit_*.json`,
 `profile_x`, s re-optimised) still describes the 300–623 K data:
@@ -281,12 +281,15 @@ With x fixed, the existing 24³ L3 fit (`../extrinsic/results/*_m24/fit_*.json`,
 | | x | best L | rms of ln(model/exp) |
 |---|---:|---:|---:|
 | MnIn₂Se₄ | 0.44 (Range 1991) | 30.7 nm | 1.22 % |
-| Mn₂In₂Se₅ | 0.21 (Williams 2024) | 22.1 nm | 3.6 % |
+| Mn₂In₂Se₅ | 0.19 (Williams 2024) | 22.1 nm | 3.4 % |
 | Mn₂In₂Se₅ | 0.13 (fit optimum, for comparison) | 15.9 nm | 3.2 % |
 
 So x is fixed from the literature and only L and s are fitted. The Mn₂In₂Se₅ VCA
-(L2) run used x = 0.13; a rerun at x = 0.21 would give its literature-based VCA
-curve (not done).
+(L2) run used x = 0.13. Its size at x = 0.19 can be estimated without a new phonon
+run from the same 24³ bases (`kappa_extrinsic.py eval`, ordered masses, no boundary):
+300 K in-plane 1.695 → 1.540 (−9 %), κ_zz total 1.131 → 1.105 (−2 %). A VCA rerun at
+x = 0.19 (averaged masses) would give the exact L2 curve; expected change of the
+same size, so it is optional.
 
 Other literature, from abstracts only (not in `references/`):
 - MnIn₂(1−z)Ga₂zSe₄, *Mater. Res. Bull.* (2001): Mn and In randomly distributed in MnIn₂Se₄.

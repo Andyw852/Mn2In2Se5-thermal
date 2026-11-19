@@ -82,7 +82,7 @@ python3 kappa_extrinsic.py bases --disp-yaml ../../Mn2In2Se5/fc/phono3py_disp.ya
 ```
 
 See `../disorder/README.md` §2 for which x to use for MnIn₂Se₄ (i = 0.44 from
-Range et al. 1991, adopted; Mn₂In₂Se₅ x ≈ 0.21 from Williams et al. 2024, §5.1 there). The fit itself leaves x undetermined.
+Range et al. 1991, adopted; Mn₂In₂Se₅ x = 0.19(2) from Williams et al. 2024, §5.1 there). The fit itself leaves x undetermined.
 
 ## Results
 
