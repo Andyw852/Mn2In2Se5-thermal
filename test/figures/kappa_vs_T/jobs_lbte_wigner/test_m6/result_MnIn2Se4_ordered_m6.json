@@ -1,0 +1,92 @@
+{
+ "material": "MnIn2Se4",
+ "case": "ordered",
+ "mesh": 6,
+ "T_K": [
+  100.0,
+  300.0
+ ],
+ "phono3py": "3.24.0",
+ "fc3": "test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5",
+ "fc2": "test/MnIn2Se4/fc2_442_phonon/fc2.hdf5",
+ "rta": {
+  "population": {
+   "inplane": [
+    8.27759,
+    2.66279
+   ],
+   "kzz_total": [
+    3.9305,
+    1.27747
+   ]
+  },
+  "seconds": 7.1
+ },
+ "masses": [
+  54.938,
+  114.818,
+  114.818,
+  78.96,
+  78.96,
+  78.96,
+  78.96
+ ],
+ "lbte": {
+  "population": {
+   "inplane": [
+    11.35937,
+    3.48626
+   ],
+   "kzz_total": [
+    3.38835,
+    1.10411
+   ]
+  },
+  "seconds": 23.6
+ },
+ "coherence": {
+  "population": {
+   "inplane": [
+    8.33892,
+    2.68252
+   ],
+   "kzz_total": [
+    3.9305,
+    1.27747
+   ]
+  },
+  "coherence": {
+   "inplane": [
+    0.08548,
+    0.10507
+   ],
+   "kzz_total": [
+    0.02358,
+    0.0701
+   ]
+  },
+  "seconds": 10.6
+ },
+ "ratios": {
+  "lbte_over_rta": {
+   "inplane": [
+    1.3723,
+    1.3093
+   ],
+   "kzz_total": [
+    0.8621,
+    0.8643
+   ]
+  },
+  "coherence_over_rta": {
+   "inplane": [
+    0.0103,
+    0.0395
+   ],
+   "kzz_total": [
+    0.006,
+    0.0549
+   ]
+  }
+ }
+}

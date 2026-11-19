@@ -362,7 +362,7 @@ experiment without knowing the texture.</p>
 {T2}
 </tbody></table></div>
 <p class="cap">The single-crystal κ is 3–4× above the hot-pressed samples. Antisite disorder (VCA) closes part of the
-gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm, §8). The L3 model of §8 is not listed here:
+gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm, §8); the possible reasons are discussed in §9. The L3 model of §8 is not listed here:
 it is fitted to these experimental points, so at 300 K it reproduces them by construction.</p>
 
 {methods_html()}
@@ -443,7 +443,68 @@ curves are alternatives, not additive corrections.</li>
 <li><b>κ_e</b> is taken as 0. If the electronic part is not negligible, the fitted extrinsic scattering is too strong.</li>
 </ul>
 
-<h2><span class="n">9</span>Caveats</h2>
+<h2><span class="n">9</span>Why the calculation lies above the experiment</h2>
+<p class="lead">At 300 K the calculated single-crystal κ is 4.3× above the hot-pressed κ_tot for both materials
+(direction average, values to quote, §1). Antisite disorder (VCA) brings this down to 1.5× ({L['MnIn2Se4']}) and
+2.3× ({L['Mn2In2Se5']}, x = 0.13; about 2.1× at the literature x = 0.19). The candidate reasons for the rest are listed
+below, roughly in order of how much each can explain, with the evidence and the test. <b>These are hypotheses.</b>
+Only the first two are quantified here.</p>
+<div class="tbl"><table class="lt">
+<thead><tr><th>#</th><th>mechanism</th><th>possible effect on κ</th><th>evidence</th><th>how to test</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>Planar defects and grain boundaries</b>: a nanoscale effective mean free path</td>
+<td>largest; closes the remaining gap with L ≈ 20–30 nm (L3, x fixed from the literature, §8)</td>
+<td>below 150 K the measured κ is flat, with no 1/T rise, i.e. a temperature-independent scattering dominates;
+the required L is far below typical hot-pressed grain sizes (0.5–5 μm), which points to stacking faults, twins or
+polytype intergrowths, common in these layered "124"/"225" compounds; κ_tot lies between the Cahill and diffuson limits (§7)</td>
+<td>SEM grain size; TEM/HAADF for stacking faults</td></tr>
+<tr><td>2</td><td><b>Mn/In antisite disorder</b></td>
+<td>VCA at the literature x: in-plane 2.5× ({L['MnIn2Se4']}) / ≈ 2× ({L['Mn2In2Se5']}), κ_zz 1.4× / 1.2× at 300 K</td>
+<td>single-crystal refinement i = 0.44 (Range 1991); Rietveld x = 0.19(2) (Williams 2024); broad Raman modes in
+{L['Mn2In2Se5']} attributed to site disorder (Williams 2024)</td>
+<td>Rietveld occupancy of our own pellets. VCA counts only the mass difference, so it is a lower bound: bond-strength and
+local-strain disorder are missing (a disordered supercell would include them). LBTE + coherence for VCA is planned
+(<code>test/figures/kappa_vs_T/jobs_lbte_wigner/</code>)</td></tr>
+<tr><td>3</td><td><b>Paramagnetic spin disorder</b> (Mn²⁺, S = 5/2)</td>
+<td>not known; could be tens of per cent</td>
+<td>the calculation assumes a static ferromagnetic order; the real crystals are paramagnetic at 300 K and order
+(antiferromagnetic / spin glass) only below ≈ 6–7 K, with strong antiferromagnetic exchange (Weiss θ ≈ −198 K for
+{L['Mn2In2Se5']}, Williams 2024). Fluctuating spins make the exchange-dependent force constants random and add
+spin–phonon scattering</td>
+<td>magnetic susceptibility of the pellets; force constants for antiferromagnetic or random spin configurations</td></tr>
+<tr><td>4</td><td><b>Off-stoichiometry, vacancies, secondary phases</b></td>
+<td>not known; cation vacancies scatter far more strongly than a mass substitution</td>
+<td>{L['MnIn2Se4']} has a 5–6 mol % homogeneity range towards In₂Se₃ (Mammadov 2025), i.e. cation vacancies;
+{L['Mn2In2Se5']} decomposes into MnIn₂Se₄ + MnSe between about 400 and 800 °C and MnSe admixtures are common
+(Chernoukhov 2025), so hot pressing in that range may leave secondary phases and interfaces</td>
+<td>XRD of the pressed pellet (phase purity), EDS composition, hot-pressing temperature and time</td></tr>
+<tr><td>5</td><td><b>Porosity, pellet softening</b></td>
+<td>≈ 10–20 % for 5–10 % porosity</td>
+<td>measured sound velocity 20–30 % below the calculation in every direction (§7)</td>
+<td>Archimedes density</td></tr>
+<tr><td>6</td><td><b>Higher-order anharmonicity, temperature effects</b></td>
+<td>typically −10 to −30 % at 300 K in low-κ layered selenides (not computed here)</td>
+<td>low-lying optical branches (§3) and strong 3-phonon rates; the calculation uses 0 K harmonic phonons and 3-phonon scattering only</td>
+<td>four-phonon scattering, temperature-dependent force constants (expensive)</td></tr>
+<tr><td>7</td><td><b>FC3 cutoff</b></td>
+<td>{L['MnIn2Se4']} ≈ −10 %; {L['Mn2In2Se5']} at least as much (upper bound)</td>
+<td>§2.2</td><td>refit at 7–8 Å from the existing frames (<code>dft/fc3_cutoff_extend/</code>)</td></tr>
+</tbody></table></div>
+<p class="lead"><b>Ruled out as explanations</b></p>
+<ul>
+<li><b>Texture</b> moves conduction between Perp and Para, but the direction average (2·Perp + Para)/3 does not depend on
+it and is still 4.3× too low (§1).</li>
+<li><b>Electronic κ_e</b>: the experiment is κ_tot. Subtracting κ_e lowers the experimental lattice κ and widens the gap.</li>
+<li><b>Lattice constants</b>: the calculated cell is 0.6–0.7 % larger than measured (§7); a larger cell tends to lower,
+not raise, the calculated κ.</li>
+<li><b>LBTE and coherence</b> raise the calculated κ, so they widen the gap. <b>Digitising errors</b> (±0.005–0.01 W m⁻¹ K⁻¹) are negligible.</li>
+</ul>
+<p class="cap">Mechanisms 1 and 2 alone already reproduce the data (that is the L3 fit). Every further mechanism
+(3–6) that is real would reduce the boundary scattering needed. The fitted L ≈ 20–30 nm lumps together all scattering
+the model leaves out, so the actual spacing of planar defects is at least that large. The cheapest decisive
+measurements are the pellet density, SEM/TEM of the microstructure and XRD of the pressed pellet.</p>
+
+<h2><span class="n">10</span>Caveats</h2>
 <ul>
 <li>The experimental points are digitised from a figure (±0.005 W m⁻¹ K⁻¹ at high T, ±0.01 at low T) and are κ_tot
 with κ_e not subtracted. Replace <code>experiment/kappa_tot_digitized.csv</code> once the raw data are available.</li>

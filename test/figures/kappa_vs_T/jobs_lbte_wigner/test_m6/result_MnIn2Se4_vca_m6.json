@@ -1,0 +1,115 @@
+{
+ "material": "MnIn2Se4",
+ "case": "vca",
+ "mesh": 6,
+ "T_K": [
+  100.0,
+  300.0
+ ],
+ "phono3py": "3.24.0",
+ "fc3": "test/MnIn2Se4/fit_cut3_6p45/fc3.hdf5",
+ "fc2": "test/MnIn2Se4/fc2_442_phonon/fc2.hdf5",
+ "vca": {
+  "x": 0.44,
+  "x_source": "Range et al., Z. Naturforsch. 46b, 1122 (1991)",
+  "site": {
+   "Mn": {
+    "mass": 81.285,
+    "g": 0.13372
+   },
+   "In": {
+    "mass": 101.644,
+    "g": 0.05955
+   }
+  }
+ },
+ "rta": {
+  "population": {
+   "inplane": [
+    1.47045,
+    0.88945
+   ],
+   "kzz_total": [
+    3.3216,
+    1.15714
+   ]
+  },
+  "seconds": 7.4
+ },
+ "masses": [
+  81.285,
+  101.644,
+  101.644,
+  78.96,
+  78.96,
+  78.96,
+  78.96
+ ],
+ "mass_variances": [
+  0.133715,
+  0.059554,
+  0.059554,
+  0.000463,
+  0.000463,
+  0.000463,
+  0.000463
+ ],
+ "lbte": {
+  "population": {
+   "inplane": [
+    1.5478,
+    0.97974
+   ],
+   "kzz_total": [
+    2.89412,
+    0.99772
+   ]
+  },
+  "seconds": 22.2
+ },
+ "coherence": {
+  "population": {
+   "inplane": [
+    1.54619,
+    0.91369
+   ],
+   "kzz_total": [
+    3.3216,
+    1.15714
+   ]
+  },
+  "coherence": {
+   "inplane": [
+    0.1231,
+    0.14534
+   ],
+   "kzz_total": [
+    0.11161,
+    0.15496
+   ]
+  },
+  "seconds": 9.8
+ },
+ "ratios": {
+  "lbte_over_rta": {
+   "inplane": [
+    1.0526,
+    1.1015
+   ],
+   "kzz_total": [
+    0.8713,
+    0.8622
+   ]
+  },
+  "coherence_over_rta": {
+   "inplane": [
+    0.0837,
+    0.1634
+   ],
+   "kzz_total": [
+    0.0336,
+    0.1339
+   ]
+  }
+ }
+}
