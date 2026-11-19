@@ -71,11 +71,10 @@ The procedure is in [`dft/fc3_cutoff_extend/README.md`](../dft/fc3_cutoff_extend
 
 Settings (answers of 2026-11-19):
 - **Do not change the production project** (`Mn2In2Se5_441/kl-dft-cpu`,
-  `cut3_candidates`). Run the refits as a separate scan, e.g. in
-  `step5_fc/cutoff_scan_ext/`, from the same dataset and the same pheasy settings.
-  If AutoZT can only do this by editing that project's configuration, ask the
-  user first (iron rule 3) and then only append the new cutoffs, after a backup
-  of the original file.
+  `cut3_candidates`). **Decided by the user (2026-11-19): separate directory.**
+  Run the refits as a separate scan in `step5_fc/cutoff_scan_ext/`, from the same
+  dataset and the same pheasy settings. If this turns out to be impossible
+  without editing the production configuration, stop and ask the user again.
 - **Fits: the 4 new cutoffs plus a refit at 6.51 Å** as an anchor, not all 10.
   The 6.51 Å refit must agree with the existing 6.51 Å fits within the known
   fit-to-fit scatter of ≈ 2 % (κ_zz rest 0.985–1.009, in-plane 2.89–3.00 at 16³).
