@@ -1,0 +1,6 @@
+# 300 K values to quote (stars in the intrinsic kappa(T) figure)
+material,component,kappa_WmK,note
+MnIn2Se4,inplane,4.67,LBTE + coherence; FC3 cutoff about -10 %
+MnIn2Se4,kzz,0.714,mesh-converged + coherence; FC3 cutoff about -10 %
+Mn2In2Se5,inplane,3.37,upper bound (FC3 cutoff not converged)
+Mn2In2Se5,kzz,1.089,upper bound (FC3 cutoff not converged)

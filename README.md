@@ -10,7 +10,7 @@ antisite disorder, grain boundaries and electronic contribution.
 
 **[`PROGRESS_REPORT_20261118.md`](PROGRESS_REPORT_20261118.md)** — values to quote, the three paper figures, the uncertainty budget and the open items.
 
-**[`report/calc_vs_experiment_report.html`](report/calc_vs_experiment_report.html)** — one static HTML page (open it in a browser): phonon dispersion, κ(T) vs experiment, and the 300 K scattering rates for both materials, plus what the L3 fit is. Rebuild with `python3 report/make_report_html.py`.
+**[`report/calc_vs_experiment_report.html`](report/calc_vs_experiment_report.html)** — one static HTML page (open it in a browser): phonon dispersion, κ(T) vs experiment, and the 300 K scattering rates for both materials, plus what the L3 fit is. Rebuild with `python3 report/make_report_html.py`; the figures (`report/figures/`, PNG + PDF) and their data (`report/plot_data/`, CSV) are written alongside, and `python3 report/make_bundle.py` packs HTML, figures, data and scripts into one zip.
 
 ## Status (2026-11-15)
 

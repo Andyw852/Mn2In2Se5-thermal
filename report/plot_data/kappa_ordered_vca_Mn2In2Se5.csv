@@ -1,0 +1,16 @@
+# Mn2In2Se5 single-crystal kappa (W/mK), RTA, mesh 20x20x20, natural isotopes, kappa_zz mesh-converged.
+# ordered = real masses; vca = averaged site masses + mass-variance scattering, antisite fraction 0.13, masses {'Mn': 62.73, 'In': 107.03, 'Se': 78.96}, g {'Mn': 0.1031, 'In': 0.0354, 'Se': 0.000463}.
+# Source: test/figures/kappa_vs_T/data_mn2in2se5_vca.json
+T_K,ordered_inplane,ordered_kzz,vca_inplane,vca_kzz
+30,53.153,17.7434,9.109,8.3596
+60,19.405,6.2207,5.309,3.868
+90,11.281,3.6674,3.876,2.5166
+100,9.906,3.2292,3.584,2.2606
+120,7.984,2.6117,3.137,1.8852
+150,6.212,2.0367,2.673,1.5182
+200,4.561,1.4968,2.181,1.1558
+300,2.998,0.9837,1.633,0.792
+400,2.24,0.7342,1.325,0.6064
+500,1.789,0.5861,1.122,0.4928
+600,1.49,0.4879,0.977,0.4158
+700,1.277,0.418,0.867,0.3599

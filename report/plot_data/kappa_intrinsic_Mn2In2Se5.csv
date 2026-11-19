@@ -1,0 +1,15 @@
+# Mn2In2Se5 intrinsic kappa_L (W/mK): ordered crystal, 3-phonon + natural isotopes, RTA, mesh 16x16x16.
+# kappa_zz = mesh-converged term (Gamma-Z quadrature error removed). Source: test/figures/kappa_vs_T/data_mnin2se5.json
+T_K,kappa_inplane,kappa_zz
+30,52.883,17.9701
+60,19.248,6.3411
+90,11.164,3.7442
+100,9.799,3.2975
+120,7.893,2.6676
+150,6.137,2.0806
+200,4.504,1.5292
+300,2.96,1.005
+400,2.211,0.7502
+500,1.766,0.5989
+600,1.471,0.4985
+700,1.26,0.4271

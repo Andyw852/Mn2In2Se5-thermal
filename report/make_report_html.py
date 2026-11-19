@@ -17,251 +17,36 @@ Sections
   7  what the L3 fit is
   8  caveats
 
-Needs: numpy, matplotlib, h5py, pyyaml, phonopy (+ seekpath for the band path).
+Pipeline (one source for the HTML and the figure files):
+  export_plot_data.py  repository -> report/plot_data/*.csv, *.json
+  plot_figures.py      report/plot_data/ -> report/figures/fig*.png (300 dpi) + .pdf
+  make_report_html.py  runs both, embeds the figures (150 dpi) in the HTML
 
-  python3 report/make_report_html.py
+Needs: numpy, matplotlib, h5py, pyyaml, phonopy (+ seekpath) for the export;
+only numpy + matplotlib with --no-export (reuses report/plot_data/).
+
+  python3 report/make_report_html.py [--no-export]
 """
 import base64
-import csv
-import io
 import json
+import sys
 from pathlib import Path
 
-import h5py
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-import yaml
-from matplotlib.lines import Line2D
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+sys.path.insert(0, str(HERE))
+import plot_figures              # noqa: E402  plot_data/ -> figures
 
-ROOT = Path(__file__).resolve().parents[1]
-FIG = ROOT / "test" / "figures"
-OUT = ROOT / "report" / "calc_vs_experiment_report.html"
-
-MAT = ("MnIn2Se4", "Mn2In2Se5")
-LABEL = {"MnIn2Se4": r"MnIn$_2$Se$_4$", "Mn2In2Se5": r"Mn$_2$In$_2$Se$_5$"}
+# In the repository this file sits in report/ next to plot_data/. In the exported
+# bundle it sits in scripts/, with ../data, ../figures and ../report.
+BUNDLE = not (HERE / "plot_data").is_dir() and (HERE.parent / "data").is_dir()
+DATA = HERE.parent / "data" if BUNDLE else HERE / "plot_data"
+FIGDIR = HERE.parent / "figures" if BUNDLE else HERE / "figures"
+OUT = (HERE.parent / "report" if BUNDLE else HERE) / "calc_vs_experiment_report.html"
 HTML_LABEL = {"MnIn2Se4": "MnIn₂Se₄", "Mn2In2Se5": "Mn₂In₂Se₅"}
-COL = {"MnIn2Se4": "#d62728", "Mn2In2Se5": "#1f77b4"}      # analysis/plotting convention
-QUOTED = {"MnIn2Se4": {"inplane": 4.67, "kzz": 0.714},     # REPORT §9.1, 300 K
-          "Mn2In2Se5": {"inplane": 3.37, "kzz": 1.089}}
-CHK = json.loads((ROOT / "report" / "independent_checks.json").read_text())
-SC_DIR = {"MnIn2Se4": FIG / "scattering", "Mn2In2Se5": FIG / "scattering" / "mn2in2se5"}
+CHK = json.loads((DATA / "independent_checks.json").read_text())
 
 
-def load(rel):
-    return json.loads((FIG / rel).read_text())
-
-
-def style(ax):
-    ax.grid(True, ls=":", alpha=0.4)
-    ax.tick_params(direction="in", top=True, right=True)
-
-
-def png(fig):
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
-    plt.close(fig)
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
-
-
-def tex_label(s):
-    return (s.replace("$", "").replace("\\mathrm{", "").replace("}", "")
-             .replace("\\Gamma", "Γ").replace("_", ""))
-
-
-# --------------------------------------------------------------------------- bands
-def bands_mnin2se4():
-    b = yaml.safe_load((ROOT / "test/MnIn2Se4/fc2_442_phonon/band-dft-cpu.yaml").read_text())
-    segs, i = [], 0
-    for n in b["segment_nqpoint"]:
-        blk = b["phonon"][i:i + n]
-        i += n
-        segs.append((np.array([p["distance"] for p in blk]),
-                     np.array([[bb["frequency"] for bb in p["band"]] for p in blk])))
-    labels = []
-    for k, (a, c) in enumerate(b["labels"]):
-        a, c = tex_label(a), tex_label(c)
-        if k == 0:
-            labels.append(a)
-        elif a != labels[-1]:
-            labels[-1] += "|" + a
-        labels.append(c)
-    return segs, labels
-
-
-def bands_mn2in2se5():
-    import phonopy
-    d = ROOT / "Mn2In2Se5" / "fc"
-    ph = phonopy.load(str(d / "phono3py_disp.yaml"), force_constants_filename=str(d / "fc2.hdf5"),
-                      produce_fc=False, is_nac=False)
-    ph.auto_band_structure(npoints=101, write_yaml=False)
-    bs = ph.band_structure
-    segs = [(np.array(x), np.array(f)) for x, f in zip(bs.distances, bs.frequencies)]
-    lab, conn = [tex_label(x) for x in bs.labels], bs.path_connections
-    labels, j = [lab[0]], 1
-    for k, c in enumerate(conn):
-        labels.append(lab[j])
-        j += 1
-        if not c and k < len(conn) - 1:
-            labels[-1] += "|" + lab[j]
-            j += 1
-    return segs, labels
-
-
-def fig_bands():
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True)
-    for ax, m, (segs, labels) in zip(axes, MAT, (bands_mnin2se4(), bands_mn2in2se5())):
-        ticks = [s[0][0] for s in segs] + [segs[-1][0][-1]]
-        for x, f in segs:
-            ax.plot(x, f, color=COL[m], lw=1.0)
-        for t in ticks:
-            ax.axvline(t, color="0.7", lw=0.7)
-        ax.set_xticks(ticks, labels)
-        ax.set_xlim(ticks[0], ticks[-1])
-        ax.set_ylim(0, 8.2)
-        nb = segs[0][1].shape[1]
-        ax.set_title(f"{LABEL[m]}  ({nb} branches, max {max(s[1].max() for s in segs):.2f} THz)", fontsize=11)
-        ax.tick_params(direction="in", right=True)
-        ax.grid(True, axis="y", ls=":", alpha=0.4)
-    axes[0].set_ylabel("Frequency (THz)")
-    fig.tight_layout()
-    return png(fig)
-
-
-# --------------------------------------------------------------------------- kappa(T)
-def fig_intrinsic():
-    data = {"MnIn2Se4": load("kappa_vs_T/data_mnin2se4.json"),
-            "Mn2In2Se5": load("kappa_vs_T/data_mnin2se5.json")}
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.2))
-    for m in MAT:
-        d = data[m]
-        T = np.array(d["T_K"], float)
-        k = T >= 30
-        a1.plot(T[k], np.array(d["inplane"])[k], "-o", color=COL[m], ms=4, label=f"{LABEL[m]} ({d['mesh']})")
-        a2.plot(T[k], np.array(d["kzz_rest"])[k], "-s", color=COL[m], ms=4, mfc="white",
-                label=f"{LABEL[m]} ({d['mesh']})")
-    for ax, key in ((a1, "inplane"), (a2, "kzz")):
-        for m in MAT:
-            v = QUOTED[m][key]
-            x = 300 + (12 if m == "MnIn2Se4" else -12)
-            ax.plot([x], [v], "*", color=COL[m], ms=13, mec="k", mew=0.6, zorder=5)
-            if m == "MnIn2Se4":
-                ax.errorbar([x], [v], yerr=[[0.10 * v], [0]], color=COL[m], capsize=4, lw=1.6, zorder=4)
-            else:
-                ax.annotate("", xy=(x, v * 0.72), xytext=(x, v * 0.95),
-                            arrowprops=dict(arrowstyle="-|>", color=COL[m], lw=1.6), zorder=4)
-    for ax, t in ((a1, "(a) in-plane"), (a2, r"(b) cross-plane $\kappa_{zz}$")):
-        ax.set_yscale("log")
-        ax.set_xlabel("Temperature (K)")
-        ax.set_ylabel(r"$\kappa_L$ (W m$^{-1}$ K$^{-1}$)")
-        ax.set_title(t, fontsize=11)
-        style(ax)
-    star = Line2D([], [], ls="none", marker="*", color="0.4", mec="k", ms=11, label="300 K value to quote")
-    a1.legend(handles=a1.get_legend_handles_labels()[0] + [star], fontsize=8.5, frameon=False)
-    a2.legend(fontsize=8.5, frameon=False)
-    fig.tight_layout()
-    return png(fig)
-
-
-def exp_rows():
-    out = {}
-    with open(ROOT / "experiment" / "kappa_tot_digitized.csv", encoding="utf-8") as f:
-        for r in csv.DictReader(l for l in f if not l.startswith("#")):
-            out.setdefault((r["material"], r["direction"], r["panel"]), []).append(
-                (float(r["T_K"]), float(r["kappa_tot_WmK"])))
-    return {k: np.array(sorted(v)) for k, v in out.items()}
-
-
-def extrinsic(m):
-    d = load(f"calc_vs_experiment/extrinsic_{m.lower()}.json")
-    T = np.array([r["T"] for r in d["rows"]])
-    kxx = np.array([r["kxx"] for r in d["rows"]])
-    kzz = np.array([r["kzz"] for r in d["rows"]])
-    s = d["s"]
-    return T, {"Perp": (1 - s / 2) * kxx + (s / 2) * kzz, "Para": s * kxx + (1 - s) * kzz}, s
-
-
-def fig_calc_vs_exp():
-    exp = exp_rows()
-    vca = {"MnIn2Se4": load("kappa_vs_T/data_mnin2se4_vca.json"),
-           "Mn2In2Se5": load("kappa_vs_T/data_mn2in2se5_vca.json")}
-    fig, axes = plt.subplots(2, 2, figsize=(11, 8), sharex=True)
-    for i, m in enumerate(MAT):
-        d = vca[m]
-        T = np.array(d["T_K"], float)
-        Tl3, l3, s = extrinsic(m)
-        for j, (dr, key, comp) in enumerate((("Perp", "inplane", "in-plane"),
-                                             ("Para", "kzz_rest", r"$\kappa_{zz}$"))):
-            ax = axes[i, j]
-            c = COL[m]
-            ax.plot(T, d[f"baseline_{key}"], "--", color=c, lw=1.4, label="calc. ordered single crystal")
-            ax.plot(T, d[f"vca_{key}"], "-", color=c, lw=1.8, label="calc. VCA single crystal")
-            ax.plot(Tl3, l3[dr], ":", color="k", lw=1.6, label=f"calc. L3 fit (s = {s:.2f})")
-            if m == "MnIn2Se4":                 # minimum kappa from the measured sound velocities
-                km = CHK["kmin_exp_velocities"]
-                ax.axhline(km["cahill"], color="0.45", lw=1.0, ls="-.", label=f"Cahill κ_min = {km['cahill']:.2f}")
-                ax.axhline(km["diffuson"], color="0.65", lw=1.0, ls="-.", label=f"diffuson κ = {km['diffuson']:.2f}")
-            for panel, filled in (("highT", True), ("lowT", False)):
-                p = exp.get((m, dr, panel))
-                if p is not None:
-                    ax.plot(p[:, 0], p[:, 1], "o" if dr == "Perp" else "s", ms=5, color=c,
-                            mfc=c if filled else "white", mec=c, ls="none",
-                            label="experiment 300–623 K (fitted)" if filled else "experiment 55–145 K (not fitted)")
-            ax.set_yscale("log")
-            ax.set_xlim(0, 720)
-            ax.set_title(f"{LABEL[m]} — {dr} (calc. {comp})", fontsize=10.5)
-            style(ax)
-            if j == 0:
-                ax.set_ylabel(r"$\kappa$ (W m$^{-1}$ K$^{-1}$)")
-            if i == 1:
-                ax.set_xlabel("Temperature (K)")
-            ax.legend(fontsize=7.5, frameon=False, loc="upper right")
-    fig.tight_layout()
-    return png(fig)
-
-
-# --------------------------------------------------------------------------- scattering
-def load_sc(fn):
-    with h5py.File(fn, "r") as f:
-        fr = f["frequency"][:].ravel()
-        g3 = f["gamma"][0].ravel() * 2.0          # tau^-1 = 2 Gamma (ps^-1)
-        gi = f["gamma_isotope"][:].ravel() * 2.0
-        T = float(f["temperature"][0])
-    o = np.argsort(fr)
-    return fr[o], g3[o], gi[o], T
-
-
-def fig_scattering():
-    fig, axes = plt.subplots(2, 2, figsize=(11, 8.2))
-    for i, m in enumerate(MAT):
-        fb, g3b, gib, T = load_sc(SC_DIR[m] / "kappa_baseline.hdf5")
-        fv, g3v, giv, _ = load_sc(SC_DIR[m] / "kappa_vca.hdf5")
-        a1, a2 = axes[i]
-        a1.scatter(fb, g3b, s=5, alpha=0.4, color="#1f77b4", label="baseline 3-phonon", rasterized=True)
-        a1.scatter(fv, g3v, s=5, alpha=0.4, color="#d62728", label="VCA 3-phonon", rasterized=True)
-        a1.set_title(f"{LABEL[m]} — 3-phonon scattering (~{T:.0f} K)", fontsize=10.5)
-        a2.scatter(fv, giv, s=5, alpha=0.5, color="#d62728", label="VCA disorder (mass variance)", rasterized=True)
-        a2.scatter(fb, gib, s=5, alpha=0.5, color="#1f77b4", label="baseline natural isotope", rasterized=True)
-        mask = (fv > 1) & (giv > 0)
-        sc = np.median(giv[mask] / fv[mask] ** 2)
-        ff = np.linspace(0.1, fv.max(), 60)
-        a2.plot(ff, sc * ff ** 2, "k--", lw=1, alpha=0.6, label=r"$\propto\omega^2$")
-        a2.set_title(f"{LABEL[m]} — disorder elastic scattering", fontsize=10.5)
-        for ax in (a1, a2):
-            ax.set_yscale("log")
-            ax.set_ylabel(r"$\tau^{-1}$ (ps$^{-1}$)")
-            style(ax)
-            ax.legend(fontsize=8, frameon=False, loc="lower right", markerscale=2)
-            if i == 1:
-                ax.set_xlabel("Frequency (THz)")
-        a1.set_ylim(1e-4, 2)
-        a2.set_ylim(1e-21, 2)
-    fig.tight_layout()
-    return png(fig)
-
-
-# --------------------------------------------------------------------------- HTML
 CSS = """
 :root{--fg:#1b2129;--muted:#5b6573;--rule:#dde2e8;--bg:#f6f7f9;--panel:#fff;--accent:#2b5d8a;--red:#c8372d;--blue:#1f6fb4}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 "IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif}
@@ -446,10 +231,13 @@ vs −6 %), possibly two instruments or two samples; this is why the fit uses th
 
 
 def main():
-    figs = {"bands": fig_bands(), "intrinsic": fig_intrinsic(),
-            "calc_vs_exp": fig_calc_vs_exp(), "scattering": fig_scattering()}
+    if not BUNDLE and "--no-export" not in sys.argv:   # repository: refresh plot_data/ first
+        import export_plot_data
+        export_plot_data.main()
+    png = plot_figures.make_all(DATA, FIGDIR, png_for_html=True)
+    figs = {k: "data:image/png;base64," + base64.b64encode(v).decode() for k, v in png.items()}
     OUT.write_text(html(figs), encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1e6:.2f} MB)")
+    print(f"wrote {OUT} ({OUT.stat().st_size / 1e6:.2f} MB) and {FIGDIR}/ (.png 300 dpi + .pdf)")
 
 
 if __name__ == "__main__":

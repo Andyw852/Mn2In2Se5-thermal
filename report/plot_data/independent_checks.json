@@ -1,0 +1,149 @@
+{
+ "lattice": {
+  "calc": {
+   "a": 4.074,
+   "c": 39.64
+  },
+  "exp": {
+   "a": 4.05,
+   "c": 39.35
+  }
+ },
+ "raman_calc": [
+  {
+   "irrep": "Eg",
+   "THz": 0.768,
+   "cm-1": 25.6
+  },
+  {
+   "irrep": "A1g",
+   "THz": 2.244,
+   "cm-1": 74.8
+  },
+  {
+   "irrep": "Eg",
+   "THz": 2.848,
+   "cm-1": 95.0
+  },
+  {
+   "irrep": "Eg",
+   "THz": 5.022,
+   "cm-1": 167.5
+  },
+  {
+   "irrep": "A1g",
+   "THz": 5.292,
+   "cm-1": 176.5
+  },
+  {
+   "irrep": "A1g",
+   "THz": 7.784,
+   "cm-1": 259.7
+  }
+ ],
+ "raman_exp_approx_cm-1": [
+  78,
+  177
+ ],
+ "gamma_modes": [
+  {
+   "irrep": "Eu",
+   "THz": 0.736,
+   "cm-1": 24.6
+  },
+  {
+   "irrep": "Eg",
+   "THz": 0.768,
+   "cm-1": 25.6
+  },
+  {
+   "irrep": "A1g",
+   "THz": 2.244,
+   "cm-1": 74.8
+  },
+  {
+   "irrep": "Eg",
+   "THz": 2.848,
+   "cm-1": 95.0
+  },
+  {
+   "irrep": "A2u",
+   "THz": 4.19,
+   "cm-1": 139.8
+  },
+  {
+   "irrep": "Eu",
+   "THz": 5.006,
+   "cm-1": 167.0
+  },
+  {
+   "irrep": "Eg",
+   "THz": 5.022,
+   "cm-1": 167.5
+  },
+  {
+   "irrep": "Eu",
+   "THz": 5.278,
+   "cm-1": 176.1
+  },
+  {
+   "irrep": "A1g",
+   "THz": 5.292,
+   "cm-1": 176.5
+  },
+  {
+   "irrep": "A2u",
+   "THz": 5.73,
+   "cm-1": 191.1
+  },
+  {
+   "irrep": "A2u",
+   "THz": 7.143,
+   "cm-1": 238.3
+  },
+  {
+   "irrep": "A1g",
+   "THz": 7.784,
+   "cm-1": 259.7
+  }
+ ],
+ "velocity_calc": {
+  "c_axis": [
+   1347.0,
+   1347.0,
+   3113.0
+  ],
+  "in_plane": [
+   1039.0,
+   1676.0,
+   3563.0
+  ],
+  "avg_vL": 3257,
+  "avg_vT": 1540,
+  "debye_mean": 1646
+ },
+ "velocity_exp": [
+  {
+   "vL_ms": 2647.69,
+   "vT_ms": 1171.74,
+   "v_mean_ms": 1322.47,
+   "sample": "1"
+  },
+  {
+   "vL_ms": 2585.54,
+   "vT_ms": 1176.75,
+   "v_mean_ms": 1326.52,
+   "sample": "2"
+  }
+ ],
+ "number_density_A-3": 0.03757,
+ "theoretical_density_g_cm3": 5.351,
+ "kmin_exp_velocities": {
+  "cahill": 0.62,
+  "diffuson": 0.195
+ },
+ "kmin_calc_velocities": {
+  "cahill": 0.791,
+  "diffuson": 0.249
+ }
+}
