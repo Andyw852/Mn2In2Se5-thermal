@@ -151,7 +151,17 @@ Scripts in this directory:
 For the record: `PHEASY_GPU_MODE=prefer` was a mistake in a local draft of this
 script, **not** in the AutoZT templates. Those set only `PHEASY_USE_GPU=1`, which
 `gpu_backend.gpu_mode_from_env()` already maps to `required`, so AutoZT's own
-fits cannot silently fall back to the CPU either.
+fits could not silently fall back to the CPU either.
+
+**AutoZT side (user-approved, 2026-11-20).** The same card-pinning was added to
+`setting/3090/templates/submit_fcfit_pheasy_gpu.tpl`, which until then probed a
+healthy card but only *printed* it, so a generated job could still start on a
+saturated card. It now picks the card with the most free memory (overridable with
+`PHEASY_GPU_MIN_FREE_MIB`, default 4000), exports `CUDA_VISIBLE_DEVICES`, and
+warns loudly when every card is full; it also states `PHEASY_GPU_MODE=required`
+explicitly. `setting/` is git-ignored, so this is a site-config change, not a
+repository commit. It only takes effect for submit scripts generated from now on —
+an already generated job keeps the old logic until its step is re-generated.
 
 Note that even the **production** 6.51 Å fit recorded `pheasy_gpu_used: False`
 in its `fit_metrics.json` (GPU requested, CPU used). Whether the GPU path works
