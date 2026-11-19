@@ -184,6 +184,10 @@ def checks_zh():
 
 
 def html_zh(figs):
+    T1, T2 = en.table1_body({"quoted": "计算，推荐值", "ordered": "计算，有序（RTA 20³）",
+                             "vca": "计算，VCA 反位无序（RTA 20³）", "exp": "实验，Perp / Para（303 K）",
+                             "exp_avg": "实验，(2·Perp + Para)/3（303 K）"},
+                            {M4: "截断约 −10 %", M5: "上限"})
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -196,22 +200,29 @@ def html_zh(figs):
 （见 <a href="../PROGRESS_REPORT_20261118.md">PROGRESS_REPORT_20261118.md</a>）；只有 {L[M5]} 的声子谱是在这里由仓库中的
 <code>fc2.hdf5</code> 插值得到的。</p>
 
-<h2><span class="n">1</span>300 K 推荐值与实验</h2>
-<p class="lead">单位 W m⁻¹ K⁻¹。实验中 Perp（垂直于热压方向）≈ 面内，Para（平行于热压方向）≈ 层间（热压时片状晶粒的 c 轴倾向于沿压力方向）。
-倍数 = 计算 / 实验。</p>
+<h2><span class="n">1</span>300 K 计算值与实验</h2>
+<p class="lead">单位 W m⁻¹ K⁻¹，计算为 300 K，实验为 303 K（热压样品，κ_tot）。两个方向分开对比，每个数后面是 计算/实验 的倍数。
+实验中 Perp 垂直于热压方向测量，主要反映面内；Para 沿热压方向测量，主要反映层间（热压时片状晶粒的 c 轴倾向于沿压力方向）。</p>
 <div class="tbl"><table>
-<thead><tr><th></th><th class="r">{L[M4]}</th><th class="b">{L[M5]}</th></tr></thead>
+<thead><tr><th></th><th class="r">{L[M4]} 面内</th><th class="r">{L[M4]} 层间 κ_zz</th>
+<th class="b">{L[M5]} 面内</th><th class="b">{L[M5]} 层间 κ_zz</th></tr></thead>
 <tbody>
-<tr><td>计算 面内 κ（LBTE + 相干项）</td><td><b>4.67</b> <span class="x">截断约 −10 %</span></td><td><b>3.37</b> <span class="x">上限</span></td></tr>
-<tr><td>计算 κ_zz（网格收敛 + 相干项）</td><td><b>0.71</b> <span class="x">截断约 −10 %</span></td><td><b>1.09</b> <span class="x">上限</span></td></tr>
-<tr><td>实验 κ_tot Perp / Para（303 K，热压）</td><td>0.933 / 0.485</td><td>0.741 / 0.320</td></tr>
-<tr><td>与织构无关的平均 (2·xx + zz)/3：实验</td><td>0.784</td><td>0.601</td></tr>
-<tr><td>&nbsp;&nbsp;计算，推荐值</td><td>3.35 <span class="x">4.3×</span></td><td>2.61 <span class="x">4.3×</span></td></tr>
-<tr><td>&nbsp;&nbsp;计算，有序，RTA 20³</td><td>2.67 <span class="x">3.4×</span></td><td>2.33 <span class="x">3.9×</span></td></tr>
-<tr><td>&nbsp;&nbsp;计算，VCA 反位无序，RTA 20³</td><td>1.14 <span class="x">1.5×</span></td><td>1.35 <span class="x">2.3×</span></td></tr>
-<tr><td>&nbsp;&nbsp;计算，L3 拟合（用这些实验数据拟合，见第 8 节）</td><td>0.77</td><td>0.62</td></tr>
+{T1}
 </tbody></table></div>
-<p class="cap">本征单晶 κ 比热压样品高 3–4 倍。Mn/In 反位质量无序（VCA）缩小了一部分差距，其余需要纳米尺度的有效平均自由程（L_eff ≈ 10–50 nm）。</p>
+<p class="cap"><b>计算推荐值</b>：最精确的单晶值（第 2.4 节：面内 LBTE + 相干项，κ_zz 网格收敛项 + 相干项）。{L[M4]} 的三阶截断误差约 −10 %；
+{L[M5]} 截断未收敛，为上限。<b>有序 / VCA</b>：20³ 网格的 RTA，分别不含 / 含 Mn–In 反位质量无序（第 5 节），用来看无序本身能使 κ 降低多少。
+所有计算值都对应无缺陷、无晶界的单晶。</p>
+
+<p class="lead"><b>为什么还有第二张表。</b>热压样品只是部分织构，Perp 不完全是面内，Para 也不完全是 κ_zz：有一部分面内导热混进了 Para
+（所以上表中 Para 对应的倍数偏小）。而平均值 (2·Perp + Para)/3 对<i>任意</i>织构都等于 (2·κ面内 + κ_zz)/3，
+因此不需要知道织构就能直接比较计算和实验。</p>
+<div class="tbl"><table>
+<thead><tr><th>方向平均 (2·面内 + κ_zz)/3</th><th class="r">{L[M4]}</th><th class="b">{L[M5]}</th></tr></thead>
+<tbody>
+{T2}
+</tbody></table></div>
+<p class="cap">单晶 κ 比热压样品高 3–4 倍。反位无序（VCA）缩小了一部分差距，其余需要纳米尺度的有效平均自由程（L_eff ≈ 10–50 nm，第 8 节）。
+第 8 节的 L3 模型没有列在这里：它是用这些实验点拟合出来的，300 K 下与实验吻合是拟合的结果，不是独立的计算。</p>
 
 {methods_zh()}
 
@@ -252,7 +263,10 @@ VCA 占位：{L[M4]} i = 0.44（单晶精修，Range 等，Z. Naturforsch. 46b, 
 {checks_zh()}
 
 <h2><span class="n">8</span>L3 拟合是什么</h2>
-<p class="lead">L3 是 <code>analysis/extrinsic/</code> 中的外禀散射模型。<b>它是用实验值拟合的</b>，因此它和实验吻合是拟合出来的结果，不是预测。</p>
+<p class="lead">L3 是 <code>analysis/extrinsic/</code> 中的外禀散射模型。<b>它是用实验值拟合的</b>，因此它和实验吻合是拟合出来的结果，不是预测。
+300 K 下它给出 Perp / Para = 0.91 / 0.49（{L[M4]}，实测 0.93 / 0.49）和 0.77 / 0.34（{L[M5]}，实测 0.74 / 0.32）。
+<b>它的用途不是给出 κ</b>（实验已经测出来了），而是回答"需要多少、什么样的额外散射，才能把计算的单晶变成实测的热压块体"：
+拟合出的参数（织构 s、晶界长度 L、反位比例 x）才是结果，而没有参与拟合的 55–145 K 数据用来检验它。</p>
 <div class="eq">Γ_λ = Γ_3ph,λ(T)  +  Σ g_elem(x)·B_elem,λ  +  |v_λ| / (4π L)
        三声子              Mn↔In 反位质量无序             晶界（Casimir）
 

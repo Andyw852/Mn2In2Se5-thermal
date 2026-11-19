@@ -86,6 +86,46 @@ def _rows(name):
         return list(_csv.DictReader(l for l in f if not l.startswith("#")))
 
 
+def table1_values():
+    """300 K numbers for §1, read from plot_data/: per direction (in-plane, kappa_zz) and the
+    texture-independent average (2 in-plane + kappa_zz)/3, for calculation levels and experiment."""
+    q = {(r["material"], r["component"]): float(r["kappa_WmK"]) for r in _rows("kappa_quoted_300K.csv")}
+    out = {}
+    for m in ("MnIn2Se4", "Mn2In2Se5"):
+        v = next(r for r in _rows(f"kappa_ordered_vca_{m}.csv") if float(r["T_K"]) == 300)
+        e = {r["direction"]: float(r["kappa_tot_WmK"]) for r in _rows("experiment_kappa_tot_digitized.csv")
+             if r["material"] == m and r["panel"] == "highT" and float(r["T_K"]) == 303}
+        rows = {"quoted": (q[(m, "inplane")], q[(m, "kzz")]),
+                "ordered": (float(v["ordered_inplane"]), float(v["ordered_kzz"])),
+                "vca": (float(v["vca_inplane"]), float(v["vca_kzz"])),
+                "exp": (e["Perp"], e["Para"])}
+        out[m] = {k: (a, z, (2 * a + z) / 3) for k, (a, z) in rows.items()}
+    return out
+
+
+def table1_body(labels, notes):
+    """Rows of the two §1 tables. labels: row label per level; notes: quoted-value tags per material."""
+    V = table1_values()
+    ms = ("MnIn2Se4", "Mn2In2Se5")
+    r = lambda a, b: f' <span class="x">{a / b:.1f}×</span>'
+    t1, t2 = [], []
+    for k in ("quoted", "ordered", "vca"):
+        c1 = []
+        for m in ms:
+            a, z, avg = V[m][k]
+            ea, ez, eavg = V[m]["exp"]
+            b = ("<b>", "</b>") if k == "quoted" else ("", "")
+            tag = f' <span class="x">{notes[m]}</span>' if k == "quoted" else ""
+            c1 += [f"<td>{b[0]}{a:.2f}{b[1]}{r(a, ea)}{tag}</td>", f"<td>{b[0]}{z:.2f}{b[1]}{r(z, ez)}</td>"]
+        t1.append(f"<tr><td>{labels[k]}</td>{''.join(c1)}</tr>")
+        t2.append(f"<tr><td>{labels[k]}</td>" + "".join(
+            f"<td>{V[m][k][2]:.2f}{r(V[m][k][2], V[m]['exp'][2])}</td>" for m in ms) + "</tr>")
+    t1.append(f"<tr><td>{labels['exp']}</td>" + "".join(
+        f"<td><b>{V[m]['exp'][0]:.3f}</b></td><td><b>{V[m]['exp'][1]:.3f}</b></td>" for m in ms) + "</tr>")
+    t2.append(f"<tr><td>{labels['exp_avg']}</td>" + "".join(f"<td><b>{V[m]['exp'][2]:.3f}</b></td>" for m in ms) + "</tr>")
+    return "\n".join(t1), "\n".join(t2)
+
+
 def _step(new, old):
     return f"{100 * (new / old - 1):+.1f} %"
 
@@ -278,6 +318,11 @@ These limits are isotropic; Para lying below the Cahill value is common for laye
 
 def html(figs):
     L = HTML_LABEL
+    T1, T2 = table1_body({"quoted": "calculation, value to quote", "ordered": "calculation, ordered (RTA 20³)",
+                          "vca": "calculation, VCA antisite disorder (RTA 20³)",
+                          "exp": "experiment, Perp / Para (303 K)",
+                          "exp_avg": "experiment, (2·Perp + Para)/3 (303 K)"},
+                         {"MnIn2Se4": "cutoff ≈ −10 %", "Mn2In2Se5": "upper bound"})
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -291,23 +336,34 @@ def html(figs):
 (see <a href="../PROGRESS_REPORT_20261118.md">PROGRESS_REPORT_20261118.md</a>); only the {L['Mn2In2Se5']}
 dispersion is interpolated here from its committed <code>fc2.hdf5</code>.</p>
 
-<h2><span class="n">1</span>Values to quote at 300 K vs experiment</h2>
-<p class="lead">W m⁻¹ K⁻¹. Experiment: Perp ≈ in-plane, Para ≈ cross-plane (the platelet c axes tend to align
-with the pressing direction). Ratio = calculation / experiment.</p>
+<h2><span class="n">1</span>Values at 300 K vs experiment</h2>
+<p class="lead">W m⁻¹ K⁻¹, calculation at 300 K, experiment at 303 K (hot-pressed, κ_tot). Each direction is compared
+separately; the number after each value is calculation / experiment. Experiment: Perp is measured perpendicular to the
+pressing axis and is mostly in-plane, Para is measured along it and is mostly cross-plane (the platelet c axes tend to
+align with the pressing direction).</p>
 <div class="tbl"><table>
-<thead><tr><th></th><th class="r">{L['MnIn2Se4']}</th><th class="b">{L['Mn2In2Se5']}</th></tr></thead>
+<thead><tr><th></th><th class="r">{L['MnIn2Se4']} in-plane</th><th class="r">{L['MnIn2Se4']} κ_zz</th>
+<th class="b">{L['Mn2In2Se5']} in-plane</th><th class="b">{L['Mn2In2Se5']} κ_zz</th></tr></thead>
 <tbody>
-<tr><td>calc. in-plane κ (LBTE + coherence)</td><td><b>4.67</b> <span class="x">cutoff ≈ −10 %</span></td><td><b>3.37</b> <span class="x">upper bound</span></td></tr>
-<tr><td>calc. κ_zz (mesh-converged + coherence)</td><td><b>0.71</b> <span class="x">cutoff ≈ −10 %</span></td><td><b>1.09</b> <span class="x">upper bound</span></td></tr>
-<tr><td>experiment κ_tot Perp / Para (303 K, hot-pressed)</td><td>0.933 / 0.485</td><td>0.741 / 0.320</td></tr>
-<tr><td>texture-independent (2·xx + zz)/3 — experiment</td><td>0.784</td><td>0.601</td></tr>
-<tr><td>&nbsp;&nbsp;calc., quoted values</td><td>3.35 <span class="x">4.3×</span></td><td>2.61 <span class="x">4.3×</span></td></tr>
-<tr><td>&nbsp;&nbsp;calc., ordered, RTA 20³</td><td>2.67 <span class="x">3.4×</span></td><td>2.33 <span class="x">3.9×</span></td></tr>
-<tr><td>&nbsp;&nbsp;calc., VCA antisite disorder, RTA 20³</td><td>1.14 <span class="x">1.5×</span></td><td>1.35 <span class="x">2.3×</span></td></tr>
-<tr><td>&nbsp;&nbsp;calc., L3 fit (fitted to these data, §8)</td><td>0.77</td><td>0.62</td></tr>
+{T1}
 </tbody></table></div>
-<p class="cap">The intrinsic single-crystal κ is 3–4× above the hot-pressed samples. Antisite mass disorder (VCA)
-closes part of the gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm).</p>
+<p class="cap"><b>Calculation, value to quote</b>: the most accurate single-crystal values (§2.4: in-plane LBTE + coherence,
+κ_zz mesh-converged + coherence). {L['MnIn2Se4']}: FC3 cutoff error about −10 %. {L['Mn2In2Se5']}: cutoff not converged, upper
+bounds. <b>Ordered / VCA</b>: RTA at 20³, without / with Mn–In antisite mass disorder (§5); they show how much
+disorder alone lowers κ. All calculated values are for a defect-free single crystal without grain boundaries.</p>
+
+<p class="lead"><b>Why a second table.</b> The pellets are only partly textured, so Perp is not pure in-plane and Para is
+not pure κ_zz: part of the in-plane conduction leaks into Para (this is why Para / κ_zz ratios above look smaller).
+The average (2·Perp + Para)/3 equals (2·κ_in-plane + κ_zz)/3 for <i>any</i> texture, so it compares calculation and
+experiment without knowing the texture.</p>
+<div class="tbl"><table>
+<thead><tr><th>direction average (2·in-plane + κ_zz)/3</th><th class="r">{L['MnIn2Se4']}</th><th class="b">{L['Mn2In2Se5']}</th></tr></thead>
+<tbody>
+{T2}
+</tbody></table></div>
+<p class="cap">The single-crystal κ is 3–4× above the hot-pressed samples. Antisite disorder (VCA) closes part of the
+gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm, §8). The L3 model of §8 is not listed here:
+it is fitted to these experimental points, so at 300 K it reproduces them by construction.</p>
 
 {methods_html()}
 
@@ -354,7 +410,11 @@ than natural-isotope scattering, rises as ω² at low frequency and flattens at 
 
 <h2><span class="n">8</span>What the L3 fit is</h2>
 <p class="lead">L3 is the extrinsic model of <code>analysis/extrinsic/</code>. <b>Yes, it is fitted to the
-experimental values</b>, so its agreement with experiment is by construction and is not a prediction.</p>
+experimental values</b>, so its agreement with experiment is by construction and is not a prediction.
+At 300 K it gives Perp / Para = 0.91 / 0.49 ({L['MnIn2Se4']}, measured 0.93 / 0.49) and 0.77 / 0.34 ({L['Mn2In2Se5']},
+measured 0.74 / 0.32). <b>Its purpose is not to supply κ</b> (the measurement already does) but to answer how much extra
+scattering, and of what kind, turns the calculated single crystal into the measured pellet: the fitted parameters
+(texture s, boundary length L, antisite fraction x) are the result, and the 55–145 K points, which were not fitted, test it.</p>
 <div class="eq">Γ_λ = Γ_3ph,λ(T)  +  Σ g_elem(x)·B_elem,λ  +  |v_λ| / (4π L)
        3-phonon           Mn↔In antisite mass disorder   grain boundary (Casimir)
 
