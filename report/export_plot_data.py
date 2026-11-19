@@ -156,8 +156,61 @@ def export_scattering():
                   f"Source: {SC_DIR[m].relative_to(ROOT)}/kappa_baseline.hdf5, kappa_vca.hdf5")
 
 
+# --------------------------------------------------------------------------- convergence / solvers
+# MnIn2Se4 q-mesh series: REPORT_MnIn2Se4_20261115.md §6.3 (RTA, 300 K, FC3 6.45 A, isotopes on;
+# rest term from test/MnIn2Se4/kappa_zz_decompose.py on test/MnIn2Se4/kappa_zz_scan/).
+QMESH_MNIN2SE4 = [  # N, in-plane, kzz total, kzz rest
+    (11, 3.5375, 1.2495, 0.6251), (14, 3.6474, 1.0934, 0.6444), (18, 3.6945, 0.9435, 0.6461),
+    (24, 3.7020, 0.8052, 0.6457), (30, 3.6946, 0.7645, 0.6473)]
+SOLVERS = [  # material, quantity, value, source
+    ("MnIn2Se4", "inplane_RTA_14", 3.6474, "REPORT §6.3 / §9, 14^3, RTA"),
+    ("MnIn2Se4", "inplane_LBTE_14", 4.5219, "REPORT §9.1, 14^3, LBTE (HanHai job 412627)"),
+    ("MnIn2Se4", "kzz_LBTE_minus_RTA", 4e-5, "REPORT §9: LBTE = RTA for kappa_zz to 4e-5"),
+    ("MnIn2Se4", "mesh_correction_inplane", 1.013, "REPORT §9.1: RTA series 14^3 -> 30^3"),
+    ("MnIn2Se4", "coherence_inplane", 0.0908, "REPORT §7, Wigner-RTA, phono3py 3.24.0, 14^3"),
+    ("MnIn2Se4", "coherence_kzz", 0.0661, "REPORT §7, Wigner-RTA, phono3py 3.24.0, 14^3"),
+    ("MnIn2Se4", "population_kzz_rest", 0.648, "REPORT §6.5, mesh-converged rest term"),
+    ("Mn2In2Se5", "inplane_RTA_10", 2.8220, "analysis/shengbte_crosscheck/README.md, 10^3, job 415925"),
+    ("Mn2In2Se5", "inplane_LBTE_10", 2.9879, "analysis/shengbte_crosscheck/README.md, 10^3, job 415925"),
+    ("Mn2In2Se5", "inplane_RTA_32", 3.048, "test/Mn2In2Se5/iso_rerun/, 32^3, isotopes on"),
+    ("Mn2In2Se5", "coherence_inplane", 0.1466, "Wigner-RTA (SMM19, phono3py 4.4.0), 16^3, job 419208"),
+    ("Mn2In2Se5", "coherence_kzz", 0.112, "REPORT §9.1 (0.1115 at 16^3, soft-mode check job 440011)"),
+    ("Mn2In2Se5", "population_kzz_rest", 0.977, "rest-term plateau 24^3-32^3 x isotope ratio 0.9961"),
+]
+
+
+def export_convergence():
+    rows = []
+    for m, f in (("MnIn2Se4", "data_mnin2se4.json"), ("Mn2In2Se5", "data_mnin2se5.json")):
+        d = load(f"cutoff/{f}")
+        for i, c in enumerate(d["cutoff_A"]):
+            rows.append([m, c, d["mesh"], d["inplane_population"][i], d["kzz_rest"][i],
+                         d["inplane_coherence"][i], d["kzz_coherence"][i]])
+    write_csv("convergence_fc3_cutoff.csv",
+              ["material", "cutoff_A", "mesh", "inplane_population", "kzz_rest", "inplane_coherence_4.4.0",
+               "kzz_coherence_4.4.0"], rows,
+              "FC3-cutoff scan, 300 K, RTA population, natural isotopes, kappa_zz = mesh-converged rest term.\n"
+              "Coherence columns from phono3py 4.4.0 SMM19 (not valid for MnIn2Se4, see REPORT §7).\n"
+              "Source: test/figures/cutoff/data_mnin2se4.json, data_mnin2se5.json")
+    rows = [["MnIn2Se4", n, a, b, c, "on"] for n, a, b, c in QMESH_MNIN2SE4]
+    dec = json.loads((ROOT / "test/Mn2In2Se5/kappa_zz_decomposition/kappa_zz_mesh_decomposition.json").read_text())
+    for c in sorted(dec["cases"], key=lambda c: c["mesh"][0]):
+        if len(set(c["mesh"])) == 1:
+            i = c["intrinsic"]
+            rows.append(["Mn2In2Se5", c["mesh"][0], round(i["inplane_total"], 4), round(i["kappa_zz_total"], 4),
+                         round(i["kappa_zz_rest"], 4), "off"])
+    write_csv("convergence_qmesh.csv", ["material", "N", "inplane", "kzz_total", "kzz_rest", "isotopes"], rows,
+              "Isotropic N^3 q-mesh scans, 300 K, RTA. kzz_rest = kappa_zz without the first Gamma-Z q-point "
+              "(quadrature error).\nMnIn2Se4: REPORT_MnIn2Se4_20261115.md §6.3 (FC3 6.45 A). Mn2In2Se5: "
+              "test/Mn2In2Se5/kappa_zz_decomposition/kappa_zz_mesh_decomposition.json (FC3 6.51 A, isotopes off;\n"
+              "isotopes on: x0.9884 in-plane, x0.9961 kzz_rest, test/Mn2In2Se5/iso_rerun/)")
+    write_csv("solver_terms.csv", ["material", "quantity", "value", "source"], SOLVERS,
+              "RTA / LBTE / Wigner terms behind the quoted 300 K values (W/mK unless a ratio)")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
+    export_convergence()
     export_bands()
     export_kappa()
     export_scattering()

@@ -1,0 +1,15 @@
+# RTA / LBTE / Wigner terms behind the quoted 300 K values (W/mK unless a ratio)
+material,quantity,value,source
+MnIn2Se4,inplane_RTA_14,3.6474,"REPORT §6.3 / §9, 14^3, RTA"
+MnIn2Se4,inplane_LBTE_14,4.5219,"REPORT §9.1, 14^3, LBTE (HanHai job 412627)"
+MnIn2Se4,kzz_LBTE_minus_RTA,4e-05,REPORT §9: LBTE = RTA for kappa_zz to 4e-5
+MnIn2Se4,mesh_correction_inplane,1.013,REPORT §9.1: RTA series 14^3 -> 30^3
+MnIn2Se4,coherence_inplane,0.0908,"REPORT §7, Wigner-RTA, phono3py 3.24.0, 14^3"
+MnIn2Se4,coherence_kzz,0.0661,"REPORT §7, Wigner-RTA, phono3py 3.24.0, 14^3"
+MnIn2Se4,population_kzz_rest,0.648,"REPORT §6.5, mesh-converged rest term"
+Mn2In2Se5,inplane_RTA_10,2.822,"analysis/shengbte_crosscheck/README.md, 10^3, job 415925"
+Mn2In2Se5,inplane_LBTE_10,2.9879,"analysis/shengbte_crosscheck/README.md, 10^3, job 415925"
+Mn2In2Se5,inplane_RTA_32,3.048,"test/Mn2In2Se5/iso_rerun/, 32^3, isotopes on"
+Mn2In2Se5,coherence_inplane,0.1466,"Wigner-RTA (SMM19, phono3py 4.4.0), 16^3, job 419208"
+Mn2In2Se5,coherence_kzz,0.112,"REPORT §9.1 (0.1115 at 16^3, soft-mode check job 440011)"
+Mn2In2Se5,population_kzz_rest,0.977,rest-term plateau 24^3-32^3 x isotope ratio 0.9961

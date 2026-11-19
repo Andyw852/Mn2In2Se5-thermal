@@ -38,6 +38,9 @@ DATA = {
     "experiment_sound_velocity_MnIn2Se4.csv": "report §6: measured sound velocities",
     "independent_checks.json": "report §6 and fig3: lattice, Raman, velocities, Cahill / diffuson κ",
     "scattering_<material>_300K.csv": "fig4: per-mode frequency and τ⁻¹ (3-phonon, disorder), baseline and VCA",
+    "convergence_fc3_cutoff.csv": "report §2.2: κ vs FC3 cutoff, both materials",
+    "convergence_qmesh.csv": "report §2.3: κ vs q-mesh (in-plane, κ_zz total, κ_zz converged term)",
+    "solver_terms.csv": "report §2.4: RTA / LBTE / coherence terms behind the quoted 300 K values",
 }
 
 

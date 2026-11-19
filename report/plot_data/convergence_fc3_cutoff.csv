@@ -1,0 +1,10 @@
+# FC3-cutoff scan, 300 K, RTA population, natural isotopes, kappa_zz = mesh-converged rest term.
+# Coherence columns from phono3py 4.4.0 SMM19 (not valid for MnIn2Se4, see REPORT §7).
+# Source: test/figures/cutoff/data_mnin2se4.json, data_mnin2se5.json
+material,cutoff_A,mesh,inplane_population,kzz_rest,inplane_coherence_4.4.0,kzz_coherence_4.4.0
+MnIn2Se4,5.6,14x14x14,5.1834,1.4175,0.6388,0.5738
+MnIn2Se4,6.23,14x14x14,3.9944,0.702,0.6392,0.601
+MnIn2Se4,6.45,14x14x14,3.6474,0.6444,0.6539,0.5982
+Mn2In2Se5,5.68,16x16x16,3.144,1.2408,0.1558,0.1141
+Mn2In2Se5,6.12,16x16x16,3.0215,1.0934,0.1492,0.1149
+Mn2In2Se5,6.51,16x16x16,2.8925,0.985,0.1466,0.1144
