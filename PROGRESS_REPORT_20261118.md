@@ -164,7 +164,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 
 | # | item | status |
 |---|---|---|
-| 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **not pursued** (decision 2026-11-18). The plan is kept in [`dft/fc3_cutoff_extend/`](dft/fc3_cutoff_extend/): refitting the existing frames needs no DFT, if a referee asks |
+| 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **scheduled 2026-11-19** (revising the 11-18 decision): the κ_zz ordering of the two materials depends on it. Steps 0–1 of [`dft/fc3_cutoff_extend/`](dft/fc3_cutoff_extend/) refit the existing frames, no DFT; new frames only if the data/parameter ratio drops below 3 (`protocol/local_AI_next_steps_2026-11-19.md`, task 2) |
 | 2 | literature source for Döll i = 0.44 | **closed 2026-11-19**: K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), atomic-position table: M_oct = 0.56 Mn + 0.44 In, M_tet = 0.78 In + 0.22 Mn. PDF in `references/`. The 1990 *J. Cryst. Growth* paper is not the source |
 | 3 | Mn₂In₂Se₅ antisite occupancy | **closed 2026-11-19 for the literature value**: x = 0.19(2) in the R-3m phase (Williams *et al.* 2024, ESI Table S7, powder Rietveld), inside the L3 acceptable range; L3 with x fixed gives L = 22 nm. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). Optional: VCA rerun at x = 0.19 (estimated −9 % in-plane vs x = 0.13). A refinement of our own samples would still be better |
 | 4 | κ_e of the measured samples | open. It needs the electrical conductivity (Wiedemann–Franz) |

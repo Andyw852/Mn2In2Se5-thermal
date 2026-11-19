@@ -74,6 +74,35 @@ experiment without knowing the texture.</p>
 gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm, §8); the possible reasons are discussed in §9. The L3 model of §8 is not listed here:
 it is fitted to these experimental points, so at 300 K it reproduces them by construction.</p>
 
+<h3>Which material is lower: Mn₂In₂Se₅ relative to MnIn₂Se₄</h3>
+<p class="lead">In the experiment Mn₂In₂Se₅ is lower in both directions. The calculation reproduces this
+in-plane and in the direction average, but not for κ_zz. ✓ / ✗: same / opposite sign as the experiment.</p>
+<div class="tbl"><table>
+<thead><tr><th>300 K, Mn₂In₂Se₅ vs MnIn₂Se₄</th><th>in-plane / Perp</th><th>κ_zz / Para</th><th>direction average</th></tr></thead>
+<tbody>
+<tr><td>experiment, Perp / Para (303 K)</td><td>-21 %</td><td>-34 %</td><td>-23 %</td></tr>
+<tr><td>calculation, value to quote, in-plane / κ_zz</td><td>-28 % ✓</td><td>+53 % ✗</td><td>-22 % ✓</td></tr>
+<tr><td>calculation, ordered RTA 20³, in-plane / κ_zz</td><td>-19 % ✓</td><td>+54 % ✗</td><td>-13 % ✓</td></tr>
+<tr><td>calculation, value to quote mixed with the texture s → Perp / Para</td><td>-22 % ✓</td><td>-21 % ✓</td><td>-22 % ✓</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>κ_zz should not be compared with Para directly.</b> Para contains part of the in-plane conduction,
+Para = s·κ_in-plane + (1−s)·κ_zz. With the same s for both materials, Mn₂In₂Se₅ has the lower Para as soon as
+s &gt; 0.22. The fitted texture is s = 0.35 (MnIn₂Se₄) and 0.25 (Mn₂In₂Se₅); with it
+the calculated values give the experimental order in both directions (last row: Para
+1.66 vs 2.10). XRD of both pellet faces would measure s independently.</li>
+<li><b>The Mn₂In₂Se₅ κ_zz is an upper bound.</b> Its FC3-cutoff steps (−11.9 %, −9.9 %) do not shrink (§2.2).
+Extending the cutoff by refitting the existing frames is scheduled
+(<code>protocol/local_AI_next_steps_2026-11-19.md</code>, task 2); a further −20 to −30 % would bring it close to
+MnIn₂Se₄.</li>
+<li><b>Point defects hardly lower κ_zz.</b> Antisite mass disorder from the ordered to the random limit lowers the
+in-plane κ by 58 % but κ_zz by only 20 % in Mn₂In₂Se₅
+(MnIn₂Se₄, x = 0 → 0.44: by 55 % and 21 %;
+<code>plot_data/disorder_sweep_300K.csv</code>). κ_zz is carried by low-frequency interlayer acoustic modes, which mass
+disorder barely scatters. A lower κ_zz in the Mn₂In₂Se₅ pellets therefore points to defects along c, such as
+stacking faults, polytype intergrowths or secondary phases from its decomposition between 400 and 800 °C (§9, items 1 and 4).</li>
+</ul>
+
 <h2><span class="n">2</span>Calculation setup and convergence</h2>
 <p class="lead">How the force constants were obtained, how far κ is converged in the FC3 cutoff and the q-mesh,
 and which solver each quoted number comes from. <b>Convergence criterion: a parameter counts as converged when its

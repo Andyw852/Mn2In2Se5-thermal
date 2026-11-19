@@ -1,5 +1,9 @@
 # Pushing the FC3 cutoff past 6.45 / 6.51 Å — first without new DFT
 
+**Status 2026-11-19: scheduled** (`protocol/local_AI_next_steps_2026-11-19.md`, task 2), steps 0 and 1 only. The
+2026-11-18 decision not to pursue it is revised because the κ_zz ordering of the two materials depends on it
+(report §1, "Which material is lower").
+
 ## The limit of the existing 4×4×1 cells is ≈ 8 Å, not 6.5 Å
 
 The 6.51 / 6.45 Å ceiling quoted in the report is AutoZT's `cut3_safe_cutoff`:
@@ -36,7 +40,7 @@ rule, so the two were not comparable.
 ## Step 0 — does the fitting code use true minimum-image vectors? (minutes)
 
 This must be settled before trusting any fit above 6.6 Å. In pheasy (the
-RFE-OLS fit used for both materials), find how pair/cluster vectors are formed
+fit used for both materials: RFE-OLS for MnIn₂Se₄, ALASSO for Mn₂In₂Se₅ — see each `test/*/fit/fit_config.json`), find how pair/cluster vectors are formed
 from the supercell:
 
 - **Shortest image over neighbouring cells**, as in phonopy's
@@ -55,7 +59,7 @@ Both materials, existing 4×4×1 datasets:
 - Mn₂In₂Se₅: 55 frames.
 - MnIn₂Se₄: 46 frames, FC3 only. Its FC2 stays the 4×4×2 one.
 
-1. pheasy RFE-OLS fit, same settings as before, FC3 cutoff at the next shells:
+1. pheasy fit with the same method and settings as before (MnIn₂Se₄ RFE-OLS, Mn₂In₂Se₅ ALASSO), FC3 cutoff at the next shells:
    - Mn₂In₂Se₅: 6.67 / 6.90 / 7.11 / 7.43 Å (the shell list in
      `Mn2In2Se5/data/kappa/cutoff_scan_S6.json` goes to 7.43);
    - MnIn₂Se₄: the corresponding shells up to ≈ 7.9 Å.

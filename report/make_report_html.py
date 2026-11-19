@@ -126,6 +126,48 @@ def table1_body(labels, notes):
     return "\n".join(t1), "\n".join(t2)
 
 
+def ordering_values():
+    """Mn2In2Se5 relative to MnIn2Se4 at 300 K, per direction, for experiment and calculation,
+    plus the texture mixing with the fitted s, the crossover s and the disorder sweep."""
+    V = table1_values()
+    A, B = "MnIn2Se4", "Mn2In2Se5"
+    s = {m: float(_rows(f"kappa_L3_{m}.csv")[0]["s"]) for m in (A, B)}
+
+    def mix(m, a, z):
+        return ((1 - s[m] / 2) * a + s[m] / 2 * z, s[m] * a + (1 - s[m]) * z, (2 * a + z) / 3)
+
+    rel = lambda b, a: [y / x - 1 for x, y in zip(a, b)]
+    out = {"s": s,
+           "exp": rel(V[B]["exp"], V[A]["exp"]),
+           "quoted": rel(V[B]["quoted"], V[A]["quoted"]),
+           "ordered": rel(V[B]["ordered"], V[A]["ordered"]),
+           "mixed": rel(mix(B, *V[B]["quoted"][:2]), mix(A, *V[A]["quoted"][:2])),
+           "mixed_abs": {m: mix(m, *V[m]["quoted"][:2]) for m in (A, B)}}
+    (a1, z1), (a2, z2) = V[A]["quoted"][:2], V[B]["quoted"][:2]
+    out["s_cross"] = (z2 - z1) / ((a1 - z1) - (a2 - z2))
+    sw = {}
+    for r in _rows("disorder_sweep_300K.csv"):
+        sw.setdefault(r["material"], {})[float(r["x"])] = (float(r["inplane"]), float(r["kzz_total"]))
+    out["sweep"] = sw
+    return out
+
+
+def ordering_rows(labels):
+    O = ordering_values()
+    pc = lambda v: f"{100 * v:+.0f} %"
+
+    def cells(vals, ref=None):
+        out = []
+        for i, v in enumerate(vals):
+            mark = "" if ref is None else (" ✓" if (v < 0) == (ref[i] < 0) else " ✗")
+            out.append(f"<td>{pc(v)}{mark}</td>")
+        return "".join(out)
+    rows = [f"<tr><td>{labels['exp']}</td>{cells(O['exp'])}</tr>"]
+    for k in ("quoted", "ordered", "mixed"):
+        rows.append(f"<tr><td>{labels[k]}</td>{cells(O[k], O['exp'])}</tr>")
+    return "\n".join(rows), O
+
+
 def _step(new, old):
     return f"{100 * (new / old - 1):+.1f} %"
 
@@ -323,6 +365,12 @@ def html(figs):
                           "exp": "experiment, Perp / Para (303 K)",
                           "exp_avg": "experiment, (2·Perp + Para)/3 (303 K)"},
                          {"MnIn2Se4": "cutoff ≈ −10 %", "Mn2In2Se5": "upper bound"})
+    ORD, O = ordering_rows({"exp": "experiment, Perp / Para (303 K)",
+                            "quoted": "calculation, value to quote, in-plane / κ_zz",
+                            "ordered": "calculation, ordered RTA 20³, in-plane / κ_zz",
+                            "mixed": "calculation, value to quote mixed with the texture s → Perp / Para"})
+    sw, sA, sB = O["sweep"], O["s"]["MnIn2Se4"], O["s"]["Mn2In2Se5"]
+    d = lambda m, x0, x1, i: abs(100 * (sw[m][x1][i] / sw[m][x0][i] - 1))
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -364,6 +412,32 @@ experiment without knowing the texture.</p>
 <p class="cap">The single-crystal κ is 3–4× above the hot-pressed samples. Antisite disorder (VCA) closes part of the
 gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm, §8); the possible reasons are discussed in §9. The L3 model of §8 is not listed here:
 it is fitted to these experimental points, so at 300 K it reproduces them by construction.</p>
+
+<h3>Which material is lower: {L['Mn2In2Se5']} relative to {L['MnIn2Se4']}</h3>
+<p class="lead">In the experiment {L['Mn2In2Se5']} is lower in both directions. The calculation reproduces this
+in-plane and in the direction average, but not for κ_zz. ✓ / ✗: same / opposite sign as the experiment.</p>
+<div class="tbl"><table>
+<thead><tr><th>300 K, {L['Mn2In2Se5']} vs {L['MnIn2Se4']}</th><th>in-plane / Perp</th><th>κ_zz / Para</th><th>direction average</th></tr></thead>
+<tbody>
+{ORD}
+</tbody></table></div>
+<ul>
+<li><b>κ_zz should not be compared with Para directly.</b> Para contains part of the in-plane conduction,
+Para = s·κ_in-plane + (1−s)·κ_zz. With the same s for both materials, {L['Mn2In2Se5']} has the lower Para as soon as
+s &gt; {O['s_cross']:.2f}. The fitted texture is s = {sA:.2f} ({L['MnIn2Se4']}) and {sB:.2f} ({L['Mn2In2Se5']}); with it
+the calculated values give the experimental order in both directions (last row: Para
+{O['mixed_abs']['Mn2In2Se5'][1]:.2f} vs {O['mixed_abs']['MnIn2Se4'][1]:.2f}). XRD of both pellet faces would measure s independently.</li>
+<li><b>The {L['Mn2In2Se5']} κ_zz is an upper bound.</b> Its FC3-cutoff steps (−11.9 %, −9.9 %) do not shrink (§2.2).
+Extending the cutoff by refitting the existing frames is scheduled
+(<code>protocol/local_AI_next_steps_2026-11-19.md</code>, task 2); a further −20 to −30 % would bring it close to
+{L['MnIn2Se4']}.</li>
+<li><b>Point defects hardly lower κ_zz.</b> Antisite mass disorder from the ordered to the random limit lowers the
+in-plane κ by {d('Mn2In2Se5', 0.0, 0.5, 0):.0f} % but κ_zz by only {d('Mn2In2Se5', 0.0, 0.5, 1):.0f} % in {L['Mn2In2Se5']}
+({L['MnIn2Se4']}, x = 0 → 0.44: by {d('MnIn2Se4', 0.0, 0.44, 0):.0f} % and {d('MnIn2Se4', 0.0, 0.44, 1):.0f} %;
+<code>plot_data/disorder_sweep_300K.csv</code>). κ_zz is carried by low-frequency interlayer acoustic modes, which mass
+disorder barely scatters. A lower κ_zz in the {L['Mn2In2Se5']} pellets therefore points to defects along c, such as
+stacking faults, polytype intergrowths or secondary phases from its decomposition between 400 and 800 °C (§9, items 1 and 4).</li>
+</ul>
 
 {methods_html()}
 

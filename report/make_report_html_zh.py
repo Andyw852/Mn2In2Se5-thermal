@@ -188,6 +188,12 @@ def html_zh(figs):
                              "vca": "计算，VCA 反位无序（RTA 20³）", "exp": "实验，Perp / Para（303 K）",
                              "exp_avg": "实验，(2·Perp + Para)/3（303 K）"},
                             {M4: "截断约 −10 %", M5: "上限"})
+    ORD, O = en.ordering_rows({"exp": "实验，Perp / Para（303 K）",
+                               "quoted": "计算，推荐值，面内 / κ_zz",
+                               "ordered": "计算，有序 RTA 20³，面内 / κ_zz",
+                               "mixed": "计算，推荐值按织构 s 混合 → Perp / Para"})
+    sw, sA, sB = O["sweep"], O["s"][M4], O["s"][M5]
+    d = lambda m, x0, x1, i: abs(100 * (sw[m][x1][i] / sw[m][x0][i] - 1))
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -223,6 +229,26 @@ def html_zh(figs):
 </tbody></table></div>
 <p class="cap">单晶 κ 比热压样品高 3–4 倍。反位无序（VCA）缩小了一部分差距，其余需要纳米尺度的有效平均自由程（L_eff ≈ 10–50 nm，第 8 节）；可能的原因见第 9 节。
 第 8 节的 L3 模型没有列在这里：它是用这些实验点拟合出来的，300 K 下与实验吻合是拟合的结果，不是独立的计算。</p>
+
+<h3>哪种材料更低：{L[M5]} 相对 {L[M4]}</h3>
+<p class="lead">实验中 {L[M5]} 在两个方向上都更低。计算在面内和方向平均上重现了这一点，但 κ_zz 没有。✓ / ✗：与实验同号 / 反号。</p>
+<div class="tbl"><table>
+<thead><tr><th>300 K，{L[M5]} 相对 {L[M4]}</th><th>面内 / Perp</th><th>κ_zz / Para</th><th>方向平均</th></tr></thead>
+<tbody>
+{ORD}
+</tbody></table></div>
+<ul>
+<li><b>κ_zz 不应直接与 Para 比较。</b>Para 包含了一部分面内导热：Para = s·κ面内 + (1−s)·κ_zz。两种材料取相同的 s 时，只要
+s &gt; {O['s_cross']:.2f}，{L[M5]} 的 Para 就更低。拟合得到的织构为 s = {sA:.2f}（{L[M4]}）和 {sB:.2f}（{L[M5]}）；用它们混合后，
+计算值在两个方向上都给出与实验相同的顺序（最后一行：Para {O['mixed_abs'][M5][1]:.2f} 对 {O['mixed_abs'][M4][1]:.2f}）。
+测块体两个面的 XRD 可以独立确定 s。</li>
+<li><b>{L[M5]} 的 κ_zz 是上限。</b>它的三阶截断步长（−11.9 %、−9.9 %）没有缩小（第 2.2 节）。用现有数据集重新拟合、外推截断已列入计划
+（<code>protocol/local_AI_next_steps_2026-11-19.md</code> 任务 2）；如果再降 20–30 %，就会接近 {L[M4]}。</li>
+<li><b>点缺陷几乎降不了 κ_zz。</b>反位质量无序从有序到完全无序，{L[M5]} 面内降低 {d(M5, 0.0, 0.5, 0):.0f} %，而 κ_zz 只降低
+{d(M5, 0.0, 0.5, 1):.0f} %（{L[M4]}，x = 0 → 0.44：分别降低 {d(M4, 0.0, 0.44, 0):.0f} % 和 {d(M4, 0.0, 0.44, 1):.0f} %；
+<code>plot_data/disorder_sweep_300K.csv</code>）。κ_zz 由低频层间声学模承担，质量无序对它们散射很弱。所以 {L[M5]} 块体的 κ_zz 更低，
+说明存在沿 c 方向的缺陷，例如层错、多型体共生，或者它在 400–800 °C 分解产生的第二相（第 9 节第 1、4 条）。</li>
+</ul>
 
 {methods_zh()}
 

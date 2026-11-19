@@ -208,9 +208,31 @@ def export_convergence():
               "RTA / LBTE / Wigner terms behind the quoted 300 K values (W/mK unless a ratio)")
 
 
+def export_disorder_sweep():
+    """kappa at 300 K vs antisite fraction x from the L3 bases (24^3, ordered masses + mass disorder,
+    no boundary). Shows that mass disorder lowers in-plane kappa strongly but kappa_zz only weakly."""
+    import sys
+    sys.path.insert(0, str(ROOT / "analysis" / "extrinsic"))
+    from kappa_extrinsic import Model
+    rows = []
+    for m, d, xs in (("MnIn2Se4", "MnIn2Se4_442_m24", (0.0, 0.1, 0.2, 0.3, 0.44, 0.55, 0.6667)),
+                     ("Mn2In2Se5", "Mn2In2Se5_m24", (0.0, 0.1, 0.13, 0.19, 0.3, 0.4, 0.5))):
+        mod = Model(str(ROOT / "analysis" / "extrinsic" / "results" / d / "bases.npz"))
+        it = int(np.argmin(np.abs(mod.T - 300.0)))
+        for x in xs:
+            a, z = mod.kappa(x, None)
+            rows.append([m, x, round(float(a[it]), 4), round(float(z[it]), 4)])
+    write_csv("disorder_sweep_300K.csv", ["material", "x", "inplane", "kzz_total"], rows,
+              "300 K, 24^3, three-phonon + Mn/In antisite mass disorder (ordered masses, Tamura), no boundary.\n"
+              "x = fraction of all Mn on In sites; random limit 2/3 (MnIn2Se4), 1/2 (Mn2In2Se5).\n"
+              "kzz_total still contains the Gamma-Z quadrature error; use relative changes only.\n"
+              "Source: analysis/extrinsic/results/*_m24/bases.npz via kappa_extrinsic.Model")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     export_convergence()
+    export_disorder_sweep()
     export_bands()
     export_kappa()
     export_scattering()

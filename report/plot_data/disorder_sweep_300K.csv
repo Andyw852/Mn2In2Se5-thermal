@@ -1,0 +1,19 @@
+# 300 K, 24^3, three-phonon + Mn/In antisite mass disorder (ordered masses, Tamura), no boundary.
+# x = fraction of all Mn on In sites; random limit 2/3 (MnIn2Se4), 1/2 (Mn2In2Se5).
+# kzz_total still contains the Gamma-Z quadrature error; use relative changes only.
+# Source: analysis/extrinsic/results/*_m24/bases.npz via kappa_extrinsic.Model
+material,x,inplane,kzz_total
+MnIn2Se4,0.0,3.702,0.8052
+MnIn2Se4,0.1,2.415,0.7008
+MnIn2Se4,0.2,2.029,0.6687
+MnIn2Se4,0.3,1.8337,0.6509
+MnIn2Se4,0.44,1.682,0.6356
+MnIn2Se4,0.55,1.6113,0.6274
+MnIn2Se4,0.6667,1.5628,0.621
+Mn2In2Se5,0.0,2.9871,1.3017
+Mn2In2Se5,0.1,1.8089,1.1483
+Mn2In2Se5,0.13,1.695,1.1305
+Mn2In2Se5,0.19,1.5399,1.1046
+Mn2In2Se5,0.3,1.3767,1.0742
+Mn2In2Se5,0.4,1.2932,1.0566
+Mn2In2Se5,0.5,1.245,1.0453
