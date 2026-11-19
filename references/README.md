@@ -8,6 +8,7 @@ public.
 |---|---|---|
 | `Range_Doll_1991_MnIn2Se4_crystal_structure_ZNatB46_1122.pdf` | K.-J. Range, U. Klement, **G. Döll**, E. Bucher, J. R. Baumann, "The Crystal Structure of MnIn₂Se₄, a Ternary Layered Semiconductor", *Z. Naturforsch.* **46b**, 1122–1124 (1991) | **Source of the cation occupancies used by the VCA** (see below) |
 | `Williams_2024_Mn2In2Se5_Mn2Ga2S5_single_crystals_JMaterChemC12_1753.pdf` | A. J. Williams, A. Reifsnyder, B. Yu, C. E. Moore, M. A. Susner, W. Windl, D. W. McComb, J. E. Goldberger, "Single crystal synthesis and properties of the two-dimensional van der Waals frustrated magnets, Mn₂In₂Se₅ and Mn₂Ga₂S₅", *J. Mater. Chem. C* **12**, 1753–1762 (2024), DOI 10.1039/d3tc03550f | Structure and synthesis of Mn₂In₂Se₅: double-octahedral MnSe₆ layers capped by InSe₄ tetrahedra, i.e. the structural motif our model assumes |
+| `Williams_2024_Mn2In2Se5_Mn2Ga2S5_single_crystals_ESI.pdf` | Supporting Information for the paper above (ESI, *J. Mater. Chem. C*, © RSC 2023), 11 pages | Synthesis details, Rietveld/EDX characterisation and the magnetic/transport data behind that paper |
 | `Chernoukhov_2025_Mn2In2Se5_high_T_layered_Molecules30_1904.pdf` | I. V. Chernoukhov, A. D. Pyreu, A. N. Azarevich, A. N. Samarin, A. V. Bogach, K. O. Znamenkov, A. V. Shevelkov, V. Yu. Verchenko, "High-Temperature Layered Modification of Mn₂In₂Se₅", *Molecules* **30**, 1904 (2025), DOI 10.3390/molecules30091904 | Mn₂In₂Se₅ polymorph and lattice constants; the layered high-temperature form is the one modelled |
 
 ## The MnIn₂Se₄ occupancy that the VCA uses
