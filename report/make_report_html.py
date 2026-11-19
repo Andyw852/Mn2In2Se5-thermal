@@ -12,8 +12,10 @@ Sections
   3  intrinsic kappa(T)            (= paper fig. 1 data)
   4  calculation vs hot-pressed experiment, 2 x 2 (= paper fig. 2 data)
   5  scattering rates at 300 K, both materials (3-phonon and disorder)
-  6  what the L3 fit is
-  7  caveats
+  6  independent checks against experiment (lattice, Raman, sound velocity,
+     minimum kappa); numbers from report/independent_checks.json
+  7  what the L3 fit is
+  8  caveats
 
 Needs: numpy, matplotlib, h5py, pyyaml, phonopy (+ seekpath for the band path).
 
@@ -43,6 +45,7 @@ HTML_LABEL = {"MnIn2Se4": "MnIn₂Se₄", "Mn2In2Se5": "Mn₂In₂Se₅"}
 COL = {"MnIn2Se4": "#d62728", "Mn2In2Se5": "#1f77b4"}      # analysis/plotting convention
 QUOTED = {"MnIn2Se4": {"inplane": 4.67, "kzz": 0.714},     # REPORT §9.1, 300 K
           "Mn2In2Se5": {"inplane": 3.37, "kzz": 1.089}}
+CHK = json.loads((ROOT / "report" / "independent_checks.json").read_text())
 SC_DIR = {"MnIn2Se4": FIG / "scattering", "Mn2In2Se5": FIG / "scattering" / "mn2in2se5"}
 
 
@@ -195,6 +198,10 @@ def fig_calc_vs_exp():
             ax.plot(T, d[f"baseline_{key}"], "--", color=c, lw=1.4, label="calc. ordered single crystal")
             ax.plot(T, d[f"vca_{key}"], "-", color=c, lw=1.8, label="calc. VCA single crystal")
             ax.plot(Tl3, l3[dr], ":", color="k", lw=1.6, label=f"calc. L3 fit (s = {s:.2f})")
+            if m == "MnIn2Se4":                 # minimum kappa from the measured sound velocities
+                km = CHK["kmin_exp_velocities"]
+                ax.axhline(km["cahill"], color="0.45", lw=1.0, ls="-.", label=f"Cahill κ_min = {km['cahill']:.2f}")
+                ax.axhline(km["diffuson"], color="0.65", lw=1.0, ls="-.", label=f"diffuson κ = {km['diffuson']:.2f}")
             for panel, filled in (("highT", True), ("lowT", False)):
                 p = exp.get((m, dr, panel))
                 if p is not None:
@@ -284,6 +291,45 @@ li{margin:6px 0}
 """
 
 
+def checks_html():
+    L, c = HTML_LABEL, CHK
+    lc, le = c["lattice"]["calc"], c["lattice"]["exp"]
+    vc = c["velocity_calc"]
+    e1, e2 = c["velocity_exp"]
+    pct = lambda a, b: f"{100 * (a / b - 1):+.1f} %"
+    raman = ", ".join(f"{m['irrep']} {m['cm-1']:.0f}" for m in c["raman_calc"])
+    km, kc = c["kmin_exp_velocities"], c["kmin_calc_velocities"]
+    return f"""<h2><span class="n">6</span>Independent checks against experiment ({L['MnIn2Se4']})</h2>
+<p class="lead">Experimental data that were not used in any fit. They test the force constants and give a lower
+reference for κ. Computed by <code>report/independent_checks.py</code> from the 4×4×2 FC2.</p>
+<div class="tbl"><table>
+<thead><tr><th>quantity</th><th>experiment</th><th>calculation</th><th>calc. / exp.</th></tr></thead>
+<tbody>
+<tr><td>lattice a (Å, hexagonal)</td><td>{le['a']:.2f}</td><td>{lc['a']:.3f}</td><td>{pct(lc['a'], le['a'])}</td></tr>
+<tr><td>lattice c (Å)</td><td>{le['c']:.2f}</td><td>{lc['c']:.2f}</td><td>{pct(lc['c'], le['c'])}</td></tr>
+<tr><td>Raman peaks (cm⁻¹)</td><td>≈ 78, ≈ 177 (read off the slide)</td><td>A1g 75, A1g 177</td><td>within the reading error</td></tr>
+<tr><td>v_L (m/s)</td><td>{e1['vL_ms']:.0f} / {e2['vL_ms']:.0f}</td><td>{vc['avg_vL']} (c axis {vc['c_axis'][2]:.0f}, in-plane {vc['in_plane'][2]:.0f})</td><td>{pct(vc['avg_vL'], (e1['vL_ms'] + e2['vL_ms']) / 2)}</td></tr>
+<tr><td>v_T (m/s)</td><td>{e1['vT_ms']:.0f} / {e2['vT_ms']:.0f}</td><td>{vc['avg_vT']} (range {min(vc['in_plane'][0], vc['c_axis'][0]):.0f}–{max(vc['in_plane'][1], vc['c_axis'][1]):.0f})</td><td>{pct(vc['avg_vT'], (e1['vT_ms'] + e2['vT_ms']) / 2)}</td></tr>
+<tr><td>Debye mean v_m (m/s)</td><td>{e1['v_mean_ms']:.0f} / {e2['v_mean_ms']:.0f}</td><td>{vc['debye_mean']}</td><td>{pct(vc['debye_mean'], (e1['v_mean_ms'] + e2['v_mean_ms']) / 2)}</td></tr>
+<tr><td>Cahill κ_min (W m⁻¹ K⁻¹)</td><td>{km['cahill']:.2f} (measured v)</td><td>{kc['cahill']:.2f} (calculated v)</td><td></td></tr>
+<tr><td>diffuson κ (W m⁻¹ K⁻¹)</td><td>{km['diffuson']:.2f} (measured v)</td><td>{kc['diffuson']:.2f} (calculated v)</td><td></td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Lattice and Raman</b>: the relaxed structure is within 0.7 % of the single-crystal XRD values, and the two
+strong Raman peaks match the calculated A1g modes (all Raman-active modes: {raman} cm⁻¹). Both support the force constants.</li>
+<li><b>Sound velocity</b>: ultrasonic, hot-pressed pellets, two samples (agree within 2 %). The measured v_L is below
+the calculated v_L in <i>every</i> direction (c axis {vc['c_axis'][2]:.0f} m/s is the lowest), so texture cannot explain
+it; porosity and defect softening of the pellet are the likely reasons. The pellet density is not known yet
+(theoretical {c['theoretical_density_g_cm3']:.2f} g/cm³), so the two cannot be separated. The propagation direction
+relative to the pressing axis is also not known.</li>
+<li><b>Minimum κ</b> (Cahill, Watson &amp; Pohl, PRB 46, 6131 (1992); diffuson model, Agne et al., Energy Environ. Sci.
+11, 609 (2018)), n = {c['number_density_A-3']:.4f} Å⁻³: the measured κ_tot (Perp 0.93, Para 0.49 at 303 K) lies between
+the diffuson value {km['diffuson']:.2f} and the Cahill value {km['cahill']:.2f}. The hot-pressed samples are close to the
+amorphous limit, which agrees independently with the strong extrinsic scattering needed in the L3 fit (L ≈ tens of nm).
+These limits are isotropic; Para lying below the Cahill value is common for layered materials.</li>
+</ul>"""
+
+
 def html(figs):
     L = HTML_LABEL
     return f"""<!doctype html>
@@ -312,7 +358,7 @@ with the pressing direction). Ratio = calculation / experiment.</p>
 <tr><td>&nbsp;&nbsp;calc., quoted values</td><td>3.35 <span class="x">4.3×</span></td><td>2.61 <span class="x">4.3×</span></td></tr>
 <tr><td>&nbsp;&nbsp;calc., ordered, RTA 20³</td><td>2.67 <span class="x">3.4×</span></td><td>2.33 <span class="x">3.9×</span></td></tr>
 <tr><td>&nbsp;&nbsp;calc., VCA antisite disorder, RTA 20³</td><td>1.14 <span class="x">1.5×</span></td><td>1.35 <span class="x">2.3×</span></td></tr>
-<tr><td>&nbsp;&nbsp;calc., L3 fit (fitted to these data, §6)</td><td>0.77</td><td>0.62</td></tr>
+<tr><td>&nbsp;&nbsp;calc., L3 fit (fitted to these data, §7)</td><td>0.77</td><td>0.62</td></tr>
 </tbody></table></div>
 <p class="cap">The intrinsic single-crystal κ is 3–4× above the hot-pressed samples. Antisite mass disorder (VCA)
 closes part of the gap; the rest needs a nanoscale effective mean free path (L_eff ≈ 10–50 nm).</p>
@@ -335,7 +381,7 @@ estimate (≈ −10 %). Arrow: {L['Mn2In2Se5']} cutoff not converged, value is a
 
 <h2><span class="n">4</span>Calculation vs hot-pressed experiment</h2>
 <p class="lead">One panel per material and direction. Dashed: ordered single crystal. Solid: VCA antisite-disordered
-single crystal. Dotted: L3 fit (§6). Filled symbols: 300–623 K (used in the fit). Open symbols: 55–145 K (not fitted).</p>
+single crystal. Dotted: L3 fit (§7). Dash-dot ({L['MnIn2Se4']} only): minimum κ from the measured sound velocities (§6). Filled symbols: 300–623 K (used in the fit). Open symbols: 55–145 K (not fitted).</p>
 <figure><img alt="Calculated kappa against the hot-pressed experiment" src="{figs['calc_vs_exp']}"></figure>
 <p class="cap">Ordered and VCA: RTA, 20³ (same mesh for each pair), Perp ↔ in-plane, Para ↔ κ_zz, no grain boundary
 and no texture, so they are upper references. VCA occupancy: {L['MnIn2Se4']} i = 0.44 (Döll, source still to be
@@ -352,7 +398,9 @@ than natural-isotope scattering, rises as ω² at low frequency and flattens at 
 {L['MnIn2Se4']} in-plane 3.69 → 1.49 (2.48×), κ_zz 0.638 → 0.445 (1.43×); {L['Mn2In2Se5']} in-plane
 3.00 → 1.63 (1.84×), κ_zz 0.984 → 0.792 (1.24×). The weaker effect in {L['Mn2In2Se5']} comes from its smaller x.</p>
 
-<h2><span class="n">6</span>What the L3 fit is</h2>
+{checks_html()}
+
+<h2><span class="n">7</span>What the L3 fit is</h2>
 <p class="lead">L3 is the extrinsic model of <code>analysis/extrinsic/</code>. <b>Yes, it is fitted to the
 experimental values</b>, so its agreement with experiment is by construction and is not a prediction.</p>
 <div class="eq">Γ_λ = Γ_3ph,λ(T)  +  Σ g_elem(x)·B_elem,λ  +  |v_λ| / (4π L)
@@ -378,7 +426,7 @@ curves are alternatives, not additive corrections.</li>
 <li><b>κ_e</b> is taken as 0. If the electronic part is not negligible, the fitted extrinsic scattering is too strong.</li>
 </ul>
 
-<h2><span class="n">7</span>Caveats</h2>
+<h2><span class="n">8</span>Caveats</h2>
 <ul>
 <li>The experimental points are digitised from a figure (±0.005 W m⁻¹ K⁻¹ at high T, ±0.01 at low T) and are κ_tot
 with κ_e not subtracted. Replace <code>experiment/kappa_tot_digitized.csv</code> once the raw data are available.</li>

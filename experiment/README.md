@@ -25,6 +25,17 @@ material,direction,T_K,kappa_tot_WmK,kappa_e_WmK,panel
 2. Both samples show a plateau in Perp at 100–145 K and lack the κ ∝ 1/T rise of an intrinsic crystal (the calculated in-plane κ of Mn₂In₂Se₅
    is 6.4 W/mK at 100 K, while the experimental Perp is only 0.79). This shows that the low-temperature range is completely dominated by extrinsic scattering (grain boundaries, point defects, possibly also spin-phonon).
 
+## Sound velocity (received 2026-11-19)
+
+`sound_velocity_MnIn2Se4.csv`: ultrasonic v_L, v_T and Debye mean velocity of **hot-pressed MnIn₂Se₄**,
+two samples. Not known yet: propagation direction relative to the pressing axis, sample density.
+Compared with the calculation in `../report/independent_checks.py` (report §6): the measured v_L is
+below the calculated v_L in every direction, so porosity / defect softening rather than texture.
+
+Also received on the characterisation slide (single crystal, CVT): a = 4.05 Å, c = 39.35 Å (R-3m),
+Raman strongest peaks ≈ 78 and ≈ 177 cm⁻¹ (read off the image). The slide table says "Mn₂InSe₄";
+the formula weight 600.41 is that of MnIn₂Se₄.
+
 ## Experimental data still needed
 
 | data | purpose |

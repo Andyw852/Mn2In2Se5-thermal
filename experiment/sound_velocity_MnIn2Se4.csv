@@ -1,0 +1,6 @@
+# Ultrasonic sound velocities of hot-pressed MnIn2Se4, two samples (received 2026-11-19, values as given by the experimental side).
+# Propagation direction relative to the pressing axis, sample density and porosity: not yet known.
+# v_mean is the Debye average [(1/vL^3 + 2/vT^3)/3]^(-1/3) (checked: 1322.5 / 1326.5 m/s).
+material,sample,vL_ms,vT_ms,v_mean_ms
+MnIn2Se4,1,2647.69,1171.74,1322.47
+MnIn2Se4,2,2585.54,1176.75,1326.52
