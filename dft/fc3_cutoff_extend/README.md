@@ -207,6 +207,21 @@ in its `fit_metrics.json` (GPU requested, CPU used). Whether the GPU path works
 here therefore cannot be inferred from that file; it depends on the card being
 free at start-up.
 
+### MnIn₂Se₄ step 1 (set up 2026-11-20, queued)
+
+Done the same way, in a separate directory so the production
+`MnIn2Se4_441/fit-fc-thermal/step1_fit/` config stays untouched:
+`step1_fit/cutoff_scan_ext/` (4×4×1, 46 frames, ALASSO). Its shell list up to
+8 Å ends at 7.9812, and `fc_common.cut3_candidates(r_max=8.0)` offers
+6.45 / 6.79 / 7.19 / 7.74, so the scan uses **6.45 (anchor), 6.79, 7.19, 7.74**
+with `cut3_safe_cutoff` raised to 8.0 (the same minimum-image justification).
+Job 7709 is queued on the 3090 `gpu` partition; that node is currently held by a
+long `cpu192` job of the same account, so it starts when the node frees.
+
+For the κ step afterwards: 14³, RTA, isotopes on, **FC2 fixed to the production
+4×4×2 file** and only FC3 varying, then `kappa_zz_decompose.py` on the rest term
+and comparison with the existing 6.45 Å value 0.6444.
+
 ## Files
 
 | file | what |
