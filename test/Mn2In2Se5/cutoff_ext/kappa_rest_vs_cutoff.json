@@ -1,0 +1,60 @@
+{
+ "material": "Mn2In2Se5",
+ "mesh": 16,
+ "T_K": 300.0,
+ "isotope": true,
+ "fc2": "production Mn2In2Se5/fc/fc2.hdf5 (md5 b611f139...)",
+ "note": "kappa_zz rest = plain total minus the first Gamma-Z q point (kappa_zz_decompose.py, test/MnIn2Se4/fit/POSCAR with pmat=identity). The totals carry the quadrature artifact (35-38 % of kappa_zz) and must not be quoted.",
+ "cases": {
+  "6p51": {
+   "cutoff_A": 6.51,
+   "inplane": 2.9348447402911093,
+   "kappa_zz_total": 1.5160613258968012,
+   "kappa_zz_rest": 0.9801,
+   "first_gamma_z": 0.536,
+   "first_share_of_total": 0.3535,
+   "rel_inplane": 0.0,
+   "rel_kappa_zz_rest": 0.0
+  },
+  "6p67": {
+   "cutoff_A": 6.67,
+   "inplane": 2.934654195754753,
+   "kappa_zz_total": 1.5934996893798554,
+   "kappa_zz_rest": 1.0064,
+   "first_gamma_z": 0.5871,
+   "first_share_of_total": 0.3684,
+   "rel_inplane": -0.01,
+   "rel_kappa_zz_rest": 2.68
+  },
+  "6p90": {
+   "cutoff_A": 6.9,
+   "inplane": 2.8731478452613404,
+   "kappa_zz_total": 1.4665749297024253,
+   "kappa_zz_rest": 0.9478,
+   "first_gamma_z": 0.5187,
+   "first_share_of_total": 0.3537,
+   "rel_inplane": -2.1,
+   "rel_kappa_zz_rest": -3.3
+  },
+  "7p11": {
+   "cutoff_A": 7.11,
+   "inplane": 2.7766994643045457,
+   "kappa_zz_total": 1.4021354765783052,
+   "kappa_zz_rest": 0.8745,
+   "first_gamma_z": 0.5277,
+   "first_share_of_total": 0.3764,
+   "rel_inplane": -5.39,
+   "rel_kappa_zz_rest": -10.77
+  },
+  "7p43": {
+   "cutoff_A": 7.43,
+   "inplane": 2.554791325392613,
+   "kappa_zz_total": 1.1868175594223611,
+   "kappa_zz_rest": 0.7386,
+   "first_gamma_z": 0.4482,
+   "first_share_of_total": 0.3776,
+   "rel_inplane": -12.95,
+   "rel_kappa_zz_rest": -24.64
+  }
+ }
+}

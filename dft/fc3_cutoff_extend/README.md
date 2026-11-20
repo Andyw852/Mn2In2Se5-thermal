@@ -52,6 +52,27 @@ An empirical check that needs no code reading: for the 4×4×1 SPOSCAR, compare
 the list of pair distances pheasy reports up to 7.9 Å with phonopy's smallest
 vectors. They must agree.
 
+### Step 0 result — **pheasy uses the true minimum image** (2026-11-20)
+
+Two independent checks, both against the 4×4×1 Mn₂In₂Se₅ supercell:
+
+1. **Code.** `pheasy/structure/atoms.py::NeighborList.run()` takes every pair
+   distance from `self.wigner_seitz(atom1, atom2)`, which enumerates the 27
+   neighbouring cells (`itertools.product(np.arange(-1.0, 2.0), repeat=3)`) and
+   returns the **shortest Cartesian image**, with weights for Wigner–Seitz surface
+   degeneracies. It does **not** round fractional coordinates in the cell basis.
+   (The `np.rint(...)` found elsewhere in the package maps atoms after a symmetry
+   operation, a different purpose.)
+2. **Numerical.** Calling that same `wigner_seitz` on the 4×4×1 supercell and
+   comparing with a brute-force 27-cell minimum image for all **79 pairs within
+   7.9 Å**: maximum deviation **2.7×10⁻¹⁵ Å** (RMS 7×10⁻¹⁶ Å), i.e. machine
+   precision. 42 distinct shells appear below 7.9 Å, the largest at 7.727 Å.
+
+So a fit at 7.1–7.4 Å cannot be wrong because of the image convention, and the
+`cut3_safe_cutoff` raise from 6.61 to 8.0 Å is justified by this check rather than
+by geometry alone. The remaining explanations for the κ drop above 7 Å are the
+physical long-range terms and overfitting (see the κ table below).
+
 ## Step 1 — refit the existing frames at larger cutoffs (no DFT)
 
 Both materials, existing 4×4×1 datasets:

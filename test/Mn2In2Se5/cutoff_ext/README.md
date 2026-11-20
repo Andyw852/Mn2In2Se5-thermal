@@ -48,6 +48,26 @@ frames do not support a converged value above 7 Å, and a **larger cell (5×5×1
 9.26 Å) or more frames** would be needed; that is a decision for the user, not
 something to start without it.
 
+## Caveats that must survive into the report
+
+1. **Step 0 is settled**: pheasy uses the true minimum image (27-cell search,
+   machine-precision agreement with brute force up to 7.9 Å — see
+   `../../../dft/fc3_cutoff_extend/README.md`). The κ drop above 7 Å is therefore
+   **not** an image-convention artefact. That leaves two explanations, and this
+   dataset cannot separate them: real long-range interlayer terms, or the
+   7.11–7.43 Å fits absorbing noise (ratio 3.55 and 2.69).
+2. **κ_zz totals must not be quoted.** 35–38 % of the total is the single Γ–Z
+   q point; only the rest term is physical. Machine-readable rest terms, the
+   first-point share and the relative changes are in `kappa_rest_vs_cutoff.json`.
+3. **The Mn₂In₂Se₅ LBTE runs are on 12³ and that mesh is not converged for the
+   absolute κ**: in-plane RTA 2.7754 (12³) → 2.9599 (16³) → 3.048 (32³, isotopes
+   on), and VCA 1.2975 (12³) → 1.4345 (16³) → 1.4611 (20³, +12.6 %). Only the
+   **LBTE/RTA ratio** may be carried to the converged RTA curve; 1.3346 and
+   2.9431 are not results.
+4. **The κ_zz coherence ratio needs the rest term as denominator**, not the
+   total: MnIn₂Se₄ 0.0661/0.648 = 0.102 (against 0.0604 if the total is used) and
+   Mn₂In₂Se₅ ordered 0.1097/0.977 = 0.112 (against 0.0711).
+
 ## Files
 
 | file | contents |
@@ -55,6 +75,7 @@ something to start without it.
 | `kappa_vs_cutoff.json` | κ for each cutoff, phono3py 4.4.0 |
 | `kappa_cut<m>_m16.hdf5` | per-mode phono3py output of each case (1.6 MB each) |
 | `cutoff_scan.json` | the fit log: free IFCs, ratio, train error and s.e. per cutoff |
+| `kappa_rest_vs_cutoff.json` | machine-readable κ_zz rest term per cutoff, with the first Γ–Z share and the relative changes |
 
 The fitted `fc3.hdf5` files (9.7–18.4 MB each, 64 MB total) are **not** in git;
 they are on the backup drive at
