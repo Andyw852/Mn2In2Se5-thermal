@@ -1,0 +1,66 @@
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+start MnIn2Se4 ordered rta 14^3 9 T  phono3py 4.4.0
+  done in 13.9 s
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+start MnIn2Se4 ordered lbte 14^3 9 T  phono3py 4.4.0
+  done in 37046.1 s
+========================== Warning ==========================
+ Phonon frequency of band index 1 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 2 at Gamma is calculated to be 0.000719.
+ But this frequency is forced to be zero.
+=============================================================
+========================== Warning ==========================
+ Phonon frequency of band index 3 at Gamma is calculated to be 0.000985.
+ But this frequency is forced to be zero.
+=============================================================
+start MnIn2Se4 ordered coherence 14^3 9 T  phono3py 4.4.0
+  done in 11.9 s
+wrote result_MnIn2Se4_ordered_m14.json
+	Command being timed: "/home/zyzhuqgroup/wangchao217/software/pybin/python3 -u ../run_lbte_wigner.py --material MnIn2Se4 --cases ordered"
+	User time (seconds): 544530.11
+	System time (seconds): 18592.62
+	Percent of CPU this job got: 1518%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 10:17:55
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 24099620
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 24907859
+	Voluntary context switches: 4834859
+	Involuntary context switches: 1510712
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
