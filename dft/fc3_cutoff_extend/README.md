@@ -78,6 +78,24 @@ Both materials, existing 4×4×1 datasets:
    - **κ_zz keeps falling ≈ 10 % per step up to 7.9 Å**: not converging in
      reach. Only then is a larger cell (5×5×1, 9.26 Å) worth discussing.
 
+### Result of the extension scan (2026-11-20, pheasy-gpu ALASSO, 54 frames)
+
+Job 7701, 3 h 48 min for the whole scan (cutoffs done at 01:59 / 02:48 / 03:36 /
+04:31 / 05:42):
+
+| FC3 cutoff | free IFCs | data/parameter ratio | train rel. error | train rel. s.e. |
+|---|---:|---:|---:|---:|
+| 6.51 (anchor) | 3813 | 6.12 | 0.408 % | 0.014 % |
+| 6.67 | 3872 | 6.02 | 0.407 % | 0.014 % |
+| 6.90 | 4715 | 4.95 | 0.398 % | 0.015 % |
+| 7.11 | 6580 | 3.55 | 0.375 % | 0.022 % |
+| **7.43** | 8665 | **2.69** | 0.351 % | 0.026 % |
+
+The ratio stays above 3 up to 7.11 Å and drops to 2.69 at 7.43 Å. **The 7.43 Å
+point is used anyway: user decision 2026-11-20 ("2.69, exception granted").** No
+new DFT frames are added; whether the cutoff is converged is judged from the κ
+trend, which is the quantity that matters.
+
 ## Step 2 — only if needed: more frames in the same 4×4×1 cell
 
 `make_frames.py` writes frames that can be appended to the existing datasets.
