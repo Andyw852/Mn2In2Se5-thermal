@@ -37,6 +37,29 @@ Agreement to 0.0001 %, i.e. the prediction and the error definition match pheasy
 driver's normalised dataset already has that residual removed — do not subtract it
 again.)
 
+## A800 fallback (2026-11-20 evening)
+
+The 3090 `gpu` partition shares its single node with `cpu192`, and a long AutoZT
+job holds it, so the whole CV study was blocked. The same 18 runs were therefore
+rebuilt on A800:
+
+- `subsets/` are **array slices** of the normalised dataset (`dataset_disps.npy` /
+  `dataset_forces.npy`), which the driver accepts as the `arrays` signature — no
+  vasprun frames needed, and the same splits as on 3090 (from
+  `subsets_manifest_3090.json`, the authoritative one).
+- **Dataset convention (found the hard way):** in `dataset_*.npy` the **last**
+  frame is the equilibrium (zero displacement, zero force); indices 0–53 are the
+  54 displaced frames. The 3090 manifest names frames by `disp-XXXXX` id (1–54),
+  so frame id *f* maps to array index *f−1*, and the equilibrium is appended last.
+  With that fixed, `prep` on A800 reproduces the production normalisation exactly
+  (44 training frames, RMS displacement 0.0172 Å, equilibrium residual 0).
+- `submit_cv_fit_a800.sh` is the same job on the `a800` partition (env `mace`,
+  `--gres=gpu:a800:1`), with the same GPU rules.
+- `rebuild_a800.py` (on A800) rebuilds the subsets/runs from the 3090 manifest.
+
+Status: A800's queue is congested by other users (many pending jobs), so the first
+fit is queued rather than running.
+
 ## Runs
 
 `submit_cv_fit.sh` runs `prep → fit → post` for one run directory on the GPU
