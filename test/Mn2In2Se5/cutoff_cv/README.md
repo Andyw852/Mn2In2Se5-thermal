@@ -33,9 +33,22 @@ production FC2 for every fit.
 | 7.43 | 0.08099 (2 folds) | 0.00496 | 0.00334 |
 
 The training error **falls** monotonically with the cutoff while the held-out error
-**rises**. 7.43 vs 6.90 is +0.0049, larger than the fold spread (0.0034–0.0050);
-7.11 vs 6.90 (+0.0020) is inside it. The N=36 subsets confirm the direction:
-7.43 Å gives 0.0871 / 0.0831 at 36 frames against 0.0810 at 44.
+**rises**. The N=36 subsets confirm the direction: 7.43 Å gives 0.0871 / 0.0831 at
+36 frames against 0.0810 at 44.
+
+**Paired by fold** (added 2026-11-21). The three folds are the same frame splits at
+every cutoff, so the right comparison is the step within each fold, not the mean
+against the fold-to-fold spread (that spread is mostly which frames are held out,
+and it is common to all cutoffs):
+
+| held-out ε_anh step | fold 0 | fold 1 | fold 2 |
+|---|---:|---:|---:|
+| 6.51 → 6.90 | +0.00060 | +0.00097 | +0.00095 |
+| 6.90 → 7.11 | +0.00216 | +0.00177 | +0.00190 |
+| 7.11 → 7.43 | +0.00466 | +0.00261 | — |
+
+All eight steps have the same sign. The held-out error already rises from 6.51 to
+6.90 Å, in every fold.
 
 ## Test 2 — κ versus number of frames
 
@@ -57,24 +70,49 @@ At 7.43 Å the κ moves +19 % between 44 and 54 frames and the subset spread is 
 — both far outside the 5 % stability band. The −24.6 % drop reported in
 `cutoff_ext` is therefore **not determined by the data**.
 
-## Verdict
+6.90 Å fails the same test: +14.1 % from 44 to 54 frames, also outside the 5 %
+band. Paired by fold at N = 44, 6.51 → 6.90 Å moves κ_zz rest by −19.9 / −13.7 /
+−10.7 % and in-plane by −4.7 / −5.0 / −4.5 %; with all 54 frames the same step is
+only −3.3 % / −2.1 %. The step shrinks as frames are added, so at 6.90 Å it is
+still set by the amount of data.
+
+## Verdict (revised 2026-11-21)
 
 Protocol section D, row 1:
 
 | Test 1 (hold-out) | Test 2 (κ vs N) | verdict |
 |---|---|---|
-| error rises at 7.11/7.43 | κ drifts with N | **overfitting** |
+| error rises from 6.90 Å on, in every fold | κ drifts with N at 6.90, 7.11 and 7.43 Å | **overfitting** |
 
-**Mn₂In₂Se₅: the FC3 cutoff extension above 6.9 Å is overfitting.** The last trusted
-cutoff is **6.90 Å**, with the 6.51–6.90 difference as its uncertainty:
+**Mn₂In₂Se₅: every FC3 cutoff above 6.51 Å is overfitted with the 54 frames.**
+6.51 Å is the only cutoff that passes both tests, so it stays the production cutoff
+and the quoted values do not change. The first version of this section named
+6.90 Å as the last trusted cutoff; that followed the wording pre-written in the
+protocol, not the data, and is withdrawn.
 
-| quantity (16³, 300 K, isotopes on) | value at 6.90 Å | 6.51→6.90 uncertainty |
+**Why every drop is negative.** Fitting noise in Φ₃ enters the three-phonon rates
+through |V₃|², so it raises the scattering on average and biases κ **down**. That is
+what the data show: at every cutoff, fewer frames give a lower κ (6.51 Å: 0.888 at
+N = 36 → 0.976 at 44 → 0.980 at 54). The 54-frame value at 6.90 Å (0.948) is
+therefore a **lower bound** on what a converged fit at 6.90 Å would give.
+
+**Cutoff uncertainty to quote** (one-sided):
+
+| quantity (16³, 300 K, isotopes on) | value at 6.51 Å | change at 6.90 Å |
 |---|---:|---:|
-| κ_zz rest of zone | **0.948** | ± 3.3 % |
-| in-plane κ | **2.873** | ± 2.1 % |
+| κ_zz rest of zone | **0.980** | no more negative than **−3.3 %** |
+| in-plane κ | **2.935** | no more negative than **−2.1 %** |
 
-The −10.8 % (7.11 Å) and −24.6 % (7.43 Å) values in `cutoff_ext` must not be quoted.
-No new DFT is justified by this test.
+Above 6.90 Å the existing frames cannot resolve anything. The −10.8 % (7.11 Å) and
+−24.6 % (7.43 Å) values in `cutoff_ext` must not be quoted. No new DFT is justified
+by this test.
+
+The cutoff steps that the data do resolve shrink: κ_zz rest −11.8 % (5.68 → 6.12 Å),
+−9.9 % (6.12 → 6.51 Å, data/parameter ratio 9.1 → 6.1), then at most −3.3 % at
+6.90 Å.
+
+Optional check, no DFT: 3 hold-out folds at 6.12 Å (about 3 GPU hours) would show
+whether 6.51 Å is at the minimum of the held-out error or already slightly past it.
 
 ## Caveats and what did not go to plan
 
@@ -88,12 +126,20 @@ No new DFT is justified by this test.
 3. **A800 was set up and abandoned** at the user's request once 3090's GPU freed;
    5 of the missing κ runs were finished on HanHai instead of waiting for the 3090
    `cpu192` node held by a long AutoZT job.
-4. **MnIn₂Se₄ is not covered by this protocol.** Its cutoff scan (6.45/6.79/7.19/7.74)
-   is flat to 7.19 Å (+1.5 % rest, +3.6 % in-plane against the 6.45 anchor, inside the
-   8 % step spread) and then drops 27.7 % at 7.74 Å, where the data/parameter ratio is
-   2.39. **Inference, not a measurement**: by the same logic the last trusted
-   MnIn₂Se₄ cutoff is 7.19 Å (κ_zz rest 0.654, in-plane 3.779) and the 7.74 Å drop is
-   not trustworthy.
+4. **MnIn₂Se₄ is not covered by this protocol.** Its cutoff scan (6.45/6.79/7.19/7.74,
+   46 frames) gave κ_zz rest +8.0 % / +1.5 % / −27.7 % against the 6.45 Å anchor, with
+   a data/parameter ratio of 2.39 at 7.74 Å. The first version of this caveat called
+   7.19 Å "the last trusted MnIn₂Se₄ cutoff". That does not follow: the Mn₂In₂Se₅
+   test shows overfitting from the first step above the production cutoff, MnIn₂Se₄
+   has fewer frames, and a non-monotonic +8.0 % / +1.5 % sequence looks like noise.
+   MnIn₂Se₄ stays at 6.45 Å with its earlier ≈ −10 % estimate. Two things are still
+   open: (a) the extension results are not in the repository yet; (b) the production
+   6.45 Å FC3 is an RFE-OLS fit while the extension used ALASSO. If the anchor
+   3.6474 / 0.6444 is the production fit and not an ALASSO refit, the extension points
+   are compared against a different fit method.
+5. **Frame numbering.** "0–53" above are array indices; the JSON files use the frame
+   ids 1–54 (`disp-00001` … `disp-00054`, id = index + 1), and the equilibrium frame
+   is `disp-00000`. Both conventions describe the same frames.
 
 ## Files
 

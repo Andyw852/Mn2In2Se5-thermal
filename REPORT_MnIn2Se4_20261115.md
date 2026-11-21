@@ -705,8 +705,19 @@ use it for both materials:
 | in-plane κ | ≈ 4.6 | ≈ 3.37 |
 | **κ_zz, mesh-converged + coherence (quoted)** | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
 | κ_zz, 30³ total + coherence (reference only) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
-| in-plane FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−22.9 %, −8.7 %) | steps −3.9 %, −4.3 % (16³, isotopes on), **not shrinking**: upper bound |
-| κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | **not converged, unbounded**: steps −11.8 %, −9.9 % barely shrink |
+| in-plane FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−22.9 %, −8.7 %) | steps −3.9 %, −4.3 % (16³, isotopes on); next step (6.90 Å) **no more negative than −2.1 %** (hold-out test, 2026-11-21) |
+| κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | steps −11.8 %, −9.9 %; next step (6.90 Å) **no more negative than −3.3 %** (hold-out test, 2026-11-21) |
+
+**Update 2026-11-21 (Mn₂In₂Se₅ cutoff).** The two rows above used to read "upper
+bound" / "not converged, unbounded". The FC3 refits at 6.67–7.43 Å on the same 54
+frames were then tested by hold-out validation and a learning curve
+(`test/Mn2In2Se5/cutoff_cv/`). The held-out force error rises above 6.51 Å in every
+fold, and κ depends on the number of frames from 6.90 Å on. Those fits are
+over-parameterised, and their κ drops (−3.3 / −10.8 / −24.6 % in κ_zz) are not
+physics. Fitting noise biases κ downwards (fewer frames always gave a lower κ), so
+the 6.90 Å value bounds the next step from below. 6.51 Å stays the production
+cutoff and the quoted Mn₂In₂Se₅ values are unchanged. Cutoffs above 6.90 Å cannot
+be tested with the existing frames.
 
 Mn₂In₂Se₅ sources: the rest-term plateau of §6.3 (×0.9961 isotopes); 30³ total
 from `test/figures/kappa_vs_T/jobs30/` (isotopes on); coherence 0.1115 at 16³
@@ -734,10 +745,11 @@ the 4×4×1 cell**.
 
 **Comparing the two materials.** The in-plane ordering (MnIn₂Se₄ ≈ 4.6 >
 Mn₂In₂Se₅ ≈ 3.37) is robust: a 37 % gap, against cutoff effects of ≲ 10 %
-(MnIn₂Se₄) and ≈ 4 % per step (Mn₂In₂Se₅). The κ_zz ordering is **not**. Mn₂In₂Se₅ κ_zz
-(≈ 1.09) is an upper bound because its cutoff is not converged. A further
-20–30 % drop would bring it to ≈ 0.75–0.85, close to MnIn₂Se₄ (≈ 0.71). Do not
-state "Mn₂In₂Se₅ has the higher κ_zz" as a result.
+(MnIn₂Se₄) and ≈ 4 % per step (Mn₂In₂Se₅). The κ_zz ordering (Mn₂In₂Se₅ ≈ 1.09 >
+MnIn₂Se₄ ≈ 0.71, a 50 % gap) was not robust while the Mn₂In₂Se₅ cutoff was
+unbounded. With the next step now bounded at −3.3 % (update above), it holds within
+what the data can test. The remaining caveat: cutoffs above 6.90 Å are untested,
+because the existing frames cannot support them.
 
 **Suggested text for the paper (cutoff).**
 
@@ -746,8 +758,17 @@ state "Mn₂In₂Se₅ has the higher κ_zz" as a result.
 > (6.23 → 6.45 Å) lowered κ by about 8 %, with shrinking steps. We therefore
 > estimate the remaining truncation error at ≲ 10 %, most likely an
 > overestimate. For Mn₂In₂Se₅ the last two steps (5.68 → 6.12 → 6.51 Å)
-> lowered the in-plane κ by 4 % each and κ_zz by 12 % and 10 %. Neither trend
-> has levelled off, so both values should be regarded as upper bounds.
+> lowered the in-plane κ by 4 % each and κ_zz by 12 % and 10 %. Fits with larger
+> cutoffs on the same 54 configurations were checked by hold-out validation:
+> the error on held-out configurations increases above 6.51 Å, and κ depends on
+> the number of configurations used, so these fits are over-parameterised.
+> Because fitting noise lowers κ on average (fewer configurations consistently
+> gave a lower κ), the 6.90 Å fit bounds the
+> next step at −3.3 % (κ_zz) and −2.1 % (in-plane). Larger cutoffs could not be
+> tested with the available configurations.
+
+(Suggested text revised 2026-11-21; it used to call both Mn₂In₂Se₅ values upper
+bounds.)
 
 ---
 
@@ -757,7 +778,7 @@ Ordered by how much each item can still move κ_zz.
 
 | # | Item | Cost | Why it matters |
 |---|---|---|---|
-| **1** | **FC3 cutoff beyond 6.45 / 6.51 Å — Mn₂In₂Se₅ first.** No larger supercell is needed for this: the existing 4×4×1 cells allow 7.96 / 8.01 Å by the minimum-image rule (no pair has two images inside the cutoff), and 4×4×2 gains nothing under either rule. Plan in `dft/fc3_cutoff_extend/`: (0) check that pheasy uses true minimum-image vectors; (1) refit the existing frames at 6.7–7.9 Å; (2) only if the data/parameter ratio drops below 3, add ≈ 30 frames in the same 4×4×1 cell. **Not pursued (decision 2026-11-18).** The cutoff uncertainty is the only remaining one and is reported instead (§9.1, suggested text). The plan stays available in case a referee asks; step 1 needs no DFT | step 1 hours, no DFT; step 2 ≈ 4–6 k core-h | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
+| **1** | **FC3 cutoff beyond 6.45 / 6.51 Å — Mn₂In₂Se₅ first.** **Mn₂In₂Se₅ done 2026-11-21, no DFT** (`test/Mn2In2Se5/cutoff_ext/`, `test/Mn2In2Se5/cutoff_cv/`): refits to 7.43 Å are over-parameterised from 6.90 Å on (hold-out error up, κ depends on the number of frames); 6.51 Å stays, next step ≥ −3.3 % κ_zz / ≥ −2.1 % in-plane. MnIn₂Se₄ refit to 7.74 Å run but not yet in the repository and not hold-out tested; it stays at 6.45 Å with the ≈ −10 % estimate. The text that follows is the original plan. No larger supercell is needed for this: the existing 4×4×1 cells allow 7.96 / 8.01 Å by the minimum-image rule (no pair has two images inside the cutoff), and 4×4×2 gains nothing under either rule. Plan in `dft/fc3_cutoff_extend/`: (0) check that pheasy uses true minimum-image vectors; (1) refit the existing frames at 6.7–7.9 Å; (2) only if the data/parameter ratio drops below 3, add ≈ 30 frames in the same 4×4×1 cell. **Not pursued (decision 2026-11-18).** The cutoff uncertainty is the only remaining one and is reported instead (§9.1, suggested text). The plan stays available in case a referee asks; step 1 needs no DFT | step 1 hours, no DFT; step 2 ≈ 4–6 k core-h | **Now the largest uncertainty in κ_zz, not only an in-plane cutoff issue.** For **Mn₂In₂Se₅** the last κ_zz cutoff steps (−11.8 %, −9.9 %, 16³ rest term) barely shrink, so its κ_zz is outside the 10 % tolerance with no bound. For MnIn₂Se₄ the steps shrink (−50.5 % → −8.2 %) and ≈10 % is a defensible estimate. The 4×4×1 FC3 cell is one layer thick (13.214 Å along c) — the same geometric defect that destroyed the 4×4×1 FC2 (§4). The interlayer acoustic modes that carry κ_zz take their lifetimes from exactly the interlayer FC3 terms that this cell cannot represent. |
 | 2 | 24³ and 30³ q-mesh RTA | 9 min + 34 min on HanHai | **done** (§6.3, §6.5): the rest term is converged, κ_zz = 0.648 ± 0.003 on the q-mesh (the FC3 cutoff, item 1, is not settled) |
 | 3 | FC3 cutoff comparison for κ_zz on the converged "rest" term (14³) | ~1 h | **done** — §6.6: on the converged term κ_zz falls −50.5 % then −8.2 %, i.e. like the in-plane −22.9 % / −8.7 %; the old "+2.3 %" was the artifact |
 | 4 | **Γ–Z decomposition of the Mn₂In₂Se₅ κ_zz meshes** | minutes (post-processing) | **done** — `test/Mn2In2Se5/kappa_zz_decomposition/`. The artifact is present and grows in share under z-only refinement (first point 0.190 → 0.538, share 22.6 % → 34.8 % for 16×16×4 → 16³), and the decisive isotropic 16³ → 24³ step **lowers** κ_zz by 15.6 % (1.5472 → 1.3054). So the rising z-only scan was walking up the artifact. **Done**: the rest term is converged over four isotropic meshes (16³/24³/28³/32³: 1.0090 / 0.9766 / 0.9841 / 0.9801, last step −0.41 %), giving **κ_zz = 0.977 ± 0.008** (plateau 24³–32³; the earlier 0.951 ± 0.032 was an unjustified extrapolation and is withdrawn) after the isotope correction (the series was run without isotopes; the ratio 0.9961 is mesh-independent to 0.02 %, see `test/Mn2In2Se5/iso_rerun/`). In-plane RTA 3.0825 at 32³ without isotopes, 3.048 with. What remains is the FC3 cutoff — the last available step still moves it by −9.9 % with no bound — not the mesh. |

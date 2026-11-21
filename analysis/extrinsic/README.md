@@ -128,6 +128,18 @@ Two things to keep in mind when reading this:
    (s 0.253 → 0.250, x and L unchanged), so the high-temperature fit was not biased
    by the mesh.
 
+**Adopted since 2026-11-21: x fixed at the literature value.** Because the κ data
+leave x undetermined, the figures and the progress report now use x from a
+structure refinement. Only L and s are fitted, with the same grid and metric
+(`test/figures/calc_vs_experiment/make_extrinsic_json.py`, numpy only):
+
+| | x (fixed) | L | s | rms |
+|---|---:|---:|---:|---:|
+| MnIn₂Se₄ | 0.44 (Range *et al.* 1991) | 30.7 nm | 0.35 (0.33–0.37) | 1.2 % |
+| Mn₂In₂Se₅ | 0.19 (Williams *et al.* 2024, ESI Table S7) | 22.1 nm (18.7–22.1) | 0.233 (0.207–0.273) | 3.4 % |
+
+The free fit above stays the record of what the κ data alone allow.
+
 Tracked results: `results/MnIn2Se4_442_m24/` and `results/Mn2In2Se5_m24/` (bases.npz + bases_meta.json + fit JSON). Generated in the scratch directories
 (`bases.npz` + `bases_meta.json` + `fit_*.json`). They can be regenerated with the
 `bases` commands above (12–15 min on 64 cores each).

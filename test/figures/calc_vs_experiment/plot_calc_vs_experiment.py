@@ -9,7 +9,8 @@ out-of-plane, frameon=False legend, log y where the range needs it.
 Data
   experiment  experiment/kappa_tot_digitized.csv  (Perp = in-plane, Para = out-of-plane)
   calc        ../kappa_vs_T/data_*.json            (intrinsic single crystal)
-  model       extrinsic_mn2in2se5.json             (x = 0.13, L = 16 nm, s = 0.25)
+  model       extrinsic_*.json, from make_extrinsic_json.py (x fixed at the literature
+              value: Mn2In2Se5 x = 0.19, L = 22 nm, s = 0.23; MnIn2Se4 x = 0.44, L = 31 nm, s = 0.35)
 """
 import csv
 import json
@@ -120,8 +121,8 @@ def main():
              "$\\kappa_{zz}$ is the plain mesh total (no $\\Gamma$–Z decomposition, so it may still "
              "be ~15 % high). FC2 4x4x2 (In$_2$MnSe$_4$) / 4x4x1 (In$_2$Mn$_2$Se$_5$).\n"
              "Dashed: extrinsic model (Mn/In antisite mass disorder + grain boundary + texture), "
-             "fitted to the same CSV: In$_2$Mn$_2$Se$_5$ x = 0.13, L = 16 nm, s = 0.25; "
-             "In$_2$MnSe$_4$ x = 0.45, L = 31 nm, s = 0.35.",
+             "x fixed at the literature value, L and s fitted to the same CSV: In$_2$Mn$_2$Se$_5$ "
+             "x = 0.19, L = 22 nm, s = 0.23; In$_2$MnSe$_4$ x = 0.44, L = 31 nm, s = 0.35.",
              fontsize=6, color="#555555", transform=fig.transFigure, wrap=True)
     fig.tight_layout(rect=(0, 0.14, 1, 0.97))
     for ext in ("png", "pdf"):

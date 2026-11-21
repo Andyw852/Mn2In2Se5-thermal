@@ -1,6 +1,8 @@
 # MnIn₂Se₄ / Mn₂In₂Se₅ lattice thermal conductivity — progress report
 
-**Date:** 2026-11-18  
+**Date:** 2026-11-18, **updated 2026-11-21**: Mn₂In₂Se₅ FC3-cutoff verdict
+(hold-out test, `test/Mn2In2Se5/cutoff_cv/`) and Mn₂In₂Se₅ antisite occupancy
+switched to the literature x = 0.19 (VCA and L3).  
 **Scope:** both materials. This report supersedes the status sections of
 earlier summaries. The detailed derivations live in
 [`REPORT_MnIn2Se4_20261115.md`](REPORT_MnIn2Se4_20261115.md); section numbers (§) below refer to it.
@@ -9,13 +11,14 @@ earlier summaries. The detailed derivations live in
 
 ## 1. Summary
 
-- **The calculation is complete within the agreed ≈ 10 % target.** The one
-  exception is the Mn₂In₂Se₅ FC3-cutoff convergence. The q-mesh, isotopes,
-  LBTE versus RTA, and the coherence term have all been settled.
-- **The remaining uncertainty is the FC3 cutoff**, and further calculation has
-  been ruled out (decision 2026-11-18):
+- **The calculation is complete within the agreed ≈ 10 % target.** The q-mesh,
+  isotopes, LBTE versus RTA, and the coherence term have all been settled.
+- **The remaining uncertainty is the FC3 cutoff**:
   - MnIn₂Se₄: the cutoff steps shrink, and the remaining error is ≲ 10 %.
-  - Mn₂In₂Se₅: the steps do not shrink, so its values are upper bounds.
+  - Mn₂In₂Se₅ (settled 2026-11-21, no new DFT): refits above 6.51 Å on the
+    existing 54 frames are over-parameterised (hold-out validation). 6.51 Å
+    stays; the next step (6.90 Å) is no more negative than −3.3 % in κ_zz and
+    −2.1 % in-plane. Earlier versions called these values upper bounds.
 - **Intrinsic single-crystal κ is 3–4× above the hot-pressed measurements.**
   Mn/In antisite mass disorder (VCA) closes part of the gap. A nanoscale
   phonon mean free path (L_eff ≈ 10–50 nm) is needed to reach the measured
@@ -28,8 +31,8 @@ earlier summaries. The detailed derivations live in
 | **in-plane κ** (LBTE + coherence) | **≈ 4.6** (4.67) | **≈ 3.4** (3.37) |
 | **κ_zz** (mesh-converged + coherence) | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
 | κ_zz at 10 μm / 1 μm grain (no coherence) | 0.638 / 0.58 | 0.944 / 0.798 |
-| FC3 cutoff, in-plane | ≈ −10 %, estimated (steps −22.9 % → −8.7 %) | upper bound (steps −3.9 % → −4.3 %) |
-| FC3 cutoff, κ_zz | ≈ −10 %, estimated (steps −50.5 % → −8.2 %) | **upper bound** (steps −11.9 % → −9.9 %) |
+| FC3 cutoff, in-plane | ≈ −10 %, estimated (steps −22.9 % → −8.7 %) | steps −3.9 % → −4.3 %; next step ≥ **−2.1 %** |
+| FC3 cutoff, κ_zz | ≈ −10 %, estimated (steps −50.5 % → −8.2 %) | steps −11.9 % → −9.9 %; next step ≥ **−3.3 %** |
 | experiment κ_tot, Perp / Para (303 K, hot-pressed) | 0.933 / 0.485 | 0.741 / 0.320 |
 
 What each number is made of:
@@ -47,8 +50,10 @@ Two comparisons to keep in mind:
 
 - **In-plane ordering is robust.** MnIn₂Se₄ > Mn₂In₂Se₅ by 37 %, well above
   the cutoff effects.
-- **κ_zz ordering is not robust.** Mn₂In₂Se₅ is an upper bound; a further
-  20–30 % drop would bring it to the MnIn₂Se₄ value.
+- **κ_zz ordering now holds within what the data can test.** Mn₂In₂Se₅ is
+  50 % above MnIn₂Se₄, and its next cutoff step is bounded at −3.3 %. Cutoffs
+  above 6.90 Å are untested. (Before 2026-11-21 this read "not robust", because the
+  Mn₂In₂Se₅ value was treated as an unbounded upper bound.)
 
 **Texture-independent comparison with experiment**, (2κ_xx + κ_zz)/3 against
 (2·Perp + Para)/3 at 300 K:
@@ -76,7 +81,8 @@ from data in the repository. The κ_zz convention is the same as in §2.
 - **Stars:** the 300 K values of §2.
   - The stars sit above the RTA lines because LBTE exceeds RTA in-plane (24 %
     for MnIn₂Se₄) and because they include the coherence term.
-  - Bar on MnIn₂Se₄: the cutoff estimate. Arrow on Mn₂In₂Se₅: an upper bound.
+  - Bars: the cutoff uncertainty. MnIn₂Se₄ ≈ −10 % (estimate); Mn₂In₂Se₅
+    −3.3 % / −2.1 % (bound on the next step from the hold-out test).
 
 ### Fig. 2 — calculation against the hot-pressed experiment
 
@@ -124,7 +130,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 | natural isotopes | included | −1.2 % in-plane, −0.4 % κ_zz at 300 K; −17 % in-plane at 30 K |
 | LBTE vs RTA | in-plane quoted from LBTE | +24 % in-plane (MnIn₂Se₄); κ_zz equal to 4·10⁻⁵ |
 | coherence | included (rule below) | +2 % in-plane, +10–12 % κ_zz |
-| **FC3 cutoff** | **not converged; not pursued** | MnIn₂Se₄ ≲ −10 %; Mn₂In₂Se₅ upper bound |
+| **FC3 cutoff** | MnIn₂Se₄ estimated; Mn₂In₂Se₅ tested to the limit of the frames (hold-out, 2026-11-21) | MnIn₂Se₄ ≲ −10 %; Mn₂In₂Se₅ next step ≥ −3.3 % (κ_zz) / ≥ −2.1 % (in-plane) |
 | electronic κ_e (experiment side) | not subtracted | unknown; needs the electrical conductivity |
 
 ## 6. Findings and corrections this round
@@ -164,7 +170,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 
 | # | item | status |
 |---|---|---|
-| 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **scheduled 2026-11-19** (revising the 11-18 decision): the κ_zz ordering of the two materials depends on it. Steps 0–1 of [`dft/fc3_cutoff_extend/`](dft/fc3_cutoff_extend/) refit the existing frames, no DFT; new frames only if the data/parameter ratio drops below 3 (`protocol/local_AI_next_steps_2026-11-19.md`, task 2) |
+| 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **Mn₂In₂Se₅ closed 2026-11-21, no DFT.** Refits to 7.43 Å ([`test/Mn2In2Se5/cutoff_ext/`](test/Mn2In2Se5/cutoff_ext/)) dropped κ_zz by up to 25 %. A hold-out validation and a learning curve ([`test/Mn2In2Se5/cutoff_cv/`](test/Mn2In2Se5/cutoff_cv/)) show those fits are over-parameterised from 6.90 Å on. 6.51 Å stays, next step ≥ −3.3 %. **MnIn₂Se₄**: refit to 7.74 Å done on 3090, results not yet in the repository and not hold-out tested; stays at 6.45 Å, ≈ −10 % |
 | 2 | literature source for Döll i = 0.44 | **closed 2026-11-19**: K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), atomic-position table: M_oct = 0.56 Mn + 0.44 In, M_tet = 0.78 In + 0.22 Mn. PDF in `references/`. The 1990 *J. Cryst. Growth* paper is not the source |
 | 3 | Mn₂In₂Se₅ antisite occupancy | **closed 2026-11-19 for the literature value**: x = 0.19(2) in the R-3m phase (Williams *et al.* 2024, ESI Table S7, powder Rietveld), inside the L3 acceptable range; L3 with x fixed gives L = 22 nm. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). Optional: VCA rerun at x = 0.19 (estimated −9 % in-plane vs x = 0.13). A refinement of our own samples would still be better |
 | 4 | κ_e of the measured samples | open. It needs the electrical conductivity (Wiedemann–Franz) |
@@ -182,5 +188,5 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 | disorder treatment, parameters, references | `analysis/disorder/README.md` |
 | extrinsic model and fits | `analysis/extrinsic/`, `test/figures/calc_vs_experiment/` |
 | coherence version check | `test/figures/kappa_vs_T/jobs30/wig.py` |
-| cutoff-extension plan (not pursued) | `dft/fc3_cutoff_extend/` |
+| cutoff extension: plan, refits, hold-out test | `dft/fc3_cutoff_extend/`, `dft/fc3_cutoff_cv/`, `test/Mn2In2Se5/cutoff_ext/`, `test/Mn2In2Se5/cutoff_cv/` |
 | experiment (digitised) | `experiment/kappa_tot_digitized.csv` |

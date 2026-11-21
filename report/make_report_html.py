@@ -265,8 +265,11 @@ so all {L[m4]} κ values are from phono3py.</li>
 <p class="cap">300 K, RTA population term, natural isotopes, κ_zz = mesh-converged term; meshes 14³ ({L[m4]}) and
 16³ ({L[m5]}). <b>Chosen: 6.45 Å and 6.51 Å</b>, the largest cutoffs the 4×4×1 FC3 cells allow under the conservative
 supercell rule. By the 10 % criterion all last steps pass. For {L[m4]} the steps also shrink (in-plane −22.9 % → −8.7 %,
-κ_zz −50.5 % → −8.2 %), so the remaining error is estimated at about −10 %. For {L[m5]} the steps do not shrink (in-plane
-−3.9 % → −4.3 %, κ_zz −11.9 % → −9.9 %), so its values are given as <b>upper bounds</b>.</p>
+κ_zz −50.5 % → −8.2 %), so the remaining error is estimated at about −10 %. For {L[m5]} (in-plane −3.9 % → −4.3 %,
+κ_zz −11.9 % → −9.9 %) refits at 6.67–7.43 Å on the same 54 frames were tested by hold-out validation: they are
+over-parameterised from 6.90 Å on, so their lower κ is not physics. Fitting noise lowers κ, so the 6.90 Å fit bounds the
+next step: <b>no more negative than −2.1 % in-plane and −3.3 % in κ_zz</b> (<code>test/Mn2In2Se5/cutoff_cv/</code>).
+Larger cutoffs cannot be tested with the existing frames.</p>
 
 <h3>2.3 q-mesh</h3>
 <div class="tbl"><table>
@@ -364,7 +367,7 @@ def html(figs):
                           "vca": "calculation, VCA antisite disorder (RTA 20³)",
                           "exp": "experiment, Perp / Para (303 K)",
                           "exp_avg": "experiment, (2·Perp + Para)/3 (303 K)"},
-                         {"MnIn2Se4": "cutoff ≈ −10 %", "Mn2In2Se5": "upper bound"})
+                         {"MnIn2Se4": "cutoff ≈ −10 %", "Mn2In2Se5": "cutoff ≥ −3 %"})
     ORD, O = ordering_rows({"exp": "experiment, Perp / Para (303 K)",
                             "quoted": "calculation, value to quote, in-plane / κ_zz",
                             "ordered": "calculation, ordered RTA 20³, in-plane / κ_zz",
@@ -396,8 +399,8 @@ align with the pressing direction).</p>
 {T1}
 </tbody></table></div>
 <p class="cap"><b>Calculation, value to quote</b>: the most accurate single-crystal values (§2.4: in-plane LBTE + coherence,
-κ_zz mesh-converged + coherence). {L['MnIn2Se4']}: FC3 cutoff error about −10 %. {L['Mn2In2Se5']}: cutoff not converged, upper
-bounds. <b>Ordered / VCA</b>: RTA at 20³, without / with Mn–In antisite mass disorder (§5); they show how much
+κ_zz mesh-converged + coherence). {L['MnIn2Se4']}: FC3 cutoff error about −10 %. {L['Mn2In2Se5']}: next cutoff step no more negative
+than −2.1 % / −3.3 % (in-plane / κ_zz). <b>Ordered / VCA</b>: RTA at 20³, without / with Mn–In antisite mass disorder (§5); they show how much
 disorder alone lowers κ. All calculated values are for a defect-free single crystal without grain boundaries.</p>
 
 <p class="lead"><b>Why a second table.</b> The pellets are only partly textured, so Perp is not pure in-plane and Para is
@@ -427,10 +430,8 @@ Para = s·κ_in-plane + (1−s)·κ_zz. With the same s for both materials, {L['
 s &gt; {O['s_cross']:.2f}. The fitted texture is s = {sA:.2f} ({L['MnIn2Se4']}) and {sB:.2f} ({L['Mn2In2Se5']}); with it
 the calculated values give the experimental order in both directions (last row: Para
 {O['mixed_abs']['Mn2In2Se5'][1]:.2f} vs {O['mixed_abs']['MnIn2Se4'][1]:.2f}). XRD of both pellet faces would measure s independently.</li>
-<li><b>The {L['Mn2In2Se5']} κ_zz is an upper bound.</b> Its FC3-cutoff steps (−11.9 %, −9.9 %) do not shrink (§2.2).
-Extending the cutoff by refitting the existing frames is scheduled
-(<code>protocol/local_AI_next_steps_2026-11-19.md</code>, task 2); a further −20 to −30 % would bring it close to
-{L['MnIn2Se4']}.</li>
+<li><b>The {L['Mn2In2Se5']} κ_zz is bounded.</b> Its FC3-cutoff steps (−11.9 %, −9.9 %) are followed by a step of at
+most −3.3 % (§2.2, hold-out test), so its κ_zz stays about 50 % above {L['MnIn2Se4']}'s within what the data can test.</li>
 <li><b>Point defects hardly lower κ_zz.</b> Antisite mass disorder from the ordered to the random limit lowers the
 in-plane κ by {d('Mn2In2Se5', 0.0, 0.5, 0):.0f} % but κ_zz by only {d('Mn2In2Se5', 0.0, 0.5, 1):.0f} % in {L['Mn2In2Se5']}
 ({L['MnIn2Se4']}, x = 0 → 0.44: by {d('MnIn2Se4', 0.0, 0.44, 0):.0f} % and {d('MnIn2Se4', 0.0, 0.44, 1):.0f} %;
@@ -459,7 +460,7 @@ instead of RTA, plus the Wigner coherence term for both components). That treatm
 appears as a single point. The stars lie above the lines at 300 K by +28 % (in-plane) and +11 % (κ_zz) for
 {L['MnIn2Se4']}, and by +14 % and +8 % for {L['Mn2In2Se5']}; the same correction applies to the curves at other
 temperatures in approximate form. Quote numbers from §1, not read off the lines. Bar: FC3-cutoff estimate (≈ −10 %).
-Arrow: {L['Mn2In2Se5']} cutoff not converged, value is an upper bound.</p>
+{L['Mn2In2Se5']}: bound on the next cutoff step (−2.1 % / −3.3 %) from the hold-out test.</p>
 
 <h2><span class="n">5</span>Calculation vs hot-pressed experiment</h2>
 <p class="lead">One panel per material and direction. Dashed: ordered single crystal. Solid: VCA antisite-disordered
@@ -561,8 +562,8 @@ spin–phonon scattering</td>
 <td>low-lying optical branches (§3) and strong 3-phonon rates; the calculation uses 0 K harmonic phonons and 3-phonon scattering only</td>
 <td>four-phonon scattering, temperature-dependent force constants (expensive)</td></tr>
 <tr><td>7</td><td><b>FC3 cutoff</b></td>
-<td>{L['MnIn2Se4']} ≈ −10 %; {L['Mn2In2Se5']} at least as much (upper bound)</td>
-<td>§2.2</td><td>refit at 7–8 Å from the existing frames (<code>dft/fc3_cutoff_extend/</code>)</td></tr>
+<td>{L['MnIn2Se4']} ≈ −10 %; {L['Mn2In2Se5']} next step ≥ −3.3 %</td>
+<td>§2.2</td><td>{L['Mn2In2Se5']} done (refit to 7.43 Å + hold-out test); {L['MnIn2Se4']} the same test on its 7.74 Å refits</td></tr>
 </tbody></table></div>
 <p class="lead"><b>Ruled out as explanations</b></p>
 <ul>
@@ -582,9 +583,9 @@ measurements are the pellet density, SEM/TEM of the microstructure and XRD of th
 <ul>
 <li>The experimental points are digitised from a figure (±0.005 W m⁻¹ K⁻¹ at high T, ±0.01 at low T) and are κ_tot
 with κ_e not subtracted. Replace <code>experiment/kappa_tot_digitized.csv</code> once the raw data are available.</li>
-<li>{L['Mn2In2Se5']}: the FC3-cutoff steps do not shrink (in-plane −3.9 % → −4.3 %, κ_zz −11.9 % → −9.9 %), so its
-values are upper bounds and the κ_zz ordering of the two materials is not robust. The in-plane ordering
-({L['MnIn2Se4']} 37 % higher) is.</li>
+<li>{L['Mn2In2Se5']}: the FC3 cutoff is tested only up to 6.90 Å (next step ≥ −2.1 % / −3.3 %); the existing frames
+cannot support larger cutoffs. Within that, both orderings hold: in-plane {L['MnIn2Se4']} 37 % higher, κ_zz
+{L['Mn2In2Se5']} about 50 % higher.</li>
 <li>Between the 145 K and 300 K experimental points the Para values drop much more than Perp ({L['Mn2In2Se5']} −32 %
 vs −6 %), possibly two instruments or two samples; this is why the fit uses the high-temperature range only.</li>
 </ul>

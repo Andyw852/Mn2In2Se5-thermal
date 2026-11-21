@@ -136,11 +136,11 @@ def fig_intrinsic(D):
             v = q[(m, key)]
             x = 300 + (12 if m == "MnIn2Se4" else -12)
             ax.plot([x], [v], "*", color=COL[m], ms=13, mec="k", mew=0.6, zorder=5)
-            if m == "MnIn2Se4":                        # FC3-cutoff estimate, about -10 %
-                ax.errorbar([x], [v], yerr=[[0.10 * v], [0]], color=COL[m], capsize=4, lw=1.6, zorder=4)
-            else:                                       # upper bound
-                ax.annotate("", xy=(x, v * 0.72), xytext=(x, v * 0.95),
-                            arrowprops=dict(arrowstyle="-|>", color=COL[m], lw=1.6), zorder=4)
+            # downward FC3-cutoff uncertainty: MnIn2Se4 about -10 % (estimate);
+            # Mn2In2Se5 bound on the next step from the hold-out test (test/Mn2In2Se5/cutoff_cv/)
+            down = {"MnIn2Se4": {"inplane": 0.10, "kzz": 0.10},
+                    "Mn2In2Se5": {"inplane": 0.021, "kzz": 0.033}}[m][key]
+            ax.errorbar([x], [v], yerr=[[down * v], [0]], color=COL[m], capsize=4, lw=1.6, zorder=4)
     for ax, ttl in ((a1, t("(a) in-plane")), (a2, t("(b) cross-plane") + ("" if LANG == "zh" else r" $\kappa_{zz}$"))):
         ax.set_yscale("log")
         ax.set_xlabel(t("Temperature (K)"))

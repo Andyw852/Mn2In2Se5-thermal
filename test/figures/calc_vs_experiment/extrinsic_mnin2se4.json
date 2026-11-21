@@ -1,165 +1,181 @@
 {
  "material": "MnIn2Se4",
  "s": 0.35,
+ "x": 0.44,
+ "x_source": "Range et al., Z. Naturforsch. 46b, 1122 (1991)",
+ "L_nm": 30.7,
+ "rms_log_err": 0.0122,
+ "acceptable": {
+  "rms_threshold": 0.0322,
+  "L_nm": [
+   30.7,
+   30.7
+  ],
+  "s": [
+   0.33,
+   0.37
+  ]
+ },
+ "note": "L3 with x fixed at the literature value; L and s fitted (make_extrinsic_json.py)",
  "rows": [
   {
    "T": 10.0,
-   "kxx": 0.3081,
-   "kzz": 0.1267,
+   "kxx": 0.3092,
+   "kzz": 0.1269,
    "intrinsic_kxx": 129.0849,
    "intrinsic_kzz": 68.3497
   },
   {
    "T": 20.0,
-   "kxx": 0.866,
-   "kzz": 0.1984,
+   "kxx": 0.8705,
+   "kzz": 0.199,
    "intrinsic_kxx": 76.8703,
    "intrinsic_kzz": 18.9986
   },
   {
    "T": 30.0,
-   "kxx": 1.1923,
-   "kzz": 0.2243,
+   "kxx": 1.1988,
+   "kzz": 0.225,
    "intrinsic_kxx": 51.6548,
    "intrinsic_kzz": 10.4953
   },
   {
    "T": 40.0,
-   "kxx": 1.372,
-   "kzz": 0.2344,
+   "kxx": 1.3795,
+   "kzz": 0.2353,
    "intrinsic_kxx": 37.1978,
    "intrinsic_kzz": 7.2234
   },
   {
    "T": 50.0,
-   "kxx": 1.4632,
-   "kzz": 0.2377,
+   "kxx": 1.4711,
+   "kzz": 0.2386,
    "intrinsic_kxx": 28.3146,
    "intrinsic_kzz": 5.491
   },
   {
    "T": 60.0,
-   "kxx": 1.5021,
-   "kzz": 0.2377,
+   "kxx": 1.5101,
+   "kzz": 0.2387,
    "intrinsic_kxx": 22.5635,
    "intrinsic_kzz": 4.4249
   },
   {
    "T": 80.0,
-   "kxx": 1.5043,
-   "kzz": 0.2337,
+   "kxx": 1.5123,
+   "kzz": 0.2346,
    "intrinsic_kxx": 15.8584,
    "intrinsic_kzz": 3.1927
   },
   {
    "T": 100.0,
-   "kxx": 1.4673,
-   "kzz": 0.2277,
+   "kxx": 1.4751,
+   "kzz": 0.2285,
    "intrinsic_kxx": 12.1937,
    "intrinsic_kzz": 2.5049
   },
   {
    "T": 125.0,
-   "kxx": 1.4075,
-   "kzz": 0.2195,
+   "kxx": 1.4149,
+   "kzz": 0.2203,
    "intrinsic_kxx": 9.4733,
    "intrinsic_kzz": 1.979
   },
   {
    "T": 150.0,
-   "kxx": 1.3471,
-   "kzz": 0.2115,
+   "kxx": 1.3541,
+   "kzz": 0.2123,
    "intrinsic_kxx": 7.7589,
    "intrinsic_kzz": 1.6384
   },
   {
    "T": 200.0,
-   "kxx": 1.2386,
-   "kzz": 0.1968,
+   "kxx": 1.2449,
+   "kzz": 0.1976,
    "intrinsic_kxx": 5.714,
    "intrinsic_kzz": 1.2211
   },
   {
    "T": 250.0,
-   "kxx": 1.1478,
-   "kzz": 0.1842,
+   "kxx": 1.1536,
+   "kzz": 0.1848,
    "intrinsic_kxx": 4.5312,
    "intrinsic_kzz": 0.9743
   },
   {
    "T": 300.0,
-   "kxx": 1.0715,
-   "kzz": 0.1732,
+   "kxx": 1.0768,
+   "kzz": 0.1738,
    "intrinsic_kxx": 3.7576,
    "intrinsic_kzz": 0.8107
   },
   {
    "T": 325.0,
-   "kxx": 1.0377,
-   "kzz": 0.1683,
+   "kxx": 1.0427,
+   "kzz": 0.1688,
    "intrinsic_kxx": 3.4629,
    "intrinsic_kzz": 0.748
   },
   {
    "T": 350.0,
-   "kxx": 1.0063,
-   "kzz": 0.1636,
+   "kxx": 1.0112,
+   "kzz": 0.1642,
    "intrinsic_kxx": 3.2113,
    "intrinsic_kzz": 0.6943
   },
   {
    "T": 375.0,
-   "kxx": 0.9772,
-   "kzz": 0.1593,
+   "kxx": 0.9819,
+   "kzz": 0.1598,
    "intrinsic_kxx": 2.994,
    "intrinsic_kzz": 0.6478
   },
   {
    "T": 400.0,
-   "kxx": 0.9499,
-   "kzz": 0.1552,
+   "kxx": 0.9545,
+   "kzz": 0.1557,
    "intrinsic_kxx": 2.8044,
    "intrinsic_kzz": 0.6072
   },
   {
    "T": 450.0,
-   "kxx": 0.9005,
-   "kzz": 0.1477,
+   "kxx": 0.9047,
+   "kzz": 0.1482,
    "intrinsic_kxx": 2.4895,
    "intrinsic_kzz": 0.5395
   },
   {
    "T": 500.0,
-   "kxx": 0.8568,
-   "kzz": 0.141,
+   "kxx": 0.8607,
+   "kzz": 0.1415,
    "intrinsic_kxx": 2.2384,
    "intrinsic_kzz": 0.4855
   },
   {
    "T": 550.0,
-   "kxx": 0.8176,
-   "kzz": 0.135,
+   "kxx": 0.8213,
+   "kzz": 0.1354,
    "intrinsic_kxx": 2.0335,
    "intrinsic_kzz": 0.4413
   },
   {
    "T": 600.0,
-   "kxx": 0.7824,
-   "kzz": 0.1295,
+   "kxx": 0.7859,
+   "kzz": 0.1299,
    "intrinsic_kxx": 1.863,
    "intrinsic_kzz": 0.4044
   },
   {
    "T": 625.0,
-   "kxx": 0.7661,
-   "kzz": 0.127,
+   "kxx": 0.7695,
+   "kzz": 0.1273,
    "intrinsic_kxx": 1.7881,
    "intrinsic_kzz": 0.3882
   },
   {
    "T": 650.0,
-   "kxx": 0.7505,
-   "kzz": 0.1246,
+   "kxx": 0.7538,
+   "kzz": 0.1249,
    "intrinsic_kxx": 1.719,
    "intrinsic_kzz": 0.3733
   }

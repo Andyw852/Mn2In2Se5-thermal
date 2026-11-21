@@ -50,20 +50,23 @@ something to start without it.
 
 ## Superseded by the hold-out / learning-curve test
 
-The verdict "not converged, cannot separate physics from overfitting" below was
+The verdict "not converged, cannot separate physics from overfitting" above was
 settled in `../cutoff_cv/README.md` (hold-out validation + κ versus number of
-frames, no new DFT): the large-cutoff drop **is overfitting**. The last trusted
-Mn₂In₂Se₅ cutoff is **6.90 Å** (κ_zz rest 0.948 ± 3.3 %, in-plane 2.873 ± 2.1 %),
-and the 7.11/7.43 Å values in the table below must not be quoted.
+frames, no new DFT): the drop above 6.51 Å **is overfitting**. Revised
+2026-11-21: 6.90 Å fails the same tests (held-out error up in every fold, κ +14 %
+from 44 to 54 frames), so **6.51 Å stays the production cutoff**. The 6.90 Å values
+(κ_zz rest 0.948, in-plane 2.873) are lower bounds, so the change from 6.51 Å
+is no more negative than −3.3 % / −2.1 %. None of the values above 6.51 Å in the
+table above may be quoted as results.
 
 ## Caveats that must survive into the report
 
 1. **Step 0 is settled**: pheasy uses the true minimum image (27-cell search,
    machine-precision agreement with brute force up to 7.9 Å — see
    `../../../dft/fc3_cutoff_extend/README.md`). The κ drop above 7 Å is therefore
-   **not** an image-convention artefact. That leaves two explanations, and this
-   dataset cannot separate them: real long-range interlayer terms, or the
-   7.11–7.43 Å fits absorbing noise (ratio 3.55 and 2.69).
+   **not** an image-convention artefact. That left two explanations: real
+   long-range interlayer terms, or the 7.11–7.43 Å fits absorbing noise (ratio
+   3.55 and 2.69). The hold-out test in `../cutoff_cv/` settled it: overfitting.
 2. **κ_zz totals must not be quoted.** 35–38 % of the total is the single Γ–Z
    q point; only the rest term is physical. Machine-readable rest terms, the
    first-point share and the relative changes are in `kappa_rest_vs_cutoff.json`.

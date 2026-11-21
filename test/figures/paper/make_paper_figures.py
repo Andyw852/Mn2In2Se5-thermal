@@ -42,6 +42,13 @@ QUOTED = {  # 300 K, REPORT §9.1
     "MnIn2Se4": {"inplane": 4.67, "kzz": 0.714},
     "Mn2In2Se5": {"inplane": 3.37, "kzz": 1.089},
 }
+CUTOFF_DOWN = {  # fractional downward FC3-cutoff uncertainty of the quoted values
+    "MnIn2Se4": {"inplane": 0.10, "kzz": 0.10},    # estimate, REPORT §9.1
+    "Mn2In2Se5": {"inplane": 0.021, "kzz": 0.033},  # next-step bound, cutoff_cv (2026-11-21)
+}
+# Mn2In2Se5 6.90 A refit (54 frames) relative to 6.51 A, same run (test/Mn2In2Se5/cutoff_ext);
+# a lower bound for the converged 6.90 A value (cutoff_cv)
+MN215_690_OVER_651 = {"inplane_population": 2.8731 / 2.9348, "kzz_rest": 0.9478 / 0.9801}
 
 
 def load(rel):
@@ -92,11 +99,11 @@ def fig1():
             v = QUOTED[m][key]
             x = 300 + (12 if m == "MnIn2Se4" else -12)
             ax.plot([x], [v], "*", color=COL[m], ms=13, mec="k", mew=0.6, zorder=5)
-            if m == "MnIn2Se4":                       # ~10 % estimated, downward
-                ax.errorbar([x], [v], yerr=[[0.10 * v], [0]], color=COL[m], capsize=4, lw=1.6, zorder=4)
-            else:                                      # upper bound
-                ax.annotate("", xy=(x, v * 0.72), xytext=(x, v * 0.95),
-                            arrowprops=dict(arrowstyle="-|>", color=COL[m], lw=1.6), zorder=4)
+            # downward FC3-cutoff uncertainty: MnIn2Se4 ~10 % estimated from shrinking
+            # steps; Mn2In2Se5 bound on the next step (6.90 A) from the hold-out test
+            # (test/Mn2In2Se5/cutoff_cv/README.md)
+            down = CUTOFF_DOWN[m][key]
+            ax.errorbar([x], [v], yerr=[[down * v], [0]], color=COL[m], capsize=4, lw=1.6, zorder=4)
     for ax, t in ((a1, "(a) in-plane"), (a2, r"(b) cross-plane, $\kappa_{zz}$")):
         ax.set_yscale("log")
         ax.set_xlabel("Temperature (K)")
@@ -110,8 +117,8 @@ def fig1():
     fig.text(0.5, -0.04,
              "Lines: RTA population, natural isotopes, ordered crystal; κ$_{zz}$ = mesh-converged term "
              "(Γ–Z quadrature error removed). Stars: in-plane LBTE + coherence, κ$_{zz}$ + coherence.\n"
-             "Bar: In$_2$MnSe$_4$ FC3-cutoff estimate (≈ −10 %). Arrow: In$_2$Mn$_2$Se$_5$ value is an upper "
-             "bound (cutoff not converged).", ha="center", fontsize=7.5, color="0.3")
+             "Bars: FC3-cutoff uncertainty, In$_2$MnSe$_4$ ≈ −10 % (estimate); In$_2$Mn$_2$Se$_5$ −2.1 % / −3.3 % "
+             "(bound on the next cutoff step from a hold-out test).", ha="center", fontsize=7.5, color="0.3")
     fig.tight_layout()
     save(fig, "fig1_kappa_vs_T")
 
@@ -161,11 +168,11 @@ def fig2():
     fig.text(0.5, -0.03,
              "Ordered / VCA: RTA, 20$^3$ mesh (same mesh for each pair), natural isotopes, κ$_{zz}$ = "
              "mesh-converged term; single-crystal components (Perp ↔ in-plane, Para ↔ κ$_{zz}$), "
-             "no boundary or texture.\nVCA antisite occupancy: In$_2$MnSe$_4$ i = %s, In$_2$Mn$_2$Se$_5$ "
-             "x = %s, neither from a structural refinement.\nL3: ordered-mass κ + antisite mass disorder "
-             "+ boundary mean free path + texture, fitted to the 300–623 K points (x and L degenerate). "
-             "Experiment: κ$_{tot}$, κ$_e$ not subtracted."
-             % (vp["MnIn2Se4"].get("x", "0.44"), vp["Mn2In2Se5"].get("x", "0.13")),
+             "no boundary or texture.\nAntisite occupancy (VCA and L3): In$_2$MnSe$_4$ i = %s, "
+             "In$_2$Mn$_2$Se$_5$ x = %s, literature structure refinements (not of the measured samples).\n"
+             "L3: ordered-mass κ + antisite mass disorder + boundary mean free path + texture; x fixed, "
+             "L and s fitted to the 300–623 K points. Experiment: κ$_{tot}$, κ$_e$ not subtracted."
+             % (vp["MnIn2Se4"]["x"], vp["Mn2In2Se5"]["x"]),
              ha="center", fontsize=7.2, color="0.3")
     fig.tight_layout()
     save(fig, "fig2_calc_vs_exp")
@@ -188,6 +195,13 @@ def fig3():
                             ((x[k] + x[k - 1]) / 2, (y[k] + y[k - 1]) / 2 / y[-1]),
                             xytext=(6 if up else -6, 6 if up else -10), textcoords="offset points",
                             color=COL[m], fontsize=8, ha="left" if up else "right")
+            if m == "Mn2In2Se5":
+                # 6.90 A refit: over-parameterised, its kappa is a lower bound (cutoff_cv)
+                r = MN215_690_OVER_651[key]
+                ax.plot([6.90], [r], "^", color=COL[m], ms=7, mfc="white", ls="none")
+                ax.plot([x[-1], 6.90], [1.0, r], ":", color=COL[m], lw=1)
+                ax.annotate(f"≥ {100 * (r - 1):+.1f} %", (6.90, r), xytext=(4, -12),
+                            textcoords="offset points", color=COL[m], fontsize=8)
     for ax, t in ((a1, "(a) in-plane, population"), (a2, r"(b) $\kappa_{zz}$, mesh-converged term")):
         ax.set_xlabel("FC3 cutoff (Å)")
         ax.set_ylabel("κ / κ(largest cutoff)")
@@ -195,8 +209,9 @@ def fig3():
         style(ax)
         ax.legend(fontsize=8, frameon=False)
     fig.text(0.5, -0.05, "300 K, RTA, natural isotopes. The largest cutoffs (6.45 / 6.51 Å) are the values "
-             "used throughout; percentages are the step-to-step changes. In$_2$MnSe$_4$ steps shrink; "
-             "In$_2$Mn$_2$Se$_5$ steps do not.", ha="center", fontsize=7.5, color="0.3")
+             "used throughout; percentages are the step-to-step changes.\nOpen triangle: In$_2$Mn$_2$Se$_5$ "
+             "refit at 6.90 Å on the same frames. A hold-out test shows it is over-parameterised, so it is a "
+             "lower bound on the next step.", ha="center", fontsize=7.5, color="0.3")
     fig.tight_layout()
     save(fig, "fig3_cutoff")
 

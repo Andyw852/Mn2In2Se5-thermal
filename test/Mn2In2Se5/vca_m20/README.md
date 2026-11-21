@@ -1,5 +1,10 @@
 # Mn₂In₂Se₅ — VCA (x = 0.13) versus ordered baseline, mesh 20³
 
+> **Superseded for the VCA curve (2026-11-21).** The project now uses the literature
+> x = 0.19 (Williams *et al.* 2024, ESI Table S7): see `../vca_m20_x019/`. This
+> directory stays as the record of the x = 0.13 run, and its `kappa_baseline.hdf5`
+> (ordered masses) is still the baseline of the pair.
+
 Same route as `../../../MnIn2Se4/vca_m20/`, so the two materials are directly
 comparable: phono3py RTA, 20×20×20, 300 K, **FC3 = 6.51 Å** (largest available),
 FC2 4×4×1, `primitive_matrix="P"`.

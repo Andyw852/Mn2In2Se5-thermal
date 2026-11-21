@@ -54,7 +54,7 @@ def main():
              "mass-variance scattering).\n"
              "Each pair is computed on the same 20^3 mesh, largest FC3 cutoff (In$_2$MnSe$_4$ "
              "6.45 A, In$_2$Mn$_2$Se$_5$ 6.51 A), so only the disorder differs between the two "
-             "curves of a pair. x = 0.44 / 0.13 respectively.",
+             "curves of a pair. x = 0.44 / 0.19 respectively (literature).",
              fontsize=6, color=INK2, transform=fig.transFigure)
     fig.tight_layout(rect=(0, 0.03, 1, 0.97))
     for ext in ("png", "pdf"):

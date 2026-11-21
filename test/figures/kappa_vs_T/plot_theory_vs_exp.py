@@ -103,7 +103,7 @@ def style(ax):
 
 
 NOTE = ("calc.: phono3py RTA, 20$^3$, natural isotopes; Perp ↔ in-plane, Para ↔ κ$_{zz}$ (Γ–Z term removed); "
-        "fully textured limit, no grain boundary, no κ$_e$. VCA: MnIn$_2$Se$_4$ i = 0.44, Mn$_2$In$_2$Se$_5$ x = 0.13")
+        "fully textured limit, no grain boundary, no κ$_e$. VCA: MnIn$_2$Se$_4$ i = 0.44, Mn$_2$In$_2$Se$_5$ x = 0.19")
 
 
 def fig_same_axes(exp, calc):
