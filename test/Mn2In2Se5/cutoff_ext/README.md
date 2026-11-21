@@ -48,6 +48,14 @@ frames do not support a converged value above 7 Å, and a **larger cell (5×5×1
 9.26 Å) or more frames** would be needed; that is a decision for the user, not
 something to start without it.
 
+## Superseded by the hold-out / learning-curve test
+
+The verdict "not converged, cannot separate physics from overfitting" below was
+settled in `../cutoff_cv/README.md` (hold-out validation + κ versus number of
+frames, no new DFT): the large-cutoff drop **is overfitting**. The last trusted
+Mn₂In₂Se₅ cutoff is **6.90 Å** (κ_zz rest 0.948 ± 3.3 %, in-plane 2.873 ± 2.1 %),
+and the 7.11/7.43 Å values in the table below must not be quoted.
+
 ## Caveats that must survive into the report
 
 1. **Step 0 is settled**: pheasy uses the true minimum image (27-cell search,

@@ -26,7 +26,8 @@ while read -r RUN; do
     [ "$(inflight)" -lt "$MAXINFLIGHT" ] && break
     sleep 180
   done
-  JOB=$(sbatch --parsable --export=ALL,RUN="$RUN" "$SUB" 2>>"$L")
+  JOB=$(sbatch --parsable --output="$B/log/cv-%j.out" --error="$B/log/cv-%j.err" \
+        --export=ALL,RUN="$RUN" "$SUB" 2>>"$L")
   echo "$RUN" >> "$S"
   log "submitted $JOB  RUN=$RUN"
 done < "$Q"
