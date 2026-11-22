@@ -1,6 +1,6 @@
 {
- "x": 0.13,
+ "x": 0.19,
  "what": "VCA antisite fraction of kappa_vca.hdf5 in this directory",
- "source": "free L3 fit (archive; the curves use x = 0.19)",
- "run": "HanHai 424147"
+ "source": "Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7",
+ "run": "HanHai job 5 (300 K slice, test/Mn2In2Se5/vca_m20_x019/)"
 }
