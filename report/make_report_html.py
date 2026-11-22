@@ -354,10 +354,12 @@ it; porosity and defect softening of the pellet are the likely reasons. The pell
 (theoretical {c['theoretical_density_g_cm3']:.2f} g/cm³), so the two cannot be separated. The propagation direction
 relative to the pressing axis is also not known.</li>
 <li><b>Minimum κ</b> (Cahill, Watson &amp; Pohl, PRB 46, 6131 (1992); diffuson model, Agne et al., Energy Environ. Sci.
-11, 609 (2018)), n = {c['number_density_A-3']:.4f} Å⁻³: the measured κ_tot (Perp 0.93, Para 0.49 at 303 K) lies between
-the diffuson value {km['diffuson']:.2f} and the Cahill value {km['cahill']:.2f}. The hot-pressed samples are close to the
-amorphous limit, which agrees independently with the strong extrinsic scattering needed in the L3 fit (L ≈ tens of nm).
-These limits are isotropic; Para lying below the Cahill value is common for layered materials.</li>
+11, 609 (2018)), high-temperature limits, n = {c['number_density_A-3']:.4f} Å⁻³: diffuson {km['diffuson']:.2f} and
+Cahill {km['cahill']:.2f} from the measured velocities. The measured κ_tot is above both, as a lattice κ must be:
+Para (0.49 at 303 K) is {0.485 / km['cahill']:.1f}× the Cahill value and Perp (0.93) {0.933 / km['cahill']:.1f}×. Cross-plane
+heat transport in the pellets is thus within a factor of two of the amorphous limit, consistent with the strong extrinsic
+scattering of the L3 fit (L ≈ tens of nm); in-plane it is not. (Until 2026-11-22 the Cahill value was computed without the
+factor 1/2 of its high-temperature limit, i.e. twice too high, and the measurement appeared to lie between the two limits.)</li>
 </ul>"""
 
 
@@ -539,7 +541,7 @@ Only the first two are quantified here.</p>
 <td>largest; closes the remaining gap with L ≈ 20–30 nm (L3, x fixed from the literature, §8)</td>
 <td>below 150 K the measured κ is flat, with no 1/T rise, i.e. a temperature-independent scattering dominates;
 the required L is far below typical hot-pressed grain sizes (0.5–5 μm), which points to stacking faults, twins or
-polytype intergrowths, common in these layered "124"/"225" compounds; κ_tot lies between the Cahill and diffuson limits (§7)</td>
+polytype intergrowths, common in these layered "124"/"225" compounds; Para κ_tot is only {0.485 / CHK['kmin_exp_velocities']['cahill']:.1f}× the Cahill minimum κ (§7)</td>
 <td>SEM grain size; TEM/HAADF for stacking faults</td></tr>
 <tr><td>2</td><td><b>Mn/In antisite disorder</b></td>
 <td>VCA at the literature x: in-plane 2.5× ({L['MnIn2Se4']}) / 2.1× ({L['Mn2In2Se5']}), κ_zz 1.4× / 1.3× at 300 K</td>
@@ -605,6 +607,8 @@ def main():
     if not BUNDLE and "--no-export" not in sys.argv:   # repository: refresh plot_data/ first
         import export_plot_data
         export_plot_data.main()
+        global CHK                                     # re-read: the export may have just refreshed it
+        CHK = json.loads((DATA / "independent_checks.json").read_text())
     png = plot_figures.make_all(DATA, FIGDIR, png_for_html=True)
     figs = {k: "data:image/png;base64," + base64.b64encode(v).decode() for k, v in png.items()}
     OUT.write_text(html(figs), encoding="utf-8")

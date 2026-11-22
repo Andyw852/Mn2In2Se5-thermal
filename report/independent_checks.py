@@ -5,7 +5,7 @@
   2  Gamma-point Raman-active modes of the 4x4x2 FC2 vs the measured Raman spectrum
   3  acoustic velocities of the 4x4x2 FC2 (along c, in-plane, averaged over 3000 directions)
      vs the ultrasonic velocities of the hot-pressed samples
-  4  Cahill and diffuson minimum kappa from the measured velocities
+  4  Cahill and diffuson minimum kappa (high-temperature limits) from the measured velocities
 
 Writes report/independent_checks.json, read by make_report_html.py.
 Needs numpy + phonopy.   python3 report/independent_checks.py
@@ -72,7 +72,10 @@ def main():
     rho = 3 * FORMULA_MASS * 1.66053907e-27 / V
 
     def kmin(vl, vt):
-        cahill = (np.pi / 6) ** (1 / 3) * KB * n ** (2 / 3) * (vl + 2 * vt)
+        # high-temperature limits. Cahill, Watson & Pohl (1992): (pi/6)^(1/3) kB n^(2/3) sum_i v_i (T/Th_i)^2
+        # int_0^(Th_i/T) x^3 e^x/(e^x-1)^2 dx; the integral tends to (Th_i/T)^2 / 2, hence the factor 1/2
+        # (= 1.21/3, the form quoted by Agne et al. 2018). Until 2026-11-22 the 1/2 was missing (kmin 2x too high).
+        cahill = 0.5 * (np.pi / 6) ** (1 / 3) * KB * n ** (2 / 3) * (vl + 2 * vt)
         diffuson = 0.76 * KB * n ** (2 / 3) * (vl + 2 * vt) / 3
         return round(float(cahill), 3), round(float(diffuson), 3)
 

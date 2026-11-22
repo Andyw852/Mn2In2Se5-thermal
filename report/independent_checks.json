@@ -139,11 +139,11 @@
  "number_density_A-3": 0.03757,
  "theoretical_density_g_cm3": 5.351,
  "kmin_exp_velocities": {
-  "cahill": 0.62,
+  "cahill": 0.31,
   "diffuson": 0.195
  },
  "kmin_calc_velocities": {
-  "cahill": 0.791,
+  "cahill": 0.396,
   "diffuson": 0.249
  }
 }

@@ -1,0 +1,51 @@
+{
+ "velocities_m_s": {
+  "vL_avg": 3536,
+  "vT_avg": 1694,
+  "v_debye": 1830
+ },
+ "number_density_A-3": 0.03953,
+ "mean_mass_amu": 81.59,
+ "delta_A": 2.936,
+ "theta_D_K": 185.6,
+ "theta_a_K": 89.2,
+ "gruneisen_300K": {
+  "acoustic_mean": 0.083,
+  "acoustic_rms": 0.534,
+  "all_modes_mean": 0.818
+ },
+ "slack_W_mK": {
+  "gamma=0.82 (all-mode mean)": {
+   "300K": 6.01,
+   "623K": 2.89
+  },
+  "gamma=0.53 (acoustic rms)": {
+   "300K": 12.01,
+   "623K": 5.78
+  }
+ },
+ "slack_gamma_needed_to_match_experiment_300K": 2.4,
+ "cahill_W_mK": {
+  "300K": 0.431,
+  "623K": 0.443,
+  "high_T_limit": 0.447
+ },
+ "diffuson_W_mK": 0.281,
+ "experiment_W_mK": {
+  "303K": {
+   "Perp": 0.741,
+   "Para": 0.32
+  },
+  "623K": {
+   "Perp": 0.59,
+   "Para": 0.264
+  },
+  "direction_average_303K": 0.601,
+  "direction_average_623K": 0.481
+ },
+ "first_principles_direction_average_300K": {
+  "ordered_quoted_LBTE_coherence": 2.61,
+  "ordered_RTA_20": 2.33,
+  "VCA_x019_RTA_20": 1.23
+ }
+}
