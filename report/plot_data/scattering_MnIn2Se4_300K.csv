@@ -1,6 +1,6 @@
 # MnIn2Se4 per-mode scattering rates at 300 K, 20^3 mesh, largest FC3 cutoff; one row per (irreducible q-point, band).
-# tau^-1 = 2 Gamma (ps^-1). baseline: real masses, disorder = natural isotopes. vca: averaged masses, disorder = mass variance.
-# Source: test/figures/scattering/kappa_baseline.hdf5, kappa_vca.hdf5
+# tau^-1 = 2 Gamma (ps^-1). baseline: real masses, disorder = natural isotopes. vca: averaged masses, disorder = mass variance, antisite fraction 0.44.
+# Source: test/figures/scattering/kappa_baseline.hdf5, kappa_vca.hdf5, vca_x.json
 freq_baseline_THz,tau_inv_3ph_baseline_ps,tau_inv_disorder_baseline_ps,freq_vca_THz,tau_inv_3ph_vca_ps,tau_inv_disorder_vca_ps
 0.00071913,1.582e-10,0,0.00071919,1.2207e-10,0
 0.00071913,1.582e-10,1.3361e-41,0.00071919,1.2207e-10,7.4076e-40

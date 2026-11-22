@@ -11,8 +11,8 @@ output first_gz_point.json is the input here. This script
   3. only if the per-mode hdf5 of job 5 has been copied here as kappa_vca_rta_m20.hdf5
      (HanHai: run_Mn2In2Se5_vca_m20_rta/, written with WRITE_KAPPA=1): decomposes it at all 12 T
      with test/MnIn2Se4/kappa_zz_decompose.py, checks it against step 1, and writes the 300 K slice
-     kappa_vca_300K.hdf5 and test/figures/scattering/mn2in2se5/kappa_vca.hdf5 for the
-     scattering-rate figure. Without that file the scattering figure stays at x = 0.13.
+     kappa_vca_300K.hdf5 and test/figures/scattering/mn2in2se5/kappa_vca.hdf5 (+ vca_x.json = 0.19)
+     for the scattering-rate figure. Without that file the scattering figure stays at x = 0.13.
 
   python first_gz_point.py && python postprocess.py
 """
@@ -57,8 +57,14 @@ def full_hdf5_check(dec, temps):
                     "gamma", "heat_capacity", "kappa", "mode_kappa", "temperature"):
                 d = d[i300:i300 + 1]
             g.create_dataset(k, data=d)
-    shutil.copy(out, REPO / "test/figures/scattering/mn2in2se5/kappa_vca.hdf5")
-    print(f"wrote {out.name} (300 K slice) and copied it to test/figures/scattering/mn2in2se5/kappa_vca.hdf5")
+    sc = REPO / "test/figures/scattering/mn2in2se5"
+    shutil.copy(out, sc / "kappa_vca.hdf5")
+    (sc / "vca_x.json").write_text(json.dumps(
+        {"x": 0.19, "what": "VCA antisite fraction of kappa_vca.hdf5 in this directory",
+         "source": "Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7",
+         "run": "HanHai job 5 (300 K slice, test/Mn2In2Se5/vca_m20_x019/)"}, indent=1))
+    print(f"wrote {out.name} (300 K slice), copied it to test/figures/scattering/mn2in2se5/kappa_vca.hdf5 "
+          "and set vca_x.json there to 0.19")
 
 
 def main():

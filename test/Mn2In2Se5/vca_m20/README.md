@@ -52,5 +52,5 @@ HanHai job **424147**, two RTA runs in one job:
 | `result.json` | κ for both runs |
 | `kappa_baseline.hdf5`, `kappa_vca.hdf5` | per-mode phono3py output (2.9 MB each) |
 | `jobs/` | the calculation as it ran |
-| `../../figures/scattering/mn2in2se5/` | the two-panel scattering figure for this pair |
+| `../../figures/scattering/mn2in2se5/` | the two-panel scattering figure; it showed this x = 0.13 pair until the x = 0.19 file replaced it (`vca_x.json` there says which) |
 | `../../../analysis/disorder/vca_summary.{csv,json}` | both materials side by side |

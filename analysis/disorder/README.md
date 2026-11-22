@@ -182,11 +182,12 @@ Run the same way as MnIn₂Se₄: 20×20×20, FC3 = 6.51 Å, FC2 4×4×1.
 
 **Current: x = 0.19** (Williams *et al.* 2024, §5.1). HanHai job 5
 (`../../test/figures/kappa_vs_T/jobs_lbte_wigner/`, phono3py 4.4.0, 12 T) gives the
-in-plane κ and the κ_zz total. Its per-mode hdf5 is not in the repository. The
-κ_zz rest term is therefore that total minus the first Γ–Z grid point
+in-plane κ and the κ_zz total. Its per-mode hdf5 was not in the repository at first,
+so the κ_zz rest term was taken as that total minus the first Γ–Z grid point
 (q = (0, 0, 1/20), weight 2), recomputed alone with the same driver and the same
 masses. That is exact in the RTA, and the single-point run reproduces the full
-x = 0.13 file at that point to 10⁻¹⁵ (`../../test/Mn2In2Se5/vca_m20_x019/`).
+x = 0.13 file at that point to 10⁻¹⁵ (`../../test/Mn2In2Se5/vca_m20_x019/`). Once the
+per-mode file is there, `postprocess.py` decomposes it in full and must agree to 2×10⁻⁵.
 
 | site | occupancy (x = 0.19) | VCA mass (amu) | mass variance g |
 |---|---|---:|---:|

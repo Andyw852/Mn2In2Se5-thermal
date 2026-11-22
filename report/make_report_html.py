@@ -361,8 +361,16 @@ These limits are isotropic; Para lying below the Cahill value is common for laye
 </ul>"""
 
 
+def scattering_x():
+    """Antisite fraction of the VCA scattering data (plot_data/scattering_vca_x.json) and, for
+    Mn2In2Se5, whether it is still the x = 0.13 archive instead of the x = 0.19 of the curves."""
+    sx = json.loads((DATA / "scattering_vca_x.json").read_text())
+    return sx, abs(sx["Mn2In2Se5"] - 0.19) > 1e-9
+
+
 def html(figs):
     L = HTML_LABEL
+    SX, SX_OLD = scattering_x()
     T1, T2 = table1_body({"quoted": "calculation, value to quote", "ordered": "calculation, ordered (RTA 20³)",
                           "vca": "calculation, VCA antisite disorder (RTA 20³)",
                           "exp": "experiment, Perp / Para (303 K)",
@@ -473,8 +481,8 @@ well above experiment and cannot produce the low-temperature maximum near 100 K;
 
 <h2><span class="n">6</span>Scattering rates at 300 K</h2>
 <p class="lead">Largest FC3 cutoff, 20³ mesh, τ⁻¹ = 2Γ. Baseline: real masses + natural isotopes. VCA: averaged
-site masses + mass-variance scattering. Top row {L['MnIn2Se4']} (i = 0.44), bottom row {L['Mn2In2Se5']} (x = 0.13: the per-mode
-file of the x = 0.19 run is not yet in the repository; the κ values below are at x = 0.19).</p>
+site masses + mass-variance scattering. Top row {L['MnIn2Se4']} (i = {SX['MnIn2Se4']:g}), bottom row {L['Mn2In2Se5']} (x = {SX['Mn2In2Se5']:g}{
+': the per-mode file of the x = 0.19 run is not yet in the repository; the κ values below are at x = 0.19' if SX_OLD else ''}).</p>
 <figure><img alt="Three-phonon and disorder scattering rates, both materials" src="{figs['scattering']}"></figure>
 <p class="cap">Left: the 3-phonon rates of the ordered and VCA crystals agree within a few tens of percent, because VCA
 changes the masses, not the anharmonicity. Right: VCA mass-variance scattering is 2–3 orders of magnitude stronger

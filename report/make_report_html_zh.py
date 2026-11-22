@@ -196,6 +196,7 @@ def html_zh(figs):
                                "mixed": "计算，推荐值按织构 s 混合 → Perp / Para"})
     sw, sA, sB = O["sweep"], O["s"][M4], O["s"][M5]
     d = lambda m, x0, x1, i: abs(100 * (sw[m][x1][i] / sw[m][x0][i] - 1))
+    SX, SX_OLD = en.scattering_x()
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -281,7 +282,8 @@ Williams 等，J. Mater. Chem. C 12, 1753 (2024)，ESI 表 S7；见第 8 节）�
 
 <h2><span class="n">6</span>300 K 散射率</h2>
 <p class="lead">最大三阶截断，20³ 网格，τ⁻¹ = 2Γ。基线：真实质量 + 天然同位素。VCA：位点平均质量 + 质量方差散射。
-上排 {L[M4]}（i = 0.44），下排 {L[M5]}（x = 0.13：x = 0.19 那次计算的逐模式文件还不在仓库里；下面的 κ 值是 x = 0.19 的）。</p>
+上排 {L[M4]}（i = {SX[M4]:g}），下排 {L[M5]}（x = {SX[M5]:g}{
+'：x = 0.19 那次计算的逐模式文件还不在仓库里；下面的 κ 值是 x = 0.19 的' if SX_OLD else ''}）。</p>
 <figure><img alt="两种材料的三声子与无序散射率" src="{figs['scattering']}"></figure>
 <p class="cap">左：有序和 VCA 晶体的三声子散射率相差不超过几十个百分点，因为 VCA 改变的是质量，不是非谐性。
 右：VCA 质量方差散射比天然同位素散射强 2–3 个数量级，低频按 ω² 增长，高频趋平。对 300 K 热导率的影响：

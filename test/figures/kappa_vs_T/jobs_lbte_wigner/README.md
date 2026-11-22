@@ -89,12 +89,12 @@ Job 5 replaces the existing Mn₂In₂Se₅ VCA curve, which used x = 0.13 from 
 fit, by the literature x = 0.19. It writes the per-mode hdf5 (`WRITE_KAPPA=1`)
 for the Γ–Z decomposition with `test/MnIn2Se4/kappa_zz_decompose.py`.
 
-**Done (2026-11-21).** Only job 5's JSON is in the repository. The κ_zz rest term
-was obtained without the hdf5: the first Γ–Z grid point was recomputed alone with
-this driver (`test/Mn2In2Se5/vca_m20_x019/first_gz_point.py`, 10 s) and subtracted
-from the total. The hdf5 (`run_Mn2In2Se5_vca_m20_rta/kappa_vca_rta_m20.hdf5` on
-HanHai) is still wanted for the Mn₂In₂Se₅ scattering-rate figure: copy it to
-`test/Mn2In2Se5/vca_m20_x019/` and run `postprocess.py` there.
+**Done (2026-11-21).** At first only job 5's JSON was in the repository. The κ_zz
+rest term was obtained without the hdf5: the first Γ–Z grid point was recomputed
+alone with this driver (`test/Mn2In2Se5/vca_m20_x019/first_gz_point.py`, 10 s) and
+subtracted from the total. The hdf5 (`kappa_vca_rta_m20.hdf5` in the job-5 run
+directory on HanHai) is needed for the Mn₂In₂Se₅ scattering-rate figure; the steps are
+in `protocol/local_AI_next_steps_2026-11-22.md`.
 
 If a job is killed for memory, split its temperatures (`TEMPS="30 60 100"` etc.);
 results of different temperature sets are combined afterwards.

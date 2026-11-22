@@ -61,12 +61,22 @@ At 300 K, against the ordered baseline (2.9984 / 0.9837, job 424496):
 python first_gz_point.py && python postprocess.py
 ```
 
-## Still wanted
+## Scattering-rate figure
 
-The per-mode hdf5 of job 5 (`kappa_vca_rta_m20.hdf5` in the HanHai job directory,
-about 20–40 MB) is needed only for the Mn₂In₂Se₅ scattering-rate figure
-(`../../figures/scattering/mn2in2se5/`), which still shows x = 0.13. Copy it here and
-run `postprocess.py`. The script then also decomposes the full file and checks it
-against `first_gz_point.json`, writes the 300 K slice, and replaces
-`../../figures/scattering/mn2in2se5/kappa_vca.hdf5`. Then rerun the scattering-figure
-script and `report/make_report_html.py`.
+The Mn₂In₂Se₅ scattering-rate figure (`../../figures/scattering/mn2in2se5/`) needs the
+per-mode hdf5 of job 5. Its `vca_x.json` says which x the figure shows: 0.13 until the
+file below is in, 0.19 after.
+
+1. Copy `kappa_vca_rta_m20.hdf5` (about 16 MB) from the job-5 run directory on HanHai
+   to this directory.
+2. Run `postprocess.py`. With the file present it also:
+   - decomposes the full file and checks it against `first_gz_point.json` (2×10⁻⁵);
+   - writes the 300 K slice `kappa_vca_300K.hdf5`;
+   - replaces `../../figures/scattering/mn2in2se5/kappa_vca.hdf5` and sets `vca_x.json`
+     there to 0.19.
+3. Rerun `plot_scattering_figure.py` there and `report/make_report_html.py` (`_zh.py`).
+   The HTML caption reads x from the data.
+
+The full instructions are in `protocol/local_AI_next_steps_2026-11-22.md`. The route was
+tested end to end with the x = 0.13 12-T file (`../../figures/kappa_vs_T/raw/`), which
+agreed with its own decomposition to 8×10⁻⁶.

@@ -139,7 +139,10 @@ def export_kappa():
 
 # --------------------------------------------------------------------------- scattering
 def export_scattering():
+    vca_x = {}
     for m in MAT:
+        x = json.loads((SC_DIR[m] / "vca_x.json").read_text())["x"]   # antisite fraction of kappa_vca.hdf5
+        vca_x[m] = x
         cols, T = {}, None
         for run in ("baseline", "vca"):
             with h5py.File(SC_DIR[m] / f"kappa_{run}.hdf5", "r") as f:
@@ -152,8 +155,9 @@ def export_scattering():
         write_csv(f"scattering_{m}_{T:.0f}K.csv", keys, rows,
                   f"{m} per-mode scattering rates at {T:.0f} K, 20^3 mesh, largest FC3 cutoff; one row per "
                   "(irreducible q-point, band).\ntau^-1 = 2 Gamma (ps^-1). baseline: real masses, disorder = natural "
-                  "isotopes. vca: averaged masses, disorder = mass variance.\n"
-                  f"Source: {SC_DIR[m].relative_to(ROOT)}/kappa_baseline.hdf5, kappa_vca.hdf5")
+                  f"isotopes. vca: averaged masses, disorder = mass variance, antisite fraction {x}.\n"
+                  f"Source: {SC_DIR[m].relative_to(ROOT)}/kappa_baseline.hdf5, kappa_vca.hdf5, vca_x.json")
+    (OUT / "scattering_vca_x.json").write_text(json.dumps(vca_x, indent=1) + "\n")
 
 
 # --------------------------------------------------------------------------- convergence / solvers
