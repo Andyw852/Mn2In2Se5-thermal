@@ -1,0 +1,95 @@
+{
+ "source": "first_gz_point.json (job 5 totals minus the first Gamma-Z point computed here)",
+ "x": 0.19,
+ "mesh": [
+  20,
+  20,
+  20
+ ],
+ "rows": [
+  {
+   "T_K": 30.0,
+   "kappa_zz_total": 14.0632,
+   "kappa_zz_first_gamma_z_point": 6.653545,
+   "kappa_zz_rest": 7.40965,
+   "inplane_total": 7.55278
+  },
+  {
+   "T_K": 60.0,
+   "kappa_zz_total": 6.12027,
+   "kappa_zz_first_gamma_z_point": 2.572735,
+   "kappa_zz_rest": 3.54754,
+   "inplane_total": 4.54365
+  },
+  {
+   "T_K": 90.0,
+   "kappa_zz_total": 3.94389,
+   "kappa_zz_first_gamma_z_point": 1.6017,
+   "kappa_zz_rest": 2.34219,
+   "inplane_total": 3.36459
+  },
+  {
+   "T_K": 100.0,
+   "kappa_zz_total": 3.5348,
+   "kappa_zz_first_gamma_z_point": 1.424416,
+   "kappa_zz_rest": 2.11038,
+   "inplane_total": 3.12029
+  },
+  {
+   "T_K": 120.0,
+   "kappa_zz_total": 2.93573,
+   "kappa_zz_first_gamma_z_point": 1.167717,
+   "kappa_zz_rest": 1.76801,
+   "inplane_total": 2.74493
+  },
+  {
+   "T_K": 150.0,
+   "kappa_zz_total": 2.35139,
+   "kappa_zz_first_gamma_z_point": 0.921009,
+   "kappa_zz_rest": 1.43038,
+   "inplane_total": 2.35288
+  },
+  {
+   "T_K": 200.0,
+   "kappa_zz_total": 1.77692,
+   "kappa_zz_first_gamma_z_point": 0.682822,
+   "kappa_zz_rest": 1.0941,
+   "inplane_total": 1.93239
+  },
+  {
+   "T_K": 300.0,
+   "kappa_zz_total": 1.20477,
+   "kappa_zz_first_gamma_z_point": 0.451371,
+   "kappa_zz_rest": 0.7534,
+   "inplane_total": 1.46109
+  },
+  {
+   "T_K": 400.0,
+   "kappa_zz_total": 0.91601,
+   "kappa_zz_first_gamma_z_point": 0.337525,
+   "kappa_zz_rest": 0.57848,
+   "inplane_total": 1.19292
+  },
+  {
+   "T_K": 500.0,
+   "kappa_zz_total": 0.74068,
+   "kappa_zz_first_gamma_z_point": 0.269656,
+   "kappa_zz_rest": 0.47102,
+   "inplane_total": 1.01566
+  },
+  {
+   "T_K": 600.0,
+   "kappa_zz_total": 0.62252,
+   "kappa_zz_first_gamma_z_point": 0.224552,
+   "kappa_zz_rest": 0.39797,
+   "inplane_total": 0.88819
+  },
+  {
+   "T_K": 700.0,
+   "kappa_zz_total": 0.53731,
+   "kappa_zz_first_gamma_z_point": 0.192392,
+   "kappa_zz_rest": 0.34492,
+   "inplane_total": 0.7914
+  }
+ ]
+}

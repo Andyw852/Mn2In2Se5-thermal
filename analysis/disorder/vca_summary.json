@@ -1,9 +1,10 @@
 {
  "note": "VCA vs ordered baseline, both materials, same route (phono3py RTA, 20^3, 300 K, largest FC3 cutoff, isotopes on in the baseline). kappa_zz_rest is the rest-of-the-zone term; kappa_zz_total is the raw total and carries the Gamma-Z quadrature artifact.",
- "construction": "VCA: site masses averaged over the antisite occupancy, disorder returned as mass-variance (Tamura) scattering. Averaged mass and g per site follow analysis/extrinsic/kappa_extrinsic.py with each material's x: MnIn2Se4 x=0.44 (Doll i=0.44), Mn2In2Se5 x=0.13 (kappa fit).",
+ "construction": "VCA: site masses averaged over the antisite occupancy, disorder returned as mass-variance (Tamura) scattering. Averaged mass and g per site follow analysis/extrinsic/kappa_extrinsic.py with each material's x: MnIn2Se4 x=0.44 (Doll i=0.44), Mn2In2Se5 x=0.19 (Williams 2024, ESI Table S7; since 2026-11-21). The earlier x=0.13 (kappa fit) run is kept as Mn2In2Se5_x013_archive.",
  "runs": {
   "MnIn2Se4": "HanHai 420055",
-  "Mn2In2Se5": "HanHai 424147"
+  "Mn2In2Se5": "HanHai job 5 (run_lbte_wigner.py) + first Gamma-Z point recomputed (test/Mn2In2Se5/vca_m20_x019/)",
+  "Mn2In2Se5_x013_archive": "HanHai 424147"
  },
  "materials": {
   "MnIn2Se4": {
@@ -38,6 +39,38 @@
    }
   },
   "Mn2In2Se5": {
+   "vca_x": 0.19,
+   "vca_x_source": "Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7",
+   "vca_masses": {
+    "Mn": 66.315,
+    "In": 103.441,
+    "Se": 78.96
+   },
+   "vca_g": {
+    "Mn": 0.12548,
+    "In": 0.05157,
+    "Se": 0.000463
+   },
+   "mesh": "20x20x20",
+   "fc3_cutoff_A": 6.51,
+   "fc2": "4x4x1",
+   "no_vca": {
+    "inplane": 2.9984,
+    "kzz_total": 1.373,
+    "kzz_rest": 0.9837
+   },
+   "with_vca": {
+    "inplane": 1.4611,
+    "kzz_total": 1.2048,
+    "kzz_rest": 0.7534
+   },
+   "suppression": {
+    "inplane": 2.05,
+    "kzz_total": 1.14,
+    "kzz_rest": 1.31
+   }
+  },
+  "Mn2In2Se5_x013_archive": {
    "vca_x": 0.13,
    "vca_masses": {
     "Mn": 62.73,

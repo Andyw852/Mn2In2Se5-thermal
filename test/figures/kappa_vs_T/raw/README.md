@@ -23,7 +23,7 @@ numerical, not physics. 30 K is the lowest usable point.
 | `MnIn2Se4_VCA_baseline_T30-700.hdf5` | MnIn₂Se₄ | ordered masses, natural isotopes | 424495 |
 | `MnIn2Se4_VCA_disorder_T30-700.hdf5` | MnIn₂Se₄ | averaged masses + mass variance, x = 0.44 | 424495 |
 | `Mn2In2Se5_VCA_baseline_T30-700.hdf5` | Mn₂In₂Se₅ | ordered masses, natural isotopes | 424496 |
-| `Mn2In2Se5_VCA_disorder_T30-700.hdf5` | Mn₂In₂Se₅ | averaged masses + mass variance, x = 0.13 | 424496 |
+| `Mn2In2Se5_VCA_disorder_T30-700.hdf5` | Mn₂In₂Se₅ | averaged masses + mass variance, x = 0.13 (archive; the curves now use x = 0.19, `../../../Mn2In2Se5/vca_m20_x019/`) | 424496 |
 
 Each of these carries all **twelve** temperatures (30, 60, 90, 100, 120, 150, 200,
 300, 400, 500, 600, 700 K), so the with/without-disorder pair is complete at every

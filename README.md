@@ -46,12 +46,23 @@ direction; 0 = fully textured, 2/3 = random):
 (2·κ_Perp + κ_Para)/3 = (2κ_xx + κ_zz)/3      ← texture-independent, directly comparable
 ```
 
-Mn₂In₂Se₅ at 300 K: the corrected calculation gives (2κ_xx + κ_zz)/3 ≈ 2.3
-(16×16×8 RTA) versus 0.60 experimentally — a factor of ≈3.9 (the invalid
-ShengBTE value gave 1.44, a factor of 2.4). The gap shrinks with increasing
+At 300 K (W/mK; the factor is calculation over experiment; details in
+[`PROGRESS_REPORT_20261118.md`](PROGRESS_REPORT_20261118.md) §2):
+
+| (2κ_xx + κ_zz)/3 | MnIn₂Se₄ | Mn₂In₂Se₅ |
+|---|---:|---:|
+| experiment, (2·Perp + Para)/3 | 0.784 | 0.601 |
+| ordered crystal, values to quote (LBTE + coherence) | 3.35 (4.3×) | 2.61 (4.3×) |
+| ordered crystal, RTA 20³ | 2.67 (3.4×) | 2.33 (3.9×) |
+| VCA antisite disorder at the literature occupancy, RTA 20³ | 1.14 (1.5×), i = 0.44 | 1.23 (2.0×), x = 0.19 |
+| L3 extrinsic model (x fixed, L and s fitted to these data) | 0.78 | 0.63 |
+
+Mass disorder alone leaves a factor of 1.5–2. The gap shrinks with increasing
 temperature, the signature of extrinsic (temperature-independent) scattering
-superimposed on Umklapp, which texture alone cannot explain. Method and results
-are in [`analysis/extrinsic/README.md`](analysis/extrinsic/README.md).
+superimposed on Umklapp, which texture alone cannot explain; L3 needs an
+effective mean free path of 20–30 nm. (The invalid ShengBTE value for Mn₂In₂Se₅
+gave 1.44.) Method and results are in
+[`analysis/extrinsic/README.md`](analysis/extrinsic/README.md).
 
 ## Repository conventions
 

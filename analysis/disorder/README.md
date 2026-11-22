@@ -176,10 +176,36 @@ L2 value can only be compared with them after the same texture mixing (and,
 if wanted, a boundary term). Putting 1.49 next to 0.93, or 0.4453 next to 0.485,
 says nothing about whether i = 0.44 is right.
 
-### 4.2 Mn₂In₂Se₅ — L2 added (2026-11-17)
+### 4.2 Mn₂In₂Se₅ — L2 (x = 0.13 on 2026-11-17, literature x = 0.19 since 2026-11-21)
 
-Run the same way as MnIn₂Se₄: 20×20×20, 300 K, FC3 = 6.51 Å, FC2 4×4×1, HanHai job
-424147. The VCA construction uses this material's own fitted x = 0.13:
+Run the same way as MnIn₂Se₄: 20×20×20, FC3 = 6.51 Å, FC2 4×4×1.
+
+**Current: x = 0.19** (Williams *et al.* 2024, §5.1). HanHai job 5
+(`../../test/figures/kappa_vs_T/jobs_lbte_wigner/`, phono3py 4.4.0, 12 T) gives the
+in-plane κ and the κ_zz total. Its per-mode hdf5 is not in the repository. The
+κ_zz rest term is therefore that total minus the first Γ–Z grid point
+(q = (0, 0, 1/20), weight 2), recomputed alone with the same driver and the same
+masses. That is exact in the RTA, and the single-point run reproduces the full
+x = 0.13 file at that point to 10⁻¹⁵ (`../../test/Mn2In2Se5/vca_m20_x019/`).
+
+| site | occupancy (x = 0.19) | VCA mass (amu) | mass variance g |
+|---|---|---:|---:|
+| Mn | 0.81 Mn + 0.19 In | **66.315** | **0.12548** |
+| In | 0.81 In + 0.19 Mn | **103.441** | **0.05157** |
+| Se | natural | 78.96 | 4.63×10⁻⁴ |
+
+| quantity (300 K) | baseline (L1) | **VCA (L2), x = 0.19** | suppression | VCA at x = 0.13 |
+|---|---:|---:|---:|---:|
+| in-plane κ | 2.9984 | **1.4611** | **2.05×** | 1.6335 (1.84×) |
+| κ_zz total (raw) | 1.3730 | 1.2048 | 1.14× | 1.2246 |
+| first Γ–Z point | 0.3894 | 0.4514 | | 0.4326 |
+| **κ_zz rest of the zone** | **0.9837** | **0.7534** | **1.31×** | 0.7920 (1.24×) |
+
+The first Γ–Z point (the quadrature artifact) rises with x, while the physical
+rest term falls; only the rest term is used.
+
+**Archive: x = 0.13** (HanHai job 424147, `../../test/Mn2In2Se5/vca_m20/`), from the
+free L3 fit:
 
 | site | occupancy (x = 0.13) | VCA mass (amu) | mass variance g |
 |---|---|---:|---:|
@@ -203,19 +229,20 @@ natural isotopes). Machine-readable copy: `vca_summary.csv` / `vca_summary.json`
 | **MnIn₂Se₄** | 0.44 | no VCA | 3.6884 | 0.6380 |
 | | | **VCA** | **1.4879** | **0.4453** |
 | | | *suppression* | *2.48×* | *1.43×* |
-| **Mn₂In₂Se₅** | 0.13 | no VCA | 2.9984 | 0.9837 |
-| | | **VCA** | **1.6335** | **0.7920** |
-| | | *suppression* | *1.84×* | *1.24×* |
+| **Mn₂In₂Se₅** | 0.19 | no VCA | 2.9984 | 0.9837 |
+| | | **VCA** | **1.4611** | **0.7534** |
+| | | *suppression* | *2.05×* | *1.31×* |
+| | 0.13 (archive) | VCA | 1.6335 | 0.7920 |
 
 Two observations:
 
 - The antisite disorder suppresses the **in-plane** component much more strongly
-  than the cross-plane one in both materials (2.5× vs 1.4× for MnIn₂Se₄, 1.8× vs
-  1.2× for Mn₂In₂Se₅), because the in-plane heat is carried by higher-frequency
+  than the cross-plane one in both materials (2.5× vs 1.4× for MnIn₂Se₄, 2.1× vs
+  1.3× for Mn₂In₂Se₅), because the in-plane heat is carried by higher-frequency
   modes where the mass-variance rate (∝ g·ω²) is large.
-- MnIn₂Se₄ has the stronger disorder response despite the smaller x, because at
-  x = 0.44 each site is close to a 50/50 mixture (maximum mass variance), while at
-  x = 0.13 the sites stay nearly pure.
+- MnIn₂Se₄ has the stronger disorder response, because at i = 0.44 each site is
+  close to a 50/50 mixture (g = 0.134 / 0.060), while at x = 0.19 the Mn₂In₂Se₅
+  sites are still 81 % pure (g = 0.125 / 0.052).
 
 ### 4.4 Earlier L1-only statement (superseded by 4.2)
 
@@ -285,11 +312,10 @@ With x fixed, the existing 24³ L3 fit (`../extrinsic/results/*_m24/fit_*.json`,
 | Mn₂In₂Se₅ | 0.13 (fit optimum, for comparison) | 15.9 nm | 3.2 % |
 
 So x is fixed from the literature and only L and s are fitted. The Mn₂In₂Se₅ VCA
-(L2) run used x = 0.13. Its size at x = 0.19 can be estimated without a new phonon
-run from the same 24³ bases (`kappa_extrinsic.py eval`, ordered masses, no boundary):
-300 K in-plane 1.695 → 1.540 (−9 %), κ_zz total 1.131 → 1.105 (−2 %). A VCA rerun at
-x = 0.19 (averaged masses) would give the exact L2 curve; expected change of the
-same size, so it is optional.
+(L2) curve now uses x = 0.19 as well (§4.2): 300 K in-plane 1.6335 → 1.4611
+(−10.6 %), κ_zz rest 0.7920 → 0.7534 (−4.9 %). The estimate made before that run
+from the 24³ L3 bases (ordered masses, Tamura only) was −9 % in-plane and −2 % in
+the κ_zz total; the VCA total falls by 1.6 %.
 
 Other literature, from abstracts only (not in `references/`):
 - MnIn₂(1−z)Ga₂zSe₄, *Mater. Res. Bull.* (2001): Mn and In randomly distributed in MnIn₂Se₄.

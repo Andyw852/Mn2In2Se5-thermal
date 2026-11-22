@@ -17,9 +17,10 @@ same 20³ mesh (so only the disorder differs between a pair of curves):
 
 - `data_mnin2se4_vca.json` — MnIn₂Se₄, x = 0.44, HanHai job 424495
 - `data_mn2in2se5_vca.json` — Mn₂In₂Se₅, **x = 0.19** (literature, Williams et al. 2024).
-  Since 2026-11-21: `vca_*` from a 20³ RTA run at x = 0.19 (phono3py 4.4.0, same settings as
-  HanHai job 5 in `jobs_lbte_wigner/`, rerun in a cloud session to get the per-mode output,
-  `../../Mn2In2Se5/vca_m20_x019/`); `baseline_*` unchanged (job 424496).
+  Since 2026-11-21: `vca_inplane` from the 20³ RTA run at x = 0.19 of HanHai job 5
+  (`jobs_lbte_wigner/`, phono3py 4.4.0); `vca_kzz_rest` = job 5's κ_zz total minus the first
+  Γ–Z grid point, which was recomputed alone with the same driver and masses
+  (`../../Mn2In2Se5/vca_m20_x019/`); `baseline_*` unchanged (job 424496).
 - `data_mn2in2se5_vca_x013.json` — the former Mn₂In₂Se₅ file, x = 0.13 (from the free L3
   fit), HanHai job 424496. Kept for reference only
 

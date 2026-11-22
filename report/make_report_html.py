@@ -468,28 +468,30 @@ single crystal. Dotted: L3 fit (§8). Dash-dot ({L['MnIn2Se4']} only): minimum �
 <figure><img alt="Calculated kappa against the hot-pressed experiment" src="{figs['calc_vs_exp']}"></figure>
 <p class="cap">Ordered and VCA: RTA, 20³ (same mesh for each pair), Perp ↔ in-plane, Para ↔ κ_zz, no grain boundary
 and no texture, so they are upper references. VCA occupancy: {L['MnIn2Se4']} i = 0.44 (single-crystal refinement, Range et al., Z. Naturforsch.
-46b, 1122 (1991)), {L['Mn2In2Se5']} x = 0.13 (taken from the L3 fit; the literature value for this R-3m phase is 0.19(2), see §8). VCA lowers κ strongly but stays
+46b, 1122 (1991)), {L['Mn2In2Se5']} x = 0.19(2) (powder Rietveld of the R-3m phase, Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7; see §8). VCA lowers κ strongly but stays
 well above experiment and cannot produce the low-temperature maximum near 100 K; that needs a nanoscale mean free path.</p>
 
 <h2><span class="n">6</span>Scattering rates at 300 K</h2>
 <p class="lead">Largest FC3 cutoff, 20³ mesh, τ⁻¹ = 2Γ. Baseline: real masses + natural isotopes. VCA: averaged
-site masses + mass-variance scattering. Top row {L['MnIn2Se4']} (i = 0.44), bottom row {L['Mn2In2Se5']} (x = 0.13).</p>
+site masses + mass-variance scattering. Top row {L['MnIn2Se4']} (i = 0.44), bottom row {L['Mn2In2Se5']} (x = 0.13: the per-mode
+file of the x = 0.19 run is not yet in the repository; the κ values below are at x = 0.19).</p>
 <figure><img alt="Three-phonon and disorder scattering rates, both materials" src="{figs['scattering']}"></figure>
 <p class="cap">Left: the 3-phonon rates of the ordered and VCA crystals agree within a few tens of percent, because VCA
 changes the masses, not the anharmonicity. Right: VCA mass-variance scattering is 2–3 orders of magnitude stronger
 than natural-isotope scattering, rises as ω² at low frequency and flattens at high frequency. Effect on κ at 300 K:
 {L['MnIn2Se4']} in-plane 3.69 → 1.49 (2.48×), κ_zz 0.638 → 0.445 (1.43×); {L['Mn2In2Se5']} in-plane
-3.00 → 1.63 (1.84×), κ_zz 0.984 → 0.792 (1.24×). The weaker effect in {L['Mn2In2Se5']} comes from its smaller x.</p>
+3.00 → 1.46 (2.05×), κ_zz 0.984 → 0.753 (1.31×) at x = 0.19 (x = 0.13: 1.63 and 0.792). The weaker effect in {L['Mn2In2Se5']}
+comes from its less mixed sites (81 % pure at x = 0.19, against 56/44 on the {L['MnIn2Se4']} octahedral site).</p>
 
 {checks_html()}
 
 <h2><span class="n">8</span>What the L3 fit is</h2>
 <p class="lead">L3 is the extrinsic model of <code>analysis/extrinsic/</code>. <b>Yes, it is fitted to the
 experimental values</b>, so its agreement with experiment is by construction and is not a prediction.
-At 300 K it gives Perp / Para = 0.91 / 0.49 ({L['MnIn2Se4']}, measured 0.93 / 0.49) and 0.77 / 0.34 ({L['Mn2In2Se5']},
+At 300 K it gives Perp / Para = 0.92 / 0.49 ({L['MnIn2Se4']}, measured 0.93 / 0.49) and 0.78 / 0.34 ({L['Mn2In2Se5']},
 measured 0.74 / 0.32). <b>Its purpose is not to supply κ</b> (the measurement already does) but to answer how much extra
 scattering, and of what kind, turns the calculated single crystal into the measured pellet: the fitted parameters
-(texture s, boundary length L, antisite fraction x) are the result, and the 55–145 K points, which were not fitted, test it.</p>
+(texture s and boundary length L; the antisite fraction x is taken from structure refinements) are the result, and the 55–145 K points, which were not fitted, test it.</p>
 <div class="eq">Γ_λ = Γ_3ph,λ(T)  +  Σ g_elem(x)·B_elem,λ  +  |v_λ| / (4π L)
        3-phonon           Mn↔In antisite mass disorder   grain boundary (Casimir)
 
@@ -497,22 +499,20 @@ scattering, and of what kind, turns the calculated single crystal into the measu
 <ul>
 <li><b>Inputs that are not fitted</b>: the first-principles 3-phonon rates, phonon velocities and heat capacities
 (ordered masses), and the mass-disorder basis rates B, computed once per material on a 24³ mesh.</li>
-<li><b>Three fitted parameters</b>: x, the fraction of Mn on In sites; L, an effective boundary mean free path;
-s = ⟨sin²θ⟩, the texture (0 = fully textured, 2/3 = random).</li>
+<li><b>Parameters</b>: x, the fraction of Mn on In sites, <b>fixed</b> at the literature value (below); L, an effective
+boundary mean free path, and s = ⟨sin²θ⟩, the texture (0 = fully textured, 2/3 = random), <b>fitted</b>.</li>
 <li><b>Data used</b>: only the 300–623 K points of <code>experiment/kappa_tot_digitized.csv</code>, both directions.
-The fit minimises the rms of ln(model/experiment) over an (x, L) grid, with s optimised at each point.
+The fit minimises the rms of ln(model/experiment) over L, with s optimised at each point.
 The 55–145 K points are not used; they only test the model.</li>
-<li><b>Result</b>: {L['MnIn2Se4']} x = 0.45, L = 30.7 nm, s = 0.35, rms 1.2 %; {L['Mn2In2Se5']} x = 0.13,
-L = 15.9 nm, s = 0.25, rms 3.2 %.</li>
-<li><b>What it does determine</b>: only s (acceptable 0.33–0.38 and 0.15–0.28). x and L both push κ down and are
-degenerate: acceptable x spans 0–0.66 and 0.01–0.50. The fitted x is therefore not evidence for any occupancy;
-the closeness of 0.45 to the single-crystal 0.44 is a coincidence of the fit. XRD (texture), SEM (grain size) and a Rietveld
-occupancy refinement would break the degeneracy.</li>
-<li><b>Fixing x from the literature</b> (analysis/disorder/README.md §5.1): {L['MnIn2Se4']} x = 0.44 (single-crystal XRD,
-Range et al., Z. Naturforsch. 46b, 1122 (1991)) gives L = 30.7 nm, rms 1.2 %. {L['Mn2In2Se5']} x = 0.19(2) (powder Rietveld of the
-R-3m phase, Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7) gives L = 22.1 nm, rms 3.4 %. With x fixed, only L and
-s are fitted, and L ≈ 20–30 nm in both materials. (The 0.704/0.296 occupancy of Chernoukhov et al., Molecules 30, 1904
-(2025) belongs to a different, quenched polymorph, P3̄m1, and is not used.)</li>
+<li><b>Result</b> (analysis/disorder/README.md §5.1): {L['MnIn2Se4']} with x = 0.44 (single-crystal XRD, Range et al.,
+Z. Naturforsch. 46b, 1122 (1991)): L = 30.7 nm, s = 0.35, rms 1.2 %. {L['Mn2In2Se5']} with x = 0.19(2) (powder Rietveld of the
+R-3m phase, Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7): L = 22.1 nm, s = 0.23, rms 3.4 %. So L ≈ 20–30 nm
+in both materials. (The 0.704/0.296 occupancy of Chernoukhov et al., Molecules 30, 1904 (2025) belongs to a different,
+quenched polymorph, P3̄m1, and is not used.)</li>
+<li><b>Why x is fixed</b>: with x free as well, the fit determines only s (acceptable 0.33–0.38 and 0.15–0.28). x and L
+both push κ down and are degenerate: acceptable x spans 0–0.66 and 0.01–0.50, and the free optimum (x = 0.45, L = 30.7 nm,
+rms 1.2 %; x = 0.13, L = 15.9 nm, rms 3.2 %) is not evidence for any occupancy. XRD (texture), SEM (grain size) and a Rietveld
+occupancy refinement of our own pellets would break the degeneracy.</li>
 <li><b>Not to be combined with VCA</b>: L3 already contains the antisite scattering through x, so the VCA and L3
 curves are alternatives, not additive corrections.</li>
 <li><b>κ_e</b> is taken as 0. If the electronic part is not negligible, the fitted extrinsic scattering is too strong.</li>
@@ -520,8 +520,8 @@ curves are alternatives, not additive corrections.</li>
 
 <h2><span class="n">9</span>Why the calculation lies above the experiment</h2>
 <p class="lead">At 300 K the calculated single-crystal κ is 4.3× above the hot-pressed κ_tot for both materials
-(direction average, values to quote, §1). Antisite disorder (VCA) brings this down to 1.5× ({L['MnIn2Se4']}) and
-2.3× ({L['Mn2In2Se5']}, x = 0.13; about 2.1× at the literature x = 0.19). The candidate reasons for the rest are listed
+(direction average, values to quote, §1). Antisite disorder (VCA, at the literature occupancies) brings this down to 1.5× ({L['MnIn2Se4']}) and
+2.0× ({L['Mn2In2Se5']}; RTA, 20³). The candidate reasons for the rest are listed
 below, roughly in order of how much each can explain, with the evidence and the test. <b>These are hypotheses.</b>
 Only the first two are quantified here.</p>
 <div class="tbl"><table class="lt">
@@ -534,7 +534,7 @@ the required L is far below typical hot-pressed grain sizes (0.5–5 μm), which
 polytype intergrowths, common in these layered "124"/"225" compounds; κ_tot lies between the Cahill and diffuson limits (§7)</td>
 <td>SEM grain size; TEM/HAADF for stacking faults</td></tr>
 <tr><td>2</td><td><b>Mn/In antisite disorder</b></td>
-<td>VCA at the literature x: in-plane 2.5× ({L['MnIn2Se4']}) / ≈ 2× ({L['Mn2In2Se5']}), κ_zz 1.4× / 1.2× at 300 K</td>
+<td>VCA at the literature x: in-plane 2.5× ({L['MnIn2Se4']}) / 2.1× ({L['Mn2In2Se5']}), κ_zz 1.4× / 1.3× at 300 K</td>
 <td>single-crystal refinement i = 0.44 (Range 1991); Rietveld x = 0.19(2) (Williams 2024); broad Raman modes in
 {L['Mn2In2Se5']} attributed to site disorder (Williams 2024)</td>
 <td>Rietveld occupancy of our own pellets. VCA counts only the mass difference, so it is a lower bound: bond-strength and

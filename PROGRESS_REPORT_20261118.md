@@ -63,8 +63,12 @@ Two comparisons to keep in mind:
 | experiment | 0.784 | 0.601 |
 | calc., quoted values (LBTE + coherence) | 3.35 (4.3×) | 2.61 (4.3×) |
 | calc., ordered, RTA 20³ | 2.67 (3.4×) | 2.33 (3.9×) |
-| calc., VCA, RTA 20³ | 1.14 (1.5×) | 1.35 (2.3×) |
-| calc., L3 extrinsic fit | 0.77 (fitted to these data) | 0.62 (fitted to these data) |
+| calc., VCA, RTA 20³ | 1.14 (1.5×) | 1.23 (2.0×) |
+| calc., L3 extrinsic fit | 0.78 (fitted to these data) | 0.63 (fitted to these data) |
+
+Both VCA rows use the literature antisite fraction (MnIn₂Se₄ i = 0.44,
+Mn₂In₂Se₅ x = 0.19). The Mn₂In₂Se₅ row read 1.35 (2.3×) with the earlier
+x = 0.13. The L3 rows have x fixed at the same values and only L and s fitted.
 
 ## 3. Figures
 
@@ -110,16 +114,22 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 
 | | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---|---|
-| VCA (L2) occupancy | i = 0.44 (single-crystal XRD, K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122 (1991); verified) | x = 0.13 (taken from the L3 fit). Literature for the R-3m phase: **0.19(2)** (Williams *et al.*, *J. Mater. Chem. C* **12**, 1753 (2024), ESI Table S7); see `analysis/disorder/README.md` §5.1 |
-| VCA suppression at 300 K, in-plane / κ_zz | 2.48× / 1.43× | 1.84× / 1.24× |
-| L3 fit: texture s | **0.35** (0.33–0.38) | **0.25** (0.15–0.28) |
-| L3 fit: x, L_eff | 0.45, 30.7 nm; x **not determined** (0.00–0.66 acceptable) | 0.13, 15.9 nm; x **not determined** (0.01–0.50) |
-| L3 fit: rms of ln(model/exp) | 1.2 % | 3.2 % |
+| antisite occupancy (VCA and L3) | i = 0.44 (single-crystal XRD, K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122 (1991); verified) | **x = 0.19(2)** (powder Rietveld of the R-3m phase, Williams *et al.*, *J. Mater. Chem. C* **12**, 1753 (2024), ESI Table S7; `analysis/disorder/README.md` §5.1). Until 2026-11-21: x = 0.13 from the free L3 fit |
+| VCA at 300 K, in-plane / κ_zz (20³ RTA) | 1.488 / 0.445 | 1.461 / 0.753 |
+| VCA suppression at 300 K, in-plane / κ_zz | 2.48× / 1.43× | 2.05× / 1.31× (x = 0.13: 1.84× / 1.24×) |
+| L3 fit (x fixed): texture s | **0.35** (0.33–0.37) | **0.23** (0.21–0.27) |
+| L3 fit (x fixed): L_eff | 30.7 nm | 22.1 nm (18.7–22.1) |
+| L3 fit: rms of ln(model/exp) | 1.2 % | 3.4 % (free fit with x = 0.13: 3.2 %) |
 
 - L2 (VCA) and L3 must not be added together. L3 already contains the
   antisite scattering through x (`analysis/disorder/README.md` §2).
 - **x and L are degenerate in L3.** The texture s is the only quantity the κ
-  data determine.
+  data determine. The free three-parameter fit accepts x = 0.00–0.66
+  (MnIn₂Se₄) and 0.01–0.50 (Mn₂In₂Se₅), so x is taken from the structure
+  refinements and only L and s are fitted.
+- The Mn₂In₂Se₅ VCA κ_zz at x = 0.19 is the rest term of the 20³ run of HanHai
+  job 5: its total minus the first Γ–Z grid point, which was recomputed with
+  the same driver and masses ([`test/Mn2In2Se5/vca_m20_x019/`](test/Mn2In2Se5/vca_m20_x019/)).
 
 ## 5. Uncertainty budget
 
@@ -172,7 +182,7 @@ steps shrink; the Mn₂In₂Se₅ steps do not.
 |---|---|---|
 | 1 | FC3 cutoff beyond 6.45 / 6.51 Å | **Mn₂In₂Se₅ closed 2026-11-21, no DFT.** Refits to 7.43 Å ([`test/Mn2In2Se5/cutoff_ext/`](test/Mn2In2Se5/cutoff_ext/)) dropped κ_zz by up to 25 %. A hold-out validation and a learning curve ([`test/Mn2In2Se5/cutoff_cv/`](test/Mn2In2Se5/cutoff_cv/)) show those fits are over-parameterised from 6.90 Å on. 6.51 Å stays, next step ≥ −3.3 %. **MnIn₂Se₄**: refit to 7.74 Å done on 3090, results not yet in the repository and not hold-out tested; stays at 6.45 Å, ≈ −10 % |
 | 2 | literature source for Döll i = 0.44 | **closed 2026-11-19**: K.-J. Range, U. Klement, G. Döll, E. Bucher, J. R. Baumann, *Z. Naturforsch.* **46b**, 1122–1124 (1991), atomic-position table: M_oct = 0.56 Mn + 0.44 In, M_tet = 0.78 In + 0.22 Mn. PDF in `references/`. The 1990 *J. Cryst. Growth* paper is not the source |
-| 3 | Mn₂In₂Se₅ antisite occupancy | **closed 2026-11-19 for the literature value**: x = 0.19(2) in the R-3m phase (Williams *et al.* 2024, ESI Table S7, powder Rietveld), inside the L3 acceptable range; L3 with x fixed gives L = 22 nm. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). Optional: VCA rerun at x = 0.19 (estimated −9 % in-plane vs x = 0.13). A refinement of our own samples would still be better |
+| 3 | Mn₂In₂Se₅ antisite occupancy | **closed 2026-11-19 for the literature value**: x = 0.19(2) in the R-3m phase (Williams *et al.* 2024, ESI Table S7, powder Rietveld), inside the L3 acceptable range; L3 with x fixed gives L = 22 nm. The 0.704/0.296 of Chernoukhov *et al.* 2025 belongs to a different polymorph (P3̄m1). VCA and L3 now both use it (2026-11-21): VCA in-plane 1.461 (−10.6 % vs x = 0.13), κ_zz 0.753 (−4.9 %). A refinement of our own samples would still be better |
 | 4 | κ_e of the measured samples | open. It needs the electrical conductivity (Wiedemann–Franz) |
 | 5 | Tamura and phono3py references | identified but not checked against the papers (`analysis/disorder/README.md` §5) |
 

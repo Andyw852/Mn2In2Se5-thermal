@@ -47,5 +47,6 @@ lower by ≈0.12 at 300 K (0.6444 at 14³, 0.6473 at 30³) and are what the earl
 (`E:\backup\joint_research_project\xia\raw_hdf5\m30\`) rather than in git;
 `run_kappa_vs_T.py` regenerates them, and the plotting only needs the JSON.
 
-VCA parameters are those of the existing 20³ runs (MnIn₂Se₄ i = 0.44, Mn₂In₂Se₅
-x = 0.13). Their sources are still open: see `analysis/disorder/README.md` §5.
+VCA parameters are those of the 20³ runs at the time (MnIn₂Se₄ i = 0.44, Mn₂In₂Se₅
+x = 0.13). Since 2026-11-21 the Mn₂In₂Se₅ value is the literature x = 0.19
+(`analysis/disorder/README.md` §5.1), so the Mn₂In₂Se₅ VCA case here is not used.

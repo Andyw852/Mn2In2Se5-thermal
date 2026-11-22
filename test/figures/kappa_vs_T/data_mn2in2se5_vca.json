@@ -17,17 +17,18 @@
   600,
   700
  ],
- "note": "VCA comparison on a single mesh (20^3), HanHai job 424496. baseline_* = ordered masses + natural isotopes; vca_* = averaged site masses + mass-variance scattering at x = 0.13.",
+ "note": "VCA comparison on a single mesh (20^3). baseline_* = ordered masses + natural isotopes (HanHai job 424496, unchanged); vca_* = averaged site masses + mass-variance scattering at the literature x = 0.19 (Williams et al. 2024, ESI Table S7), phono3py 4.4.0: in-plane and kappa_zz total from HanHai job 5, kappa_zz = rest of the zone = total minus the first Gamma-Z grid point, computed with the same driver (test/Mn2In2Se5/vca_m20_x019/). The x = 0.13 version is kept as data_mn2in2se5_vca_x013.json.",
  "vca": {
-  "x": 0.13,
+  "x": 0.19,
+  "x_source": "Williams et al., J. Mater. Chem. C 12, 1753 (2024), ESI Table S7",
   "mass": {
-   "Mn": 62.73,
-   "In": 107.03,
+   "Mn": 66.315,
+   "In": 103.441,
    "Se": 78.96
   },
   "g": {
-   "Mn": 0.1031,
-   "In": 0.0354,
+   "Mn": 0.12548,
+   "In": 0.05157,
    "Se": 0.000463
   }
  },
@@ -60,31 +61,31 @@
   0.418
  ],
  "vca_inplane": [
-  9.109,
-  5.309,
-  3.876,
-  3.584,
-  3.137,
-  2.673,
-  2.181,
-  1.633,
-  1.325,
-  1.122,
-  0.977,
-  0.867
+  7.5528,
+  4.5437,
+  3.3646,
+  3.1203,
+  2.7449,
+  2.3529,
+  1.9324,
+  1.4611,
+  1.1929,
+  1.0157,
+  0.8882,
+  0.7914
  ],
  "vca_kzz_rest": [
-  8.3596,
-  3.868,
-  2.5166,
-  2.2606,
-  1.8852,
-  1.5182,
-  1.1558,
-  0.792,
-  0.6064,
-  0.4928,
-  0.4158,
-  0.3599
+  7.4097,
+  3.5475,
+  2.3422,
+  2.1104,
+  1.768,
+  1.4304,
+  1.0941,
+  0.7534,
+  0.5785,
+  0.471,
+  0.398,
+  0.3449
  ]
 }
