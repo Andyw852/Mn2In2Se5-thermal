@@ -1,0 +1,339 @@
+{
+ "problems": [],
+ "runs": {
+  "FM": {
+   "energy_eV": -45.5334424,
+   "total_magnetization": 9.98437,
+   "site_moments_Mn": [
+    4.573,
+    4.573
+   ],
+   "max_residual_force_eV_A": 0.000982
+  },
+  "AFM": {
+   "energy_eV": -45.55432323,
+   "total_magnetization": -0.0,
+   "site_moments_Mn": [
+    4.542,
+    -4.542
+   ],
+   "max_residual_force_eV_A": 0.051959
+  },
+  "2x1_FM": {
+   "energy_eV": -91.06701344,
+   "total_magnetization": 19.968742,
+   "site_moments_Mn": [
+    4.573,
+    4.573,
+    4.573,
+    4.573
+   ]
+  },
+  "2x1_stripeA": {
+   "energy_eV": -91.09897498,
+   "total_magnetization": -4e-07,
+   "site_moments_Mn": [
+    4.531,
+    -4.531,
+    4.531,
+    -4.531
+   ]
+  },
+  "2x1_stripeB": {
+   "energy_eV": -91.08243371,
+   "total_magnetization": 1e-06,
+   "site_moments_Mn": [
+    4.554,
+    -4.554,
+    -4.554,
+    4.554
+   ]
+  }
+ },
+ "energies": {
+  "AFM_minus_FM_meV_per_Mn": -10.44041500000148,
+  "stripeA_minus_FM_meV_per_Mn": -7.990384999999378,
+  "stripeB_minus_FM_meV_per_Mn": -3.855067500001752,
+  "FM_2x1_minus_2xFM_9_meV": -0.12863999999979114
+ },
+ "comparison": {
+  "acoustic_FM_THz": [
+   -0.0,
+   0.0,
+   0.0
+  ],
+  "acoustic_AFM_THz": [
+   -0.0,
+   0.0,
+   0.0
+  ],
+  "modes": [
+   {
+    "fm_THz": 0.7068,
+    "afm_THz": 0.7227,
+    "delta": 0.022497693588135137,
+    "max_overlap": 1.0,
+    "production_THz": 0.7038,
+    "fm_vs_production": 0.0042563970426099385
+   },
+   {
+    "fm_THz": 0.7076,
+    "afm_THz": 0.7234,
+    "delta": 0.022261890526782402,
+    "max_overlap": 1.0,
+    "production_THz": 0.7038,
+    "fm_vs_production": 0.005398556344720751
+   },
+   {
+    "fm_THz": 0.7474,
+    "afm_THz": 0.7505,
+    "delta": 0.004135775764896543,
+    "max_overlap": 0.999,
+    "production_THz": 0.7429,
+    "fm_vs_production": 0.006109013293948307
+   },
+   {
+    "fm_THz": 0.7502,
+    "afm_THz": 0.753,
+    "delta": 0.0038070923633524156,
+    "max_overlap": 0.999,
+    "production_THz": 0.7429,
+    "fm_vs_production": 0.009765675536560936
+   },
+   {
+    "fm_THz": 1.5347,
+    "afm_THz": 1.4896,
+    "delta": -0.029411087233653377,
+    "max_overlap": 0.999,
+    "production_THz": 1.536,
+    "fm_vs_production": -0.0008321382775893227
+   },
+   {
+    "fm_THz": 1.5362,
+    "afm_THz": 1.4911,
+    "delta": -0.029366916702031398,
+    "max_overlap": 0.999,
+    "production_THz": 1.536,
+    "fm_vs_production": 0.00010960883785871012
+   },
+   {
+    "fm_THz": 1.736,
+    "afm_THz": 1.711,
+    "delta": -0.014369311658880335,
+    "max_overlap": 1.0,
+    "production_THz": 1.7371,
+    "fm_vs_production": -0.0006645108865642735
+   },
+   {
+    "fm_THz": 2.4658,
+    "afm_THz": 2.265,
+    "delta": -0.0814269519281966,
+    "max_overlap": 0.833,
+    "production_THz": 2.4667,
+    "fm_vs_production": -0.0003994294169685775
+   },
+   {
+    "fm_THz": 2.4658,
+    "afm_THz": 2.265,
+    "delta": -0.08143593860792786,
+    "max_overlap": 0.833,
+    "production_THz": 2.4667,
+    "fm_vs_production": -0.0003733124232213614
+   },
+   {
+    "fm_THz": 3.2317,
+    "afm_THz": 3.2382,
+    "delta": 0.002014195136161412,
+    "max_overlap": 1.0,
+    "production_THz": 3.2349,
+    "fm_vs_production": -0.0009736011347281082
+   },
+   {
+    "fm_THz": 4.8135,
+    "afm_THz": 4.769,
+    "delta": -0.009249064217380587,
+    "max_overlap": 0.995,
+    "production_THz": 4.8168,
+    "fm_vs_production": -0.0006766534500231014
+   },
+   {
+    "fm_THz": 4.8713,
+    "afm_THz": 4.83,
+    "delta": -0.00846238614836059,
+    "max_overlap": 0.998,
+    "production_THz": 4.8813,
+    "fm_vs_production": -0.002051253072220649
+   },
+   {
+    "fm_THz": 4.872,
+    "afm_THz": 4.8308,
+    "delta": -0.008462282566784718,
+    "max_overlap": 0.998,
+    "production_THz": 4.8813,
+    "fm_vs_production": -0.0018933132459127977
+   },
+   {
+    "fm_THz": 4.9635,
+    "afm_THz": 4.9755,
+    "delta": 0.002409583345832411,
+    "max_overlap": 0.998,
+    "production_THz": 4.968,
+    "fm_vs_production": -0.0009153959215687513
+   },
+   {
+    "fm_THz": 4.967,
+    "afm_THz": 4.9377,
+    "delta": -0.005904405247669553,
+    "max_overlap": 0.999,
+    "production_THz": 4.9771,
+    "fm_vs_production": -0.0020258143158167208
+   },
+   {
+    "fm_THz": 4.9679,
+    "afm_THz": 4.9386,
+    "delta": -0.0059043018196688335,
+    "max_overlap": 0.999,
+    "production_THz": 4.9771,
+    "fm_vs_production": -0.001843979814143526
+   },
+   {
+    "fm_THz": 5.1059,
+    "afm_THz": 5.098,
+    "delta": -0.00155766583698147,
+    "max_overlap": 0.993,
+    "production_THz": 5.1126,
+    "fm_vs_production": -0.001302207961351054
+   },
+   {
+    "fm_THz": 5.1062,
+    "afm_THz": 5.0982,
+    "delta": -0.001567450390144498,
+    "max_overlap": 0.993,
+    "production_THz": 5.1126,
+    "fm_vs_production": -0.0012465402313202034
+   },
+   {
+    "fm_THz": 5.2241,
+    "afm_THz": 5.2181,
+    "delta": -0.001149088652796948,
+    "max_overlap": 0.999,
+    "production_THz": 5.2291,
+    "fm_vs_production": -0.0009677389741467035
+   },
+   {
+    "fm_THz": 5.2243,
+    "afm_THz": 5.2183,
+    "delta": -0.0011488548418168154,
+    "max_overlap": 0.999,
+    "production_THz": 5.2291,
+    "fm_vs_production": -0.0009287240969196864
+   },
+   {
+    "fm_THz": 5.7385,
+    "afm_THz": 5.6764,
+    "delta": -0.010818820741969715,
+    "max_overlap": 0.998,
+    "production_THz": 5.7399,
+    "fm_vs_production": -0.00024352381979420024
+   },
+   {
+    "fm_THz": 5.9599,
+    "afm_THz": 5.8577,
+    "delta": -0.01714541587232321,
+    "max_overlap": 0.995,
+    "production_THz": 5.9615,
+    "fm_vs_production": -0.0002741229520760724
+   },
+   {
+    "fm_THz": 7.4317,
+    "afm_THz": 7.4375,
+    "delta": 0.000773787630739653,
+    "max_overlap": 1.0,
+    "production_THz": 7.441,
+    "fm_vs_production": -0.001252748125485148
+   },
+   {
+    "fm_THz": 7.7865,
+    "afm_THz": 7.6788,
+    "delta": -0.013840330693309477,
+    "max_overlap": 1.0,
+    "production_THz": 7.7938,
+    "fm_vs_production": -0.000935172142004892
+   }
+  ],
+  "rms_delta": 0.026730479293216956,
+  "max_abs_delta": 0.08143593860792786,
+  "rms_delta_below_3THz": 0.042464890260757185,
+  "max_abs_delta_below_3THz": 0.08143593860792786,
+  "noise_doublets": [
+   {
+    "production_THz": 0.7038,
+    "fm_THz": [
+     0.7068,
+     0.7076
+    ],
+    "rel_split": 0.0011362381854614178
+   },
+   {
+    "production_THz": 0.7429,
+    "fm_THz": [
+     0.7474,
+     0.7502
+    ],
+    "rel_split": 0.0036301402897767282
+   },
+   {
+    "production_THz": 1.536,
+    "fm_THz": [
+     1.5347,
+     1.5362
+    ],
+    "rel_split": 0.0009420808218838353
+   },
+   {
+    "production_THz": 2.4667,
+    "fm_THz": [
+     2.4658,
+     2.4658
+    ],
+    "rel_split": 2.6157957837004967e-05
+   },
+   {
+    "production_THz": 4.8813,
+    "fm_THz": [
+     4.8713,
+     4.872
+    ],
+    "rel_split": 0.00015999446978150019
+   },
+   {
+    "production_THz": 4.9771,
+    "fm_THz": [
+     4.967,
+     4.9679
+    ],
+    "rel_split": 0.00018200828959857976
+   },
+   {
+    "production_THz": 5.1126,
+    "fm_THz": [
+     5.1059,
+     5.1062
+    ],
+    "rel_split": 5.631081235745294e-05
+   },
+   {
+    "production_THz": 5.2291,
+    "fm_THz": [
+     5.2241,
+     5.2243
+    ],
+    "rel_split": 3.8449991689981914e-05
+   }
+  ],
+  "noise_max_rel_split": 0.0036301402897767282,
+  "max_abs_fm_vs_production_above_1THz": 0.002051253072220649
+ },
+ "verdict": "strong",
+ "notes": []
+}

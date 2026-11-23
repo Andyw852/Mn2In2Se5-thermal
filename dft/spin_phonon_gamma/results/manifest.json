@@ -1,0 +1,35 @@
+{
+ "distance_A": 0.01,
+ "kmesh_9": [
+  8,
+  8,
+  2
+ ],
+ "kmesh_18": [
+  4,
+  8,
+  2
+ ],
+ "configs": {
+  "FM": {
+   "magmom": "5 5 7*0",
+   "n_disp": 54
+  },
+  "AFM": {
+   "magmom": "5 -5 7*0",
+   "n_disp": 54
+  },
+  "2x1_FM": {
+   "magmom": "5 5 5 5 14*0",
+   "n_disp": 0
+  },
+  "2x1_stripeA": {
+   "magmom": "5 -5 5 -5 14*0",
+   "n_disp": 0
+  },
+  "2x1_stripeB": {
+   "magmom": "5 -5 -5 5 14*0",
+   "n_disp": 0
+  }
+ }
+}
