@@ -1,0 +1,59 @@
+sets (ref runs):
+  FM_ctl  E-E_FM =   +0.00 meV/Mn (Heisenberg   +0.00)  M = +159.750  min|m_Mn| = 4.573  static F rms/max = 0.0003/0.0009 eV/A  frames 9
+  AFM     E-E_FM =  -10.44 meV/Mn (Heisenberg  -10.44)  M =  -0.000  min|m_Mn| = 4.542  static F rms/max = 0.0175/0.0519 eV/A  frames 8
+  PM01    E-E_FM =   -7.66 meV/Mn (Heisenberg   -5.74)  M =  -0.038  min|m_Mn| = 4.532  static F rms/max = 0.0101/0.0520 eV/A  frames 2
+  PM02    E-E_FM =   -7.75 meV/Mn (Heisenberg   -5.74)  M =  -0.104  min|m_Mn| = 4.533  static F rms/max = 0.0101/0.0430 eV/A  frames 2
+  PM03    E-E_FM =   -7.60 meV/Mn (Heisenberg   -5.74)  M =  -0.013  min|m_Mn| = 4.532  static F rms/max = 0.0103/0.0508 eV/A  frames 2
+  PM04    E-E_FM =   -7.68 meV/Mn (Heisenberg   -5.74)  M =  -0.081  min|m_Mn| = 4.533  static F rms/max = 0.0101/0.0462 eV/A  frames 2
+  PM05    E-E_FM =   -7.61 meV/Mn (Heisenberg   -5.74)  M =  -0.033  min|m_Mn| = 4.533  static F rms/max = 0.0101/0.0454 eV/A  frames 2
+  PM06    E-E_FM =   -7.64 meV/Mn (Heisenberg   -5.74)  M =  -0.022  min|m_Mn| = 4.532  static F rms/max = 0.0099/0.0508 eV/A  frames 2
+  PM07    E-E_FM =   -7.57 meV/Mn (Heisenberg   -5.74)  M =  -0.015  min|m_Mn| = 4.536  static F rms/max = 0.0104/0.0503 eV/A  frames 2
+  PM08    E-E_FM =   -7.65 meV/Mn (Heisenberg   -5.74)  M =  -0.053  min|m_Mn| = 4.533  static F rms/max = 0.0100/0.0479 eV/A  frames 2
+  PM mean -7.64 meV/Mn, spread 0.05; AFM 9-atom -10.44
+fit relative residual: FM_ctl 1.84 %, AFM 1.73 %, PM 2.20 %;  PM excess 1.20 %
+FM_ctl even/odd force ratio (frame 9 = -frame 1): 2.20 %
+mesh 6x6x2, modes > 0.5 THz (relative frequency shifts):
+  FM_ctl_vs_production   mean  +0.05 %  rms  0.64 %  max 15.99 %   < 3 THz: mean  +0.29 %  rms  0.99 %
+  AFM_vs_FM_ctl          mean  -0.84 %  rms  1.78 %  max 14.50 %   < 3 THz: mean  -1.70 %  rms  2.70 %
+  PM_vs_FM_ctl           mean  -1.15 %  rms  1.76 %  max 18.93 %   < 3 THz: mean  -1.98 %  rms  2.56 %
+  PM_vs_production       mean  -1.10 %  rms  1.58 %  max 10.61 %   < 3 THz: mean  -1.71 %  rms  2.22 %
+lowest frequency on the mesh (THz): FM_ctl -0.000, AFM -0.000, PM -0.000, production 0.000
+sound velocities (m/s), x: TA TA LA / z: TA TA LA
+  FM_ctl     x   1242   1886   3818   z   1412   1412   3777
+  AFM        x    898   1778   3801   z   1248   1248   3497
+  PM         x   1245   1812   3714   z   1405   1405   3128
+  production x   1261   1819   3817   z   1387   1387   3512
+jackknife PM (< 3 THz): median rel. error 0.44 %, max 25.79 %, PM-FM shift > 3 sigma for 53 % of modes
+Gamma, overlap-weighted shifts vs FM_ctl (optical modes):
+   FM_ctl     AFM      PM
+   0.6783   +7.47 %   +2.89 %
+   0.6783   +7.47 %   +2.89 %
+   0.7869   -4.63 %   -7.28 %
+   0.7869   -4.63 %   -7.28 %
+   1.5251   -2.22 %   -1.47 %
+   1.5251   -2.22 %   -1.47 %
+   1.8223  -11.82 %   -9.14 %
+   2.4620   -8.46 %   -4.00 %
+   2.4620   -8.46 %   -4.00 %
+   3.2368   +0.34 %   -0.24 %
+   4.7743   -2.01 %   -0.36 %
+   4.8898   -1.44 %   -0.79 %
+   4.8898   -1.44 %   -0.79 %
+   4.9704   -0.91 %   -0.23 %
+   4.9704   -0.91 %   -0.23 %
+   4.9790   -0.18 %   -0.79 %
+   5.1091   -0.51 %   +0.07 %
+   5.1091   -0.51 %   +0.07 %
+   5.2462   -0.54 %   -0.42 %
+   5.2462   -0.54 %   -0.42 %
+   5.7300   -0.59 %   -0.70 %
+   5.8933   -1.48 %   -0.59 %
+   7.4020   +0.75 %   +0.18 %
+   7.7983   -0.71 %   -2.88 %
+gates:
+  G1_FM_ctl_vs_production_rms          0.0064  pass
+  G2_AFM_gamma_vs_9atom_max_dev        0.1038  FAIL
+  G3_jackknife_median_rel_err          0.0044  pass
+GATE FAILED: stop and report
+
+wrote /home/wangchao/spin771/work_fc2pm/results
