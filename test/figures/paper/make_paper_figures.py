@@ -40,8 +40,22 @@ LABEL = {"MnIn2Se4": r"In$_2$MnSe$_4$", "Mn2In2Se5": r"In$_2$Mn$_2$Se$_5$"}
 COL = {"MnIn2Se4": "#d62728", "Mn2In2Se5": "#1f77b4"}       # analysis/plotting convention
 QUOTED = {  # 300 K, REPORT §9.1
     "MnIn2Se4": {"inplane": 4.67, "kzz": 0.714},
-    "Mn2In2Se5": {"inplane": 3.37, "kzz": 1.089},
+    # in-plane 3.37 x R_xx(300 K) = 3.37 x 0.8571 = 2.89: spin-disordered FC2
+    # (dft/spin_disorder_fc2/results/KAPPA_VERDICT.md); the RTA ratio is applied
+    # to the LBTE + coherence value as an approximation
+    "Mn2In2Se5": {"inplane": 2.89, "kzz": 1.089},
 }
+# R_xx(T) = kappa_xx(PM) / kappa_xx(FM_ctl) for Mn2In2Se5, 16x16x4, production fc3.
+# Spin disorder lowers the in-plane single-crystal kappa; kappa_zz is NOT scaled
+# (not resolved by that dataset). MnIn2Se4 is not scaled (not computed).
+SPIN_R = json.loads((ROOT / "dft/spin_disorder_fc2/results/R_xx_vs_T.json").read_text())
+
+
+def spin_factor(m, T):
+    """R_xx(T) for Mn2In2Se5 (linear interpolation, 1 outside the range); 1 for MnIn2Se4."""
+    if m != "Mn2In2Se5":
+        return np.ones_like(np.asarray(T, float))
+    return np.interp(np.asarray(T, float), SPIN_R["T_K"], SPIN_R["R_xx"])
 CUTOFF_DOWN = {  # fractional downward FC3-cutoff uncertainty of the quoted values
     "MnIn2Se4": {"inplane": 0.10, "kzz": 0.10},    # estimate, REPORT §9.1
     "Mn2In2Se5": {"inplane": 0.021, "kzz": 0.033},  # next-step bound, cutoff_cv (2026-11-21)
@@ -89,8 +103,9 @@ def fig1():
         d = data[m]
         T = np.array(d["T_K"], float)
         keep = T >= 30
-        a1.plot(T[keep], np.array(d["inplane"])[keep], "-o", color=COL[m], ms=4,
-                label=f"{LABEL[m]} ({d['mesh']})")
+        # Mn2In2Se5 in-plane carries the spin-disorder factor R_xx(T); kappa_zz not
+        a1.plot(T[keep], spin_factor(m, T[keep]) * np.array(d["inplane"])[keep], "-o",
+                color=COL[m], ms=4, label=f"{LABEL[m]} ({d['mesh']})")
         a2.plot(T[keep], np.array(d["kzz_rest"])[keep], "-s", color=COL[m], ms=4, mfc="white",
                 label=f"{LABEL[m]} ({d['mesh']})")
     # quoted 300 K values with the cutoff uncertainty
@@ -118,7 +133,11 @@ def fig1():
              "Lines: RTA population, natural isotopes, ordered crystal; κ$_{zz}$ = mesh-converged term "
              "(Γ–Z quadrature error removed). Stars: in-plane LBTE + coherence, κ$_{zz}$ + coherence.\n"
              "Bars: FC3-cutoff uncertainty, In$_2$MnSe$_4$ ≈ −10 % (estimate); In$_2$Mn$_2$Se$_5$ −2.1 % / −3.3 % "
-             "(bound on the next cutoff step from a hold-out test).", ha="center", fontsize=7.5, color="0.3")
+             "(bound on the next cutoff step from a hold-out test).\n"
+             "In$_2$Mn$_2$Se$_5$ in-plane is scaled by the spin-disorder ratio R$_{xx}$(T) = "
+             "κ$_{xx}$(PM)/κ$_{xx}$(FM) = 0.822 (30 K) … 0.857 (300 K) … 0.858 (≥400 K), jackknife $\pm$0.018; "
+             "κ$_{zz}$ is not scaled (that ratio is not resolved). In$_2$MnSe$_4$ is not scaled.",
+             ha="center", fontsize=7, color="0.3")
     fig.tight_layout()
     save(fig, "fig1_kappa_vs_T")
 
@@ -137,7 +156,7 @@ def fig2():
     exp = exp_rows()
     vca = {"MnIn2Se4": load("kappa_vs_T/data_mnin2se4_vca.json"),
            "Mn2In2Se5": load("kappa_vs_T/data_mn2in2se5_vca.json")}
-    fig, axes = plt.subplots(2, 2, figsize=(10, 7.6), sharex=True)
+    fig, axes = plt.subplots(2, 2, figsize=(10, 8.6), sharex=True)
     for i, m in enumerate(MAT):
         d = vca[m]
         T = np.array(d["T_K"], float)
@@ -146,8 +165,14 @@ def fig2():
                                              ("Para", "kzz_rest", r"$\kappa_{zz}$"))):
             ax = axes[i, j]
             c = COL[m]
-            ax.plot(T, d[f"baseline_{key}"], "--", color=c, lw=1.4, label="calc. ordered (single crystal)")
-            ax.plot(T, d[f"vca_{key}"], "-", color=c, lw=1.8, label="calc. VCA (single crystal)")
+            # in-plane carries the spin-disorder factor R_xx(T) for Mn2In2Se5,
+            # applied to both the ordered and the VCA curve (assumes the spin and
+            # antisite effects multiply); kappa_zz is not scaled
+            f = spin_factor(m, T) if key == "inplane" else np.ones_like(T)
+            ax.plot(T, f * np.array(d[f"baseline_{key}"]), "--", color=c, lw=1.4,
+                    label="calc. ordered (single crystal)")
+            ax.plot(T, f * np.array(d[f"vca_{key}"]), "-", color=c, lw=1.8,
+                    label="calc. VCA (single crystal)")
             ax.plot(Tl3, l3[dr], ":", color="k", lw=1.6, label=f"calc. L3 fit (texture s = {s:.2f})")
             for panel, filled in (("highT", True), ("lowT", False)):
                 p = exp.get((m, dr, panel))
@@ -165,13 +190,18 @@ def fig2():
                 ax.set_xlabel("Temperature (K)")
             ax.legend(fontsize=7.5, frameon=False, loc="upper right")
     vp = {m: vca[m]["vca"] for m in MAT}
-    fig.text(0.5, -0.03,
+    fig.text(0.5, -0.075,
              "Ordered / VCA: RTA, 20$^3$ mesh (same mesh for each pair), natural isotopes, κ$_{zz}$ = "
              "mesh-converged term; single-crystal components (Perp ↔ in-plane, Para ↔ κ$_{zz}$), "
              "no boundary or texture.\nAntisite occupancy (VCA and L3): In$_2$MnSe$_4$ i = %s, "
              "In$_2$Mn$_2$Se$_5$ x = %s, literature structure refinements (not of the measured samples).\n"
              "L3: ordered-mass κ + antisite mass disorder + boundary mean free path + texture; x fixed, "
-             "L and s fitted to the 300–623 K points. Experiment: κ$_{tot}$, κ$_e$ not subtracted."
+             "L and s fitted to the 300–623 K points. Experiment: κ$_{tot}$, κ$_e$ not subtracted.\n"
+             "In$_2$Mn$_2$Se$_5$ in-plane (ordered and VCA) is scaled by the spin-disorder ratio R$_{xx}$(T) = "
+             "κ$_{xx}$(PM)/κ$_{xx}$(FM) = 0.857 $\pm$ 0.018 at 300 K, which assumes the spin and antisite "
+             "effects multiply; κ$_{zz}$ is not scaled (unresolved). L3 still uses the FM FC2 — switching its "
+             "in-plane basis to PM would lower the intrinsic in-plane κ by 14 %% and mainly change L$_{eff}$; "
+             "MnIn$_2$Se$_4$ is not scaled (its spin-disorder effect was not computed)."
              % (vp["MnIn2Se4"]["x"], vp["Mn2In2Se5"]["x"]),
              ha="center", fontsize=7.2, color="0.3")
     fig.tight_layout()

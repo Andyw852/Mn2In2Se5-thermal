@@ -13,14 +13,23 @@ cd test/figures/paper && python make_paper_figures.py     # seconds, no recomput
 
 | figure | content | data |
 |---|---|---|
-| `fig1_kappa_vs_T` | intrinsic κ(T) of the ordered crystal, both materials, in-plane and κ_zz. Stars: 300 K quoted values (in-plane LBTE + coherence 4.67 / 3.37; κ_zz + coherence 0.71 / 1.09). Bars: FC3-cutoff uncertainty, MnIn₂Se₄ ≈ −10 % (estimate), Mn₂In₂Se₅ −2.1 % / −3.3 % (bound on the next step from the hold-out test, `../../Mn2In2Se5/cutoff_cv/`; it used to be drawn as an open upper bound) | `../kappa_vs_T/data_mnin2se4.json` (14³), `data_mnin2se5.json` (16³) |
-| `fig2_calc_vs_exp` | 2 × 2 panels, material × direction. Hot-pressed experiment; ordered and VCA single-crystal curves (Perp ↔ in-plane, Para ↔ κ_zz); L3 extrinsic fit, texture-mixed | `../kappa_vs_T/data_*_vca.json` (20³ pairs), `../calc_vs_experiment/extrinsic_*.json`, `experiment/kappa_tot_digitized.csv` |
+| `fig1_kappa_vs_T` | intrinsic κ(T) of the ordered crystal, both materials, in-plane and κ_zz. Stars: 300 K quoted values (in-plane LBTE + coherence 4.67 / 2.89 — the Mn₂In₂Se₅ in-plane value carries the spin-disorder factor 0.857; κ_zz + coherence 0.71 / 1.09). Bars: FC3-cutoff uncertainty, MnIn₂Se₄ ≈ −10 % (estimate), Mn₂In₂Se₅ −2.1 % / −3.3 % (bound on the next step from the hold-out test, `../../Mn2In2Se5/cutoff_cv/`; it used to be drawn as an open upper bound) | `../kappa_vs_T/data_mnin2se4.json` (14³), `data_mnin2se5.json` (16³) |
+| `fig2_calc_vs_exp` | 2 × 2 panels, material × direction. Hot-pressed experiment; ordered and VCA single-crystal curves (Perp ↔ in-plane, Para ↔ κ_zz); L3 extrinsic fit, texture-mixed. In₂Mn₂Se₅ in-plane (ordered **and** VCA) is scaled by R_xx(T), which assumes the spin and antisite effects multiply; κ_zz is not scaled | `../kappa_vs_T/data_*_vca.json` (20³ pairs), `../calc_vs_experiment/extrinsic_*.json`, `experiment/kappa_tot_digitized.csv` |
 | `fig3_cutoff` | κ vs FC3 cutoff at 300 K, normalised to the largest cutoff, with the step sizes. MnIn₂Se₄ steps shrink. For Mn₂In₂Se₅ an open triangle marks the 6.90 Å refit on the same frames, which is over-parameterised, so it is a lower bound on the next step (≥ −2.1 % / −3.3 %) | `../cutoff/data_*.json` (population and κ_zz rest term; the coherence columns there are 4.4.0 SMM19 values and are **not** used) |
 
 Points to state in the captions:
 
 - **Fig. 1.** The lines (RTA) and the stars (LBTE + coherence) differ by
   construction. For MnIn₂Se₄ in-plane, LBTE is 24 % above RTA.
+- **Spin disorder in both figures.** In₂Mn₂Se₅ in-plane only: scaled by
+  R_xx(T) = κ_xx(PM)/κ_xx(FM_ctl) = 0.822 (30 K) … 0.857 (300 K) … 0.858 (≥ 400 K),
+  jackknife ±0.018, from `../../../dft/spin_disorder_fc2/results/R_xx_vs_T.json`
+  (`KAPPA_VERDICT.md`). Applied to the RTA ordered curve (fig. 1) and to the ordered and
+  VCA curves (fig. 2). κ_zz is not scaled (unresolved) and In₂MnSe₄ is not scaled (its
+  spin-disorder effect was not computed). L3 keeps the FM FC2: switching its in-plane
+  basis to PM would lower the intrinsic in-plane κ by 14 % and mainly change L_eff.
+  The R_xx ratio is an RTA ratio applied to LBTE + coherence values, which is an
+  approximation; the VCA scaling further assumes spin and antisite effects multiply.
 - **Fig. 2.**
   - Ordered and VCA are single-crystal components without boundary scattering
     or texture. They are an upper reference, not a fit.

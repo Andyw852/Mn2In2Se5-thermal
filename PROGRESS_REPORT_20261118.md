@@ -28,7 +28,7 @@ earlier summaries. The detailed derivations live in
 
 | | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---:|---:|
-| **in-plane κ** (LBTE + coherence) | **≈ 4.6** (4.67) | **≈ 3.4** (3.37) |
+| **in-plane κ** (LBTE + coherence) | **≈ 4.6** (4.67) | **≈ 2.9** (3.37 × 0.857 = 2.89) |
 | **κ_zz** (mesh-converged + coherence) | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
 | κ_zz at 10 μm / 1 μm grain (no coherence) | 0.638 / 0.58 | 0.944 / 0.798 |
 | FC3 cutoff, in-plane | ≈ −10 %, estimated (steps −22.9 % → −8.7 %) | steps −3.9 % → −4.3 %; next step ≥ **−2.1 %** |
@@ -40,7 +40,18 @@ What each number is made of:
 - **MnIn₂Se₄ in-plane**: LBTE 4.5219 at 14³, +1.3 % mesh correction from
   the RTA series, + coherence 0.09 (phono3py 3.24.0).
 - **Mn₂In₂Se₅ in-plane**: RTA 3.048 (32³), with the iterative and coherence
-  corrections (`analysis/disorder/README.md` §4.4).
+  corrections (`analysis/disorder/README.md` §4.4), then multiplied by the
+  spin-disorder ratio **R_xx(300 K) = 0.857 ± 0.018** = κ_xx(PM)/κ_xx(FM_ctl)
+  from the spin-disordered FC2 (`dft/spin_disorder_fc2/results/KAPPA_VERDICT.md`,
+  `R_xx_vs_T.json`). Spin disorder lowers the in-plane single-crystal κ by 14 %,
+  above the 5 % decision threshold, so the in-plane L1 now uses the paramagnetic FC2.
+  - **Approximate step**: R_xx is an RTA ratio applied to the LBTE + coherence
+    value; that the same ratio holds for that composition is assumed, not shown.
+  - **κ_zz is not rescaled**: this dataset cannot resolve the spin effect there
+    (PM/FM_ctl = 0.47–0.88 over the jackknife, and the FM control is itself
+    +22 % off production). κ_zz therefore keeps the FM value and stays an upper
+    bound because of the FC3 cutoff.
+  - **MnIn₂Se₄ is not rescaled**: its spin-disorder effect was not computed.
 - **κ_zz**: mesh-converged rest term, i.e. the Γ–Z quadrature error removed
   (§6.3–6.5).
   - MnIn₂Se₄: 0.648 ± 0.003 (14³–30³).

@@ -30,6 +30,12 @@ produces strong mass-disorder scattering.
 | **L2 — VCA antisite disorder** | masses averaged over the site occupancy, disorder returned as a mass variance | `mass_variances=[g_i]` with averaged masses (phono3py) | MnIn₂Se₄ at the largest cutoff (this round) |
 | **L3 — extrinsic fit** | L1 + antisite mass disorder + grain boundary + texture, fitted to experiment | `analysis/extrinsic/kappa_extrinsic.py` (x, L, s scan) | `analysis/extrinsic/results/`, and the calc-vs-experiment figure |
 
+**L3 uses the FM FC2.** Switching its in-plane basis to the spin-disordered (PM) FC2
+would lower the intrinsic in-plane κ by 14 % (PM/FM_ctl = 0.857 ± 0.018 at 300 K,
+`dft/spin_disorder_fc2/results/KAPPA_VERDICT.md`); in the L3 fit that would mainly change
+the fitted L_eff. The fit was not rerun with the PM basis: a PM basis would also swap the
+κ_zz input, which this dataset does not resolve.
+
 L1 is the baseline for all reported κ. L2 and L3 are the two ways of adding the
 antisite disorder; they are **not** added on top of each other in any number in
 this repository.
@@ -251,7 +257,7 @@ Two observations:
 |---|---|
 | κ_zz intrinsic (isotopes on) | **0.977 ± 0.008** (plateau 24³–32³ × 0.9961; the earlier 0.951 ± 0.032 was an unjustified extrapolation) |
 | in-plane κ (RTA 32³, isotopes on) | 3.048 |
-| in-plane κ (L1 + LBTE correction + coherence) | ≈ 3.37 |
+| in-plane κ (L1 + LBTE correction + coherence) | ≈ 2.89 (3.37 × R_xx(300 K) = 0.857, spin-disordered FC2; see `HANDOVER.md`) |
 
 Note the different basis: the MnIn₂Se₄ table in §4.1 is RTA only, while the
 3.37 here includes the LBTE/iterative correction and the coherence term. Compare

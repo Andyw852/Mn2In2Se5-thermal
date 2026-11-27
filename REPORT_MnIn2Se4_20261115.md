@@ -702,12 +702,22 @@ use it for both materials:
 
 | 300 K | MnIn₂Se₄ | Mn₂In₂Se₅ |
 |---|---:|---:|
-| in-plane κ | ≈ 4.6 | ≈ 3.37 |
+| in-plane κ | ≈ 4.6 | ≈ 2.89 (3.37 × 0.857, spin-disordered FC2) |
 | **κ_zz, mesh-converged + coherence (quoted)** | **≈ 0.71** (0.648 + 0.066) | **≈ 1.09** (0.977 + 0.112) |
 | κ_zz, 30³ total + coherence (reference only) | ≈ 0.83 (0.765 + 0.066) | ≈ 1.36 (1.251 + 0.112) |
 | in-plane FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−22.9 %, −8.7 %) | steps −3.9 %, −4.3 % (16³, isotopes on); next step (6.90 Å) **no more negative than −2.1 %** (hold-out test, 2026-11-21) |
 | κ_zz FC3 cutoff | ≈ −10 %, estimated from shrinking steps (−50.5 %, −8.2 %) | steps −11.8 %, −9.9 %; next step (6.90 Å) **no more negative than −3.3 %** (hold-out test, 2026-11-21) |
 
+**Update 2026-11-27 (Mn₂In₂Se₅ in-plane, spin disorder).** The Mn₂In₂Se₅ in-plane value
+above is now 3.37 × R_xx(300 K) = 3.37 × 0.857 = **2.89**, where R_xx(T) =
+κ_xx(PM)/κ_xx(FM_ctl) is the ratio of the spin-disordered (paramagnetic) FC2 to the
+FM control FC2 (`dft/spin_disorder_fc2/results/KAPPA_VERDICT.md`, `R_xx_vs_T.json`):
+R_xx = 0.822 (30 K), 0.848 (100 K), 0.857 (300 K), 0.858 (≥ 400 K), jackknife ±0.018 at 300 K.
+Three restrictions: **in-plane only** (this dataset does not resolve the spin effect on κ_zz,
+so κ_zz keeps the FM value and remains an upper bound from the FC3 cutoff); **RTA ratio applied
+to the LBTE + coherence value** (assumed, not shown); **MnIn₂Se₄ unchanged** (its spin-disorder
+effect was not computed). L3 still uses the FM FC2; switching its in-plane basis to the PM FC2
+would lower the intrinsic in-plane κ by 14 % and mainly change the fitted L_eff.
 **Update 2026-11-21 (Mn₂In₂Se₅ cutoff).** The two rows above used to read "upper
 bound" / "not converged, unbounded". The FC3 refits at 6.67–7.43 Å on the same 54
 frames were then tested by hold-out validation and a learning curve
@@ -744,7 +754,7 @@ the 4×4×1 cell**.
 1.43× on the rest term (§7.5). Quote the convention with the number.
 
 **Comparing the two materials.** The in-plane ordering (MnIn₂Se₄ ≈ 4.6 >
-Mn₂In₂Se₅ ≈ 3.37) is robust: a 37 % gap, against cutoff effects of ≲ 10 %
+Mn₂In₂Se₅ ≈ 2.89) is robust: a 59 % gap (4.6 / 2.89), against cutoff effects of ≲ 10 %
 (MnIn₂Se₄) and ≈ 4 % per step (Mn₂In₂Se₅). The κ_zz ordering (Mn₂In₂Se₅ ≈ 1.09 >
 MnIn₂Se₄ ≈ 0.71, a 50 % gap) was not robust while the Mn₂In₂Se₅ cutoff was
 unbounded. With the next step now bounded at −3.3 % (update above), it holds within
