@@ -58,6 +58,9 @@ def methods_zh():
     r5 = sv[(M5, "inplane_LBTE_10")] / sv[(M5, "inplane_RTA_10")]
     q4 = sv[(M4, "inplane_LBTE_14")] * sv[(M4, "mesh_correction_inplane")] + sv[(M4, "coherence_inplane")]
     q5 = sv[(M5, "inplane_RTA_32")] * r5 + sv[(M5, "coherence_inplane")]
+    # 2026-11-27: FM composition is 3.37; quoted value carries R_xx(300 K) = 0.857 -> 2.89
+    rxx = 0.857
+    q5q = q5 * rxx
     z4 = sv[(M4, "population_kzz_rest")] + sv[(M4, "coherence_kzz")]
     z5 = sv[(M5, "population_kzz_rest")] + sv[(M5, "coherence_kzz")]
     return f"""<h2><span class="n">2</span>计算设置与收敛性</h2>
@@ -142,7 +145,8 @@ W m⁻¹ K⁻¹，即面内 +2–5 %，κ_zz +10–12 %。</li>
 <thead><tr><th>300 K 推荐值</th><th class="r">{L[M4]}</th><th class="b">{L[M5]}</th></tr></thead>
 <tbody>
 <tr><td>面内 κ</td><td>LBTE {sv[(M4, 'inplane_LBTE_14')]:.3f} × {sv[(M4, 'mesh_correction_inplane')]:.3f}（网格修正）+ 相干项 {sv[(M4, 'coherence_inplane')]:.3f} = <b>{q4:.2f}</b></td>
-<td>RTA {sv[(M5, 'inplane_RTA_32')]:.3f} × {r5:.3f}（LBTE/RTA）+ 相干项 {sv[(M5, 'coherence_inplane')]:.3f} = <b>{q5:.2f}</b></td></tr>
+<td>RTA {sv[(M5, 'inplane_RTA_32')]:.3f} × {r5:.3f}（LBTE/RTA）+ 相干项 {sv[(M5, 'coherence_inplane')]:.3f} = {q5:.2f}；
+× 自旋无序 R_xx = {rxx:.3f} = <b>{q5q:.2f}</b></td></tr>
 <tr><td>κ_zz</td><td>收敛项 {sv[(M4, 'population_kzz_rest')]:.3f} + 相干项 {sv[(M4, 'coherence_kzz')]:.3f} = <b>{z4:.2f}</b></td>
 <td>收敛项 {sv[(M5, 'population_kzz_rest')]:.3f} + 相干项 {sv[(M5, 'coherence_kzz')]:.3f} = <b>{z5:.2f}</b></td></tr>
 </tbody></table></div>

@@ -24,7 +24,10 @@ SC_DIR = {"MnIn2Se4": FIG / "scattering", "Mn2In2Se5": FIG / "scattering" / "mn2
 QUOTED = [  # 300 K values to quote (PROGRESS_REPORT_20261118.md §2, REPORT §9.1)
     ("MnIn2Se4", "inplane", 4.67, "LBTE + coherence; FC3 cutoff about -10 %"),
     ("MnIn2Se4", "kzz", 0.714, "mesh-converged + coherence; FC3 cutoff about -10 %"),
-    ("Mn2In2Se5", "inplane", 3.37, "LBTE + coherence; next FC3-cutoff step >= -2.1 % (hold-out test)"),
+    # 2026-11-27: in-plane value carries the spin-disorder factor R_xx(300 K) = 0.857
+    # (2.89 = 3.37 x 0.857, dft/spin_disorder_fc2/results/R_xx_vs_T.json); kappa_zz unchanged
+    ("Mn2In2Se5", "inplane", 2.89, "LBTE + coherence, x R_xx = 0.857 for spin disorder;"
+     " next FC3-cutoff step >= -2.1 % (hold-out test)"),
     ("Mn2In2Se5", "kzz", 1.089, "mesh-converged + coherence; next FC3-cutoff step >= -3.3 % (hold-out test)"),
 ]
 

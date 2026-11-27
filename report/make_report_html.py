@@ -218,6 +218,10 @@ def methods_html():
     r5 = sv[(m5, "inplane_LBTE_10")] / sv[(m5, "inplane_RTA_10")]
     q4 = sv[(m4, "inplane_LBTE_14")] * sv[(m4, "mesh_correction_inplane")] + sv[(m4, "coherence_inplane")]
     q5 = sv[(m5, "inplane_RTA_32")] * r5 + sv[(m5, "coherence_inplane")]
+    # 2026-11-27: the FM composition above is 3.37; the quoted in-plane value also carries
+    # the spin-disorder ratio R_xx(300 K) = 0.857 -> 2.89 (R_xx_vs_T.json)
+    rxx = 0.857
+    q5q = q5 * rxx
     z4 = sv[(m4, "population_kzz_rest")] + sv[(m4, "coherence_kzz")]
     z5 = sv[(m5, "population_kzz_rest")] + sv[(m5, "coherence_kzz")]
     return f"""<h2><span class="n">2</span>Calculation setup and convergence</h2>
@@ -314,7 +318,8 @@ agree with each other. {L[m4]} therefore uses the 3.24.0 value. The {L[m5]} 4.4.
 <thead><tr><th>300 K value</th><th class="r">{L[m4]}</th><th class="b">{L[m5]}</th></tr></thead>
 <tbody>
 <tr><td>in-plane κ</td><td>LBTE {sv[(m4, 'inplane_LBTE_14')]:.3f} × {sv[(m4, 'mesh_correction_inplane')]:.3f} (mesh) + coherence {sv[(m4, 'coherence_inplane')]:.3f} = <b>{q4:.2f}</b></td>
-<td>RTA {sv[(m5, 'inplane_RTA_32')]:.3f} × {r5:.3f} (LBTE/RTA) + coherence {sv[(m5, 'coherence_inplane')]:.3f} = <b>{q5:.2f}</b></td></tr>
+<td>RTA {sv[(m5, 'inplane_RTA_32')]:.3f} × {r5:.3f} (LBTE/RTA) + coherence {sv[(m5, 'coherence_inplane')]:.3f} = {q5:.2f};
+× R_xx = {rxx:.3f} for spin disorder = <b>{q5q:.2f}</b></td></tr>
 <tr><td>κ_zz</td><td>converged term {sv[(m4, 'population_kzz_rest')]:.3f} + coherence {sv[(m4, 'coherence_kzz')]:.3f} = <b>{z4:.2f}</b></td>
 <td>converged term {sv[(m5, 'population_kzz_rest')]:.3f} + coherence {sv[(m5, 'coherence_kzz')]:.3f} = <b>{z5:.2f}</b></td></tr>
 </tbody></table></div>
