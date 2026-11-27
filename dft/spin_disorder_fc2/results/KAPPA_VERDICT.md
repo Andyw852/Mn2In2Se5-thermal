@@ -75,3 +75,10 @@ interlayer (van der Waals) force constants.**
    - Geometry-dependent noise largely cancels in the difference, and the
      production amplitude is 3× larger than the 0.01 Å used here.
    - A 2-frame pilot should first measure the noise floor of ΔF.
+
+## Decision (2026-11-27, user)
+
+**Option 1 — report κ_zz as unresolved.** No paired-difference rerun is done. The
+paper states the in-plane result (−14 %, R = 0.857 ± 0.018) and that the effect of
+spin disorder on κ_zz could not be resolved; Mn₂In₂Se₅ κ_zz stays an upper bound
+anyway because of the FC3 cutoff.
